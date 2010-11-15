@@ -1,0 +1,534 @@
+---
+# miasta które będą logowane
+#
+# cities which will be logged
+# http://weather.gladstonefamily.net/site/<code>
+:cities:
+- :code: "EPPO"
+  :name: "Poznań"
+  # http://weather.gladstonefamily.net/site/EPPO
+  :coord:
+    :lat: 52.4210
+    :lon: 16.8263
+- :code: "EDDG"
+  :name: "Muenster/Osnabrueck"
+  :coord:
+    :lat: 52.1346
+    :lon: 7.6848
+- :code: "UHPP"
+  :name: "Petropavlovsk-Kamchatskij"
+  :coord:
+    :lat: 53.0833
+    :lon: 158.5833
+- :code: "RJTT"
+  :name: "Tokyo"
+  :coord:
+    :lat: 35.5523
+    :lon: 139.7797
+- :code: "UHHH"
+  :name: "Khabarovsk"
+  :coord:
+    :lat: 48.5167
+    :lon: 135.1667
+- :code: "CYVR"
+  :name: "Vancouver"
+  :coord:
+    :lat: 49.1939
+    :lon: -123.1844
+- :code: "KPDX"
+  :name: "Portland"
+  :coord:
+    :lat: 45.5908
+    :lon: -122.6003
+- :code: "KNYC"
+  :name: "New York"
+  :coord:
+    :lat: 40.7790
+    :lon: -73.9692
+- :code: "EGLL"
+  :name: "London"
+  :coord:
+    :lat: 51.470969
+    :lon: -0.45393
+- :code: "KRMG"
+  :name: "Rome [USA]"
+  :coord:
+    :lat: 34.351458
+    :lon: -85.163326
+- :code: "OMDB"
+  :name: "Dubai"
+  :coord:
+    :lat: 25.252971
+    :lon: 55.364714
+- :code: "KLAX"
+  :name: "Los Angeles"
+  :coord:
+    :lat: 33.946251
+    :lon: -118.408442
+- :code: "HECA"
+  :name: "Cairo"
+  :coord:
+    :lat: 30.111448
+    :lon: 31.4139
+- :code: "EPWA"
+  :name: "Warszawa"
+  :coord:
+    :lat: 52.164909
+    :lon: 20.964117
+- :code: "EPKT"
+  :name: "Katowice"
+  :coord:
+    :lat: 50.241968
+    :lon: 19.032927
+- :code: "EPKK"
+  :name: "Kraków"
+  :coord:
+    :lat: 50.0777
+    :lon: 19.7848
+- :code: "EFHL"
+  :name: "Hailuoto [Finland]"
+  :coord:
+    :lat: 65.096198
+    :lon: 24.733886
+- :code: "EFIV"
+  :name: "Ivolo [Finland]"
+  :coord:
+    :lat: 68.674941
+    :lon: 27.572021
+
+- :code: "BGKT"
+  :name: "Cape Tobin [Greenland]"
+  :coord:
+    :lat: 70.40016
+    :lon: -21.966662
+- :code: "BGGN"
+  :name: "Godhavn [Greenland]"
+  :coord:
+    :lat: 69.253425
+    :lon: -53.505249
+- :code: "NZAA"
+  :name: "Auckland [New Zealand]"
+  :coord:
+    :lat: -37.005058
+    :lon: 174.784025
+- :code: "GMML"
+  :name: "Laayoune/hassan Isl [Morocco]"
+  :coord:
+    :lat: 27.1667
+    :lon: -13.2167
+- :code: "PHNL"
+  :name: "Honolulu [Hawaii]"
+  :coord:
+    :lat: 21.333065
+    :lon: -157.918282
+- :code: "NZSP"
+  :name: "Amundsen-Scott [Antarctica]"
+  :coord:
+    :lat: -89.983333
+    :lon: 179.983333
+- :code: "NZCM"
+  :name: "Williams Field [Antarctica]"
+  :coord:
+    :lat: -77.866667
+    :lon: 166.966667
+- :code: "NZWD"
+  :name: "Williams Field 2 [Antarctica]"
+  :coord:
+    :lat: -77.8674
+    :lon: 167.0566
+- :code: "NZIR"
+  :name: "Ice Runway [Antarctica]"
+  :coord:
+    :lat: -77.8521
+    :lon: 166.5692
+- :code: "NZPG"
+  :name: "Pegasus Field [Antarctica]"
+  :coord:
+    :lat: -77.9634
+    :lon: 166.5246
+- :code: "CXAT"
+  :name: "Arctic Bay [Canada]"
+  :coord:
+    :lat: 73.0000
+    :lon: -85.0167
+- :code: "BGQQ"
+  :name: "Qaanaaq [Greenland]"
+  :coord:
+    :lat: 77.4667
+    :lon: -69.2167
+- :code: "CYLR"
+  :name: "Alert Airport [Greenland]"
+  :coord:
+    :lat: 82.5178
+    :lon: -62.2806
+- :code: "CZLT"
+  :name: "Alert [Greenland]"
+  :coord:
+    :lat: 82.5000
+    :lon: -62.3333
+- :code: "CWGZ"
+  :name: "Grise Fiord [Greenland]"
+  :coord:
+    :lat: 76.4228
+    :lon: -82.9022
+- :code: "CWEU"
+  :name: "Eureka [Greenland]"
+  :coord:
+    :lat: 79.9833
+    :lon: -85.9333
+- :code: "OMSJ"
+  :name: "Sharjah International [UAE]"
+  :coord:
+    :lat: 25.3286
+    :lon: 55.5172
+- :code: "WIID"
+  :name: "Jakarta [Java]"
+  :coord:
+    :lat: -6.1500
+    :lon: 106.8500
+- :code: "DRRM"
+  :name: "Maradi [Niger]"
+  :coord:
+    :lat: 13.4667
+    :lon: 7.0833
+- :code: "SCIP"
+  :name: "Isla De Pascua"
+  :coord:
+    :lat: -27.1648
+    :lon: -109.4218
+- :code: "SBPV"
+  :name: "Porto Velho [Brazil]"
+  :coord:
+    :lat: -8.7667
+    :lon: -63.9167
+- :code: "VNKT"
+  :name: "Kathmandu [Nepal]"
+  :coord:
+    :lat: 27.6966
+    :lon: 85.3591
+- :code: "EGSS"
+  :name: "London Stansted"
+  :coord:
+    :lat: 51.8850
+    :lon: 0.2350
+- :code: "EGMC"
+  :name: "Southend-On-Sea"
+  :coord:
+    :lat: 51.5714
+    :lon: 0.6956
+- :code: "EFHK"
+  :name: "Helsinki-vantaa [Finland]"
+  :coord:
+    :lat: 60.3172 
+    :lon: 24.9633
+- :code: "EFET"
+  :name: "Enontekio"
+  :coord:
+    :lat: 68.3626
+    :lon: 23.4243
+- :code: "EFKT"
+  :name: "Kittila [Finland]"
+  :coord:
+    :lat: 67.7010
+    :lon: 24.8468
+- :code: "EFOU"
+  :name: "Oulu [Finland]"
+  :coord:
+    :lat: 64.9301
+    :lon: 25.3546
+- :code: "ESSA"
+  :name: "Stockholm/arlanda [Sweden]"
+  :coord:
+    :lat: 59.6167
+    :lon: 17.9500
+- :code: "UOHH"
+  :name: "Khatanga [Russia]"
+  :coord:
+    :lat: 71.9833
+    :lon: 102.4667
+- :code: "UERS"
+  :name: "Saskylakh [Russia]"
+  :coord:
+    :lat: 71.9667
+    :lon: 114.0833
+- :code: "UOOO"
+  :name: "Alykel [Russia]"
+  :coord:
+    :lat: 69.3111
+    :lon: 87.3322
+- :code: "UEST"
+  :name: "Tiksi [Russia]"
+  :coord:
+    :lat: 71.5833
+    :lon: 128.9167
+- :code: "ULLI"
+  :name: "St. Peterburg [Russia]"
+  :coord:
+    :lat: 59.9667
+    :lon: 30.3000
+- :code: "NSTU"
+  :name: "Pago Pago [Samoa]"
+  :coord:
+    :lat: -14.3310
+    :lon: -170.7105
+- :code: "NSTU"
+  :name: "Honiara [Solomon Islands]"
+  :coord:
+    :lat: -9.4280
+    :lon: 160.0548
+- :code: "UKCW"
+  :name: "Luhansk [Ukraine]"
+  :coord:
+    :lat: 48.4174
+    :lon: 39.3741
+- :code: "VNPK"
+  :name: "Sana'a [Yemen]"
+  :coord:
+    :lat: 15.5167
+    :lon: 44.1833
+- :code: "FXMU"
+  :name: "Maseru [Lesotho]"
+  :coord:
+    :lat: -29.4623
+    :lon: 27.5525
+- :code: "FXMM"
+  :name: "Grootfontein [Namibia]"
+  :coord:
+    :lat: -19.6022
+    :lon: 18.1227
+- :code: "FYGF"
+  :name: "Tamatave [Madagascar]"
+  :coord:
+    :lat: -18.1095
+    :lon: 49.3925
+- :code: "FPPR"
+  :name: "S. Tome"
+  :coord:
+    :lat: 0.3782
+    :lon: 6.7122
+- :code: "FIMP"
+  :name: "Plaisance Mauritius"
+  :coord:
+    :lat: -20.4302
+    :lon: 57.6836
+- :code: "HBBA"
+  :name: "Bujumbura [Burundi]"
+  :coord:
+    :lat: -3.3240
+    :lon: 29.3185
+- :code: "GVSV"
+  :name: "S. Pedro [Cape Verde]"
+  :coord:
+    :lat: 16.8332
+    :lon: -25.0555
+- :code: "LSZS"
+  :name: "Samedan [Switzerland]"
+  :coord:
+    :lat: 46.5341
+    :lon: 9.8841
+- :code: "LSZS"
+  :name: "Ercan [Cyprus]"
+  :coord:
+    :lat: 35.1489
+    :lon: 33.4997
+- :code: "ESCM"
+  :name: "Stockholm"
+  :coord:
+    :lat: 59.6167
+    :lon: 17.9500
+- :code: "EPBY"
+  :name: "Bydgoszcz"
+  :coord:
+    :lat: 53.0968
+    :lon: 17.9777
+- :code: "ENBJ"
+  :name: "Svalbard Lufthavn [Norway]"
+  :coord:
+    :lat: 78.2461
+    :lon: 15.4656
+- :code: "ENDU"
+  :name: "Bardufoss [Norway]"
+  :coord:
+    :lat: 69.0558
+    :lon: 18.5404
+- :code: "ENHE"
+  :name: "Heidrun [Norway]"
+  :coord:
+    :lat: 65.3300
+    :lon: 2.3300
+- :code: "ENHF"
+  :name: "Hammerfest [Norway]"
+  :coord:
+    :lat: 70.6797
+    :lon: 23.6686
+- :code: "ENHV"
+  :name: "Honningsvag [Norway]"
+  :coord:
+    :lat: 71.0167
+    :lon: 25.9833
+- :code: "ENKR"
+  :name: "Kirkenes Lufthavn [Norway]"
+  :coord:
+    :lat: 69.7258
+    :lon: 29.8913
+- :code: "EHDV"
+  :name: "D15-fa-1 [Netherlands]"
+  :coord:
+    :lat: 54.3167
+    :lon: 2.9333
+- :code: "EHKV"
+  :name: "K14-fa-1c [Netherlands]"
+  :coord:
+    :lat: 53.2667
+    :lon: 3.6333
+- :code: "EGPB"
+  :name: "Sumburgh Cape [UK]"
+  :coord:
+    :lat: 59.8789
+    :lon: -1.2956
+- :code: "EEKA"
+  :name: "Kardla [Estonia]"
+  :coord:
+    :lat: 58.9908
+    :lon: 22.8307
+- :code: "BIAR"
+  :name: "Akureyri [Iceland]"
+  :coord:
+    :lat: 65.6856
+    :lon: -18.1002
+- :code: "EGYP"
+  :name: "Mount Pleasant [Falkland Islands]"
+  :coord:
+    :lat: -51.8228
+    :lon: -58.4472
+- :code: "TVSV"
+  :name: "E. T. Joshua Airport"
+  :coord:
+    :lat: 58.9908
+    :lon: 22.8307
+- :code: "PWAK"
+  :name: "Wake Island"
+  :coord:
+    :lat: 19.2821
+    :lon: 166.6364
+#- :code: ""
+#  :name: ""
+#  :coord:
+#    :lat: 
+#    :lon: 
+
+#- :code: ""
+#  :name: ""
+#  :coord:
+#    :lat: 
+#    :lon: 
+
+#- :code: ""
+#  :name: ""
+#  :coord:
+#    :lat: 
+#    :lon: 
+
+#- :code: ""
+#  :name: ""
+#  :coord:
+#    :lat: 
+#    :lon: 
+
+
+
+
+
+
+
+
+
+#- :code: ""
+#  :name: ""
+#  :coord:
+#    :lat: 
+#    :lon: 
+
+
+
+
+# co ile sekund czeka przed ponownym ściąganiem kodu METAR ze strony
+# również dla innych miast, czyli cykl wynosi ilość_miast * ta_zmienna
+#
+# download metar codes every this seconds
+# cycle time = number of cities * :sleep_every_url_open
+:sleep_every_url_open: 30
+
+# port do komunikacji TCP
+:tcp_port: 6678
+
+# czy uruchomić cykl od razu
+:start: true
+
+# czy wyświetla komunikaty
+:is_verbose: true
+
+# dyrektywy do przetwarzacza
+:data_process_directives:
+  :temperature:
+    :y_max: 40.0
+    :y_min: -20.0
+    # oś pozioma co ile
+    :y_axis: 5.0
+    :desc: "Temperatura"
+    :unit_name: "oC"
+    :plot_color: "#88BB22"
+  :wind:
+    :y_max: 60.0
+    :y_min: 0.0
+    :y_axis: 7.2
+    :desc: "Prędkość wiatru"
+    :plot_color: "#339977"
+  :pressure:
+    :y_max: 1050.0
+    :y_min: 950.0
+    :y_axis: 20.0
+    :desc: "Ciśnienie"
+    :plot_color: "#005599"
+  :visiblity:
+    :y_max: 10000.0
+    :y_min: 0.0
+    :y_axis: 500.0
+    :desc: "Widoczność"
+    :plot_color: "#990099"
+
+# process and store after logging new metar?
+:instant_process: false
+
+# parametry rysowania wykresów
+:graph_draw_options:
+  # kolor obramowania
+  # TODO: wyłączyłem kod do tego, czy ramka potrzebna?
+  :border_color: "#000000"
+
+  # kolor tła
+  :background_white: "#FFFFFF"
+  # kolor mini-siatki
+  # TODO: spróbować biały, ile mniej obrazki będą zajmować
+  :background_nonwhite: "#EEEEEE"
+
+  # domyślny kolor wykresu - niebieski
+  :plot_color: "#0000FF"
+  # przezroczystość, 1 nieprzezroczyste, 0 przezroczyste
+  :plot_opacity: 0.9
+  # grubość wykresu w pikselach
+  :plot_width: 2
+
+  # kolor osi wszystkich
+  :normal_axis_color: "#666"
+  # kolor osi poziomej 'o'
+  :x_zero_axis_color: "#006"
+
+  # szerokość wykresu
+  :width: 1600
+  # wysokość wykresu
+  :height: 1200
+
+  # wykresy będą rysowane od początku do końca miesiące
+  # niezależnie czy są dane do tego
+  :one_month: true

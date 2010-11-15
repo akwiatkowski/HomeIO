@@ -1,0 +1,1 @@
+require 'lib/metar_main'

@@ -1,0 +1,4 @@
+---
+# false - simulated values
+# true - use RS 232
+:online: false
