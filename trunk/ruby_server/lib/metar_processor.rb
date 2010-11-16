@@ -102,6 +102,8 @@ class MetarProcessor
     f.close
     lines.uniq!
 
+    line_count = 0
+
     lines.each do |l|
       processed_metar = mc.process( l, year, month )
 
@@ -119,6 +121,11 @@ class MetarProcessor
       # uniq na czas
       if proc_data.size == 0 or not proc_data.last[:time_unix] == processed_metar[:time_unix] and
           proc_data << processed_metar
+      end
+
+      line_count += 1
+      if (line_count % 100) == 0
+        puts "...done lines - #{line_count}"
       end
       
     end
