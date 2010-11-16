@@ -31,6 +31,11 @@ class MetarCode
 
   end
 
+  # Accesor
+  def raw
+    return @metar_string
+  end
+
   # Convert decoded METAR to hash object prepared to store in DB
   def decoded_to_weather_db_store
     return {
@@ -43,7 +48,8 @@ class MetarCode
       :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
       :snow => nil,
       :rain => nil,
-      :provider => 'METAR'
+      :provider => 'METAR',
+      :raw => @metar_string
     }
   end
 

@@ -11,7 +11,7 @@
 
 :db_table_meas_query_autoflush: 10
 :db_table_weather_query_autoflush: 10
-:db_table_weather_metar_query_autoflush: 500
+:db_table_weather_metar_query_autoflush: 50
 
 :db_login: homeio
 :db_password: homeio

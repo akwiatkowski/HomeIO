@@ -6,7 +6,7 @@ require 'lib/metar_logger_base'
 require 'lib/metar_program_log'
 
 #require 'lib/metar_code'
-#require 'lib/db_store'
+require 'lib/db_store'
 
 # Klasa zajmuje się utworzeniem wątku logującego pogodę korzystając z
 # serwerów METAR
@@ -80,48 +80,50 @@ class MetarLogger < MetarLoggerBase
     month = Time.now.month
 
     @cities.each do |c|
-      	metar = download_metar( c[:code] )
-      	status = store_metar( metar, c[:code] )
-	puts "1 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
-	if true == @instant_process and true == status
-	  mc = MetarCode.new
-	  mc.process( metar, year, month )
-	  c[:city] = c[:name]
-	  DbStore.instance.store_weather_data( mc.decoded_to_weather_db_store, c)
-	end
+      metar = download_metar( c[:code] )
+      status = store_metar( metar, c[:code] )
+      puts "1 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
+      if true == @instant_process and true == status
+        mc = MetarCode.new
+        mc.process( metar, year, month )
+        c[:city] = c[:name]
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+      end
 
 
-	metar = download_metar_2( c[:code] )
-        status = store_metar( metar, c[:code] )
-        puts "2 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
-	if true == @instant_process and true == status
-	  mc = MetarCode.new
-	  mc.process( metar, year, month )
-	  c[:city] = c[:name]
-	  DbStore.instance.store_weather_data( mc.decoded_to_weather_db_store, c)
-	end
+      metar = download_metar_2( c[:code] )
+      status = store_metar( metar, c[:code] )
+      puts "2 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
+      if true == @instant_process and true == status
+        mc = MetarCode.new
+        mc.process( metar, year, month )
+        c[:city] = c[:name]
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+      end
 
-        metar = download_metar_3( c[:code] )
-        status = store_metar( metar, c[:code] )
-        puts "3 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
-	if true == @instant_process and true == status
-	  mc = MetarCode.new
-	  mc.process( metar, year, month )
-	  c[:city] = c[:name]
-	  DbStore.instance.store_weather_data( mc.decoded_to_weather_db_store, c)
-	end
+      metar = download_metar_3( c[:code] )
+      status = store_metar( metar, c[:code] )
+      puts "3 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
+      if true == @instant_process and true == status
+        mc = MetarCode.new
+        mc.process( metar, year, month )
+        c[:city] = c[:name]
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+      end
 
-        metar = download_metar_4( c[:code] )
-        status = store_metar( metar, c[:code] )
-        puts "4 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
-	if true == @instant_process and true == status
-	  mc = MetarCode.new
-	  mc.process( metar, year, month )
-	  c[:city] = c[:name]
-	  DbStore.instance.store_weather_data( mc.decoded_to_weather_db_store, c)
-	end
-
+      metar = download_metar_4( c[:code] )
+      status = store_metar( metar, c[:code] )
+      puts "4 - #{c[:code]} - #{c[:name]} #{" - was new" if status == true }"
+      if true == @instant_process and true == status
+        mc = MetarCode.new
+        mc.process( metar, year, month )
+        c[:city] = c[:name]
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+      end
     end
+
+    # send to db all non saved
+    DbStore.instance.flush
   end
 
   # Zwraca status działania serwera
@@ -152,8 +154,8 @@ class MetarLogger < MetarLoggerBase
         #puts "LOOP #{c}"
         metar = download_metar( c[:code] )
         status = store_metar( metar, c[:code] )
-	metar = download_metar_2( c[:code] )
-	status = store_metar( metar, c[:code] )
+        metar = download_metar_2( c[:code] )
+        status = store_metar( metar, c[:code] )
 
         if status == true
           @status_bar += "+"
