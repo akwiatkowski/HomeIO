@@ -7,6 +7,7 @@
 - :code: "EPPO"
   :id: 1
   :name: "Poznań"
+  :country: "Poland"
   # http://weather.gladstonefamily.net/site/EPPO
   :coord:
     :lat: 52.4210
@@ -14,343 +15,399 @@
 - :code: "EDDG"
   :id: 2
   :name: "Muenster/Osnabrueck"
+  :country: "Germany"
   :coord:
     :lat: 52.1346
     :lon: 7.6848
 - :code: "UHPP"
   :id: 3
   :name: "Petropavlovsk-Kamchatskij"
+  :country: "Russia"
   :coord:
     :lat: 53.0833
     :lon: 158.5833
 - :code: "RJTT"
   :id: 4
   :name: "Tokyo"
+  :country: "Japan"
   :coord:
     :lat: 35.5523
     :lon: 139.7797
 - :code: "UHHH"
   :id: 5
   :name: "Khabarovsk"
+  :country: Russia
   :coord:
     :lat: 48.5167
     :lon: 135.1667
 - :code: "CYVR"
   :id: 6
   :name: "Vancouver"
+  :country: Canada
   :coord:
     :lat: 49.1939
     :lon: -123.1844
 - :code: "KPDX"
   :id: 7
   :name: "Portland"
+  :country: USA
   :coord:
     :lat: 45.5908
     :lon: -122.6003
 - :code: "KNYC"
   :id: 8
   :name: "New York"
+  :country: USA
   :coord:
     :lat: 40.7790
     :lon: -73.9692
 - :code: "EGLL"
   :id: 9
   :name: "London"
+  :country: UK
   :coord:
     :lat: 51.470969
     :lon: -0.45393
 - :code: "KRMG"
   :id: 80
-  :name: "Rome [USA]"
+  :name: "Rome"
+  :country: USA
   :coord:
     :lat: 34.351458
     :lon: -85.163326
 - :code: "OMDB"
   :id: 10
   :name: "Dubai"
+  :country: UAE
   :coord:
     :lat: 25.252971
     :lon: 55.364714
 - :code: "KLAX"
   :id: 11
   :name: "Los Angeles"
+  :country: USA
   :coord:
     :lat: 33.946251
     :lon: -118.408442
 - :code: "HECA"
   :id: 12
   :name: "Cairo"
+  :country: Egipy
   :coord:
     :lat: 30.111448
     :lon: 31.4139
 - :code: "EPWA"
   :id: 13
   :name: "Warszawa"
+  :country: Poland
   :coord:
     :lat: 52.164909
     :lon: 20.964117
 - :code: "EPKT"
   :id: 14
   :name: "Katowice"
+  :country: Poland
   :coord:
     :lat: 50.241968
     :lon: 19.032927
 - :code: "EPKK"
   :id: 15
   :name: "Kraków"
+  :country: Poland
   :coord:
     :lat: 50.0777
     :lon: 19.7848
 - :code: "EFHL"
   :id: 16
-  :name: "Hailuoto [Finland]"
+  :name: "Hailuoto"
+  :country: Finland
   :coord:
     :lat: 65.096198
     :lon: 24.733886
 - :code: "EFIV"
   :id: 17
-  :name: "Ivolo [Finland]"
+  :name: "Ivolo"
+  :country: Finland
   :coord:
     :lat: 68.674941
     :lon: 27.572021
-
 - :code: "BGKT"
   :id: 18
-  :name: "Cape Tobin [Greenland]"
+  :name: "Cape Tobin"
+  :country: Greenland
   :coord:
     :lat: 70.40016
     :lon: -21.966662
 - :code: "BGGN"
   :id: 19
-  :name: "Godhavn [Greenland]"
+  :name: "Godhavn"
+  :country: Greenland
   :coord:
     :lat: 69.253425
     :lon: -53.505249
 - :code: "NZAA"
   :id: 20
-  :name: "Auckland [New Zealand]"
+  :name: "Auckland"
+  :country: "New Zeland"
   :coord:
     :lat: -37.005058
     :lon: 174.784025
 - :code: "GMML"
   :id: 21
-  :name: "Laayoune/hassan Isl [Morocco]"
+  :name: "Laayoune/hassan Isl"
+  :country: Morocco
   :coord:
     :lat: 27.1667
     :lon: -13.2167
 - :code: "PHNL"
   :id: 22
-  :name: "Honolulu [Hawaii]"
+  :name: "Honolulu"
+  :country: Hawaii
   :coord:
     :lat: 21.333065
     :lon: -157.918282
 - :code: "NZSP"
   :id: 23
-  :name: "Amundsen-Scott [Antarctica]"
+  :name: "Amundsen-Scott"
+  :country: Antarctica
   :coord:
     :lat: -89.983333
     :lon: 179.983333
 - :code: "NZCM"
   :id: 24
-  :name: "Williams Field [Antarctica]"
+  :name: "Williams Field"
+  :country: Antarctica
   :coord:
     :lat: -77.866667
     :lon: 166.966667
 - :code: "NZWD"
   :id: 25
-  :name: "Williams Field 2 [Antarctica]"
+  :name: "Williams Field 2"
+  :country: Antarctica
   :coord:
     :lat: -77.8674
     :lon: 167.0566
 - :code: "NZIR"
   :id: 26
-  :name: "Ice Runway [Antarctica]"
+  :name: "Ice Runway"
+  :country: Antarctica
   :coord:
     :lat: -77.8521
     :lon: 166.5692
 - :code: "NZPG"
   :id: 27
-  :name: "Pegasus Field [Antarctica]"
+  :name: "Pegasus Field"
+  :country: Antarctica
   :coord:
     :lat: -77.9634
     :lon: 166.5246
 - :code: "CXAT"
   :id: 28
-  :name: "Arctic Bay [Canada]"
+  :name: "Arctic Bay"
+  :country: Canada
   :coord:
     :lat: 73.0000
     :lon: -85.0167
 - :code: "BGQQ"
   :id: 29
-  :name: "Qaanaaq [Greenland]"
+  :name: "Qaanaaq"
+  :country: Greenland
   :coord:
     :lat: 77.4667
     :lon: -69.2167
 - :code: "CYLR"
   :id: 30
-  :name: "Alert Airport [Greenland]"
+  :name: "Alert Airport"
+  :country: Greenland
   :coord:
     :lat: 82.5178
     :lon: -62.2806
 - :code: "CZLT"
   :id: 31
-  :name: "Alert [Greenland]"
+  :name: "Alert"
+  :country: Greenland
   :coord:
     :lat: 82.5000
     :lon: -62.3333
 - :code: "CWGZ"
   :id: 32
-  :name: "Grise Fiord [Greenland]"
+  :name: "Grise Fiord"
+  :country: Greenland
   :coord:
     :lat: 76.4228
     :lon: -82.9022
 - :code: "CWEU"
   :id: 33
-  :name: "Eureka [Greenland]"
+  :name: "Eureka"
+  :country: Greenland
   :coord:
     :lat: 79.9833
     :lon: -85.9333
 - :code: "OMSJ"
   :id: 34
-  :name: "Sharjah International [UAE]"
+  :name: "Sharjah International"
+  :country: UAE
   :coord:
     :lat: 25.3286
     :lon: 55.5172
 - :code: "WIID"
   :id: 35
-  :name: "Jakarta [Java]"
+  :name: "Jakarta"
+  :country: Java
   :coord:
     :lat: -6.1500
     :lon: 106.8500
 - :code: "DRRM"
   :id: 36
-  :name: "Maradi [Niger]"
+  :name: "Maradi"
+  :country: Niger
   :coord:
     :lat: 13.4667
     :lon: 7.0833
 - :code: "SCIP"
   :id: 37
   :name: "Isla De Pascua"
+  :country: Polynesia
   :coord:
     :lat: -27.1648
     :lon: -109.4218
 - :code: "SBPV"
   :id: 38
-  :name: "Porto Velho [Brazil]"
+  :name: "Porto Velho"
+  :country: Brazil
   :coord:
     :lat: -8.7667
     :lon: -63.9167
 - :code: "VNKT"
   :id: 39
-  :name: "Kathmandu [Nepal]"
+  :name: "Kathmandu"
+  :country: Nepal
   :coord:
     :lat: 27.6966
     :lon: 85.3591
 - :code: "EGSS"
   :id: 40
   :name: "London Stansted"
+  :country: UK
   :coord:
     :lat: 51.8850
     :lon: 0.2350
 - :code: "EGMC"
   :id: 41
   :name: "Southend-On-Sea"
+  :country: UK
   :coord:
     :lat: 51.5714
     :lon: 0.6956
 - :code: "EFHK"
   :id: 42
-  :name: "Helsinki-vantaa [Finland]"
+  :name: "Helsinki-vantaa"
+  :country: Finland
   :coord:
     :lat: 60.3172 
     :lon: 24.9633
 - :code: "EFET"
   :id: 43
   :name: "Enontekio"
+  :country: Finland
   :coord:
     :lat: 68.3626
     :lon: 23.4243
 - :code: "EFKT"
   :id: 44
-  :name: "Kittila [Finland]"
+  :name: "Kittila"
+  :country: Finland
   :coord:
     :lat: 67.7010
     :lon: 24.8468
 - :code: "EFOU"
   :id: 45
-  :name: "Oulu [Finland]"
+  :name: "Oulu"
+  :country: Finland
   :coord:
     :lat: 64.9301
     :lon: 25.3546
 - :code: "UOHH"
   :id: 46
-  :name: "Khatanga [Russia]"
+  :name: "Khatanga"
+  :country: Russia
   :coord:
     :lat: 71.9833
     :lon: 102.4667
 - :code: "UERS"
   :id: 47
-  :name: "Saskylakh [Russia]"
+  :name: "Saskylakh"
+  :country: Russia
   :coord:
     :lat: 71.9667
     :lon: 114.0833
 - :code: "UOOO"
   :id: 48
-  :name: "Alykel [Russia]"
+  :name: "Alykel"
+  :country: Russia
   :coord:
     :lat: 69.3111
     :lon: 87.3322
 - :code: "UEST"
   :id: 49
-  :name: "Tiksi [Russia]"
+  :name: "Tiksi"
+  :country: Russia
   :coord:
     :lat: 71.5833
     :lon: 128.9167
 - :code: "ULLI"
   :id: 50
-  :name: "St. Peterburg [Russia]"
+  :name: "St. Peterburg"
+  :country: Russia
   :coord:
     :lat: 59.9667
     :lon: 30.3000
 - :code: "NSTU"
   :id: 51
-  :name: "Pago Pago [Samoa]"
+  :name: "Pago Pago"
+  :country: Samoa
   :coord:
     :lat: -14.3310
     :lon: -170.7105
 - :code: "NSTU"
   :id: 52
-  :name: "Honiara [Solomon Islands]"
+  :name: "Honiara"
+  :country: "Solomon Islands"
   :coord:
     :lat: -9.4280
     :lon: 160.0548
 - :code: "UKCW"
   :id: 53
-  :name: "Luhansk [Ukraine]"
+  :name: "Luhansk"
+  :country: Ukraine
   :coord:
     :lat: 48.4174
     :lon: 39.3741
 - :code: "VNPK"
   :id: 54
-  :name: "Sana'a [Yemen]"
+  :name: "Sana'a"
+  :country: Yemen
   :coord:
     :lat: 15.5167
     :lon: 44.1833
 - :code: "FXMU"
   :id: 55
-  :name: "Maseru [Lesotho]"
+  :name: "Maseru"
+  :country: Lesotho
   :coord:
     :lat: -29.4623
     :lon: 27.5525
 - :code: "FXMM"
   :id: 56
-  :name: "Grootfontein [Namibia]"
+  :name: "Grootfontein"
+  :country: Namibia
   :coord:
     :lat: -19.6022
     :lon: 18.1227
 - :code: "FYGF"
   :id: 57
-  :name: "Tamatave [Madagascar]"
+  :name: "Tamatave"
+  :country: Madagascar
   :coord:
     :lat: -18.1095
     :lon: 49.3925
@@ -368,109 +425,127 @@
     :lon: 57.6836
 - :code: "HBBA"
   :id: 60
-  :name: "Bujumbura [Burundi]"
+  :name: "Bujumbura"
+  :country: Burundi
   :coord:
     :lat: -3.3240
     :lon: 29.3185
 - :code: "GVSV"
   :id: 61
-  :name: "S. Pedro [Cape Verde]"
+  :name: "S. Pedro"
+  :country: "Cape Verde"
   :coord:
     :lat: 16.8332
     :lon: -25.0555
 - :code: "LSZS"
   :id: 62
-  :name: "Samedan [Switzerland]"
+  :name: "Samedan"
+  :country: Switzerland
   :coord:
     :lat: 46.5341
     :lon: 9.8841
 - :code: "LSZS"
   :id: 63
-  :name: "Ercan [Cyprus]"
+  :name: "Ercan"
+  :country: Cyprus
   :coord:
     :lat: 35.1489
     :lon: 33.4997
 - :code: "ESCM"
   :id: 64
   :name: "Stockholm"
+  :country: Sweden
   :coord:
     :lat: 59.6167
     :lon: 17.9500
 - :code: "EPBY"
   :id: 65
   :name: "Bydgoszcz"
+  :country: Poland
   :coord:
     :lat: 53.0968
     :lon: 17.9777
 - :code: "ENBJ"
   :id: 66
-  :name: "Svalbard Lufthavn [Norway]"
+  :name: "Svalbard Lufthavn"
+  :country: Norway
   :coord:
     :lat: 78.2461
     :lon: 15.4656
 - :code: "ENDU"
   :id: 67
-  :name: "Bardufoss [Norway]"
+  :name: "Bardufoss"
+  :country: Norway
   :coord:
     :lat: 69.0558
     :lon: 18.5404
 - :code: "ENHE"
   :id: 68
-  :name: "Heidrun [Norway]"
+  :name: "Heidrun"
+  :country: Norway
   :coord:
     :lat: 65.3300
     :lon: 2.3300
 - :code: "ENHF"
   :id: 69
-  :name: "Hammerfest [Norway]"
+  :name: "Hammerfest"
+  :country: Norway
   :coord:
     :lat: 70.6797
     :lon: 23.6686
 - :code: "ENHV"
   :id: 70
-  :name: "Honningsvag [Norway]"
+  :name: "Honningsvag"
+  :country: Norway
   :coord:
     :lat: 71.0167
     :lon: 25.9833
 - :code: "ENKR"
   :id: 71
-  :name: "Kirkenes Lufthavn [Norway]"
+  :name: "Kirkenes Lufthavn"
+  :country: Norway
   :coord:
     :lat: 69.7258
     :lon: 29.8913
 - :code: "EHDV"
   :id: 72
-  :name: "D15-fa-1 [Netherlands]"
+  :name: "D15-fa-1"
+  :country: Netherlands
   :coord:
     :lat: 54.3167
     :lon: 2.9333
 - :code: "EHKV"
   :id: 73
-  :name: "K14-fa-1c [Netherlands]"
+  :name: "K14-fa-1c"
+  :country: Netherlands
   :coord:
     :lat: 53.2667
     :lon: 3.6333
 - :code: "EGPB"
   :id: 74
-  :name: "Sumburgh Cape [UK]"
+  :name: "Sumburgh Cape"
+  :country: UK
   :coord:
     :lat: 59.8789
     :lon: -1.2956
 - :code: "EEKA"
   :id: 75
-  :name: "Kardla [Estonia]"
+  :name: "Kardla"
+  :country: Estonia
   :coord:
     :lat: 58.9908
     :lon: 22.8307
 - :code: "BIAR"
   :id: 76
-  :name: "Akureyri [Iceland]"
+  :name: "Akureyri"
+  :country: Iceland
   :coord:
     :lat: 65.6856
     :lon: -18.1002
 - :code: "EGYP"
   :id: 77
-  :name: "Mount Pleasant [Falkland Islands]"
+  :name: "Mount Pleasant"
+  :country: "Falkland Islands"
   :coord:
     :lat: -51.8228
     :lon: -58.4472
@@ -573,7 +648,7 @@
     :plot_color: "#990099"
 
 # process and store after logging new metar?
-:instant_process: false
+:instant_process: true
 
 # parametry rysowania wykresów
 :graph_draw_options:
