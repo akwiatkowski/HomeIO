@@ -111,7 +111,7 @@ class MetarProcessor
       cities = MetarTools.log_cities
       city_defin = cities.select{|c| c[:code] == city}.first
       city_defin[:city] = city_defin[:name]
-      DbStore.instance.store_weather_data( mc.decoded_to_weather_db_store, city_defin )
+      DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, city_defin )
       
 
       #proc_data << processed_metar

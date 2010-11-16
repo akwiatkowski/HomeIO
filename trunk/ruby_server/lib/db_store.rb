@@ -79,8 +79,7 @@ class DbStore
   end
 
   def flush
-    puts @@sqlite_metar_pool.inspect
-
+    #puts @@sqlite_metar_pool.inspect
     flush_if_needed_meas( true )
     flush_if_needed_weather( true )
     flush_if_needed_metar( true )
@@ -277,7 +276,7 @@ class DbStore
       
       # create mysql query
       q = sqlite_process_to_sql( data )
-      puts q
+      # puts q
       base.execute_batch( q )
 
       base.execute( "COMMIT;" )
@@ -480,83 +479,5 @@ class DbStore
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  #  # Execute query or store to file
-  #  # TODO dopisać do sqlite oraz transakcje
-  #  def execute_insert_query( q, type )
-  #
-  #    # rails like status
-  #    status = nil
-  #
-  #    # increment store count
-  #    # TODO to nie jest używane tylko do zapisywania pomiarów
-  #    @@di.inc( self.class, "store_count_#{@@di_sufix}" )
-  #
-  #    begin
-  #      @dbh = mysql_connect
-  #
-  #      fix_encoding = "SET NAMES 'utf8';"
-  #      @dbh.query( fix_encoding )
-  #
-  #
-  #      trsql = "START TRANSACTION;"
-  #      @dbh.query( trsql )
-  #
-  #      q_new = q.gsub(/\n/,' ').gsub(/;/,";\n")
-  #      #q_new = q.gsub(/\n/,"\r\n")
-  #
-  #      mysql_execute_query( q_new, @dbh )
-  #
-  #      trsql = "COMMIT;"
-  #      @dbh.query( trsql )
-  #
-  #      # execute
-  #      sqlite_query = convert_mysql_query_to_sqlite( q )
-  #      sqlite_execute( sqlite_query, type )
-  #
-  #      status = true
-  #      #rescue Mysql::Error => e
-  #
-  #    rescue => e
-  #      puts e.inspect
-  #      exit!
-  #
-  #
-  #      status = false
-  #
-  #      @@logger.error( "Error when storing in DB" )
-  #      @@logger.error( "#{e.inspect}" )
-  #      @@logger.error( "#{e.backtrace}")
-  #      execute_backup( q )
-  #
-  #      puts "DB ERROR"
-  #
-  #    ensure
-  #      mysql_disconnect( @dbh )
-  #    end
-  #
-  #    return status
-  #  end
-
-  #  def sqlite_execute( q, type )
-  #    db = case type
-  #    when :meas then @@sqlite_db_meas
-  #    when :weather then @@sqlite_db_weather
-  #    when :metar then @@sqlite_db_metar_weather
-  #    end
-  #
-  #    db.execute( q )
-  #  end
-
-  
+ 
 end
