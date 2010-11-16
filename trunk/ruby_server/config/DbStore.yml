@@ -1,16 +1,20 @@
 ---
 :db_host: localhost
-:db_base_online: wiatrak2
-:db_base_offline: wiatrak2_test
+:db_base_online: homeio
+:db_base_offline: homeio
 # used for all independent for online communication
-:db_base: wiatrak2
+:db_base: homeio
 
 :db_table_meas: meas_archives
 :db_table_weather: weather_archives
 :db_table_weather_metar: weather_metar_archives
 
-:db_login: wiatrak
-:db_password: antek
+:db_table_meas_query_autoflush: 10
+:db_table_weather_query_autoflush: 10
+:db_table_weather_metar_query_autoflush: 500
+
+:db_login: homeio
+:db_password: homeio
 # when something goes wrong
 :query_file: "data/queries_archive.sql"
 # where store logs

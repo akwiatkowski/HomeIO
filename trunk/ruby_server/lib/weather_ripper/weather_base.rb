@@ -14,6 +14,7 @@ class WeatherBase
       #rescue
       #end
     end
+    DbStore.instance.flush( :weather )
   end
 
   private
