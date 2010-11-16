@@ -87,7 +87,7 @@ class MetarLogger < MetarLoggerBase
         mc = MetarCode.new
         mc.process( metar, year, month )
         c[:city] = c[:name]
-        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c) if mc.valid?
       end
 
 
@@ -98,7 +98,7 @@ class MetarLogger < MetarLoggerBase
         mc = MetarCode.new
         mc.process( metar, year, month )
         c[:city] = c[:name]
-        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c) if mc.valid?
       end
 
       metar = download_metar_3( c[:code] )
@@ -108,7 +108,7 @@ class MetarLogger < MetarLoggerBase
         mc = MetarCode.new
         mc.process( metar, year, month )
         c[:city] = c[:name]
-        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c) if mc.valid?
       end
 
       metar = download_metar_4( c[:code] )
@@ -118,7 +118,7 @@ class MetarLogger < MetarLoggerBase
         mc = MetarCode.new
         mc.process( metar, year, month )
         c[:city] = c[:name]
-        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c)
+        DbStore.instance.store_metar_data( mc.decoded_to_weather_db_store, c) if mc.valid?
       end
     end
 

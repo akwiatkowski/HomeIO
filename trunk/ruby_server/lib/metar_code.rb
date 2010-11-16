@@ -36,6 +36,12 @@ class MetarCode
     return @metar_string
   end
 
+  # If metar string was valid and was processed ok
+  def valid?
+    return true if not @output[:temperature].nil? and not @output[:wind].nil? and not @output[:time].nil?
+    return false
+  end
+
   # Convert decoded METAR to hash object prepared to store in DB
   def decoded_to_weather_db_store
     return {
