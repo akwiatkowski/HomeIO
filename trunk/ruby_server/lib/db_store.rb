@@ -51,7 +51,6 @@ class DbStore
 
     # universal DB
     @@db_base_univ = @@config[:db_base]
-    sqlite_setup
 
     # backup query file
     @@query_file = @@config[:query_file]
@@ -265,6 +264,23 @@ class DbStore
     begin
       sqlite_connect
 
+      base = case data.first[:options][:type]
+      when 'meas' then @@sqlite_db_meas
+      when 'weather' then @@sqlite_db_weather
+      when 'metar' then @@sqlite_db_metar_weather
+      end
+
+      base.execute( "BEGIN TRANSACTION;" )
+      
+      # create mysql query
+      q = sqlite_process_to_sql( data )
+      puts q
+      base.execute_batch( q )
+
+      base.execute( "COMMIT;" )
+
+      sqlite_disconnect
+
       #rescue Mysql::Error => e
     rescue => e
       status = false
@@ -276,7 +292,7 @@ class DbStore
       puts "DB ERROR - SQLITE"
       return status
     ensure
-      sqlite_disconnect( @dbh )
+      # sqlite_disconnect
 		end
 
 
@@ -364,7 +380,7 @@ class DbStore
   UNIQUE (code, time_from) ON CONFLICT ABORT
 );"
     @@sqlite_db_meas.execute( t_m )
-    @@sqlite_db_meas.busy_timeout = SQLITE_BUSY_TIMEOUT
+    @@sqlite_db_meas.busy_timeout( SQLITE_BUSY_TIMEOUT )
 
     # weather archive
     @@sqlite_db_weather = SQLite3::Database.new( @@sqlite_db_file_weather )
@@ -386,7 +402,7 @@ class DbStore
   UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
 );"
     @@sqlite_db_weather.execute( t_wa )
-    @@sqlite_db_weather.busy_timeout = SQLITE_BUSY_TIMEOUT
+    @@sqlite_db_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
 
 
     # metar
@@ -409,7 +425,7 @@ class DbStore
   UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
 );"
     @@sqlite_db_metar_weather.execute( t_wma )
-    @@sqlite_db_metar_weather.busy_timeout = SQLITE_BUSY_TIMEOUT
+    @@sqlite_db_metar_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
 
   end
 
@@ -418,6 +434,30 @@ class DbStore
     @@sqlite_db_meas.close unless @@sqlite_db_meas.closed?
     @@sqlite_db_weather.close unless @@sqlite_db_weather.closed?
     @@sqlite_db_metar_weather.close unless @@sqlite_db_metar_weather.closed?
+  end
+
+  def sqlite_process_to_sql( data )
+    #    s = mysql_process_to_sql( data )
+    #    s.gsub!(/IGNORE/, '')
+    #    s.gsub!(/`#{data.first[:db][:db]}`\./,'')
+    #    return s
+
+    q = ""
+    data.each do |d|
+      q += "INSERT INTO `#{d[:db][:table]}` "
+
+      data_keys = d[:data].keys
+      q += "(#{data_keys.collect{|c| "`#{c}`"}.join(',')}) VALUES "
+
+      values = Array.new
+      data_keys.each do |k|
+        values << "#{d[:data][k]}"
+      end
+
+      q += "(" + values.join(',') + ");\n"
+    end
+
+    return q
   end
 
   # Store in backup file
@@ -431,6 +471,7 @@ class DbStore
     @@di.inc( self.class, "store_backup_count_#{@@di_sufix}" )
 
   end
+
 
 
 
