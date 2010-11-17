@@ -175,7 +175,7 @@ class DbStore
         :pressure => w_data[:pressure],
         :rain => w_data[:rain],
         :snow => w_data[:snow],
-        :raw => "'" + d[:raw] + "'"
+        :raw => "'" + d[:raw].to_s.gsub(/\'/,"\\\\"+'\'') + "'"
       },
       :options => {
         :ignore => true,
