@@ -112,25 +112,3 @@ VALUES (
 
 
 COMMIT;
-
-
-
--- table_name, created_at, city_id, time_from, time_to, temperature, wind_metps, pressure, rain, snow
-PREPARE insert_metar FROM "
-INSERT INTO ?(
-`created_at` ,
-`city_id` ,
-`time_from` ,
-`time_to` ,
-`temperature` ,
-`wind` ,
-`pressure` ,
-`rain` ,
-`snow`
-)
-VALUES (
- ?, ?,
- ?, ?,
- ?, ?, ?, ?, ?
-);"
-"
