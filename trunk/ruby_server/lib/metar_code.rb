@@ -83,7 +83,7 @@ class MetarCode
 
   # Miasto
   def decode_city( s )
-    if s =~ /^([A-Z]{4})$/
+    if s =~ /^([A-Z]{4})$/ and not s == 'AUTO'
       @output[:city] = $1
     end
   end
