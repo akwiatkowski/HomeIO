@@ -211,7 +211,10 @@ class MetarCode
   # Zachmurzenie
   def decode_clouds( s )
     #zachmurzenie
-    @output[:clouds] = 0
+
+    # default - no info
+    #@output[:clouds] = nil
+    
     if s =~ /^(SKC|FEW|SCT|BKN|OVC|NSC)(\d{3}?)$/
       cl = case $1
       when "SKC" then 0
@@ -224,6 +227,7 @@ class MetarCode
       end
         
       @output[:clouds] = (cl * 100.0 / 8.0).round
+      # meters = x * 100 * feets
       @output[:clouds_bottom] = $2.to_i * 30
     end
   end
@@ -339,6 +343,14 @@ class MetarCode
 
 	end
 
+  def decode_other( s )
+    if s.strip == 'AO1'
+      @output[:station] = :auto_without_precipitation
+    elsif s.strip == 'A02'
+      @output[:station] = :auto_with_precipitation
+    end
+
+  end
   
   
   

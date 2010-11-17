@@ -15,3 +15,5 @@ data.each do |d|
   f.puts "INSERT INTO `weather_metar_archives` (`time_to`,`pressure`,`created_at`,`snow`,`raw`,`rain`,`temperature`,`time_from`,`wind`,`city_id`) VALUES #{d};"
 end
 f.close
+
+# TODO escapowanie w sqlite
