@@ -233,6 +233,8 @@ class MetarCode
   def decode_clouds( s )
     #zachmurzenie
 
+    # TODO create constants
+
     # default - no info
     #@output[:clouds] = nil
     
@@ -379,6 +381,11 @@ class MetarCode
       @output[:station] = :auto_without_precipitation
     elsif s.strip == 'A02'
       @output[:station] = :auto_with_precipitation
+    end
+
+    # fully automated station
+    if s.strip == 'AUTO'
+      @output[:station_auto] = true
     end
 
   end
