@@ -254,6 +254,17 @@ class MetarCode
 
       @output[:clouds].uniq!
     end
+
+    # obscured by clouds
+    if s =~ /^(VV)(\d{3}?)$/
+      @output[:clouds] << {
+        :coverage => 100,
+        :vertical_visiblity => $2.to_i * 30
+      }
+
+      @output[:clouds].uniq!
+    end
+
   end
 
   # CAVOK
@@ -370,6 +381,14 @@ class MetarCode
       @output[:station] = :auto_with_precipitation
     end
 
+  end
+
+  def decode_runway( s )
+    # NOT IMPLEMENTED
+
+    # BIAR 130700Z 17003KT 0350 R01/0900V1500U +SN VV001 M04/M04 Q0996
+    # Runway 01, touchdown zone visual range is variable from a minimum of 0900 meters until a maximum of 1500 meters, and increasing
+    # http://heras-gilsanz.com/manuel/METAR-Decoder.html
   end
   
   
