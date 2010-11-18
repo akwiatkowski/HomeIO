@@ -12,6 +12,9 @@ class MetarCode
     @metar_string = ""
     @year = nil
     @month = nil
+
+    @output[:specials] = Array.new
+    @output[:clouds] = Array.new
   end
 
   # Zwraca utworzony obiekt typu MetarCode przetwarzając kod METAR
@@ -83,7 +86,10 @@ class MetarCode
 
   # Miasto
   def decode_city( s )
-    if s =~ /^([A-Z]{4})$/ and not s == 'AUTO'
+    # only first
+    return if not @output[:city].nil?
+
+    if s =~ /^([A-Z]{4})$/ and not s == 'AUTO' and not s == 'GRID'
       @output[:city] = $1
     end
   end
@@ -124,9 +130,24 @@ class MetarCode
         wind_max = wind
       end
 
-      @output[:wind] = wind
-      @output[:wind_max] = wind_max
-      @output[:wind_direction] = $1.to_i
+      # additional wind data
+      if not @output[:wind].nil?
+        if @output[:wind_additionals].nil?
+          @output[:wind_additionals] = Array.new
+        end
+
+        @output[:wind_additionals] << {
+          :wind => wind,
+          :wind_max => wind_max,
+          :wind_direction => $1.to_i
+        }
+      else
+        @output[:wind] = wind
+        @output[:wind_max] = wind_max
+        @output[:wind_direction] = $1.to_i
+      end
+
+      
     end
 
   end
@@ -219,16 +240,19 @@ class MetarCode
       cl = case $1
       when "SKC" then 0
       when "FEW" then 1.5
-      when "SKC" then 3.5
+      when "SCT" then 3.5
       when "BKN" then 6
       when "OVC" then 8
       when "NSC" then 0.5
       else 0
       end
         
-      @output[:clouds] = (cl * 100.0 / 8.0).round
-      # meters = x * 100 * feets
-      @output[:clouds_bottom] = $2.to_i * 30
+      @output[:clouds] << {
+        :coverage => (cl * 100.0 / 8.0).round,
+        :bottom => $2.to_i * 30
+      }
+
+      @output[:clouds].uniq!
     end
   end
 
@@ -264,7 +288,7 @@ class MetarCode
   # Zjawiska dodatkowe
   def decode_specials( s )
 
-		if s =~ /(VC|\-|\+|\b)(MI|PR|BC|DR|BL|SH|TS|FZ|)(DZ|RA|SN|SG|IC|PE|GR|GS|UP|)(BR|FG|FU|VA|DU|SA|HZ|PY|)(PO|SQ|FC|SS|)/
+		if s =~ /^(VC|\-|\+|\b)(MI|PR|BC|DR|BL|SH|TS|FZ|)(DZ|RA|SN|SG|IC|PE|GR|GS|UP|)(BR|FG|FU|VA|DU|SA|HZ|PY|)(PO|SQ|FC|SS|)$/
 			intensity = case $1
       when "VC" then "in the vicinity"
       when "+" then "heavy"
@@ -317,10 +341,6 @@ class MetarCode
       when "SS" then "duststorm"
       else nil
 			end
-
-      if @output[:specials].nil?
-        @output[:specials] = Array.new
-      end
 
       # gdy nie ma sensownych danych to nic nie rób
       return if descriptor.nil? and precipitation.nil? and obscuration.nil? and misc.nil?
