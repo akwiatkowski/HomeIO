@@ -234,9 +234,6 @@ class MetarCode
     #zachmurzenie
 
     # TODO create constants
-
-    # default - no info
-    #@output[:clouds] = nil
     
     if s =~ /^(SKC|FEW|SCT|BKN|OVC|NSC)(\d{3}?)$/
       cl = case $1
@@ -273,8 +270,12 @@ class MetarCode
   def check_cavok( s )
     #CAVOK
     if s =~ /^(CAVOK)$/
-      @output[:clouds] = 0
-      @output[:clouds_bottom] = nil
+      @output[:clouds] = [
+        {
+          :coverage => 0,
+          :bottom => 0
+        }
+      ]
       @output[:visiblity] = MAX_VISIBLITY
     end
   end
