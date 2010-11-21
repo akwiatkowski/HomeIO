@@ -369,7 +369,7 @@
   :coord:
     :lat: -14.3310
     :lon: -170.7105
-- :code: "NSTU"
+- :code: "AGGH"
   :id: 52
   :name: "Honiara"
   :country: "Solomon Islands"
@@ -444,7 +444,7 @@
   :coord:
     :lat: 46.5341
     :lon: 9.8841
-- :code: "LSZS"
+- :code: "LCEN"
   :id: 63
   :name: "Ercan"
   :country: Cyprus
