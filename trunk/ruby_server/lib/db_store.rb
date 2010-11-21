@@ -8,6 +8,8 @@ require 'singleton'
 require 'lib/config_loader'
 require 'lib/dev_info'
 require 'lib/usart'
+require 'lib/metar_tools'
+
 
 # Saves measurements into DB or backup txt file
 class DbStore
@@ -84,7 +86,14 @@ class DbStore
     flush_if_needed_weather( true )
     flush_if_needed_metar( true )
   end
-  
+
+  # Create new sqlite DB, tables, and populate cities
+  def prepare_sqlite_db
+    sqlite_connect
+    sqlite_prepare_db_structure
+    sqlite_disconnect
+  end
+
   private
 
   # Create query data for inserting measurements
@@ -230,6 +239,8 @@ class DbStore
     end
     @@di.inc( self.class, "store_count_#{sufix}" )
 
+    mysql_time = Time.now
+
     # storing into mysql
     begin
       # store into mysql
@@ -247,7 +258,7 @@ class DbStore
       trsql = "COMMIT;"
       @dbh.query( trsql )
 
-    # rescue Mysql::Error => e
+      # rescue Mysql::Error => e
     rescue => e
       status = false
 
@@ -261,6 +272,8 @@ class DbStore
     ensure
       mysql_disconnect( @dbh )
 		end
+
+    sqlite_time = Time.now
 
     # storing into sqlite
     begin
@@ -297,19 +310,8 @@ class DbStore
       # sqlite_disconnect
 		end
 
+    puts " * mysql time #{(sqlite_time.to_f - mysql_time.to_f)*1000}, sqlite time #{(Time.now.to_f - sqlite_time.to_f)*1000}"
 
-
-
-
-
-
-
-
-
-
-    # execute
-    #sqlite_query = convert_mysql_query_to_sqlite( q )
-    #sqlite_execute( sqlite_query, type )
 
     status = true
     return status
@@ -369,10 +371,25 @@ class DbStore
     return res
   end
 
-  # Connect and create if needed sqlite dbs and tables
+
+
+  
+  # Connect and create DBs if needed
   def sqlite_connect
-    # TODO table for meas
     @@sqlite_db_meas = SQLite3::Database.new( @@sqlite_db_file_meas )
+    @@sqlite_db_meas.busy_timeout( SQLITE_BUSY_TIMEOUT )
+
+    # weather archive
+    @@sqlite_db_weather = SQLite3::Database.new( @@sqlite_db_file_weather )
+    @@sqlite_db_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
+
+    # metar
+    @@sqlite_db_metar_weather = SQLite3::Database.new( @@sqlite_db_file_metar_weather )
+    @@sqlite_db_metar_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
+  end
+
+  # Prepare tables, populate cities
+  def sqlite_prepare_db_structure
     t_m = "CREATE TABLE IF NOT EXISTS meas_archives(
   id INTEGER PRIMARY KEY,
   code TEXT,
@@ -382,10 +399,8 @@ class DbStore
   UNIQUE (code, time_from) ON CONFLICT ABORT
 );"
     @@sqlite_db_meas.execute( t_m )
-    @@sqlite_db_meas.busy_timeout( SQLITE_BUSY_TIMEOUT )
 
     # weather archive
-    @@sqlite_db_weather = SQLite3::Database.new( @@sqlite_db_file_weather )
     t_wa = "CREATE TABLE IF NOT EXISTS weather_archives(
   id INTEGER PRIMARY KEY,
   city_id INTEGER,
@@ -404,11 +419,8 @@ class DbStore
   UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
 );"
     @@sqlite_db_weather.execute( t_wa )
-    @@sqlite_db_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
-
 
     # metar
-    @@sqlite_db_metar_weather = SQLite3::Database.new( @@sqlite_db_file_metar_weather )
     t_wma = "CREATE TABLE IF NOT EXISTS weather_metar_archives(
   id INTEGER PRIMARY KEY,
   city_id INTEGER,
@@ -428,7 +440,38 @@ class DbStore
   UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
 );"
     @@sqlite_db_metar_weather.execute( t_wma )
-    @@sqlite_db_metar_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
+
+    # metar cities, used also for normal cities
+    t_wma_c = "CREATE TABLE IF NOT EXISTS cities(
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  country TEXT,
+  metar TEXT,
+  lat REAL,
+  lon REAL,
+  calculated_distance REAL,
+  UNIQUE (metar) ON CONFLICT IGNORE,
+  UNIQUE (lat,lon) ON CONFLICT IGNORE
+);"
+    @@sqlite_db_weather.execute( t_wma_c )
+    @@sqlite_db_metar_weather.execute( t_wma_c )
+
+    # populate metar cities
+    cq = "BEGIN TRANSACTION;"
+    @@sqlite_db_weather.execute( cq )
+    @@sqlite_db_metar_weather.execute( cq )
+
+    config = MetarTools.load_config
+    config[:cities].each do |c|
+      cq = "insert into cities (id,name,country,metar,lat,lon) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]});\n"
+
+      #@@sqlite_db_weather.execute( cq )
+      @@sqlite_db_metar_weather.execute( cq )
+    end
+
+    cq = "COMMIT;"
+    @@sqlite_db_weather.execute( cq )
+    @@sqlite_db_metar_weather.execute( cq )
 
   end
 
