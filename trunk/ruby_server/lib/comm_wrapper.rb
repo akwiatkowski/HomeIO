@@ -1,7 +1,6 @@
 # Klasa nadzorująca dany proces, można sieciową killować i ponownie uruchamiać
 
-require 'lib/comm'
-#require 'lib/comm_server'
+require './lib/comm.rb'
 
 class CommWrapper < Comm
   DEBUG_VERBOSE = false

@@ -1,7 +1,7 @@
 require 'singleton'
 # strategy for retrieving values online/offline
-require 'lib/usart_offline'
-require 'lib/usart_online'
+require './lib/usart_offline.rb'
+require './lib/usart_online.rb'
 
 # Singleton for communicating via RS-232
 class Usart

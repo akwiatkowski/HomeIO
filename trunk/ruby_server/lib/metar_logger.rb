@@ -1,12 +1,12 @@
 require 'open-uri'
 require 'logger'
 
-require 'lib/metar_tools'
-require 'lib/metar_logger_base'
-require 'lib/metar_program_log'
+require './lib/metar_tools.rb'
+require './lib/metar_logger_base.rb'
+require './lib/metar_program_log.rb'
 
-#require 'lib/metar_code'
-require 'lib/db_store'
+#require './lib/metar_code.rb'
+require './lib/db_store.rb'
 
 # Klasa zajmuje się utworzeniem wątku logującego pogodę korzystając z
 # serwerów METAR
@@ -41,8 +41,8 @@ class MetarLogger < MetarLoggerBase
     # process and store in DB after logging?
     @instant_process = opts[:instant_process]
     if true == @instant_process
-      require 'lib/metar_code'
-      require 'lib/db_store'
+      require './lib/metar_code.rb'
+      require './lib/db_store.rb'
     end
 
     # start z pliku konfiguracyjnego

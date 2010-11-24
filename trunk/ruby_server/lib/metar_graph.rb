@@ -1,4 +1,4 @@
-require 'lib/ruby_graph'
+require './lib/ruby_graph.rb'
 
 # Rysowanie wykresów METAR
 #

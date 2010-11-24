@@ -51,7 +51,7 @@ namespace :db do
 
     desc 'Initialize sqlite DB'
     task :init do
-      require 'lib/db_store'
+      require './lib/db_store.rb'
       db = DbStore.instance
       db.prepare_sqlite_db
     end
@@ -82,7 +82,7 @@ namespace :weather do
 
     desc 'Single all sites fetch'
     task :fetch do
-      require 'lib/weather_ripper'
+      require './lib/weather_ripper.rb'
       w = WeatherRipper.instance
     end
 
@@ -92,8 +92,8 @@ namespace :weather do
 
     desc 'Single all METARs fetch '
     task :fetch do
-      require 'lib/metar_tools'
-      require 'lib/metar_logger'
+      require './lib/metar_tools.rb'
+      require './lib/metar_logger.rb'
 
       Thread.abort_on_exception = true
       config = MetarTools.load_config
@@ -101,6 +101,30 @@ namespace :weather do
       config[:start] = false
       m = MetarLogger.new( config )
       m.do_once
+
+    end
+
+    namespace :process do
+
+      desc 'Process ALL'
+      task :all do
+
+        require './lib/metar_tools.rb'
+        #require './lib/metar_logger.rb'
+        require './lib/metar_processor.rb'
+
+        Thread.abort_on_exception = true
+        config = MetarTools.load_config
+
+        MetarProcessor.prepare
+
+        cities = config[:cities]
+        cities.each do |c|
+          city = c[:code]
+          MetarProcessor.process_city( city )
+        end
+
+      end
 
     end
 

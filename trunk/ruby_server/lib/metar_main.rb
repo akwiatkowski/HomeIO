@@ -1,10 +1,10 @@
-require 'lib/metar_tools'
-require 'lib/metar_logger'
-#require 'lib/metar_tcp_server'
+require './lib/metar_tools.rb'
+require './lib/metar_logger.rb'
+#require './lib/metar_tcp_server.rb'
 
-require 'lib/metar_queue'
-require 'lib/metar_server'
-require 'lib/metar_cron'
+require './lib/metar_queue.rb'
+require './lib/metar_server.rb'
+require './lib/metar_cron.rb'
 
 Thread.abort_on_exception = true
 

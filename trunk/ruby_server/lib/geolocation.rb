@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'geokit'
-require 'lib/config_loader'
+require './lib/config_loader.rb'
 
 # Proxy for geokit gem
 

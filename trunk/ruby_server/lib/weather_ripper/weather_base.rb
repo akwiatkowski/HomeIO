@@ -1,7 +1,7 @@
 require 'net/http'
 require 'rubygems'
 require 'hpricot'
-require 'lib/db_store'
+require './lib/db_store.rb'
 
 
 class WeatherBase

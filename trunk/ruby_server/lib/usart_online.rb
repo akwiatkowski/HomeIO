@@ -1,5 +1,5 @@
-require 'lib/config_loader'
-require 'lib/dev_info'
+require './lib/config_loader.rb'
+require './lib/dev_info.rb'
 
 require 'rubygems'
 require 'serialport'

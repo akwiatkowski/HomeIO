@@ -5,10 +5,12 @@ require 'mysql'
 require 'sqlite3'
 
 require 'singleton'
-require 'lib/config_loader'
-require 'lib/dev_info'
-require 'lib/usart'
-require 'lib/metar_tools'
+
+require './lib/config_loader.rb'
+require './lib/dev_info.rb'
+require './lib/usart.rb'
+require './lib/metar_tools.rb'
+require './lib/geolocation.rb'
 
 
 # Saves measurements into DB or backup txt file
@@ -463,7 +465,8 @@ class DbStore
 
     config = MetarTools.load_config
     config[:cities].each do |c|
-      cq = "insert into cities (id,name,country,metar,lat,lon) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]});\n"
+      distance = Geolocation.distance( c[:coord][:lat], c[:coord][:lon] )
+      cq = "insert into cities (id,name,country,metar,lat,lon,calculated_distance) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]},#{distance});\n"
 
       #@@sqlite_db_weather.execute( cq )
       @@sqlite_db_metar_weather.execute( cq )

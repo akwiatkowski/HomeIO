@@ -1,6 +1,6 @@
 require 'singleton'
 require 'yaml'
-require 'lib/config_loader'
+require './lib/config_loader.rb'
 
 # Store and periodically saves development informations
 # At start reload from stored file

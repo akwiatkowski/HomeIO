@@ -1,7 +1,7 @@
 require 'open-uri'
-require 'lib/metar_tools'
-require 'lib/metar_logger_base'
-require 'lib/metar_program_log'
+require './lib/metar_tools.rb'
+require './lib/metar_logger_base.rb'
+require './lib/metar_program_log.rb'
 
 # Klasa bazowa zawierająca podstawowe funkcję dla każdego loggera
 #

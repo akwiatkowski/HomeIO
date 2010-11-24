@@ -1,5 +1,5 @@
-require 'lib/comm_queue'
-require 'lib/metar_processor'
+require './lib/comm_queue.rb'
+require './lib/metar_processor.rb'
 
 # Zajmie się przetwarzaniem poleceń dla serwera METAR które dostanie przez TCP
 

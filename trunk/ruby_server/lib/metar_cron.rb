@@ -1,8 +1,8 @@
 require 'open-uri'
 require 'logger'
 
-require 'lib/metar_tools'
-require 'lib/metar_program_log'
+require './lib/metar_tools.rb'
+require './lib/metar_program_log.rb'
 
 # Uruchamia co pewien czas przetwarzanie danych
 

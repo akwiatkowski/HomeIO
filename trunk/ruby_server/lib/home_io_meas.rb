@@ -1,6 +1,6 @@
 require 'singleton'
-require 'lib/home_io_meas_element'
-require 'lib/config_loader'
+require './lib/home_io_meas_element.rb'
+require './lib/config_loader.rb'
 
 
 # Przechowuje informacje o pomiarach

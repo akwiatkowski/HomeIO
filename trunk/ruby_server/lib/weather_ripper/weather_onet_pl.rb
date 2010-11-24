@@ -1,4 +1,4 @@
-require 'lib/weather_ripper/weather_base'
+require './lib/weather_ripper/weather_base.rb'
 
 class WeatherOnetPl < WeatherBase
   def initialize

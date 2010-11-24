@@ -1,4 +1,4 @@
-require 'lib/comm_queue_position'
+require './lib/comm_queue_position.rb'
 
 # Kolejka do zadań komunikacyjnych
 

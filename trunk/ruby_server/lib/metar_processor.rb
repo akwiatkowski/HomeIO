@@ -1,10 +1,9 @@
 require 'yaml'
-require 'lib/metar_tools'
-require 'lib/metar_code'
-require 'lib/metar_graph'
-require 'lib/metar_program_log'
-
-require 'lib/db_store'
+require './lib/metar_tools.rb'
+require './lib/metar_code.rb'
+require './lib/metar_graph.rb'
+require './lib/metar_program_log.rb'
+require './lib/db_store.rb'
 
 
 class MetarProcessor

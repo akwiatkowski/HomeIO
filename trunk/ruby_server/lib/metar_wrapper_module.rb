@@ -1,10 +1,10 @@
-require 'lib/comm_wrapper'
+require './lib/comm_wrapper.rb'
 
-require 'lib/metar_tools'
-require 'lib/metar_logger'
-require 'lib/metar_queue'
-require 'lib/metar_server'
-require 'lib/metar_cron'
+require './lib/metar_tools.rb'
+require './lib/metar_logger.rb'
+require './lib/metar_queue.rb'
+require './lib/metar_server.rb'
+require './lib/metar_cron.rb'
 
 # Moduł metody startującej serwer METAR
 module MetarWrapperModule

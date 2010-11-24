@@ -1,7 +1,7 @@
-require 'lib/db_store'
-require 'lib/usart'
-require 'lib/home_io_meas_element_offline'
-require 'lib/home_io_meas_element_online'
+require './lib/db_store.rb'
+require './lib/usart.rb'
+require './lib/home_io_meas_element_offline.rb'
+require './lib/home_io_meas_element_online.rb'
 
 # Stores all information about one type of measurement
 class HomeIoMeasElement
