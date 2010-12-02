@@ -12,17 +12,37 @@ class WeatherInteriaPl < WeatherBase
 
     body = body_raw.downcase
 
-    hours = body.scan(/>(\d+)-(\d+)/)
+    hours_first = body.scan(/(\d{2})\s*do\s*(\d{2})/)
+    #puts hours_first.inspect
+    hours_add = body.scan(/<td height=\"40\">.*(\d{2})-(\d{2}).*<\/td>/)
+    #puts hours_add.inspect
+    hours = hours_first + hours_add
     #puts hours.inspect
-    temperatures = body.scan(/temperatura: <strong>(\d*)[^<]*<\/strong>/)
+    
+    # interia uses min/aesthes./max temperatures, aesth. used
+    temperatures = body.scan(/<span\s*class=\"tex2b\"\s*style=\"font-size:\s*14px;\">(-?\d+)<\/span>/)
+    # there is 'sample' temperature which should be deleted
+    temperatures.delete_at( 2 ) # if temperatures[2] == 5
     #puts temperatures.inspect
-    winds = body.scan(/<strong>(\d*\.?\d*)\s*km\/h<\/strong>/)
-    winds.slice!(0,5)
+    
+    winds = body.scan(/wiatr:\D*(\d+)\D*km\/h\s*</)
     #puts winds.inspect
+
+    rains = body.scan(/deszcz:\D*(\d+\.?\d*)\D*mm\s*</)
+    #puts rains.inspect
+
+    snows = body.scan(/nieg:\D*(\d+\.?\d*)\D*mm\s*</)
+    #puts snows.inspect
+
+    pressures = body.scan(/(\d{3,4}).*hpa/)
+    #puts pressures.inspect
 
     #puts hours.size
     #puts temperatures.size
     #puts winds.size
+
+    #puts body
+    #exit!
 
     #    data = Array.new
     #    (0...(hours.size)).each do |i|
@@ -70,7 +90,14 @@ class WeatherInteriaPl < WeatherBase
       unix_time_soon_to += 24 * 3600
       unix_time_soon_from += 24 * 3600
     end
-
+    
+    # TODO zrób auto testy dla innych typów
+    # TODO i dodaj inkrementacje dnia po
+    # if 1 data is for next day morning
+    if unix_time_now_to > unix_time_soon_to
+      unix_time_soon_to += 24 * 3600
+      unix_time_soon_from += 24 * 3600
+    end
 
     data = [
       {
@@ -78,24 +105,24 @@ class WeatherInteriaPl < WeatherBase
         :time_from => unix_time_now_from,
         :time_to => unix_time_now_to,
         :temperature => temperatures[0][0].to_f,
-        #:pressure => nil,
+        :pressure => pressures[0][0].to_f,
         :wind_kmh => winds[0][0].to_f,
         :wind => winds[0][0].to_f / 3.6,
-        #:snow => snows[0][0].to_f,
-        #:rain => rains[0][0].to_f,
-        :provider => 'Wp.pl'
+        :snow => snows[0][0].to_f,
+        :rain => rains[0][0].to_f,
+        :provider => 'Interia.pl'
       },
       {
         :time_created => Time.now,
         :time_from => unix_time_soon_from,
         :time_to => unix_time_soon_to,
         :temperature => temperatures[1][0].to_f,
-        #:pressure => pressures[1][0].to_f,
+        :pressure => pressures[1][0].to_f,
         :wind_kmh => winds[1][0].to_f,
         :wind => winds[1][0].to_f / 3.6,
-        #:snow => snows[1][0].to_f,
-        #:rain => rains[1][0].to_f,
-        :provider => 'Wp.pl'
+        :snow => snows[1][0].to_f,
+        :rain => rains[1][0].to_f,
+        :provider => 'Interia.pl'
       }
     ]
 

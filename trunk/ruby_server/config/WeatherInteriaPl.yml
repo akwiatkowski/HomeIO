@@ -1,0 +1,136 @@
+---
+:defs:
+- :url: 'http://pogoda.interia.pl/miasta?id=11721'
+  :city: 'Inowrocław'
+  :coord:
+    :lat: 52.799264
+    :lon: 18.259935
+- :url: 'http://pogoda.interia.pl/miasta?id=11817'
+  :city: 'Mogilno'
+  :coord:
+    :lat: 52.658612
+    :lon: 17.955923
+- :url: 'http://pogoda.interia.pl/miasta?id=11666'
+  :city: 'Bydgoszcz'
+  :coord:
+    :lat: 53.128893
+    :lon: 18.006363
+- :url: 'http://pogoda.interia.pl/miasta?id=11965'
+  :city: 'Toruń'
+  :coord:
+    :lat: 53.019038
+    :lon: 18.599052
+
+- :url: 'http://pogoda.interia.pl/miasta?id=11875'
+  :city: 'Poznań'
+  :coord:
+    :lat: 52.411048
+    :lon: 16.928329
+
+
+- :url: 'http://pogoda.interia.pl/miasta?id=11982'
+  :city: 'Warszawa'
+  :coord:
+    :lat: 52.237304
+    :lon: 21.016617
+- :url: 'http://pogoda.interia.pl/miasta?id=11797'
+  :city: 'Łódź'
+  :coord:
+    :lat: 51.760743
+    :lon: 19.455986
+- :url: 'http://pogoda.interia.pl/miasta?id=11746'
+  :city: 'Kielce'
+  :coord:
+    :lat: 50.868941
+    :lon: 20.629463
+- :url: 'http://pogoda.interia.pl/miasta?id=11788'
+  :city: 'Lublin'
+  :coord:
+    :lat: 51.248292
+    :lon: 22.569237
+- :url: 'http://pogoda.interia.pl/miasta?id=11905'
+  :city: 'Rzeszów'
+  :coord:
+    :lat: 50.044926
+    :lon: 22.000694
+- :url: 'http://pogoda.interia.pl/miasta?id=11763'
+  :city: 'Kraków'
+  :coord:
+    :lat: 50.071508
+    :lon: 19.944077
+
+- :url: 'http://pogoda.interia.pl/miasta?id=11741'
+  :city: 'Katowice'
+  :coord:
+    :lat: 50.267531
+    :lon: 19.023399
+- :url: 'http://pogoda.interia.pl/miasta?id=11732'
+  :city: 'Jaworzno'
+  :coord:
+    :lat: 50.203847
+    :lon: 19.274712
+
+- :url: 'http://pogoda.interia.pl/miasta?id=11998'
+  :city: 'Wrocław'
+  :coord:
+    :lat: 51.113265
+    :lon: 17.036819
+- :url: 'http://pogoda.interia.pl/miasta?id=12013'
+  :city: 'Zielona Góra'
+  :coord:
+    :lat: 51.938042
+    :lon: 15.506401
+- :url: 'http://pogoda.interia.pl/miasta?id=11942'
+  :city: 'Szczecin'
+  :coord:
+    :lat: 53.435147
+    :lon: 14.558029
+- :url: 'http://pogoda.interia.pl/miasta?id=11759'
+  :city: 'Koszalin'
+  :coord:
+    :lat: 54.195507
+    :lon: 16.171074
+- :url: 'http://pogoda.interia.pl/miasta?id=11696'
+  :city: 'Gdańsk'
+  :coord:
+    :lat: 54.361598
+    :lon: 18.646317
+- :url: 'http://pogoda.interia.pl/miasta?id=11844'
+  :city: 'Olsztyn'
+  :coord:
+    :lat: 53.781708
+    :lon: 20.479088
+- :url: 'http://pogoda.interia.pl/miasta?id=11938'
+  :city: 'Suwałki'
+  :coord:
+    :lat: 54.114284
+    :lon: 22.928352
+- :url: 'http://pogoda.interia.pl/miasta?id=11651'
+  :city: 'Białystok'
+  :coord:
+    :lat: 53.137009
+    :lon: 23.168678
+
+- :url: 'http://pogoda.interia.pl/miasta?id=11836'
+  :city: 'Nowy Targ'
+  :coord:
+    :lat: 49.478453
+    :lon: 20.031109
+- :url: 'http://pogoda.interia.pl/miasta?id=12005'
+  :city: 'Zakopane'
+  :coord:
+    :lat: 49.301531
+    :lon: 19.949684
+
+
+
+
+#- :url: ''
+#  :city: ''
+#  :coord:
+#    :lat:
+#    :lon:
+
+
+  
+# http://pogoda.onet.pl/1,888,38,,,bydgoszcz,miasto.html
