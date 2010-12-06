@@ -2,6 +2,7 @@ require 'open-uri'
 require './lib/metar_tools.rb'
 require './lib/metar_logger_base.rb'
 require './lib/metar_program_log.rb'
+require './lib/metar_ripper/metar_ripper.rb'
 
 # Klasa bazowa zawierająca podstawowe funkcję dla każdego loggera
 #
@@ -36,9 +37,9 @@ class MetarLoggerBase
       metar = page.read
       page.close
 
-	metar.gsub!(/\n/,' ')
-        metar.gsub!(/\t/,' ')
-	metar.gsub!(/\s{2,}/,' ')
+      metar.gsub!(/\n/,' ')
+      metar.gsub!(/\t/,' ')
+      metar.gsub!(/\s{2,}/,' ')
 
     rescue
       metar = nil
@@ -52,77 +53,77 @@ class MetarLoggerBase
 
 	end
 
-    def download_metar_2( city )
-	url = "http://aviationweather.gov/adds/metars/index.php?submit=1&station_ids=#{city.upcase}"
-	reg = /\">([^<]*)<\/FONT>/
+  def download_metar_2( city )
+    url = "http://aviationweather.gov/adds/metars/index.php?submit=1&station_ids=#{city.upcase}"
+    reg = /\">([^<]*)<\/FONT>/
 
-    	begin
-      		page = open( url )
-      		metar = page.read
-      		page.close
-		metar = metar.scan(reg).first.first
-		metar.gsub!(/\n/,' ')
-		metar.gsub!(/\t/,' ')
-		metar.gsub!(/\s{2,}/,' ')		
+    begin
+      page = open( url )
+      metar = page.read
+      page.close
+      metar = metar.scan(reg).first.first
+      metar.gsub!(/\n/,' ')
+      metar.gsub!(/\t/,' ')
+      metar.gsub!(/\s{2,}/,' ')
 
-		metar = "\n#{metar}\n"
-    	rescue
-      		metar = nil
-    	rescue Timeout::Error => e
-     		# in case of timeouts do nothing
-      		metar = nil
-    	end
-	#puts metar.inspect
-	return metar
+      metar = "\n#{metar}\n"
+    rescue
+      metar = nil
+    rescue Timeout::Error => e
+      # in case of timeouts do nothing
+      metar = nil
     end
+    #puts metar.inspect
+    return metar
+  end
 
-    def download_metar_3( city )
-	url = "http://www.wunderground.com/Aviation/index.html?query=#{city.upcase}"
-	reg = /<div class=\"textReport\">\s*METAR\s*([^<]*)<\/div>/
+  def download_metar_3( city )
+    url = "http://www.wunderground.com/Aviation/index.html?query=#{city.upcase}"
+    reg = /<div class=\"textReport\">\s*METAR\s*([^<]*)<\/div>/
 
-        begin
-                page = open( url )
-                metar = page.read
-                page.close
-                metar = metar.scan(reg).first.first
-		metar.gsub!(/\n/,' ')
-                metar.gsub!(/\t/,' ')
-		metar.gsub!(/\s{2,}/,' ')
+    begin
+      page = open( url )
+      metar = page.read
+      page.close
+      metar = metar.scan(reg).first.first
+      metar.gsub!(/\n/,' ')
+      metar.gsub!(/\t/,' ')
+      metar.gsub!(/\s{2,}/,' ')
 
-                metar = "\n#{metar.strip}\n"
-        rescue
-                metar = nil
-        rescue Timeout::Error => e
-                # in case of timeouts do nothing
-                metar = nil
-        end
-	#puts metar.inspect
-        return metar
+      metar = "\n#{metar.strip}\n"
+    rescue
+      metar = nil
+    rescue Timeout::Error => e
+      # in case of timeouts do nothing
+      metar = nil
     end
+    #puts metar.inspect
+    return metar
+  end
 
-    def download_metar_4( city )
+  def download_metar_4( city )
 		url = "http://pl.allmetsat.com/metar-taf/polska.php?icao=#{city.upcase}"
 		reg = /<b>METAR:<\/b>([^<]*)<br>/
-	begin
-                page = open( url )
-                metar = page.read
-                page.close
-                metar = metar.scan(reg).first.first
-                metar.gsub!(/\n/,' ')
-                metar.gsub!(/\t/,' ')
-		metar.gsub!(/\s{2,}/,' ')
+    begin
+      page = open( url )
+      metar = page.read
+      page.close
+      metar = metar.scan(reg).first.first
+      metar.gsub!(/\n/,' ')
+      metar.gsub!(/\t/,' ')
+      metar.gsub!(/\s{2,}/,' ')
 
-                metar = "\n#{metar.strip}\n"
-        rescue
-                metar = nil
-        rescue Timeout::Error => e
-                # in case of timeouts do nothing
-                metar = nil
-        end
-      	#puts metar.inspect
-        return metar
-
+      metar = "\n#{metar.strip}\n"
+    rescue
+      metar = nil
+    rescue Timeout::Error => e
+      # in case of timeouts do nothing
+      metar = nil
     end
+    #puts metar.inspect
+    return metar
+
+  end
 
   # Przygotowuje METAR do zapisu
   def store_metar( metar, city )

@@ -1,4 +1,4 @@
-require 'lib/weather_ripper/weather_base'
+require './lib/weather_ripper/weather_base.rb'
 
 # http://pogoda.interia.pl/miasta?id=11875
 

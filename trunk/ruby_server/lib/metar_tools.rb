@@ -8,6 +8,9 @@ class MetarTools
 
   # tutaj będą wszystkie wyjścia programu
   DATA_DIR = "data"
+  # logs dir
+  LOGS_DIR = File.join( DATA_DIR, "logs" )
+
   # czyste logi
   METAR_LOG_DIR = "metar_log"
   # przetworzone dane
