@@ -14,9 +14,7 @@ class MetarRipperAviationWeather < MetarRipperAbstract
     body.gsub!(/\n/,' ')
     body.gsub!(/\t/,' ')
     body.gsub!(/\s{2,}/,' ')
-
-    body = "\n#{body}\n"
-
+    #body = "\n#{body}\n"
     return body
   end
 

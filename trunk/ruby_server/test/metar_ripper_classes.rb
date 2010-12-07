@@ -19,6 +19,7 @@ class TestMetarRipperClasses < Test::Unit::TestCase
         puts "#{k} - site show nil"
       else
         assert_match(/#{METAR_CITY}/, metar)
+        puts "#{k} - #{metar}"
       end
 
     end
@@ -34,7 +35,10 @@ class TestMetarRipperClasses < Test::Unit::TestCase
   def test_full
     m = MetarRipper.instance
     o = m.fetch('EPPO')
-    puts o.inspect
+    #puts o.inspect
+
+    require 'yaml'
+    puts o.to_yaml
   end
 
 end

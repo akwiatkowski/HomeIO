@@ -13,7 +13,7 @@ class MetarRipperAllMetSat < MetarRipperAbstract
     body.gsub!(/\n/,' ')
     body.gsub!(/\t/,' ')
     body.gsub!(/\s{2,}/,' ')
-    body = "\n#{body.strip}\n"
+    #body = "\n#{body.strip}\n"
     return body
   end
 

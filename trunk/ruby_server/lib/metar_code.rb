@@ -1,10 +1,16 @@
+require './lib/config_loader.rb'
+
 # Jeden kod METAR
 
 class MetarCode
-  attr_reader :output, :metar_string, :metar_splits, :year, :month
+  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city
 
   # maksymalna widoczność jaką zapisujemy
   MAX_VISIBLITY = 10_000
+
+  def initialize
+    clear
+  end
 
   # Czyszczenie danych przed przetwarzaniem
   def clear
@@ -34,6 +40,24 @@ class MetarCode
 
   end
 
+  # Process metar string in newly created MetarCode instance
+  def self.process( string, year, month )
+    mc = self.new
+    mc.process( string, year, month )
+    return mc
+  end
+
+  # Process array of metar strings
+  def self.process_array( array, year, month )
+    oa = Array.new
+    array.each do |a|
+      puts a
+      mc = process( a, year, month )
+      oa << mc
+    end
+    return oa
+  end
+
   # Accesor
   def raw
     return @metar_string
@@ -41,24 +65,50 @@ class MetarCode
 
   # If metar string was valid and was processed ok
   def valid?
-    return true if not @output[:temperature].nil? and not @output[:wind].nil? and not @output[:time].nil?
+    if not @output[:temperature].nil? and
+        not @output[:wind].nil? and
+        not @output[:time].nil? and
+        @output[:time] <= Time.now and
+        @output[:time].year == self.year.to_i and
+        @output[:time].month == self.month.to_i
+
+      return true
+
+    end
+    
     return false
   end
 
+  # Store
+  def store
+    # TODO: stworzyć podklasę storową, tak jak sciaganie pogody
+    # store pełny metarowy, sqlite, mysql i postgres jeżeli jest ustawiony
+    # w każdej storowej klasie umożliwić metodę do tworzenia struktury na żądanie
+
+    puts self.to_db_data.inspect
+  end
+
   # Convert decoded METAR to hash object prepared to store in DB
-  def decoded_to_weather_db_store
+  def to_db_data
     return {
-      :time_created => Time.now,
-      :time_from => @output[:time].to_i,
-      :time_to => (@output[:time].to_i + 30*60), # TODO przenieść do stałych
-      :temperature => @output[:temperature],
-      :pressure => @output[:pressure],
-      :wind_kmh => @output[:wind],
-      :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
-      :snow => nil,
-      :rain => nil,
-      :provider => 'METAR',
-      :raw => @metar_string
+      :data => {
+        :time_created => Time.now,
+        :time_from => @output[:time].to_i,
+        :time_to => (@output[:time].to_i + 30*60), # TODO przenieść do stałych
+        :temperature => @output[:temperature],
+        :pressure => @output[:pressure],
+        :wind_kmh => @output[:wind],
+        :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
+        :snow => nil,
+        :rain => nil,
+        :provider => 'METAR',
+        :raw => @metar_string,
+        :city_id => @city[:city_id] # TODO
+      },
+      :columns => [
+        :time_created, :time_from, :time_to, :temperature, :pressure, :wind,
+        :snow, :rain, :city_id
+      ]
     }
   end
 
@@ -68,6 +118,8 @@ class MetarCode
   def decode
     @metar_splits.each do |s|
       decode_city( s )
+      fetch_additional_city_info
+
       decode_time( s )
       decode_wind( s )
       decode_wind_variable( s )
@@ -75,6 +127,7 @@ class MetarCode
       decode_pressure( s )
       decode_visiblity( s )
       decode_clouds( s )
+      calculate_cloud
 
       decode_specials( s )
 
@@ -92,6 +145,14 @@ class MetarCode
     if s =~ /^([A-Z]{4})$/ and not s == 'AUTO' and not s == 'GRID'
       @output[:city] = $1
     end
+  end
+
+  # Store all additional information from metar.yml
+  def fetch_additional_city_info
+    # uses singleton to store all configs
+    # load 'metar' config
+    # search for current city
+    @city = ConfigLoader.instance.config('metar')[:cities].select{|c| c[:code] == @output[:city]}
   end
 
   # Czas
@@ -245,12 +306,18 @@ class MetarCode
       when "NSC" then 0.5
       else 0
       end
-        
-      @output[:clouds] << {
-        :coverage => (cl * 100.0 / 8.0).round,
-        :bottom => $2.to_i * 30
-      }
 
+      cloud = {
+        :coverage => (cl * 100.0 / 8.0).round,
+      }
+      # optionaly cloud bottom
+      unless '' == $2.to_s
+        cloud[:bottom] = $2.to_i * 30
+        #puts s, $2.inspect
+        #exit!
+      end
+
+      @output[:clouds] << cloud
       @output[:clouds].uniq!
     end
 
@@ -264,6 +331,14 @@ class MetarCode
       @output[:clouds].uniq!
     end
 
+  end
+
+  # Calculate numeric description of clouds
+  def calculate_cloud
+    @output[ :cloudiness ] = 0
+    @output[:clouds].each do |c|
+      @output[ :cloudiness ] = c[:coverage] if @output[ :cloudiness ] < c[:coverage]
+    end
   end
 
   # CAVOK

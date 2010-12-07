@@ -4,6 +4,8 @@ require 'date'
 # Metody narzędziowe, różne
 # TODO, czy warto zamienić na singleton?
 
+# TODO: wyrzucić config z tej klasy
+
 class MetarTools
 
   # tutaj będą wszystkie wyjścia programu

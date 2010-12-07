@@ -76,8 +76,7 @@ class MetarLogger < MetarLoggerBase
 
   # Fetch only one time
   def do_once
-    year = Time.now.year
-    month = Time.now.month
+    
 
     @cities.each do |c|
       metar = download_metar( c[:code] )

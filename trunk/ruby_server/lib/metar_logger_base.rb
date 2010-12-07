@@ -20,110 +20,30 @@ class MetarLoggerBase
 
     # utworzenie podstawowych katalogów
     MetarTools.check_dirs
-
   end
 
+  # Fetch and store metar for city
+  # Use all sites
+  def fetch_and_store_city( metar_city )
+    year = Time.now.year
+    month = Time.now.month
 
-  private
+    # fetch metars
+    m = MetarRipper.instance
+    o = m.fetch( metar_city )
 
-  # Ściąga kod METAR
-	def download_metar( city )
-    # url = "http://weather.noaa.gov/pub/data/observations/metar/stations/#{city.upcase}.TXT"
-    # url = "http://weather.noaa.gov/pub/data/observations/metar/decoded/#{city.upcase}.TXT"
-    url = "http://weather.noaa.gov/pub/data/observations/metar/stations/#{city.upcase}.TXT"
+    # process them
+    # *metar_array* - array of processed metars
+    metar_array = MetarCode.process_array( o , year, month )
 
-    begin
-      page = open( url )
-      metar = page.read
-      page.close
-
-      metar.gsub!(/\n/,' ')
-      metar.gsub!(/\t/,' ')
-      metar.gsub!(/\s{2,}/,' ')
-
-    rescue
-      metar = nil
-    rescue Timeout::Error => e
-      # in case of timeouts do nothing
-      metar = nil
+    # store them
+    metar_array.each do |ma|
+      ma.store
     end
 
-		#puts metar.inspect
-		return metar
-
-	end
-
-  def download_metar_2( city )
-    url = "http://aviationweather.gov/adds/metars/index.php?submit=1&station_ids=#{city.upcase}"
-    reg = /\">([^<]*)<\/FONT>/
-
-    begin
-      page = open( url )
-      metar = page.read
-      page.close
-      metar = metar.scan(reg).first.first
-      metar.gsub!(/\n/,' ')
-      metar.gsub!(/\t/,' ')
-      metar.gsub!(/\s{2,}/,' ')
-
-      metar = "\n#{metar}\n"
-    rescue
-      metar = nil
-    rescue Timeout::Error => e
-      # in case of timeouts do nothing
-      metar = nil
-    end
-    #puts metar.inspect
-    return metar
+    puts metar_array.inspect
   end
-
-  def download_metar_3( city )
-    url = "http://www.wunderground.com/Aviation/index.html?query=#{city.upcase}"
-    reg = /<div class=\"textReport\">\s*METAR\s*([^<]*)<\/div>/
-
-    begin
-      page = open( url )
-      metar = page.read
-      page.close
-      metar = metar.scan(reg).first.first
-      metar.gsub!(/\n/,' ')
-      metar.gsub!(/\t/,' ')
-      metar.gsub!(/\s{2,}/,' ')
-
-      metar = "\n#{metar.strip}\n"
-    rescue
-      metar = nil
-    rescue Timeout::Error => e
-      # in case of timeouts do nothing
-      metar = nil
-    end
-    #puts metar.inspect
-    return metar
-  end
-
-  def download_metar_4( city )
-		url = "http://pl.allmetsat.com/metar-taf/polska.php?icao=#{city.upcase}"
-		reg = /<b>METAR:<\/b>([^<]*)<br>/
-    begin
-      page = open( url )
-      metar = page.read
-      page.close
-      metar = metar.scan(reg).first.first
-      metar.gsub!(/\n/,' ')
-      metar.gsub!(/\t/,' ')
-      metar.gsub!(/\s{2,}/,' ')
-
-      metar = "\n#{metar.strip}\n"
-    rescue
-      metar = nil
-    rescue Timeout::Error => e
-      # in case of timeouts do nothing
-      metar = nil
-    end
-    #puts metar.inspect
-    return metar
-
-  end
+  
 
   # Przygotowuje METAR do zapisu
   def store_metar( metar, city )
@@ -165,9 +85,6 @@ class MetarLoggerBase
     else
       MetarProgramLog.log.error("Cant decode time: '#{metar}', city '#{city}'")
     end
-
-
-
   end
 
   # Zapisuje METAR
