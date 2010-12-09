@@ -31,7 +31,7 @@ class Geolocation
   end
 
   def self.distance( new_lat, new_lon )
-    config = ConfigLoader.instance.config( CONF_CLASS_NAME )
+    config = ConfigLoader.instance.config( self.new.class.to_s )
     geo = Geokit::LatLng.new( config[:site][:lat], config[:site][:lon] )
     other_point = Geokit::LatLng.new( new_lat, new_lon )
     return geo.distance_to( other_point, DEFAULT_OPTIONS )

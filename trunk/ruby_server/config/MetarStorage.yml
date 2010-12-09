@@ -1,0 +1,4 @@
+# Storing METARs in text files
+---
+# it is enabled by design, this option isn't used
+:enabled: true

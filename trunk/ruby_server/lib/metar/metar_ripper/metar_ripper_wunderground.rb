@@ -9,7 +9,7 @@ class MetarRipperWunderground < MetarRipperAbstract
 
   def process( body )
     reg = /<div class=\"textReport\">\s*METAR\s*([^<]*)<\/div>/
-    body = metbodyar.scan(reg).first.first
+    body = body.scan(reg).first.first
     body.gsub!(/\n/,' ')
     body.gsub!(/\t/,' ')
     body.gsub!(/\s{2,}/,' ')

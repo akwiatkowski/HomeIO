@@ -1,0 +1,13 @@
+# Storing into Sqlite DB
+---
+:enabled: true
+# filename of various dbs
+:db_file_meas: 'meas'
+:db_file_weather: 'weather'
+:db_file_metar_weather: 'metar'
+#  definitions, tables, ...
+:classes:
+  -
+    # class name
+    :klass: 'MetarCode'
+    :table: 'weather_metar_archives'

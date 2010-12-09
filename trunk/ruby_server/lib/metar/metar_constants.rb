@@ -2,8 +2,8 @@
 
 class MetarConstants
   # filename
-  # TODO change to MetarLoggger as class
-  CONFIG_TYPE = 'metar'
+  #CONFIG_TYPE = 'metar'
+  CONFIG_TYPE = 'MetarLogger'
 
   # czyste logi
   METAR_LOG_DIR = "metar_log"

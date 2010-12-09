@@ -7,4 +7,8 @@ class DbMysql
 
   def store( obj )
   end
+
+  # Init storage
+  def init
+  end
 end

@@ -17,6 +17,10 @@ class Storage
       DbMysql.instance,
       DbPostgres.instance
     ]
+
+    @storages.each do |s|
+      s.init
+    end
   end
 
   # Store object wherever it is possible

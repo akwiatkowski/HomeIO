@@ -1,0 +1,25 @@
+---
+:db_host: localhost
+:db_base_online: homeio
+:db_base_offline: homeio
+# used for all independent for online communication
+:db_base: homeio
+
+:db_table_meas: meas_archives
+:db_table_weather: weather_archives
+:db_table_weather_metar: weather_metar_archives
+
+:db_table_meas_query_autoflush: 10
+:db_table_weather_query_autoflush: 10
+:db_table_weather_metar_query_autoflush: 200
+
+:db_login: homeio
+:db_password: homeio
+# when something goes wrong
+:query_file: "data/queries_archive.sql"
+# where store logs
+:logger_path: "data/DbStore.log"
+
+:sq_lite_file_meas: "data/DBmeas.sqlite3"
+:sq_lite_file_weather: "data/DBweather.sqlite3"
+:sq_lite_file_metar_weather: "data/DBmetar_weather.sqlite3"

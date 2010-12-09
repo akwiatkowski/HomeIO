@@ -15,7 +15,7 @@ class MetarLogger
   def initialize
     # TODO - użyj tej klasy do pobrania metar
     # ewentualnie jakaś dodatkowa metoda, dziedzinienie na home io config loader
-    @cities = ConfigLoader.instance.config( MetarConstants::CONFIG_TYPE )
+    @cities = ConfigLoader.instance.config( self.class.to_s )[:cities]
 
     puts "#{self.class.to_s} init - #{@cities.size} cities"
     # cits = @cities.collect{|c| "#{c[:code]} (#{c[:name].to_s})"}

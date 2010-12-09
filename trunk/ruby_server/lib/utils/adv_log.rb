@@ -13,8 +13,11 @@ class AdvLog
   DEFAULT_KLASS = 'HomeIO'
 
   def initialize
+    prepare_directories
+
     @logs = Hash.new
     start_logger( DEFAULT_KLASS )
+
   end
 
   # Return logger for specified class, or universal logger if class wasn't specified
@@ -40,6 +43,17 @@ class AdvLog
   # Convert class to string name
   def class_name( k )
     return k.class.to_s
+  end
+
+  # Create directories for logs if needed
+  def prepare_directories
+    if not File.exists?( Constants::DATA_DIR )
+      Dir.mkdir( Constants::DATA_DIR )
+    end
+
+    if not File.exists?( Constants::LOGS_DIR )
+      Dir.mkdir( Constants::LOGS_DIR )
+    end
   end
 
 end

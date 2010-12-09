@@ -15,6 +15,11 @@ class MetarStorage
     return store_metar( obj )
   end
 
+  # Prepare main directories
+  def init
+    prepare_main_directories
+  end
+
   private
 
   # Store METAR in files
@@ -105,6 +110,20 @@ class MetarStorage
     end
   end
 
+  # Prepare main directories
+  def prepare_main_directories
+    if not File.exists?( Constants::DATA_DIR )
+      Dir.mkdir( Constants::DATA_DIR )
+    end
+
+    d = File.join(
+      Constants::DATA_DIR,
+      MetarConstants::METAR_LOG_DIR
+    )
+    if not File.exists?( d )
+      Dir.mkdir( d )
+    end
+  end
 
 
 

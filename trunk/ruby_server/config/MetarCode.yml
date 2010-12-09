@@ -1,0 +1,4 @@
+# Storing METARs in text files
+# Standard way
+---
+:store_decoder_errors: true
