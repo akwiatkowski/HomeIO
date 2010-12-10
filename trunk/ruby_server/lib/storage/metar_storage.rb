@@ -20,6 +20,10 @@ class MetarStorage
     prepare_main_directories
   end
 
+  def flush
+  end
+
+
   private
 
   # Store METAR in files

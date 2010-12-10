@@ -7,7 +7,9 @@
 :db_file_metar_weather: 'metar'
 #  definitions, tables, ...
 :classes:
-  -
-    # class name
-    :klass: 'MetarCode'
-    :table: 'weather_metar_archives'
+  # class name
+  :MetarCode:
+    # how many object should be stored one time
+    :pool_size: 50
+    # table name
+    :table_name: 'metar_weather_archives'

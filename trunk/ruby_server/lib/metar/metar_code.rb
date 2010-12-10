@@ -1,10 +1,14 @@
 require './lib/metar/metar_constants.rb'
 require './lib/utils/config_loader.rb'
 require './lib/storage/storage.rb'
+require './lib/storage/storage_interface.rb'
+require './lib/utils/adv_log.rb'
 
 # Jeden kod METAR
 
 class MetarCode
+  include StorageInterface
+  
   attr_reader :output, :metar_string, :metar_splits, :year, :month, :city
 
   # maksymalna widoczność jaką zapisujemy
@@ -33,7 +37,7 @@ class MetarCode
 
     # usuń wcześniejsze dane
     clear
-    @metar_string = string.to_s
+    @metar_string = string.to_s.gsub(/\s/,' ').strip
     @metar_splits = @metar_string.split(' ')
     @year = year
     @month = month
@@ -101,7 +105,7 @@ class MetarCode
   def to_db_data
     return {
       :data => {
-        :time_created => Time.now,
+        :created_at => Time.now.to_i,
         :time_from => @output[:time].to_i,
         :time_to => (@output[:time].to_i + 30*60), # TODO przenieść do stałych
         :temperature => @output[:temperature],
@@ -110,15 +114,16 @@ class MetarCode
         :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
         :snow_metar => @snow_metar,
         :rain_metar => @rain_metar,
-        :provider => 'METAR',
-        :raw => @metar_string,
+        :provider => "'METAR'",
+        # escaping slashes
+        :raw => "'#{@metar_string.gsub(/\'/,"\\\\"+'\'')}'",
         :city_id => @city_id,
-        :city => @city,
+        :city => "'#{@city}'",
         :city_hash => @city_hash
       },
       :columns => [
-        :time_created, :time_from, :time_to, :temperature, :pressure, :wind,
-        :snow, :rain, :city_id, :raw
+        :created_at, :time_from, :time_to, :temperature, :pressure, :wind,
+        :snow_metar, :rain_metar, :city_id, :raw
       ]
     }
   end

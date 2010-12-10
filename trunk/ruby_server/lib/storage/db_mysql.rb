@@ -11,4 +11,8 @@ class DbMysql
   # Init storage
   def init
   end
+
+  def flush
+  end
+
 end

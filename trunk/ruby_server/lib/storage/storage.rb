@@ -1,4 +1,5 @@
 require 'singleton'
+require './lib/utils/constants.rb'
 
 # better way to load all files from dir
 Dir["./lib/storage/*.rb"].each {|file| require file }
@@ -30,6 +31,13 @@ class Storage
       store_outputs << s.store( obj )
     end
     return store_outputs
+  end
+
+  # Flush all storage classes
+  def flush
+    @storages.each do |s|
+      s.flush
+    end
   end
 
   private

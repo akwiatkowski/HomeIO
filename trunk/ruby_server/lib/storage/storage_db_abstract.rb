@@ -37,6 +37,12 @@ class StorageDbAbstract
     raise 'Not implemented'
   end
 
+  # Stores all buffered objects
+  # Some classes doesn't need to flush
+  def flush
+    raise 'Not implemented'
+  end
+
   private
 
   # Load this storage config

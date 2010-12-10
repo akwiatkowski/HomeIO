@@ -14,19 +14,121 @@ class DbSqlite < StorageDbAbstract
     'sqlite'
   )
 
+  # @config - configuration file
+  # @db - hash for
+
   # Init storage
   def init
     connect
     init_db_structure
     disconnect
+
+    init_pools
   end
+
+  def store( obj )
+    case obj.class.to_s
+      # TODO add here object which use module StorageInterface
+    when 'MetarCode' then store_object( obj )
+    else other_store( obj )
+    end
+  end
+
+  # Force all flush
+  def flush
+    @config[:classes].keys.each do |k|
+      flush_by_type( k )
+    end
+  end
+
 
   private
 
+  # Create all pools
+  def init_pools
+    @pools = Hash.new
+    @config[:classes].keys.each do |k|
+      @pools[ k ] = Array.new
+    end
+  end
+
+  def store_object( obj )
+    # use class name as key
+    k = obj.class.to_s.to_sym
+    @pools[ k ] << obj
+
+    # check if needed flush
+    if @pools[ k ].size >= @config[:classes][ k ][:pool_size]
+      # flush
+      flush_by_type( k )
+    end
+  end
+
+  # Store all from buffer
+  #
+  # *k* - class name in symbol
+  def flush_by_type( k )
+
+    puts "Flushing #{k}, #{ @pools[ k ].size } object"
+
+    queries = Array.new
+    @pools[ k ].each do |o|
+      queries << convert_obj_to_query( @config[:classes][ k ], o )
+    end
+
+    # fresh connection
+    connect
+    # db in use
+    db = @db[ k ]
+    q = "BEGIN TRANSACTION;"
+    db.execute( q )
+
+    queries.each do |q|
+      puts q
+      db.execute( q )
+    end
+
+    q = "COMMIT;"
+    db.execute( q )
+    disconnect
+
+  end
+
+  # Converts storable object to sqlite query
+  #
+  # *conf* - hash from config of obj class
+  # *obj* - object to store
+  def convert_obj_to_query( conf, obj )
+    db_data = obj.to_db_data
+
+    q = ""
+    q += "insert into #{conf[:table_name]} ("
+    q += db_data[:columns].collect{|c| c.to_s}.join(",")
+    q += ") values ("
+    q += db_data[:columns].collect{|c| db_data[:data][ c ]}.join(",")
+    q += ");"
+
+    puts q
+
+    return q
+  end
+
+
+
+  def flush_metar
+    queries = Array.new
+    @pool_metar.each do |m|
+
+    end
+  end
+
   # Store for not standard object
   def other_store( obj )
-    puts obj.inspect
+    raise 'This object can not be stored'
   end
+
+  
+
 
   # Store standard object
   def standarized_store( obj, d )
@@ -59,6 +161,11 @@ class DbSqlite < StorageDbAbstract
     # metar
     @sqlite_db_metar_weather = SQLite3::Database.new( sqlite_filename( @config[ :db_file_metar_weather ] ) )
     @sqlite_db_metar_weather.busy_timeout( SQLITE_BUSY_TIMEOUT )
+
+    @db = {
+      :MetarCode => @sqlite_db_metar_weather,
+      # TODO add here other storable classes
+    }
   end
 
   # Create tables
@@ -94,21 +201,18 @@ class DbSqlite < StorageDbAbstract
     @sqlite_db_weather.execute( t_wa )
 
     # metar
-    t_wma = "CREATE TABLE IF NOT EXISTS weather_metar_archives(
+    t_wma = "CREATE TABLE IF NOT EXISTS #{@config[:classes][:MetarCode][:table_name]}(
   id INTEGER PRIMARY KEY,
   city_id INTEGER,
-  created_at REAL,
-  provider TEXT,
-  city TEXT,
-  lat REAL,
-  lon REAL,
-  time_from REAL,
-  time_to REAL,
+  created_at INTEGER,
+  city_id INTEGER,
+  time_from INTEGER,
+  time_to INTEGER,
   temperature REAL,
   wind REAL,
   pressure REAL,
-  rain REAL,
-  snow REAL,
+  rain_metar INTEGER,
+  snow_metar INTEGER,
   raw TEXT,
   UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
 );"
@@ -159,4 +263,6 @@ class DbSqlite < StorageDbAbstract
     @sqlite_db_weather.close unless @sqlite_db_weather.closed?
     @sqlite_db_metar_weather.close unless @sqlite_db_metar_weather.closed?
   end
+
+  # Create queries to store all needed objects
 end
