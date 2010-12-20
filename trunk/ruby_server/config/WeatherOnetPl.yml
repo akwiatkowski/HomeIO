@@ -1,4 +1,5 @@
 ---
+:stop_on_error: true
 :defs:
 - :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
   :city: 'Inowrocław'

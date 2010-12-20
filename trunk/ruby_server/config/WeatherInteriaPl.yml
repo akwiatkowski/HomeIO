@@ -1,4 +1,5 @@
 ---
+:stop_on_error: true
 :defs:
 - :url: 'http://pogoda.interia.pl/miasta?id=11721'
   :city: 'Inowrocław'

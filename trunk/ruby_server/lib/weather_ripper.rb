@@ -1,5 +1,5 @@
 require 'singleton'
-require './lib/config_loader.rb'
+require './lib/utils/config_loader.rb'
 
 require './lib/weather_ripper/weather_onet_pl.rb'
 require './lib/weather_ripper/weather_wp_pl.rb'
@@ -8,17 +8,38 @@ require './lib/weather_ripper/weather_interia_pl.rb'
 # Fetch weather information from various web pages (mainly polish ones)
 class WeatherRipper
   include Singleton
-  
+
+  # weather raw logs are stored here
+  WEATHER_DIR = File.join(
+    Constants::DATA_DIR,
+    'weather'
+  )
+
   def initialize
     @@config = ConfigLoader.instance.config( self.class )
 
-    @onet_pl = WeatherOnetPl.new
-    @onet_pl.check_all
+    @providers = [
+      WeatherOnetPl.new,
+      WeatherWpPl.new,
+      WeatherInteriaPl.new
+    ]
+  end
 
-    @wp_pl = WeatherWpPl.new
-    @wp_pl.check_all
+  def fetch
+    @providers.each do |p|
+      p.check_all
+    end
+  end
 
-    @interia_pl = WeatherInteriaPl.new
-    @interia_pl.check_all
+  private
+
+  def prepare_directories
+    if not File.exists?( Constants::DATA_DIR )
+      Dir.mkdir( Constants::DATA_DIR )
+    end
+
+    if not File.exists?( WEATHER_DIR )
+      Dir.mkdir( WEATHER_DIR )
+    end
   end
 end

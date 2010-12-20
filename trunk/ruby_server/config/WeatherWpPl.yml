@@ -1,4 +1,5 @@
 ---
+:stop_on_error: true
 :defs:
 #- :url: 'http://pogoda.wp.pl/miasto,inowroclaw,mid,1201072,mi.html'
 #  :city: 'Inowrocław'

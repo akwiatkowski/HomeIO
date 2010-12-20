@@ -10,6 +10,6 @@ class TestWeatherRipper < Test::Unit::TestCase
   def test_foo
 
     w = WeatherRipper.instance
-
+    w.fetch
   end
 end

@@ -1,18 +1,26 @@
 require 'net/http'
 require 'rubygems'
 require 'hpricot'
-require './lib/db_store.rb'
+require './lib/storage/storage.rb'
+require './lib/utils/adv_log.rb'
 
 
 class WeatherBase
 
+  # Check weather for all configured cities
   def check_all
     @defs.each do |d|
-      # TODO rescue do pobierania i pretwarzania, aby logger zapisywał że był błąd
-      #begin
+      
+      begin
         check_online( d )
-      #rescue
-      #end
+      rescue => e
+        # log errors using standarized method
+        log_error( self, e )
+        # when set it blow up everything to pieces :]
+        if true == @config[:stop_on_error]
+          raise e
+        end
+      end
     end
     DbStore.instance.flush
   end
@@ -37,6 +45,7 @@ class WeatherBase
 
   private
 
+  # Fetching and storing
   def check_online( defin )
     body = fetch( defin )
     processed = process( body )
@@ -44,19 +53,24 @@ class WeatherBase
     return processed
   end
 
+  # Download website
   def fetch( defin )
     body = Net::HTTP.get( URI.parse( defin[:url] ) )
-    #puts body
     f = File.new('delme.txt','w')
     f.puts body
     f.close
     return body
   end
 
+  #
   def store( data, defin )
     # TODO czy tych danych nie ma w plikach konf
     # metar logger base
-    f = File.new( File.join("data", "weather", self.class.to_s+".txt"), "a")
+
+
+    #f = File.new( File.join("data", "weather", self.class.to_s+".txt"), "a")
+    f = File.new( File.join( WeatherRipper.instance::WEATHER_DIR, self.class.to_s+".txt"), "a")
+
     data.each do |d|
       f.puts("#{d[:time_created].to_i}; '#{defin[:city].to_s}'; #{d[:provider].to_s}; #{defin[:coord][:lat]}; #{defin[:coord][:lon]};   #{d[:time_from].to_i}; #{d[:time_to].to_i}; #{d[:temperature]}; #{d[:wind]}; #{d[:pressure]}; #{d[:rain]}; #{d[:snow]}")
       DbStore.instance.store_weather_data( d, defin )
