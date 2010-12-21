@@ -3,6 +3,7 @@ require 'rubygems'
 require 'hpricot'
 require './lib/storage/storage.rb'
 require './lib/utils/adv_log.rb'
+require './lib/weather_ripper.rb'
 
 
 class WeatherBase
@@ -69,7 +70,7 @@ class WeatherBase
 
 
     #f = File.new( File.join("data", "weather", self.class.to_s+".txt"), "a")
-    f = File.new( File.join( WeatherRipper.instance::WEATHER_DIR, self.class.to_s+".txt"), "a")
+    f = File.new( File.join( WeatherRipper::WEATHER_DIR, self.class.to_s+".txt"), "a")
 
     data.each do |d|
       f.puts("#{d[:time_created].to_i}; '#{defin[:city].to_s}'; #{d[:provider].to_s}; #{defin[:coord][:lat]}; #{defin[:coord][:lon]};   #{d[:time_from].to_i}; #{d[:time_to].to_i}; #{d[:temperature]}; #{d[:wind]}; #{d[:pressure]}; #{d[:rain]}; #{d[:snow]}")

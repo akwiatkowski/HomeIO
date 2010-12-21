@@ -15,8 +15,9 @@ class Storage
     @storages = [
       MetarStorage.instance,
       DbSqlite.instance,
-      DbMysql.instance,
-      DbPostgres.instance
+      #DbMysql.instance,
+      #DbPostgres.instance
+      DbActiveRecord.instance
     ]
 
     @storages.each do |s|

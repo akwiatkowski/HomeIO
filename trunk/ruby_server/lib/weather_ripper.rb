@@ -16,6 +16,8 @@ class WeatherRipper
   )
 
   def initialize
+    prepare_directories
+
     @@config = ConfigLoader.instance.config( self.class )
 
     @providers = [
