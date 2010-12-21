@@ -1,0 +1,11 @@
+# Storing using ActiveRecord
+---
+:enabled: true
+:connection:
+  #adapter => "mysql",
+  #host => "localhost",
+  #database => "appdb",
+  #username => "appuser",
+  #password => "secret"
+  adapter: 'sqlite3'
+  database: 'data/sqlite/test.sqlite'
