@@ -242,7 +242,7 @@ class DbSqlite < StorageDbAbstract
     cities.each do |c|
       distance = Geolocation.distance( c[:coord][:lat], c[:coord][:lon] )
       cq = "insert into cities (id,name,country,metar,lat,lon,calculated_distance) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]},#{distance});\n"
-      puts cq
+      # puts cq
       @sqlite_db_metar_weather.execute( cq )
     end
 

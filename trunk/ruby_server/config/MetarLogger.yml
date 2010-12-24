@@ -414,12 +414,14 @@
 - :code: "FPPR"
   :id: 58
   :name: "S. Tome"
+  :country: "S. Tome"
   :coord:
     :lat: 0.3782
     :lon: 6.7122
 - :code: "FIMP"
   :id: 59
   :name: "Plaisance Mauritius"
+  :country: "Mauritius"
   :coord:
     :lat: -20.4302
     :lon: 57.6836
@@ -552,12 +554,14 @@
 - :code: "TVSV"
   :id: 78
   :name: "E. T. Joshua Airport"
+  :country: "Lesser Antilles"
   :coord:
     :lat: 13.1435
     :lon: -61.2124
 - :code: "PWAK"
   :id: 79
   :name: "Wake Island"
+  #:country: "Xmas Island"
   :coord:
     :lat: 19.2821
     :lon: 166.6364

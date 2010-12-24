@@ -8,6 +8,12 @@ require './lib/weather_ripper.rb'
 
 class WeatherBase
 
+  # Safec accesor
+  #attr_reader :config
+  def config
+    return @config.clone
+  end
+
   # Check weather for all configured cities
   def check_all
     @defs.each do |d|

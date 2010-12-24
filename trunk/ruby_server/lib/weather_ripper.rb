@@ -9,6 +9,8 @@ require './lib/weather_ripper/weather_interia_pl.rb'
 class WeatherRipper
   include Singleton
 
+  attr_reader :providers
+
   # weather raw logs are stored here
   WEATHER_DIR = File.join(
     Constants::DATA_DIR,

@@ -59,8 +59,9 @@ class AdvLog
 end
 
 # Easy error logging
-def log_error( klass, exception )
+def log_error( klass, exception, additional_info = nil )
   l = AdvLog.instance.logger( klass )
   l.error( exception.inspect )
   l.error( exception.backtrace )
+  l.error( additional_info ) unless additional_info.nil?
 end

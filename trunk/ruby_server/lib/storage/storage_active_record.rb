@@ -19,6 +19,6 @@ class StorageActiveRecord < StorageDbAbstract
       @config[:connection]
     )
 
-    puts City.all.inspect
+    #puts City.all.inspect
   end
 end

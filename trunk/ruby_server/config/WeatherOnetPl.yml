@@ -3,120 +3,143 @@
 :defs:
 - :url: 'http://pogoda.onet.pl/0,846,38,,,inowroclaw,miasto.html'
   :city: 'Inowrocław'
+  :country: 'Poland'
   :coord:
     :lat: 52.799264
     :lon: 18.259935
 - :url: 'http://pogoda.onet.pl/1,312,38,,,mogilno,miasto.html'
   :city: 'Mogilno'
+  :country: 'Poland'
   :coord:
     :lat: 52.658612
     :lon: 17.955923
 - :url: 'http://pogoda.onet.pl/0,888,38,bydgoszcz,miasto.html'
   :city: 'Bydgoszcz'
+  :country: 'Poland'
   :coord:
     :lat: 53.128893
     :lon: 18.006363
 - :url: 'http://pogoda.onet.pl/1,814,38,,,torun,miasto.html'
   :city: 'Toruń'
+  :country: 'Poland'
   :coord:
     :lat: 53.019038
     :lon: 18.599052
 
 - :url: 'http://pogoda.onet.pl/0,198,38,poznan,miasto.html'
   :city: 'Poznań'
+  :country: 'Poland'
   :coord:
     :lat: 52.411048
     :lon: 16.928329
 - :url: 'http://pogoda.onet.pl/0,3,38,warszawa,miasto.html'
   :city: 'Warszawa'
+  :country: 'Poland'
   :coord:
     :lat: 52.237304
     :lon: 21.016617
 - :url: 'http://pogoda.onet.pl/0,200,38,lodz,miasto.html'
   :city: 'Łódź'
+  :country: 'Poland'
   :coord:
     :lat: 51.760743
     :lon: 19.455986
 - :url: 'http://pogoda.onet.pl/0,815,38,kielce,miasto.html'
   :city: 'Kielce'
+  :country: 'Poland'
   :coord:
     :lat: 50.868941
     :lon: 20.629463
 - :url: 'http://pogoda.onet.pl/0,858,38,lublin,miasto.html'
   :city: 'Lublin'
+  :country: 'Poland'
   :coord:
     :lat: 51.248292
     :lon: 22.569237
 - :url: 'http://pogoda.onet.pl/0,930,38,rzeszow,miasto.html'
   :city: 'Rzeszów'
+  :country: 'Poland'
   :coord:
     :lat: 50.044926
     :lon: 22.000694
 - :url: 'http://pogoda.onet.pl/0,196,38,krakow,miasto.html'
   :city: 'Kraków'
+  :country: 'Poland'
   :coord:
     :lat: 50.071508
     :lon: 19.944077
 
 - :url: 'http://pogoda.onet.pl/0,962,38,katowice,miasto.html'
   :city: 'Katowice'
+  :country: 'Poland'
   :coord:
     :lat: 50.267531
     :lon: 19.023399
 - :url: 'http://pogoda.onet.pl/0,3690,38,,,jaworzno,miasto.html'
   :city: 'Jaworzno'
+  :country: 'Poland'
   :coord:
     :lat: 50.203847
     :lon: 19.274712
 
 - :url: 'http://pogoda.onet.pl/0,197,38,wroclaw,miasto.html'
   :city: 'Wrocław'
+  :country: 'Poland'
   :coord:
     :lat: 51.113265
     :lon: 17.036819
 - :url: 'http://pogoda.onet.pl/0,933,38,zielona_gora,miasto.html'
   :city: 'Zielona Góra'
+  :country: 'Poland'
   :coord:
     :lat: 51.938042
     :lon: 15.506401
 - :url: 'http://pogoda.onet.pl/0,919,38,szczecin,miasto.html'
   :city: 'Szczecin'
+  :country: 'Poland'
   :coord:
     :lat: 53.435147
     :lon: 14.558029
 - :url: 'http://pogoda.onet.pl/0,677,38,koszalin,miasto.html'
   :city: 'Koszalin'
+  :country: 'Poland'
   :coord:
     :lat: 54.195507
     :lon: 16.171074
 - :url: 'http://pogoda.onet.pl/0,189,38,gdansk,miasto.html'
   :city: 'Gdańsk'
+  :country: 'Poland'
   :coord:
     :lat: 54.361598
     :lon: 18.646317
 - :url: 'http://pogoda.onet.pl/0,558,38,olsztyn,miasto.html'
   :city: 'Olsztyn'
+  :country: 'Poland'
   :coord:
     :lat: 53.781708
     :lon: 20.479088
 - :url: 'http://pogoda.onet.pl/0,258,38,suwalki,miasto.html'
   :city: 'Suwałki'
+  :country: 'Poland'
   :coord:
     :lat: 54.114284
     :lon: 22.928352
 - :url: 'http://pogoda.onet.pl/0,1039,38,bialystok,miasto.html'
   :city: 'Białystok'
+  :country: 'Poland'
   :coord:
     :lat: 53.137009
     :lon: 23.168678
 
 - :url: 'http://pogoda.onet.pl/1,738,38,,,nowy_targ,miasto.html'
   :city: 'Nowy Targ'
+  :country: 'Poland'
   :coord:
     :lat: 49.478453
     :lon: 20.031109
 - :url: 'http://pogoda.onet.pl/1,401,38,,,zakopane,miasto.html'
   :city: 'Zakopane'
+  :country: 'Poland'
   :coord:
     :lat: 49.301531
     :lon: 19.949684
