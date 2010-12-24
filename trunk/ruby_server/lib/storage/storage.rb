@@ -17,11 +17,22 @@ class Storage
       DbSqlite.instance,
       #DbMysql.instance,
       #DbPostgres.instance
-      DbActiveRecord.instance
+      StorageActiveRecord.instance
     ]
+  end
 
+  # One time initialization
+  def init
     @storages.each do |s|
       s.init
+    end
+  end
+
+  # One time destructive uninitialization
+  def deinit
+    # TODO insert warning or sth
+    @storages.each do |s|
+      s.deinit
     end
   end
 

@@ -1,10 +1,12 @@
+require './lib/storage/active_record/models/city.rb'
+
 # TODO
 # przeliczanie wszystkich miast z yamli pogodowych, i dodawanie jako
 # nowe jeżeli odległość od dodanego jest mniejsza niż ileś
 #
 # rozważyć klucze obce
 
-class CreateCities < ActiveRecord::Migration
+class ActiveRecordInitMigration < ActiveRecord::Migration
   def self.up
 
     create_table :cities do |t|
@@ -57,19 +59,24 @@ class CreateCities < ActiveRecord::Migration
       t.column :temperature, :float, :null => true
       t.column :wind, :float, :null => true
       t.column :pressure, :float, :null => true
-      t.column :rain, :float, :null => true
-      t.column :snow, :float, :null => true
+      t.column :rain_metar, :integer, :null => true
+      t.column :snow_metar, :integer, :null => true
+      t.column :raw, :integer, :null => true
 
       t.timestamps
       t.references :city
-      t.references :weather_provider
-      # TODO zrobić to
     end
 
+    # cities
     add_index :cities, [:lat, :lon], :unique => true
     add_index :cities, [:name, :country], :unique => true
+    # meas
     add_index :meas_archives, [:meas_type_id, :time_from], :unique => true
+    # weather
     add_index :weather_archives, [:weather_provider_id, :city_id, :time_from, :time_to], :unique => true, :name => 'weather_archives_index'
+    # metar
+    add_index :weather_metar_archives, [:time_from, :raw], :unique => true, :name => 'weather_metar_archives_raw_uniq_index'
+    add_index :weather_metar_archives, [:time_from, :city_id], :unique => true, :name => 'weather_metar_archives_raw_city_uniq_index'
 
     City.create_from_config
 

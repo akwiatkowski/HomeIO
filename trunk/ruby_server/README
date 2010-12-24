@@ -1,0 +1,24 @@
+OBSOLOTE
+Check rake -T and Rakefile
+
+--
+
+
+ruby metar_single_fetch.rb
+# fetch one time all cities using metar
+
+ruby metar_star_process.rb
+# process (and store in DB) current and previous (if needed because of month change) month
+
+ruby metar_star_process_all.rb
+# process (and store in DB) all raw metar data
+
+ruby metar_star_server.rb
+# start server which periodicaly fetch metar data
+
+ruby metar_client_start_process.rb
+# server stars processing all metar raw data and create graphs
+
+ruby weather_single_fetch.rb
+# fetch all non-metar weather data
+

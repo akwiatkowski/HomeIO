@@ -3,6 +3,8 @@ require 'rubygems'
 require 'sqlite3'
 require './lib/storage/storage_db_abstract.rb'
 
+# Fast sql based storage engine
+
 class DbSqlite < StorageDbAbstract
   include Singleton
 
@@ -17,13 +19,29 @@ class DbSqlite < StorageDbAbstract
   # @config - configuration file
   # @db - hash for
 
+  #
+  def initialize
+    super
+    init_pools
+  end
+
   # Init storage
   def init
     connect
     init_db_structure
     disconnect
+  end
 
-    init_pools
+  # Delete all sqlite files
+  def deinit
+    [ :db_file_meas, :db_file_weather, :db_file_metar_weather ].each do |s|
+      fname = sqlite_filename( @config[ s ] )
+      begin
+        File.delete( fname )
+      rescue
+        puts "error at #{fname}"
+      end
+    end
   end
 
   def store( obj )
@@ -205,7 +223,6 @@ class DbSqlite < StorageDbAbstract
   id INTEGER PRIMARY KEY,
   city_id INTEGER,
   created_at INTEGER,
-  city_id INTEGER,
   time_from INTEGER,
   time_to INTEGER,
   temperature REAL,
@@ -214,7 +231,7 @@ class DbSqlite < StorageDbAbstract
   rain_metar INTEGER,
   snow_metar INTEGER,
   raw TEXT,
-  UNIQUE (provider, city, time_from, time_to) ON CONFLICT IGNORE
+  UNIQUE (city_id, time_from, time_to) ON CONFLICT IGNORE
 );"
     @sqlite_db_metar_weather.execute( t_wma )
 

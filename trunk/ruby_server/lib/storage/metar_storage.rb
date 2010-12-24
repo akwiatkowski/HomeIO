@@ -20,6 +20,10 @@ class MetarStorage
     prepare_main_directories
   end
 
+  def deinit
+    # wont be implemented!
+  end
+
   def flush
   end
 

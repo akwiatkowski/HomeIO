@@ -9,10 +9,13 @@ require './lib/utils/adv_log.rb'
 class MetarCode
   include StorageInterface
   
-  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city
+  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city, :city_id
 
   # maksymalna widoczność jaką zapisujemy
   MAX_VISIBLITY = 10_000
+
+  # once metar is normally for 30 minutes
+  TIME_INTERVAL = 30*60
 
   def initialize
     clear
@@ -112,8 +115,8 @@ class MetarCode
         :pressure => @output[:pressure],
         :wind_kmh => @output[:wind],
         :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
-        :snow_metar => @snow_metar,
-        :rain_metar => @rain_metar,
+        :snow_metar => @output[:snow_metar],
+        :rain_metar => @output[:rain_metar],
         :provider => "'METAR'",
         # escaping slashes
         :raw => "'#{@metar_string.gsub(/\'/,"\\\\"+'\'')}'",
@@ -241,6 +244,7 @@ class MetarCode
         }
       else
         @output[:wind] = wind
+        @output[:wind_mps] = wind / 3.6
         @output[:wind_max] = wind_max
         @output[:wind_direction] = $1.to_i
       end
@@ -491,6 +495,10 @@ class MetarCode
   def calculate_rain_and_snow
     @snow_metar = 0
     @rain_metar = 0
+
+    @output[:snow_metar] = 0
+    @output[:rain_metar] = 0
+
     # TODO dopisać zgodnie z http://weather.cod.edu/notes/metar.html
     # sumować oceniany wielkość opadów w pseudojednostce
   end

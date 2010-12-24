@@ -20,8 +20,8 @@ class TestDbActiveRecord < Test::Unit::TestCase
 
   def test_fill_cities
     StorageActiveRecord.instance
-    #CreateCities.up
-    City.create_from_config_nonmetar
+    CreateCities.up
+    #City.create_from_config_nonmetar # XXX wywalić, przeniosłem do migracji
     #CreateCities.down
   end
 

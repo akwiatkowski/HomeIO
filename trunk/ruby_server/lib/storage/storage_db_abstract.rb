@@ -13,6 +13,7 @@ class StorageDbAbstract
     'sqls'
   )
 
+  # Initialization - after server startup
   def initialize
     load_config
   end
@@ -31,8 +32,13 @@ class StorageDbAbstract
 
   end
 
-  # Prepare main directories
+  # One time initialization
   def init
+    raise 'Not implemented'
+  end
+
+  # Destructive rolling back initialization from method *init*
+  def deinit
     raise 'Not implemented'
   end
 

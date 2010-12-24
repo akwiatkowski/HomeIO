@@ -33,7 +33,7 @@ class City < ActiveRecord::Base
   end
 
   # Create cities from configuration
-  def self.create_from_config_metar
+  def self.create_from_config
     self.create_from_config_metar
     self.create_from_config_nonmetar
   end
@@ -100,7 +100,7 @@ class City < ActiveRecord::Base
       puts "#{p.class} - #{p.config[:defs].size}"
 
       p.config[:defs].each do |pc|
-        self.create_with_distance_check(
+        city = self.create_with_distance_check(
           {
             :name => pc[:city], #:name => pc[:name],
             :country => pc[:country],
@@ -108,6 +108,8 @@ class City < ActiveRecord::Base
             :lon => pc[:coord][:lon],
           }
         )
+        # store city for faster use
+        pc[:id] = city.id if city.valid?
       end
 
     end

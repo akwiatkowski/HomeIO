@@ -47,87 +47,16 @@ end
 # addition taks
 namespace :db do
 
-  namespace :sqlite do
-
-    desc 'Initialize sqlite DB'
-    task :init do
-      require './lib/db_store.rb'
-      db = DbStore.instance
-      db.prepare_sqlite_db
-    end
-
+  desc 'Initialize DBs'
+  task :init do
+    require './lib/storage/storage.rb'
+    Storage.instance.init
   end
 
-  namespace :mysql do
-
-    desc 'Generatore mysql queries for populating cities'
-    task :generatie_cities do
-      require 'yaml'
-
-      puts "START TRANSACTION;"
-      c = YAML::load_file("config/metar.yml")
-      c[:cities].each do |c|
-        puts "insert into cities (id,name,country,metar,lat,lon) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]});"
-      end
-      puts "COMMIT;"
-
-    end
-  end
- 
-  
-end
-
-namespace :weather do
-  namespace :ripper do
-
-    desc 'Single all sites fetch'
-    task :fetch do
-      require './lib/weather_ripper.rb'
-      w = WeatherRipper.instance
-    end
-
-  end
-
-  namespace :metar do
-
-    desc 'Single all METARs fetch '
-    task :fetch do
-      require './lib/metar_tools.rb'
-      require './lib/metar_logger.rb'
-
-      Thread.abort_on_exception = true
-      config = MetarTools.load_config
-      # without starting
-      config[:start] = false
-      m = MetarLogger.new( config )
-      m.do_once
-
-    end
-
-    namespace :process do
-
-      desc 'Process ALL'
-      task :all do
-
-        require './lib/metar_tools.rb'
-        #require './lib/metar_logger.rb'
-        require './lib/metar_processor.rb'
-
-        Thread.abort_on_exception = true
-        config = MetarTools.load_config
-
-        MetarProcessor.prepare
-
-        cities = config[:cities]
-        cities.each do |c|
-          city = c[:code]
-          MetarProcessor.process_city( city )
-        end
-
-      end
-
-    end
-
+  desc 'Clean DBs'
+  task :deinit do
+    require './lib/storage/storage.rb'
+    Storage.instance.deinit
   end
 
 end
