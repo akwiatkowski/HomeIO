@@ -3,10 +3,6 @@ require 'lib/weather_ripper/weather_base'
 # http://pogoda.money.pl/poznan,miasto,125.html
 
 class WeatherMoneyPl < WeatherBase
-  def initialize
-    @config = ConfigLoader.instance.config( self.class )
-    @defs = @config[:defs]
-  end
 
   def process( body_raw )
 

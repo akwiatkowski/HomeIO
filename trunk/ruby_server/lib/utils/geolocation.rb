@@ -11,9 +11,6 @@ class Geolocation
   }
   #attr_accessor :lat, :lon
 
-  # location within this distance is threated like the same city [km]
-  CITY_DISTANCE_TOLERANCE = 25
-
   def initialize( lat = nil, lon = nil )
     @config = ConfigLoader.instance.config( self.class )
     @_lat = lat.nil? ? @config[:site][:lat] : lat

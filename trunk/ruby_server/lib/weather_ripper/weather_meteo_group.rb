@@ -3,10 +3,6 @@ require 'lib/weather_ripper/weather_base'
 # http://www.meteogroup.pl/pl/home/pogoda/pogoda-na-swiecie/pogoda-lokalna/miasto/48X23/poznan/dzis.html
 
 class WeatherMeteoGroup < WeatherBase
-  def initialize
-    @config = ConfigLoader.instance.config( self.class )
-    @defs = @config[:defs]
-  end
 
   def process( body_raw )
 

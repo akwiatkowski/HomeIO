@@ -4,9 +4,17 @@ require 'hpricot'
 require './lib/storage/storage.rb'
 require './lib/utils/adv_log.rb'
 require './lib/weather_ripper.rb'
+require './lib/weather_ripper/utils/weather_city_proxy.rb'
 
 
 class WeatherBase
+
+  attr_reader :defs
+
+  def initialize
+    @config = ConfigLoader.instance.config( self.class )
+    @defs = @config[:defs]
+  end
 
   # Safec accesor
   #attr_reader :config

@@ -79,6 +79,8 @@
     :lon: 19.023399
 - :url: 'http://pogoda.interia.pl/miasta?id=11732'
   :city: 'Jaworzno'
+  # is located near other city, and does not belong do it
+  :near_other_city: true
   :country: 'Poland'
   :coord:
     :lat: 50.203847

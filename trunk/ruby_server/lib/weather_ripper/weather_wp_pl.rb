@@ -1,11 +1,7 @@
 require './lib/weather_ripper/weather_base.rb'
 
 class WeatherWpPl < WeatherBase
-  def initialize
-    @config = ConfigLoader.instance.config( self.class )
-    @defs = @config[:defs]
-  end
-
+  
   def process( body_raw )
 
     body = body_raw.downcase
