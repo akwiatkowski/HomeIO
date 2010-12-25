@@ -77,14 +77,23 @@ class MetarCode
 
   # If metar string was valid, processed ok, and time was correct
   def valid?
-    if not @output[:temperature].nil? and
-        not @output[:wind].nil? and
-        not @output[:time].nil? and
+    # metar doesn't need to have temp., wind
+    #    if not @output[:temperature].nil? and
+    #        not @output[:wind].nil? and
+    #        not @output[:time].nil? and
+    #        @output[:time] <= Time.now and
+    #        @output[:time].year == self.year.to_i and
+    #        @output[:time].month == self.month.to_i
+    #      return true
+    #    end
+
+    if  not @output[:time].nil? and
         @output[:time] <= Time.now and
         @output[:time].year == self.year.to_i and
         @output[:time].month == self.month.to_i
       return true
     end
+
     return false
   end
 
@@ -248,9 +257,37 @@ class MetarCode
         @output[:wind_max] = wind_max
         @output[:wind_direction] = $1.to_i
       end
+    end
 
+    # variable/unknown direction
+    if s =~ /VRB(\d{2})(KT|MPS|KMH)/
+      wind = case $2
+      when "KT" then $1.to_f * 1.85
+      when "MPS" then $1.to_f * 1.6
+      when "KMH" then $1.to_f
+      else nil
+      end
+
+      # additional wind data
+      if not @output[:wind].nil?
+        if @output[:wind_additionals].nil?
+          @output[:wind_additionals] = Array.new
+        end
+
+        @output[:wind_additionals] << {
+          :wind => wind,
+          :wind_max => wind_max,
+          :wind_direction => $1.to_i
+        }
+      else
+        @output[:wind] = wind
+        @output[:wind_mps] = wind / 3.6
+        @output[:wind_max] = wind_max
+        @output[:wind_direction] = $1.to_i
+      end
       
     end
+
 
   end
 
