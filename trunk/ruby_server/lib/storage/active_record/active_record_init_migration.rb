@@ -61,7 +61,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.column :pressure, :float, :null => true
         t.column :rain_metar, :integer, :null => true
         t.column :snow_metar, :integer, :null => true
-        t.column :raw, :integer, :null => true
+        t.column :raw, :string, :null => true, :limit => 255
 
         t.timestamps
         t.references :city

@@ -61,6 +61,23 @@ namespace :db do
 
 end
 
+namespace :metar do
+
+  namespace :process do
+
+    desc 'Process all metars logged in raw format'
+    task :all do
+      #require './lib/metar_logger.rb'
+      #MetarLogger.instance.processor.process_all
+      require './lib/metar/metar_mass_processor.rb'
+      MetarMassProcessor.new.process_all
+    end
+
+  end
+
+end
+
+
 namespace :gems do
 
   desc 'Install required gems'

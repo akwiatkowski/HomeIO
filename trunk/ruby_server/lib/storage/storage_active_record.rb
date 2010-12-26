@@ -42,7 +42,9 @@ class StorageActiveRecord < StorageDbAbstract
   private
 
   def store_metar( obj )
-    WeatherMetarArchive.create!({
+    # wrong records can be not saved - there are always raw metars in text files
+    return unless obj.valid?
+    h = {
       :time_from => obj.output[:time],
       :time_to => obj.output[:time] + MetarCode::TIME_INTERVAL,
       :temperature => obj.output[:temperature],
@@ -52,7 +54,12 @@ class StorageActiveRecord < StorageDbAbstract
       :rain_metar => obj.output[:rain_metar],
       :raw => obj.raw,
       :city_id => obj.city_id,
-    })
+    }
+    wma = WeatherMetarArchive.new( h )
+    res = wma.save
+    if res == false
+      puts " SAR errors: #{wma.errors.inspect}"
+    end
   end
 
 end

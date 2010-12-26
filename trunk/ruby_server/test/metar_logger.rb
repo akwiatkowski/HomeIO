@@ -8,7 +8,8 @@ class TestMetarLogger < Test::Unit::TestCase
   def test_full
     Thread.abort_on_exception = true
     m = MetarLogger.instance
-    output = m.fetch_and_store_city('EPPO')
+    #output = m.fetch_and_store_city('EPPO')
+    output = m.fetch_and_store
 
     require 'yaml'
     puts output.to_yaml

@@ -4,12 +4,20 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 
-$:.unshift File.join(File.dirname(__FILE__),'..','lib')
-
 require 'test/unit'
-require 'metar_code'
+require './lib/metar/metar_code.rb'
 
 class MetarCodeTest < Test::Unit::TestCase
+
+  # Method for testing manualy metars
+  def test_validate
+    m = "HPP 252000Z 34001MPS 9999 BKN020CB BKN100 01/M00 Q1010 NOSIG RMK QFE754/1005 SC045 05 05"
+    mc = MetarCode.new
+    mc.process(m, 2010, 11)
+    # puts mc.inspect
+    # puts mc.valid?
+  end
+
   def test_validity
     wrong_metar_a = "przestarzały (2250 godziny)"
     wrong_metar_b = "brakujący"

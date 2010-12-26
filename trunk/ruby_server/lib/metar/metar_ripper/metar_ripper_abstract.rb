@@ -5,6 +5,8 @@ class MetarRipperAbstract
 
   attr_reader :exception
 
+  # Fetch metar for city
+  # *city* - city metar code, ex. EPPO
   def fetch( city )
 
     u = url( city )

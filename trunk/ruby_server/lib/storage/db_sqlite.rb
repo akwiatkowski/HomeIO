@@ -16,6 +16,8 @@ class DbSqlite < StorageDbAbstract
     'sqlite'
   )
 
+  VERBOSE = false
+
   # @config - configuration file
   # @db - hash for
 
@@ -87,7 +89,7 @@ class DbSqlite < StorageDbAbstract
   # *k* - class name in symbol
   def flush_by_type( k )
 
-    puts "Flushing #{k}, #{ @pools[ k ].size } object"
+    puts "Sqlite flushing #{k}, #{ @pools[ k ].size } object"
 
     queries = Array.new
     @pools[ k ].each do |o|
@@ -102,7 +104,8 @@ class DbSqlite < StorageDbAbstract
     db.execute( q )
 
     queries.each do |q|
-      puts q
+      # verbose mode
+      puts q if VERBOSE
       db.execute( q )
     end
 
@@ -110,6 +113,8 @@ class DbSqlite < StorageDbAbstract
     db.execute( q )
     disconnect
 
+    # clear pool
+    @pools[ k ] = Array.new
   end
 
   # Converts storable object to sqlite query
@@ -123,14 +128,27 @@ class DbSqlite < StorageDbAbstract
     q += "insert into #{conf[:table_name]} ("
     q += db_data[:columns].collect{|c| c.to_s}.join(",")
     q += ") values ("
-    q += db_data[:columns].collect{|c| db_data[:data][ c ]}.join(",")
+    #q += db_data[:columns].collect{|c| db_data[:data][ c ] }.join(",")
+    q += db_data[:columns].collect{|c| escape_string( db_data[:data][ c ].to_s ) }.join(",")
     q += ");"
 
-    puts q
+    # verbose mode
+    puts q if VERBOSE
 
     return q
   end
 
+  # Escape slashes to sqlite
+  def escape_string( str )
+    return 'NULL' if str.to_s == ''
+    
+    #s = str.to_s.gsub(/'/,"\\\\\\\\"+"\\\\\'")
+    # http://www.sqlite.org/faq.html#q14
+    s = str.to_s.gsub(/'/,"''")
+    s = s.gsub(/^''/,"'")
+    s = s.gsub(/''$/,"'")
+    return s
+  end
 
 
   def flush_metar
@@ -151,6 +169,7 @@ class DbSqlite < StorageDbAbstract
   # Store standard object
   def standarized_store( obj, d )
     puts obj.inspect, d.inspect
+    raise 'Not implemented'
   end
 
   # Create directories if needed, return url
@@ -258,7 +277,7 @@ class DbSqlite < StorageDbAbstract
     cities = ConfigLoader.instance.config( MetarConstants::CONFIG_TYPE )[:cities]
     cities.each do |c|
       distance = Geolocation.distance( c[:coord][:lat], c[:coord][:lon] )
-      cq = "insert into cities (id,name,country,metar,lat,lon,calculated_distance) values (#{c[:id]},'#{c[:name].gsub(/\'/,'')}','#{c[:country].to_s.gsub(/\'/,'')}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]},#{distance});\n"
+      cq = "insert into cities (id,name,country,metar,lat,lon,calculated_distance) values (#{c[:id]},'#{escape_string( c[:name] )}','#{escape_string( c[:country])}','#{c[:code]}',#{c[:coord][:lat]},#{c[:coord][:lon]},#{distance});\n"
       # puts cq
       @sqlite_db_metar_weather.execute( cq )
     end

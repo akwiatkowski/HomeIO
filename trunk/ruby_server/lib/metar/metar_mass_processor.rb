@@ -1,0 +1,58 @@
+require './lib/metar_logger.rb'
+require './lib/storage/metar_storage.rb'
+
+# Load raw metar logs and process it
+
+class MetarMassProcessor
+
+  # Metar logger cities definition
+  attr_reader :cities
+
+  def initialize
+    # cities from definitions
+    #@cities = MetarLogger.instance.cities.collect{|c| c[:code]}
+    # cities logged on disk
+    @cities = MetarStorage.cities_logged
+  end
+
+  # Process everything
+  def process_all
+    @cities.each do |c|
+      process_all_for_city( c )
+    end
+  end
+
+  # Process everything for one city
+  # *city* - metar code
+  def process_all_for_city( city )
+    logs = MetarStorage.dirs_per_city( city )
+    logs.keys.each do |year|
+      logs[ year ].each do |month|
+        process_month_for_city( city, year, month )
+      end
+    end
+  end
+
+  # Process one month for city
+  # *city* - metar code
+  # *year*
+  # *month*
+  def process_month_for_city( city, year, month )
+    file_path = MetarStorage.filepath( city, year, month )
+
+    count = 0
+
+    f = File.open( file_path )
+    f.each_line do |metar|
+      mc = MetarCode.process( metar, year, month, MetarConstants::METAR_CODE_RAW_LOGS )
+      mc.store
+      
+      count += 1
+      if (count % 10) == 0
+        puts " #{count} metars processed and stored"
+      end
+    end
+    f.close
+  end
+
+end

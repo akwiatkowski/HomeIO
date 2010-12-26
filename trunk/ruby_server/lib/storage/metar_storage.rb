@@ -11,6 +11,8 @@ class MetarStorage
   def store( obj )
     # Store only raw metars
     return nil unless obj.kind_of?( MetarCode )
+    # Store only freshly downloaded
+    return nil unless MetarConstants::METAR_CODE_JUST_DOWNLOADED == obj.type
 
     return store_metar( obj )
   end
@@ -26,6 +28,87 @@ class MetarStorage
 
   def flush
   end
+
+
+
+  # Full path to file
+  def self.filepath( city, year, month )
+    return File.join( self.dirpath( city, year ), self.filename( city, year, month ) )
+  end
+
+  # Filename where metar should be logged
+  def self.filename( city, year, month )
+    return "metar_" + city.to_s + "_" + year.to_s2( 4 ) + "_" + month.to_s2( 2 ) + ".log"
+  end
+
+  # Directory path where metar should be logged
+  def self.dirpath( city, year )
+    return File.join(
+      Constants::DATA_DIR,
+      MetarConstants::METAR_LOG_DIR,
+      city,
+      year.to_s2( 4 )
+    )
+  end
+
+  # Get all cities
+  def self.cities_logged
+    dpath = File.join(
+      Constants::DATA_DIR,
+      MetarConstants::METAR_LOG_DIR
+    )
+    d = Dir.new( dpath )
+    a = Array.new
+
+    d.each do |f|
+      unless f == '..' or f == '.'
+        # get all cities
+        a << f
+      end
+    end
+
+    return a
+  end
+
+  # Get all months where are metar logs for city
+  def self.dirs_per_city( city )
+    dpath = File.join(
+      Constants::DATA_DIR,
+      MetarConstants::METAR_LOG_DIR,
+      city
+    )
+    d = Dir.new( dpath )
+
+    h = Hash.new
+
+    # check all years
+    d.each do |f|
+      unless f == '..' or f == '.'
+        # get all month per year
+        h[ f ] = self.files_for_city_year( city, f )
+      end
+    end
+
+    return h
+  end
+
+  # Get all months where are metar logs for city and year
+  def self.files_for_city_year( city, year )
+    dpath = self.dirpath( city, year )
+    d = Dir.new( dpath )
+
+    a = Array.new
+
+    # check all years
+    d.each do |f|
+      if f =~ /_(\d{2})\.log/
+        a << $1
+      end
+    end
+
+    return a
+  end
+
 
 
   private
@@ -74,25 +157,32 @@ class MetarStorage
     return true
   end
 
+
+
   # Full path to file
   def filepath( obj )
     return File.join( dirpath( obj ), filename( obj ) )
+    #return self.class.filepath( obj )
   end
 
   # Filename where metar should be logged
   def filename( obj )
-    return "metar_" + obj.city.to_s + "_" + obj.year.to_s2( 4 ) + "_" + obj.month.to_s2( 2 ) + ".log"
+    #return "metar_" + obj.city.to_s + "_" + obj.year.to_s2( 4 ) + "_" + obj.month.to_s2( 2 ) + ".log"
+    return self.class.filename( obj.city, obj.year, obj.month )
   end
 
   # Directory path where metar should be logged
   def dirpath( obj )
-    return File.join(
-      Constants::DATA_DIR,
-      MetarConstants::METAR_LOG_DIR,
-      obj.city,
-      obj.year.to_s2( 4 )
-    )
+    #    return File.join(
+    #      Constants::DATA_DIR,
+    #      MetarConstants::METAR_LOG_DIR,
+    #      obj.city,
+    #      obj.year.to_s2( 4 )
+    #    )
+    return self.class.dirpath( obj.city, obj.year )
   end
+
+
 
   # Prepare directory structure for
   def prepare_directories( obj )
@@ -135,8 +225,9 @@ class MetarStorage
 
 
 
+  # XXX delete it and test
   # Zapisuje METAR
-  def _save_metar( datahash )
+  def __save_metar( datahash )
 
     # jeśli plik istnieje to sprawdza czy nie ma już w nim tej linijki
     

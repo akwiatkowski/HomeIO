@@ -11,6 +11,9 @@ class MetarCode
   
   attr_reader :output, :metar_string, :metar_splits, :year, :month, :city, :city_id
 
+  # Type from where come this metar, ex: :archived, :fresh
+  attr_reader :type
+
   # maksymalna widoczność jaką zapisujemy
   MAX_VISIBLITY = 10_000
 
@@ -28,6 +31,7 @@ class MetarCode
     @year = nil
     @month = nil
 
+    @output[:time] = nil
     @output[:specials] = Array.new
     @output[:clouds] = Array.new
 
@@ -36,7 +40,12 @@ class MetarCode
   end
 
   # Zwraca utworzony obiekt typu MetarCode przetwarzając kod METAR
-  def process( string, year, month )
+  def process( string, year, month, type )
+
+    # type:
+    # :archived => stored raw in text files, can only update DB (not implememted yet), but not raw logs
+    # :fresh => just downloaded, can be store everywhere
+    @type = type
 
     # usuń wcześniejsze dane
     clear
@@ -53,18 +62,18 @@ class MetarCode
   end
 
   # Process metar string in newly created MetarCode instance
-  def self.process( string, year, month )
+  def self.process( string, year, month, type )
     mc = self.new
-    mc.process( string, year, month )
+    mc.process( string, year, month, type )
     return mc
   end
 
   # Process array of metar strings
-  def self.process_array( array, year, month )
+  def self.process_array( array, year, month, type )
     oa = Array.new
     array.each do |a|
       puts a
-      mc = process( a, year, month )
+      mc = process( a, year, month, type )
       oa << mc
     end
     return oa
@@ -75,19 +84,12 @@ class MetarCode
     return @metar_string
   end
 
-  # If metar string was valid, processed ok, and time was correct
+  # If metar string id valid, processed ok with basic data, and time was correct
   def valid?
     # metar doesn't need to have temp., wind
-    #    if not @output[:temperature].nil? and
-    #        not @output[:wind].nil? and
-    #        not @output[:time].nil? and
-    #        @output[:time] <= Time.now and
-    #        @output[:time].year == self.year.to_i and
-    #        @output[:time].month == self.month.to_i
-    #      return true
-    #    end
-
-    if  not @output[:time].nil? and
+    if not @output[:temperature].nil? and
+        not @output[:wind].nil? and
+        not @output[:time].nil? and
         @output[:time] <= Time.now and
         @output[:time].year == self.year.to_i and
         @output[:time].month == self.month.to_i
@@ -97,8 +99,8 @@ class MetarCode
     return false
   end
 
-  # If metar string was valid
-  def valid_wo_time?
+  # If metar string was decoded and it contains basic data
+  def valid_basic_data?
     if not @output[:temperature].nil? and
         not @output[:wind].nil? and
         not @output[:time].nil?
@@ -110,7 +112,7 @@ class MetarCode
   # Store
   def store
     # send self to Storage
-    Storage.instance.store( self )
+    Storage.instance.store( self ) if valid?
   end
 
   # Convert decoded METAR to hash object prepared to store in DB
@@ -172,7 +174,7 @@ class MetarCode
 
     # if metar is invalid store it in log to check if decoder has error
     if true == ConfigLoader.instance.config( self.class.to_s )[:store_decoder_errors]
-      unless valid_wo_time?
+      unless valid_basic_data?
         AdvLog.instance.logger( self ).error("Cant decode metar: '#{self.raw}', city '#{self.city}'")
       end
     end
