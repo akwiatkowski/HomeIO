@@ -29,13 +29,9 @@ class MetarLogger
   #
   # Return hash of arrays with MetarCodes
   def fetch_and_store
-    h = Hash.new
-    @cities.each do |c|
-      metar_code = c[:code]
-      h[ metar_code ] = fetch_and_store_city( metar_code )
-    end
-    return h
+    o = _fetch_and_store
     Storage.instance.flush
+    return o
   end
 
   # Fetch and store metar for city
@@ -43,6 +39,31 @@ class MetarLogger
   #
   # Return array of MetarCode
   def fetch_and_store_city( metar_city )
+    o = _fetch_and_store_city( metar_city )
+    Storage.instance.flush
+    return o
+  end
+
+
+  private
+
+  # Fetch and store metar for all cities
+  #
+  # Return hash of arrays with MetarCodes
+  def _fetch_and_store
+    h = Hash.new
+    @cities.each do |c|
+      metar_code = c[:code]
+      h[ metar_code ] = _fetch_and_store_city( metar_code )
+    end
+    return h
+  end
+
+  # Fetch and store metar for city
+  # Use all sites
+  #
+  # Return array of MetarCode
+  def _fetch_and_store_city( metar_city )
     year = Time.now.year
     month = Time.now.month
 
