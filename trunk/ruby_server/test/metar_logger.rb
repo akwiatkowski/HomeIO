@@ -11,8 +11,8 @@ class TestMetarLogger < Test::Unit::TestCase
     #output = m.fetch_and_store_city('EPPO')
     output = m.fetch_and_store
 
-    require 'yaml'
-    puts output.to_yaml
+    #require 'yaml'
+    #puts output.to_yaml
   end
 
 end

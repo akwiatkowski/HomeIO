@@ -25,6 +25,7 @@ class MetarMassProcessor
   # Process everything for one city
   # *city* - metar code
   def process_all_for_city( city )
+    puts "Processing city #{city} (#{Time.now.to_s})"
     logs = MetarStorage.dirs_per_city( city )
     logs.keys.each do |year|
       logs[ year ].each do |month|
@@ -38,18 +39,25 @@ class MetarMassProcessor
   # *year*
   # *month*
   def process_month_for_city( city, year, month )
+    puts "\n", "*"*80
+    puts "Processing city #{city} - #{year}.#{month}"
+    puts "*"*80, "\n"
+
     file_path = MetarStorage.filepath( city, year, month )
 
     count = 0
+    valid_count = 0
 
     f = File.open( file_path )
     f.each_line do |metar|
+      
       mc = MetarCode.process( metar, year, month, MetarConstants::METAR_CODE_RAW_LOGS )
       mc.store
       
       count += 1
+      valid_count += 1 if mc.valid?
       if (count % 10) == 0
-        puts " #{count} metars processed and stored"
+        puts " #{count} metars processed and stored, #{valid_count} valid"
       end
     end
     f.close

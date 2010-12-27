@@ -1,3 +1,5 @@
+# TODO mutex when adding to pool
+
 require './lib/storage/storage_db_abstract.rb'
 require 'rubygems'
 require 'active_record'
@@ -21,6 +23,8 @@ class StorageActiveRecord < StorageDbAbstract
     ActiveRecord::Base.establish_connection(
       @config[:connection]
     )
+
+    @pool = Array.new
   end
 
   def init
@@ -37,6 +41,31 @@ class StorageActiveRecord < StorageDbAbstract
     when 'MetarCode' then store_metar( obj )
     else other_store( obj )
     end
+
+    # flushing
+    if @pool.size >= @config[:pool_size].to_i
+      flush
+    end
+  end
+
+  def flush
+    # saving each object
+    puts "StorageActiveRecord flushing #{@pool.size} objects"
+    ActiveRecord::Base.transaction do
+      @pool.each do |o|
+        res = o.save
+
+        if res == false
+          err_msg = "StorageActiveRecord errors: #{o.errors.inspect}"
+          puts err_msg
+          AdvLog.instance.logger( self ).warn( "err_msg - #{o.inspect}" )
+          # TODO move it outside, more type of error handling
+        end
+      end
+    end
+
+    # clearing pool
+    @pool = Array.new
   end
 
   private
@@ -55,11 +84,20 @@ class StorageActiveRecord < StorageDbAbstract
       :raw => obj.raw,
       :city_id => obj.city_id,
     }
-    wma = WeatherMetarArchive.new( h )
-    res = wma.save
-    if res == false
-      puts " SAR errors: #{wma.errors.inspect}"
+    # updating metar if stored in DB
+    wma = WeatherMetarArchive.find(:last, :conditions => {:city_id => obj.city_id, :time_from => obj.output[:time], :raw => obj.raw} )
+    if wma.nil?
+      wma = WeatherMetarArchive.new( h )
+    else
+      wma.update_attributes( h )
     end
+    
+    @pool << wma
+
+    #res = wma.save
+    #if res == false
+    #  puts " SAR errors: #{wma.errors.inspect}"
+    #end
   end
 
 end

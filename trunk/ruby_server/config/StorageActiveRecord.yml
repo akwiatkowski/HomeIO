@@ -1,6 +1,7 @@
 # Storing using ActiveRecord
 ---
 :enabled: true
+:pool_size: 100
 :connection_sqlite:
   #adapter => "mysql",
   #host => "localhost",

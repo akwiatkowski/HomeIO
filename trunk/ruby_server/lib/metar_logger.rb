@@ -35,6 +35,7 @@ class MetarLogger
       h[ metar_code ] = fetch_and_store_city( metar_code )
     end
     return h
+    Storage.instance.flush
   end
 
   # Fetch and store metar for city

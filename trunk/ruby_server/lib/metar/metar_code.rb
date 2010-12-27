@@ -49,13 +49,17 @@ class MetarCode
 
     # usuń wcześniejsze dane
     clear
-    @metar_string = string.to_s.gsub(/\s/,' ').strip
-    @metar_splits = @metar_string.split(' ')
-    @year = year
-    @month = month
+    begin
+      @metar_string = string.to_s.gsub(/\s/,' ').strip
+      @metar_splits = @metar_string.split(' ')
+      @year = year
+      @month = month
 
-    # przetwarzanie
-    decode
+      # przetwarzanie
+      decode
+    rescue
+      AdvLog.instance.logger( self ).error("Error when processing '#{@metar_string}'")
+    end
 
     return @output
 
@@ -535,11 +539,65 @@ class MetarCode
     @snow_metar = 0
     @rain_metar = 0
 
-    @output[:snow_metar] = 0
-    @output[:rain_metar] = 0
-
     # TODO dopisać zgodnie z http://weather.cod.edu/notes/metar.html
     # sumować oceniany wielkość opadów w pseudojednostce
+
+    @output[:specials].each do |s|
+      new_rain = 0
+      new_snow = 0
+      coef = 1
+      case s[:precipitation]
+      when 'drizzle' then
+        new_rain = 5
+
+      when 'rain' then
+        new_rain = 10
+
+      when 'snow' then
+        new_snow = 10
+      
+      when 'snow grains' then
+        new_snow = 5
+
+      when 'ice crystals' then
+        new_snow = 1
+        new_rain = 1
+
+      when 'ice pellets' then
+        new_snow = 2
+        new_rain = 2
+
+      when 'hail' then
+        new_snow = 3
+        new_rain = 3
+
+      when 'small hail/snow pellets' then
+        new_snow = 1
+        new_rain = 1
+      end
+
+      case s[:intensity]
+      when 'in the vicinity' then coef = 1.5
+      when 'heavy' then coef = 3
+      when 'light' then coef = 0.5
+      when 'moderate' then coef = 1
+      end
+
+      snow = new_snow * coef
+      rain = new_rain * coef
+
+      if @snow_metar < snow
+        @snow_metar = snow
+      end
+      if @rain_metar < rain
+        @rain_metar = rain
+      end
+
+    end
+
+    @output[:snow_metar] = @snow_metar
+    @output[:rain_metar] = @rain_metar
+
   end
 
   def decode_other( s )

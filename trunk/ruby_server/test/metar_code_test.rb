@@ -1,8 +1,5 @@
-#!/usr/bin/ruby1.9.1
-#encoding: utf-8
-
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+# TODO doda sprawdzanie czy się nie wywali jak dostanie głupie znaki np
+# "KLAX 031453Z 00000KT 10SM SCT023 BKN03�OVC045 13/09 A3003 RMK AO2 SLP167 SCT V BKN T01330094 53007"
 
 require 'test/unit'
 require './lib/metar/metar_code.rb'

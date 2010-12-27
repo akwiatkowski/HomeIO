@@ -10,6 +10,6 @@
   # class name
   :MetarCode:
     # how many object should be stored one time
-    :pool_size: 50
+    :pool_size: 100
     # table name
     :table_name: 'metar_weather_archives'

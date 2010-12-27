@@ -89,7 +89,7 @@ class DbSqlite < StorageDbAbstract
   # *k* - class name in symbol
   def flush_by_type( k )
 
-    puts "Sqlite flushing #{k}, #{ @pools[ k ].size } object"
+    puts "Sqlite flushing #{k}, #{ @pools[ k ].size } objects"
 
     queries = Array.new
     @pools[ k ].each do |o|
