@@ -9,6 +9,7 @@ class ConfigLoader
   include Singleton
 
   CONFIG_FILES_PATH = "config"
+  INPUT_FILES_DIR = "input"
 
   # Load config if needed, or forced
   def config( type, force = false )
@@ -25,6 +26,11 @@ class ConfigLoader
   # Create hash for all configs
   def initialize
     @@config = Hash.new unless defined? @@config
+  end
+
+  # Load other input files
+  def load_input( type )
+    return YAML::load_file( File.join(CONFIG_FILES_PATH, INPUT_FILES_DIR, "#{type.to_s}.yml") )
   end
 
 end

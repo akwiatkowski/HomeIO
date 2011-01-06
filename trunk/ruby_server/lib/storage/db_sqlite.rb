@@ -49,7 +49,7 @@ class DbSqlite < StorageDbAbstract
   def store( obj )
     case obj.class.to_s
       # TODO add here object which use module StorageInterface
-    when 'MetarCode' then store_object( obj )
+    when 'MetarCode', 'Weather' then store_object( obj )
     else other_store( obj )
     end
   end
@@ -201,6 +201,7 @@ class DbSqlite < StorageDbAbstract
 
     @db = {
       :MetarCode => @sqlite_db_metar_weather,
+      :Weather => @sqlite_db_weather,
       # TODO add here other storable classes
     }
   end

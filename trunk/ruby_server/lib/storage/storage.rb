@@ -14,6 +14,7 @@ class Storage
   def initialize
     @storages = [
       MetarStorage.instance,
+      WeatherStorage.instance,
       DbSqlite.instance,
       #DbMysql.instance,
       #DbPostgres.instance

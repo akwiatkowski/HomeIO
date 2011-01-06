@@ -27,9 +27,17 @@ class WeatherRipper
       WeatherWpPl.new,
       WeatherInteriaPl.new
     ]
+
+    (0...(@providers.size)).each do |i|
+      @providers[i].id = i + 1
+    end
+
   end
 
+  # Fetch weather from all providers, and all cities
   def fetch
+    WeatherCityProxy.instance.post_init
+
     @providers.each do |p|
       p.check_all
     end

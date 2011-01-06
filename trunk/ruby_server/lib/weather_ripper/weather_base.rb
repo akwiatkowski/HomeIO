@@ -5,11 +5,15 @@ require './lib/storage/storage.rb'
 require './lib/utils/adv_log.rb'
 require './lib/weather_ripper.rb'
 require './lib/weather_ripper/utils/weather_city_proxy.rb'
+require './lib/weather_ripper/weather.rb'
 
 
 class WeatherBase
 
   attr_reader :defs
+
+  # Id used in DB
+  attr_accessor :id
 
   def initialize
     @config = ConfigLoader.instance.config( self.class )
@@ -37,7 +41,8 @@ class WeatherBase
         end
       end
     end
-    DbStore.instance.flush
+    # must have!
+    Storage.instance.flush
   end
 
   def process( body_raw )
@@ -64,8 +69,14 @@ class WeatherBase
   def check_online( defin )
     body = fetch( defin )
     processed = process( body )
-    store( processed, defin )
-    return processed
+    weathers = Weather.create_from( processed, defin )
+    
+    #puts weathers.inspect
+    weathers.each do |w|
+      w.store
+    end
+
+    return weathers
   end
 
   # Download website
@@ -77,12 +88,8 @@ class WeatherBase
     return body
   end
 
-  #
-  def store( data, defin )
-    # TODO czy tych danych nie ma w plikach konf
-    # metar logger base
-
-
+  # DEPRECATED
+  def DEP_store( data, defin )
     #f = File.new( File.join("data", "weather", self.class.to_s+".txt"), "a")
     f = File.new( File.join( WeatherRipper::WEATHER_DIR, self.class.to_s+".txt"), "a")
 
@@ -94,5 +101,6 @@ class WeatherBase
     end
     f.close
   end
+  
 
 end

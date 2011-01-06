@@ -106,7 +106,8 @@ class WeatherInteriaPl < WeatherBase
         :wind => winds[0][0].to_f / 3.6,
         :snow => snows[0][0].to_f,
         :rain => rains[0][0].to_f,
-        :provider => 'Interia.pl'
+        :provider => 'Interia.pl',
+        :weather_provider_id => id
       },
       {
         :time_created => Time.now,
@@ -118,7 +119,8 @@ class WeatherInteriaPl < WeatherBase
         :wind => winds[1][0].to_f / 3.6,
         :snow => snows[1][0].to_f,
         :rain => rains[1][0].to_f,
-        :provider => 'Interia.pl'
+        :provider => 'Interia.pl',
+        :weather_provider_id => id
       }
     ]
 

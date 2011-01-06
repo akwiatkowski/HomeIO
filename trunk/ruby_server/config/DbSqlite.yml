@@ -14,3 +14,7 @@
     :pool_size: 500
     # table name
     :table_name: 'metar_weather_archives'
+  # weather
+  :Weather:
+    :pool_size: 100
+    :table_name: 'weather_archives'

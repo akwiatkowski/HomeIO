@@ -39,6 +39,7 @@ class StorageActiveRecord < StorageDbAbstract
   def store( obj )
     case obj.class.to_s
     when 'MetarCode' then store_metar( obj )
+    when 'Weather' then store_weather( obj )
     else other_store( obj )
     end
 
@@ -93,11 +94,39 @@ class StorageActiveRecord < StorageDbAbstract
     end
     
     @pool << wma
+  end
 
-    #res = wma.save
-    #if res == false
-    #  puts " SAR errors: #{wma.errors.inspect}"
-    #end
+  def store_weather( obj )
+    # wrong records can be not saved - there are always raw metars in text files
+    return unless obj.valid?
+    h = {
+      :time_from => obj.data[:time_from],
+      :time_to => obj.data[:time_to],
+      :temperature => obj.data[:temperature],
+      :pressure => obj.data[:pressure],
+      :wind => obj.data[:wind],
+      :snow => obj.data[:snow],
+      :rain => obj.data[:rain],
+      :city_id => obj.defin[:id],
+      :weather_provider_id => obj.data[:weather_provider_id]
+    }
+    # updating metar if stored in DB
+    wa = WeatherArchive.find(
+      :last,
+      :conditions => {
+        :city_id => obj.defin[:id],
+        :time_from => obj.data[:time_from],
+        :weather_provider_id => obj.data[:weather_provider_id]
+      }
+    )
+    
+    if wa.nil?
+      wa = WeatherArchive.new( h )
+    else
+      wa.update_attributes( h )
+    end
+
+    @pool << wa
   end
 
 end

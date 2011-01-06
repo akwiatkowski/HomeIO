@@ -3,7 +3,7 @@ require 'test/unit'
 
 class TestConfigLoader < Test::Unit::TestCase
 
-  def test_basic
+  def del_test_basic
     a = AiFurnace.new
 
     weather_data = []
@@ -39,6 +39,15 @@ class TestConfigLoader < Test::Unit::TestCase
     puts a.eval([1, 5]).inspect
     puts a.eval([8, 0]).inspect
     puts a.eval([-14, 8]).inspect
+  end
+
+  def test_basic
+    a = AiFurnace.new
+    a.load_input
+
+    #puts a.furnace_input.inspect
+    a.show_furnace_data
+
   end
 
 end

@@ -4,7 +4,7 @@ require './lib/storage/storage.rb'
 require './lib/storage/storage_interface.rb'
 require './lib/utils/adv_log.rb'
 
-# Jeden kod METAR
+# Metar code model
 
 class MetarCode
   include StorageInterface
@@ -134,7 +134,8 @@ class MetarCode
         :rain_metar => @output[:rain_metar],
         :provider => "'METAR'",
         # escaping slashes
-        :raw => "'#{@metar_string.gsub(/\'/,"\\\\"+'\'')}'",
+        #:raw => "'#{@metar_string.gsub(/\'/,"\\\\"+'\'')}'",
+        :raw => "'#{@metar_string}'",
         :city_id => @city_id,
         :city => "'#{@city}'",
         :city_hash => @city_hash
