@@ -1,6 +1,6 @@
 require './lib/comm_server.rb'
 
-class MetarServer < CommServer
+class HomeIoServer < CommServer
 
   # port dla serwera METAR
   PORT = 20001
