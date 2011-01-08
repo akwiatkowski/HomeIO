@@ -32,7 +32,7 @@ class CommQueue
       # server is alive
       return :ok
       
-    elsif not command[:command] == :fetch #and not command[:id].nil?
+    elsif command[:command] == :fetch #and not command[:id].nil?
       # fetch response from queue
       if command[:id].nil?
         return {:result => :failed, :reason => :no_id}
@@ -59,6 +59,7 @@ class CommQueue
     h[:command] = command
     # identyfikator do wyszukiwania
     h[:id] = command.object_id
+    #h[:id] = self.class.generate_id
     # status
     h[:status] = :new
 
@@ -149,6 +150,12 @@ class CommQueue
   # Ustawia że polecenie jest wykonane
   def queue_position_done( q )
     q[:status] = :done
+  end
+
+  def self.generate_id
+    str = Time.now.to_s + Time.now.to_f.to_s + rand(12345).to_s
+    hash = Digest::SHA2.new << str
+    return hash.to_s
   end
 
 end

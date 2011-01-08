@@ -25,6 +25,11 @@ class MetarLogger
     #@processor = MetarMassProcessor.new
   end
 
+  def start
+    o = fetch_and_store
+    return {:result => :ok, :data => o}
+  end
+
   # Fetch and store metar for all cities
   #
   # Return hash of arrays with MetarCodes

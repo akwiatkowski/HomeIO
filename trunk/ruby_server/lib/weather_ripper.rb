@@ -41,6 +41,12 @@ class WeatherRipper
     @providers.each do |p|
       p.check_all
     end
+    return {:result => :ok}
+  end
+
+  # Fetch weather from all providers, and all cities
+  def start
+    fetch
   end
 
   private

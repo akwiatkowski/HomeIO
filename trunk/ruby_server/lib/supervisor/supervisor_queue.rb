@@ -21,7 +21,8 @@ class SupervisorQueue < CommQueue
     command = command_enc[:command]
 
     result = case command[:command]
-    when :ping then :ok
+    when :fetch_weather then Supervisor.instance.components[:WeatherRipper].start
+    when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
     else :wrong_command
     end
 
