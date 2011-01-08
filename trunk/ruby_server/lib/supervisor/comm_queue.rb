@@ -1,8 +1,11 @@
-require './lib/supervisor/comm_queue_position.rb'
+require './lib/supervisor/comm_queue_task.rb'
 
 # Communication commands queue
 
 class CommQueue
+
+  # check queue every this seconds, interval between tasks
+  QUEUE_LOOP_INTERVAL = 0.5
 
   # the queue
   attr_reader :queue
@@ -21,6 +24,7 @@ class CommQueue
 
   # Uruchamia
   def start
+    Thread.abort_on_exception = true
     Thread.new{ queue_loop }
   end
 
@@ -37,7 +41,7 @@ class CommQueue
       if command[:id].nil?
         return {:result => :failed, :reason => :no_id}
       else
-        return send_processed( command[:id] )
+        return send_task( command[:id] )
       end
 
     elsif not command[:command].nil?
@@ -64,14 +68,14 @@ class CommQueue
     h[:status] = :new
 
     # przetworzenie na obiekt zadania
-    qp = CommQueuePosition.new( h )
+    qp = CommQueueTask.new( h )
 
     # gdy jest to zadanie pilne to wykonywane jest teraz i odpowiedź wysłana
     # od razu
     if command[:now] == true
       # od razu
       process( qp )
-      return send_qp_response( qp )
+      return generate_qp_response( qp )
     else
       # dodane do listy
       @queue << qp
@@ -84,35 +88,26 @@ class CommQueue
   end
 
   # Wysłanie odpowiedzi przetworzonego polecenia
-  def send_processed( id )
+  def send_task( id )
 
     # znalezienie polecenia
     qps = @queue.select{|q| q[:id] == id}
 
     # nie ma jednego takiego zadania na liście
     if not qps.size == 1
-      return :not_on_queue
+      return :not_in_queue
     end
 
     qp = qps.first
 
-    # nie zostało wykonane
-    if not qp.is_ready? == true
-      return :not_ready
-    end
-
     # gotowe, wysłanie odpowiedzi
-    return send_qp_response( qp )
+    return generate_qp_response( qp )
   end
 
-  # Wysyła odpowiedź po przetworzonym zadaniu
-  def send_qp_response( qp )
-    response = qp[:response] # aby inny wątek nie skasował tego
-    qp.set_sent!
-    return {
-      :status => :ok,
-      :response => response
-    }
+  # Generate response after finishing task
+  def generate_qp_response( qp )
+    qp.set_sent! if qp.is_ready?
+    return qp
   end
 
   private
@@ -137,13 +132,11 @@ class CommQueue
         # usuwa wszystkie wysłane elementy
         @queue.delete_if{|q| q.is_sent? }
 
-
       end
 
-      sleep( 0.5 )
+      sleep( QUEUE_LOOP_INTERVAL )
 
     end
-
     
   end
 

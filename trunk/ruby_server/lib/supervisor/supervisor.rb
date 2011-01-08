@@ -11,6 +11,12 @@ require './lib/weather_ripper.rb'
 # Tasks are performed in queue
 
 # Commands:
+#
+# 1. Ping - test if server is running ok
+# 2. Test - onother type of test
+#    Input: {:command=>:test, :now=>true}
+#    Output: {:command=>{:command=>:test, :now=>true}, :id=>90986760, :status=>:sent, :response=>{:test=>:ok}, :process_time=>3.719329833984375e-05}
+#
 # :ping => :ok - used for testing
 # {:command => :fetch_weather, :id => <random> } - start weather ripper
 # {:command => :fetch_metar, :id => <random> } - start metar ripper
@@ -22,11 +28,15 @@ class Supervisor
 
   attr_reader :components
 
-  # Start TCP server
+  # Prepare TCP server
   def initialize
-
     self.class.reload_config
+    init
+  end
 
+  # Start supervisor
+  # Components need to be initialized before starting supervisor
+  def start
     # queue commands
     mq = SupervisorQueue.new
     mq.start
@@ -42,7 +52,6 @@ class Supervisor
     loop do
       sleep( 30 )
     end
-
   end
 
   def self.port

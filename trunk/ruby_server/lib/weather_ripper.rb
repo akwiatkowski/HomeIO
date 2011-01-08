@@ -32,6 +32,8 @@ class WeatherRipper
       @providers[i].id = i + 1
     end
 
+    puts "#{self.class.to_s} init - #{@providers.size} providers"
+
   end
 
   # Fetch weather from all providers, and all cities
@@ -41,7 +43,7 @@ class WeatherRipper
     @providers.each do |p|
       p.check_all
     end
-    return {:result => :ok}
+    return {:status => :ok}
   end
 
   # Fetch weather from all providers, and all cities

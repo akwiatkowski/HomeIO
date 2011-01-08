@@ -27,7 +27,7 @@ class MetarLogger
 
   def start
     o = fetch_and_store
-    return {:result => :ok, :data => o}
+    return {:status => :ok, :data => o}
   end
 
   # Fetch and store metar for all cities

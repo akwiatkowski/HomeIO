@@ -77,6 +77,41 @@ namespace :metar do
 
 end
 
+# stars server
+namespace :supervisor do
+
+  desc 'Start supervisor server'
+  task :start do
+    require './lib/supervisor/supervisor.rb'
+    s = Supervisor.instance
+    s.start
+  end
+end
+
+# tcp commands
+
+namespace :client do
+
+  desc 'Ping server'
+  task :ping do
+    require './lib/supervisor/supervisor_client.rb'
+    #command = {:command => :ping, :now => true}
+    command = :ping
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+  desc 'Test command processor'
+  task :test do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :test, :now => true}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+end
+
+
 
 namespace :gems do
 
