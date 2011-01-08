@@ -109,6 +109,15 @@ namespace :client do
     puts response.inspect
   end
 
+  desc 'Fetch weather'
+  task :fetch_weather do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_weather}
+    response = SupervisorClient.new.send_to_server( command )
+    last_response = SupervisorClient.wait_for_task( response[:id] )
+    puts last_response.inspect
+  end
+
 end
 
 
@@ -125,5 +134,4 @@ namespace :gems do
   end
 
 end
-
 

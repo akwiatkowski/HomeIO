@@ -36,6 +36,12 @@ class CommQueueTask < Hash
     return false
   end
 
+  # Was taks finished?
+  def finished?
+    return true if is_ready? or is_sent?
+    return false
+  end
+
   # Set when tast is beign processed now
   def set_in_proccess!
     self[:status] = IN_PROCESS

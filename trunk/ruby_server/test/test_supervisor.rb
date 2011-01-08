@@ -27,7 +27,7 @@ class TestSupervisor < Test::Unit::TestCase
     sleep 0.5
   end
 
-  def a_test_long_actions
+  def test_long_actions
     # start fetching metar
     #command = {:command => :fetch_metar }
     command = {:command => :fetch_weather }
