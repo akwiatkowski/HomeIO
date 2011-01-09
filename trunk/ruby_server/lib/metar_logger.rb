@@ -25,9 +25,18 @@ class MetarLogger
     #@processor = MetarMassProcessor.new
   end
 
+  # Start by remote command
   def start
     o = fetch_and_store
-    return {:status => :ok, :data => o}
+    # TODO check it!
+    o_filterd = Array.new
+    o.collect{|a| a[1]}.each do |ma|
+      ma.each do |m|
+        o_filterd << m.raw
+      end
+    end
+
+    return {:status => :ok, :data => o_filterd}
   end
 
   # Fetch and store metar for all cities

@@ -4,7 +4,7 @@ class Time
 
   # Nowa metoda wyświetlania czasu
   def to_human
-    return self.strftime("%Y-%m-%d %H-%M-%S")
+    return self.strftime("%Y-%m-%d %H:%M:%S")
   end
 
   # Ustawia początek danego miesiąca

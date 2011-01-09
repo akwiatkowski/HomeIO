@@ -39,6 +39,11 @@ class MetarCode
     @city = @city_hash[:code]
   end
 
+  # Process non-fresh metar string
+  def process_archived( string, year, month )
+    process( string, year, month, :archived )
+  end
+
   # Zwraca utworzony obiekt typu MetarCode przetwarzając kod METAR
   def process( string, year, month, type )
 
@@ -70,6 +75,11 @@ class MetarCode
     mc = self.new
     mc.process( string, year, month, type )
     return mc
+  end
+
+  # Process non-fresh metar string
+  def self.process_archived( string, year, month )
+    self.process( string, year, month, :archived )
   end
 
   # Process array of metar strings

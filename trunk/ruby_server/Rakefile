@@ -118,6 +118,32 @@ namespace :client do
     puts last_response.inspect
   end
 
+  desc 'Fetch weather (now!)'
+  task :fetch_weather_now do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_weather, :now => true}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+  desc 'Fetch METAR'
+  task :fetch_metar do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_metar}
+    response = SupervisorClient.new.send_to_server( command )
+    last_response = SupervisorClient.wait_for_task( response[:id] )
+    puts last_response.inspect
+  end
+
+  desc 'Fetch METAR (now!)'
+  task :fetch_metar_now do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_metar, :now => true}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+
 end
 
 
