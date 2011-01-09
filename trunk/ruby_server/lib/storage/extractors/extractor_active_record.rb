@@ -57,6 +57,20 @@ class ExtractorActiveRecord
     return str
   end
 
+  def str_temperature_metar_list
+    str = "ID. Name (Country - METAR) - temperature\n"
+
+    cities = get_cities
+    cities.each do |c|
+      wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')
+      if not wma.nil?
+        str += "#{c.id}. #{c.name} (#{c.country} - #{c.metar}) - #{wma.temperature} C\n"
+      end
+    end
+
+    return str
+  end
+
 
 
 
