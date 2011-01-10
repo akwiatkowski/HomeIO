@@ -1,3 +1,0 @@
----
-# log when decoder can't decode metar
-:store_decoder_errors: true

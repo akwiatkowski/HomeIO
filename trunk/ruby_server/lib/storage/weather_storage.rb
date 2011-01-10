@@ -18,7 +18,8 @@ class WeatherStorage
 
   # Prepare main directories
   def init
-    prepare_main_directories
+    # not needed, delete?
+    # prepare_main_directories
   end
 
   def deinit

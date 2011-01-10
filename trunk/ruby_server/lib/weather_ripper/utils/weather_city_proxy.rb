@@ -44,6 +44,7 @@ class WeatherCityProxy
         :id => m[:id],
         :country => m[:country],
         :name => m[:name],
+        :metar => m[:code],
         :lat => m[:coord][:lat],
         :lon => m[:coord][:lon]
       }

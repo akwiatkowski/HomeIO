@@ -56,6 +56,7 @@ class City < ActiveRecord::Base
       arc = City.find_by_id( c[:id] ).nil? ? City.new : City.find_by_id( c[:id] )
       arc.name = c[:name]
       arc.country = c[:country]
+      arc.metar = c[:metar]
       arc.id = c[:id]
       arc.lat = c[:lat]
       arc.lon = c[:lon]
