@@ -6,9 +6,8 @@ require 'singleton'
 require "jabber4r/jabber4r"
 # ugly fix for rexml in ruby 1.9, yuck!
 require './lib/plugins/jabber/jabber_ugly_fix.rb'
-
-
 require './lib/plugins/jabber/jabber_processor.rb'
+require './lib/utils/config_loader.rb'
 
 class JabberBot
   include Singleton
@@ -19,15 +18,18 @@ class JabberBot
   def initialize
   end
 
-  def start( login, password )
-    @login = login
-    @password = password
+  def start
+    @config = ConfigLoader.instance.config( self.class.to_s )
+
+    @login = @config[:login]
+    @password = @config[:password]
     @started = false
 
-    Thread.abort_on_exception = true
-    Thread.new{
-      bot_loop
-    }
+    #Thread.abort_on_exception = true
+    #Thread.new{
+    bot_loop
+    #bot_thread
+    #}
   end
 
   private

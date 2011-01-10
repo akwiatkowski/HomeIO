@@ -12,7 +12,7 @@ class TestJabber < Test::Unit::TestCase
 
   def test_new
     j = JabberBot.instance
-    j.start( 'wiatrak_lakie@jabbim.pl', 'antek' )
+    j.start
 
     loop do
       sleep(30)

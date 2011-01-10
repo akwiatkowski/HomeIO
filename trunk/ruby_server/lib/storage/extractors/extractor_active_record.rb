@@ -47,8 +47,8 @@ class ExtractorActiveRecord
 
     str = ""
     str += "Time: #{m.output[:time].to_human}\n"
-    str += "Wind: #{m.output[:wind_mps]} m/s\n"
-    str += "Temperature: #{m.output[:temperature]} C\n"
+    str += "Wind: #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
+    str += "Temperature: #{m.output[:temperature].to_s_round( 1 )} C\n"
     str += "Pressure: #{m.output[:pressure]} hPa\n"
     str += "Cloudiness #{m.output[:cloudiness]} %\n"
     str += "Rain level: #{m.output[:rain_metar]}\n"

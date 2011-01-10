@@ -2,7 +2,7 @@
 ---
 :enabled: true
 #:pool_size: 100
-:pool_size: 5000
+:pool_size: 500
 :connection_sqlite:
   #adapter => "mysql",
   #host => "localhost",

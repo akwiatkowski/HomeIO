@@ -59,6 +59,13 @@ namespace :db do
     Storage.instance.deinit
   end
 
+  desc 'Populate cities'
+  task :pop_cities do
+    require './lib/storage/storage.rb'
+    StorageActiveRecord.instance
+    City.create_from_config
+  end
+
 end
 
 namespace :metar do
@@ -86,6 +93,15 @@ namespace :supervisor do
     s = Supervisor.instance
     s.start
   end
+
+  desc 'Start jabber server'
+  task :jabber do
+    require './lib/plugins/jabber/jabber_bot.rb'
+    require './lib/plugins/jabber/jabber_processor.rb'
+    j = JabberBot.instance
+    j.start
+  end
+
 end
 
 # tcp commands
