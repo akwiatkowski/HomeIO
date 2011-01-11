@@ -13,6 +13,9 @@ class StorageDbAbstract
     'sqls'
   )
 
+  # Show times cost of storing into DBs
+  SHOW_STORAGES_TIME_INFO = true
+
   # Initialization - after server startup
   def initialize
     load_config

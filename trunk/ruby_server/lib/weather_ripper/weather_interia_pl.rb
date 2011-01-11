@@ -33,6 +33,17 @@ class WeatherInteriaPl < WeatherBase
     pressures = body.scan(/(\d{3,4}).*hpa/)
     #puts pressures.inspect
 
+    # TODO fix it better!
+    #puts rains.inspect
+    #puts snows.inspect
+    if snows.nil? or snows.size < 2
+      snows = [[nil], [nil], [nil]]
+    end
+    if rains.nil? or rains.size < 2
+      rains = [[nil], [nil], [nil]]
+    end
+
+
     #puts hours.size
     #puts temperatures.size
     #puts winds.size

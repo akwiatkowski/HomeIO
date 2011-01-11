@@ -90,6 +90,7 @@ class DbSqlite < StorageDbAbstract
   def flush_by_type( k )
 
     puts "Sqlite flushing #{k}, #{ @pools[ k ].size } objects"
+    t = Time.now
 
     queries = Array.new
     @pools[ k ].each do |o|
@@ -112,6 +113,8 @@ class DbSqlite < StorageDbAbstract
     q = "COMMIT;"
     db.execute( q )
     disconnect
+
+    puts "#{self.class.to_s} - storing #{@pools[ k ].size} object - #{Time.now.to_f - t.to_f} s" if SHOW_STORAGES_TIME_INFO
 
     # clear pool
     @pools[ k ] = Array.new

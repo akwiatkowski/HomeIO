@@ -25,6 +25,16 @@ class SupervisorQueue < CommQueue
     result = case command[:command]
     when :fetch_weather then Supervisor.instance.components[:WeatherRipper].start
     when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
+    when :process_metar_city then
+      begin
+        MetarMassProcessor.new.process_all_for_city( command[:city] )
+        {:status => :ok}
+      rescue => e
+        log_error( self, e )
+        puts e.inspect
+        puts e.backtrace
+        return {:status => :failed}
+      end
     when :test then {:test => :ok}
     # DEV
     when :list_components then {:components => Supervisor.instance.components.keys, :status => :ok}

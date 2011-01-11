@@ -52,6 +52,7 @@ class StorageActiveRecord < StorageDbAbstract
   def flush
     # saving each object
     puts "StorageActiveRecord flushing #{@pool.size} objects"
+    t = Time.now
     ActiveRecord::Base.transaction do
       @pool.each do |o|
         res = o.save
@@ -64,6 +65,7 @@ class StorageActiveRecord < StorageDbAbstract
         end
       end
     end
+    puts "#{self.class.to_s} - storing #{@pool.size} object - #{Time.now.to_f - t.to_f} s" if SHOW_STORAGES_TIME_INFO
 
     # clearing pool
     @pool = Array.new

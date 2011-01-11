@@ -80,6 +80,31 @@ namespace :metar do
       MetarMassProcessor.new.process_all
     end
 
+    desc 'Process all CITY metars logged in raw format'
+    task :city do
+      #require './lib/metar_logger.rb'
+      #MetarLogger.instance.processor.process_all
+
+      require './lib/metar/metar_mass_processor.rb'
+      mmp = MetarMassProcessor.new
+      
+      # list metar cities to process
+      logged_cities = mmp.cities # logged on disk
+      metar_cities = MetarLogger.instance.cities # defined
+      # only cities which has logs
+      metar_cities = metar_cities.select{|c| ( [ c[:code] ] & logged_cities ).size == 1 }
+      # list of cities
+      puts metar_cities.sort{|c,d| c[:code] <=> d[:code]}.collect{|c| "#{c[:code]} - #{c[:name]} (#{c[:country]})"}.join("\n")
+
+      puts "Choose city:"
+      city = STDIN.gets.strip
+
+      if metar_cities.select{|c| c[:code] == city}.size == 1
+        puts "Processing #{city}"
+        MetarMassProcessor.new.process_all_for_city( city )
+      end
+    end
+
   end
 
 end
@@ -125,8 +150,27 @@ namespace :client do
     puts response.inspect
   end
 
-  desc 'Fetch weather'
+  desc 'Process METAR for city'
+  task :process_metar_city do
+    require './lib/supervisor/supervisor_client.rb'
+    #command = {:command => :process_metar_city, :city => 'EPPO', :now => true}
+    command = {:command => :process_metar_city, :city => 'EPPO'}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+  # Send task to queue
+  desc 'Fetch weather (non wait)'
   task :fetch_weather do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_weather}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+  # Send task and wait for answer
+  desc 'Fetch weather (wait for end)'
+  task :fetch_weather_wait do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_weather}
     response = SupervisorClient.new.send_to_server( command )
@@ -134,6 +178,7 @@ namespace :client do
     puts last_response.inspect
   end
 
+  # Send task and do it now
   desc 'Fetch weather (now!)'
   task :fetch_weather_now do
     require './lib/supervisor/supervisor_client.rb'
@@ -142,8 +187,19 @@ namespace :client do
     puts response.inspect
   end
 
-  desc 'Fetch METAR'
+
+  # Send task to queue
+  desc 'Fetch METAR (non wait)'
   task :fetch_metar do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_metar}
+    response = SupervisorClient.new.send_to_server( command )
+    puts response.inspect
+  end
+
+  # Send task and wait for answer
+  desc 'Fetch METAR (wait)'
+  task :fetch_metar_wait do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_metar}
     response = SupervisorClient.new.send_to_server( command )
@@ -151,6 +207,7 @@ namespace :client do
     puts last_response.inspect
   end
 
+  # Send task and do it now
   desc 'Fetch METAR (now!)'
   task :fetch_metar_now do
     require './lib/supervisor/supervisor_client.rb'
@@ -159,6 +216,37 @@ namespace :client do
     puts response.inspect
   end
 
+
+end
+
+namespace :action do
+
+  desc 'Fetch weather'
+  task :fetch_weather do
+    require './lib/weather_ripper.rb'
+    w = WeatherRipper.instance
+    w.fetch
+  end
+
+  desc 'Fetch weather and then metar'
+  task :fetch_weather_metar do
+    require './lib/weather_ripper.rb'
+    w = WeatherRipper.instance
+    w.fetch
+
+    require './lib/metar_logger.rb'
+    Thread.abort_on_exception = true
+    m = MetarLogger.instance
+    output = m.fetch_and_store
+  end
+
+  desc 'Fetch METAR'
+  task :fetch_metar do
+    require './lib/metar_logger.rb'
+    Thread.abort_on_exception = true
+    m = MetarLogger.instance
+    output = m.fetch_and_store
+  end
 
 end
 

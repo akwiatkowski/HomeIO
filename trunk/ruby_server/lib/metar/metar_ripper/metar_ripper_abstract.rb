@@ -5,6 +5,9 @@ class MetarRipperAbstract
 
   attr_reader :exception
 
+  # Show times of fetching website per provider and city
+  SHOW_PROVIDERS_TIME_INFO = false
+
   # Fetch metar for city
   # *city* - city metar code, ex. EPPO
   def fetch( city )
@@ -12,9 +15,11 @@ class MetarRipperAbstract
     u = url( city )
 
     begin
+      t = Time.now
       page = open( u )
       body = page.read
       page.close
+      puts "#{self.class} - #{city} - #{Time.now.to_f - t.to_f}" if SHOW_PROVIDERS_TIME_INFO
 
       metar = process( body )
       @exception = nil
