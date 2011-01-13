@@ -1,6 +1,10 @@
 # Storing using ActiveRecord
+#
+# ActiveRecord is mandatory because all data manipulation (extraction and external processing)
+# use this
 ---
-:enabled: true
+# always enabled
+#:enabled: true
 #:pool_size: 100
 :pool_size: 500
 :connection_sqlite:

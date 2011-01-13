@@ -29,6 +29,11 @@ class WeatherStorage
   def flush
   end
 
+  # Raw storage - always enabled
+  def config
+    return {:enabled => true}
+  end
+
 
   private
 

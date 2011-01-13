@@ -19,6 +19,8 @@ class StorageActiveRecord < StorageDbAbstract
 
   def initialize
     super
+    # always enabled
+    @config[:enabled] = true
 
     ActiveRecord::Base.establish_connection(
       @config[:connection]

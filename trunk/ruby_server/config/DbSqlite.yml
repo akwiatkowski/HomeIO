@@ -1,6 +1,8 @@
 # Storing into Sqlite DB
+#
+# Sqlite is optional engine used only for storing
 ---
-:enabled: true
+:enabled: false
 # filename of various dbs
 :db_file_meas: 'meas'
 :db_file_weather: 'weather'

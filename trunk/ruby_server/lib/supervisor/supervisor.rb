@@ -28,6 +28,8 @@ class Supervisor
 
   attr_reader :components
 
+  START_JABBER_SERVER = true
+
   # Prepare TCP server
   def initialize
     self.class.reload_config
@@ -49,8 +51,17 @@ class Supervisor
 
     puts "Supervisor started"
 
-    loop do
-      sleep( 30 )
+    if not START_JABBER_SERVER
+      # start endless loop
+      loop do
+        sleep( 30 )
+      end
+    else
+      # start jabber server - just like loop
+      require './lib/plugins/jabber/jabber_bot.rb'
+      require './lib/plugins/jabber/jabber_processor.rb'
+      j = JabberBot.instance
+      j.start
     end
   end
 

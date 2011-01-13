@@ -45,14 +45,21 @@ class ExtractorActiveRecord
     m = get_last_metar( city )
     return m unless m.kind_of?(MetarCode) # return error message
 
-    str = ""
-    str += "Time: #{m.output[:time].to_human}\n"
+    str =  "City: #{m.city}\n"
+    str += "Time: #{m.output[:time].localtime.to_human}\n"
     str += "Wind: #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
     str += "Temperature: #{m.output[:temperature].to_s_round( 1 )} C\n"
     str += "Pressure: #{m.output[:pressure]} hPa\n"
-    str += "Cloudiness #{m.output[:cloudiness]} %\n"
+    str += "Cloudiness: #{m.output[:cloudiness]} %\n"
     str += "Rain level: #{m.output[:rain_metar]}\n"
     str += "Snow level: #{m.output[:snow_metar]}\n"
+    str += "Specials:\n"
+
+    # specials
+    m.output[:specials].each do |s|
+      spec_str = "- #{s[:intensity]} #{s[:descriptor]} #{s[:precipitation]} #{s[:obscuration]} #{s[:misc]}\n"
+      str += spec_str
+    end
 
     return str
   end
@@ -64,13 +71,46 @@ class ExtractorActiveRecord
     cities.each do |c|
       wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')
       if not wma.nil?
-        str += "#{c.id}. #{c.name} (#{c.country} - #{c.metar}) - #{wma.temperature} C\n"
+        str += "#{c.id}. #{c.name} (#{c.country} - #{c.metar}): #{wma.temperature} C\n"
       end
     end
 
     return str
   end
 
+  # Get table data of last metars
+  def str_get_array_of_last_metar( city, last_metars )
+    last_metars = last_metars.to_i
+    last_metars = 10 if last_metars < 1
+
+    c = search_city( city )
+    str = "City: #{c.name} (#{c.country})\n"
+
+    wmas = WeatherMetarArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_metars )
+
+    wmas.reverse.each do |wma|
+      m = MetarCode.process_archived(wma.raw, wma.time_from.year, wma.time_from.month)
+      str += "#{m.output[:time].localtime.to_human}: #{m.output[:temperature].to_s_round( 1 )} C, #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
+    end
+
+    return str
+  end
+
+  def str_get_array_of_last_weather( city, last_w )
+    last_w = last_w.to_i
+    last_w = 10 if last_w < 1
+
+    c = search_city( city )
+    str = "City: #{c.name} (#{c.country})\n"
+
+    was = WeatherArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_w )
+
+    was.reverse.each do |wa|
+      str += "#{wa.time_from.localtime.to_human} - #{wa.time_to.localtime.to_human}: #{wa.temperature.to_s_round( 1 )} C, #{wa.wind.to_s_round( 1 )} m/s\n"
+    end
+
+    return str
+  end
 
 
 

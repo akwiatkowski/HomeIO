@@ -20,6 +20,10 @@ class Storage
       #DbPostgres.instance
       StorageActiveRecord.instance
     ]
+
+    # delete disabled
+    @storages.delete_if{|s| s.config[:enabled] == false }
+
   end
 
   # One time initialization

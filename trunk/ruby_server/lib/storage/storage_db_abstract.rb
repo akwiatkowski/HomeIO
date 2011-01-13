@@ -7,6 +7,8 @@ require './lib/utils/geolocation.rb'
 # Abstract class to all storage classes
 class StorageDbAbstract
 
+  attr_reader :config
+
   SQL_DIR = File.join(
     'lib',
     'storage',

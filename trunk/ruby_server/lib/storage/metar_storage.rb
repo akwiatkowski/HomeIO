@@ -29,6 +29,11 @@ class MetarStorage
   def flush
   end
 
+  # Raw storage - always enabled
+  def config
+    return {:enabled => true}
+  end
+
 
 
   # Full path to file
