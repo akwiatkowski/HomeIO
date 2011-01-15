@@ -22,7 +22,20 @@ class MetarLogger
     # puts "Cities: #{cits.join(", ")}"
 
     # deadlock, bad deadlock!
-    #@processor = MetarMassProcessor.new
+    #@processor = MetarMassProcessor.instance
+  end
+
+  # Get array of metar codes of cities which has logs
+  def get_logged_cities
+    require './lib/metar/metar_mass_processor.rb'
+    mmp = MetarMassProcessor.instance
+
+    logged_cities = mmp.cities # logged on disk
+    metar_cities = cities # defined
+    # only cities which has logs
+    metar_cities = metar_cities.select{|c| ( [ c[:code] ] & logged_cities ).size == 1 }
+    # list of cities
+    return metar_cities.sort{|c,d| c[:code] <=> d[:code]}
   end
 
   # Start by remote command

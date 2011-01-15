@@ -16,10 +16,13 @@ class JabberProcessor
 
     return case first_part
     when 'cities' then ExtractorActiveRecord.instance.str_get_cities
+      # get last metar
     when 'metar_city' then ExtractorActiveRecord.instance.str_get_last_metar( additional_param )
-    when 'metar_temp' then ExtractorActiveRecord.instance.str_temperature_metar_list
+      # summary of last metars
+    when 'metar_summary' then ExtractorActiveRecord.instance.str_summary_metar_list
     when 'metar_array' then ExtractorActiveRecord.instance.str_get_array_of_last_metar( additional_param, additional_params[1] )
     when 'weather_array' then ExtractorActiveRecord.instance.str_get_array_of_last_weather( additional_param, additional_params[1] )
+    when 'metar_search' then ExtractorActiveRecord.instance.str_get_last_metar( additional_param )
     else 'Bad command'
     end
 

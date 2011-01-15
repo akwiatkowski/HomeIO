@@ -27,7 +27,7 @@ class SupervisorQueue < CommQueue
     when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
     when :process_metar_city then
       begin
-        MetarMassProcessor.new.process_all_for_city( command[:city] )
+        MetarMassProcessor.instance.process_all_for_city( command[:city] )
         {:status => :ok}
       rescue => e
         log_error( self, e )

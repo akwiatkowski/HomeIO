@@ -45,12 +45,17 @@ class StorageActiveRecord < StorageDbAbstract
     else other_store( obj )
     end
 
-    # flushing
-    if @pool.size >= @config[:pool_size].to_i
-      flush
-    end
+    check_pool_size
   end
 
+  # Add AdtiveRecord object to pool without processing it
+  def add_ar_object_to_pool( obj )
+    @pool << obj
+    
+    check_pool_size
+  end
+
+  # Flush object from pool to DB
   def flush
     # saving each object
     puts "StorageActiveRecord flushing #{@pool.size} objects"
@@ -74,6 +79,14 @@ class StorageActiveRecord < StorageDbAbstract
   end
 
   private
+
+  # Check pool size and perform flush
+  def check_pool_size
+    # flushing
+    if @pool.size >= @config[:pool_size].to_i
+      flush
+    end
+  end
 
   def store_metar( obj )
     # wrong records can be not saved - there are always raw metars in text files

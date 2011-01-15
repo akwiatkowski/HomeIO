@@ -38,7 +38,7 @@ class JabberBot
     loop do
       begin
         bot_thread
-      rescue
+      #rescue
       end
       sleep(5)
     end

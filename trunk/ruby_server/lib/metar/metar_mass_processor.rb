@@ -1,3 +1,4 @@
+require 'singleton'
 require './lib/metar_logger.rb'
 require './lib/storage/metar_storage.rb'
 
@@ -6,6 +7,7 @@ require './lib/storage/metar_storage.rb'
 # Storage.instance.flush needed after finish
 
 class MetarMassProcessor
+  include Singleton
 
   VERBOSE_EVERY = 50
 

@@ -23,6 +23,11 @@ class StorageDbAbstract
     load_config
   end
 
+  # Accesor for enabled/disabled
+  def enabled
+    return @config[:enabled]
+  end
+
   # Store object
   def store( obj )
     d = get_definition( obj )

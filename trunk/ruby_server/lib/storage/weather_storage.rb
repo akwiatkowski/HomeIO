@@ -30,8 +30,8 @@ class WeatherStorage
   end
 
   # Raw storage - always enabled
-  def config
-    return {:enabled => true}
+  def enabled
+    return true
   end
 
 

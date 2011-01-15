@@ -70,6 +70,11 @@ end
 
 namespace :metar do
 
+  # file name for setting which cities process
+  DEFINED_CITIES_TO_PROCESS_FILE = 'RakeCitiesToProcess.yml'
+  # when true defined cities are processed in reverse order
+  REVERSE_CITIES = true
+
   namespace :process do
 
     desc 'Process all metars logged in raw format'
@@ -77,36 +82,42 @@ namespace :metar do
       #require './lib/metar_logger.rb'
       #MetarLogger.instance.processor.process_all
       require './lib/metar/metar_mass_processor.rb'
-      MetarMassProcessor.new.process_all
+      MetarMassProcessor.instance.process_all
     end
 
     desc 'Process all CITY metars logged in raw format'
     task :city do
-      #require './lib/metar_logger.rb'
-      #MetarLogger.instance.processor.process_all
-
-      require './lib/metar/metar_mass_processor.rb'
-      mmp = MetarMassProcessor.new
-      
-      # list metar cities to process
-      logged_cities = mmp.cities # logged on disk
-      metar_cities = MetarLogger.instance.cities # defined
-      # only cities which has logs
-      metar_cities = metar_cities.select{|c| ( [ c[:code] ] & logged_cities ).size == 1 }
-      # list of cities
-      puts metar_cities.sort{|c,d| c[:code] <=> d[:code]}.collect{|c| "#{c[:code]} - #{c[:name]} (#{c[:country]})"}.join("\n")
+      require './lib/metar_logger.rb'
+      puts MetarLogger.instance.get_logged_cities.collect{|c| "#{c[:code]} - #{c[:name]} (#{c[:country]})"}.join("\n")
 
       puts "Choose city:"
       city = STDIN.gets.strip
 
       if metar_cities.select{|c| c[:code] == city}.size == 1
         puts "Processing #{city}"
-        MetarMassProcessor.new.process_all_for_city( city )
+        MetarMassProcessor.instance.process_all_for_city( city )
       end
     end
 
-  end
+    desc "Create list of all logged cities in '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
+    task :redefine do
+      require './lib/metar_logger.rb'
+      cities =  MetarLogger.instance.get_logged_cities.collect{|c| c[:code]}
+      File.open( DEFINED_CITIES_TO_PROCESS_FILE, 'w' ) do |out|
+        YAML.dump( cities, out )
+      end
+    end
 
+    desc "Process all cities from '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
+    task :predefined do
+      require './lib/metar/metar_mass_processor.rb'
+      cities = YAML::load_file( DEFINED_CITIES_TO_PROCESS_FILE )
+      cities = cities.reverse if REVERSE_CITIES == true
+      cities.each do |c|
+        MetarMassProcessor.instance.process_all_for_city( c )
+      end
+    end
+  end
 end
 
 # stars server

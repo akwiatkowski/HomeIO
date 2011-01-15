@@ -22,7 +22,7 @@ class Storage
     ]
 
     # delete disabled
-    @storages.delete_if{|s| s.config[:enabled] == false }
+    @storages.delete_if{|s| s.enabled == false }
 
   end
 
