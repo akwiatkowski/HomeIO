@@ -71,7 +71,7 @@ class JabberBot
       Thread.stop
       session.delete_message_listener(mlid)
     rescue Exception => error
-      puts error
+      puts error.inspect
     ensure
       session.release if session
       @started = false

@@ -234,13 +234,16 @@ namespace :action do
 
   desc 'Fetch weather'
   task :fetch_weather do
+    t = Time.now
     require './lib/weather_ripper.rb'
     w = WeatherRipper.instance
     w.fetch
+    puts "Time: #{Time.now.to_f - t.to_f}"
   end
 
   desc 'Fetch weather and then metar'
   task :fetch_weather_metar do
+    t = Time.now
     require './lib/weather_ripper.rb'
     w = WeatherRipper.instance
     w.fetch
@@ -249,14 +252,17 @@ namespace :action do
     Thread.abort_on_exception = true
     m = MetarLogger.instance
     output = m.fetch_and_store
+    puts "Time: #{Time.now.to_f - t.to_f}"
   end
 
   desc 'Fetch METAR'
   task :fetch_metar do
+    t = Time.now
     require './lib/metar_logger.rb'
     Thread.abort_on_exception = true
     m = MetarLogger.instance
     output = m.fetch_and_store
+    puts "Time: #{Time.now.to_f - t.to_f}"
   end
 
 end

@@ -41,10 +41,9 @@ class ExtractorActiveRecord
     return MetarCode.process_archived(wma.raw, wma.time_from.year, wma.time_from.month)
   end
 
-  def str_get_last_metar( city )
-    m = get_last_metar( city )
-    return m unless m.kind_of?(MetarCode) # return error message
-
+  # Convert MetarCode to string
+  # TODO: refactor
+  def str_metar_to_s( m )
     str =  "City: #{m.city}\n"
     str += "Time: #{m.output[:time].localtime.to_human}\n"
     str += "Wind: #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
@@ -64,16 +63,31 @@ class ExtractorActiveRecord
     return str
   end
 
+  def str_get_last_metar( city )
+    m = get_last_metar( city )
+    return m unless m.kind_of?(MetarCode) # return error message
+    return str_metar_to_s( m )
+  end
+
   # Summary of last metars
   def str_summary_metar_list
     str = "ID. Name (Country - METAR) - temperature\n"
 
     cities = get_cities
     cities.each do |c|
-      wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')
+      # puts c.inspect
+      #count = WeatherMetarArchive.count(:conditions => {:city_id => c.id})
+      #if count > 0
+      wma = WeatherMetarArchive.find(:first, :conditions => [
+          "city_id = ? and time_from >= ?",
+          c.id,
+          Time.now - 6*3600
+        ],
+        :order => 'time_from DESC')
       if not wma.nil?
         str += "#{c.name} (#{c.country}): #{wma.temperature} C, #{wma.wind} m/s, #{wma.pressure} hPa, #{wma.rain_metar} rain, #{wma.snow_metar} snow\n"
       end
+      #end
     end
 
     return str
@@ -113,6 +127,76 @@ class ExtractorActiveRecord
     return str
   end
 
+  # Search nearest metar
+  def search_metar( city, time )
+    c = search_city( city )
+    return nil if c.nil?
+
+    conds = [
+      "city_id = ? and time_from between ? and ?",
+      c.id,
+      time - 24*3600,
+      time + 1
+    ]
+    #puts conds.inspect
+    wma_before = WeatherMetarArchive.find(:first,
+      :conditions => conds,
+      :order => 'time_from DESC')
+
+    conds = [
+      "city_id = ? and time_from between ? and ?",
+      c.id,
+      time - 1,
+      time + 24*3600
+    ]
+    #puts conds.inspect
+    wma_after = WeatherMetarArchive.find(:first,
+      :conditions => conds,
+      :order => 'time_from ASC')
+
+    #puts wma_before.inspect, wma_after.inspect
+
+    # nothing found
+    if wma_before.nil? and wma_after.nil?
+      return nil
+    elsif wma_before.nil?
+      return wma_after
+    elsif wma_after.nil?
+      return wma_before
+    else
+
+      time_before_diff = (wma_before.time_from - time).abs
+      time_after_diff = (wma_after.time_from - time).abs
+
+      if time_before_diff > time_after_diff
+        return wma_after
+      else
+        return wma_before
+      end
+
+    end
+
+
+  end
+
+  # Search metar archive
+  def str_search_metar( params )
+    params[2] =~ /(\d{4})-(\d{1,2})-(\d{1,2})/
+    y = $1.to_i
+    m = $2.to_i
+    d = $3.to_i
+
+    params[3] =~ /(\d{1,2}):(\d{1,2})/
+    h = $1.to_i
+    min = $2.to_i
+
+    t = Time.mktime(y, m, d, h, min, 0, 0)
+
+    wma = search_metar( params[1], t )
+    return "Not found" if wma.nil?
+    m = MetarCode.process_archived(wma.raw, wma.time_from.year, wma.time_from.month)
+    return str_metar_to_s( m )
+  end
 
 
   def last_city( city )

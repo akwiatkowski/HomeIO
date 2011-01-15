@@ -14,13 +14,13 @@ class WeatherInteriaPl < WeatherBase
     #puts hours_add.inspect
     hours = hours_first + hours_add
     #puts hours.inspect
-    
+
     # interia uses min/aesthes./max temperatures, aesth. used
     temperatures = body.scan(/<span\s*class=\"tex2b\"\s*style=\"font-size:\s*14px;\">(-?\d+)<\/span>/)
     # there is 'sample' temperature which should be deleted
     temperatures.delete_at( 2 ) # if temperatures[2] == 5
     #puts temperatures.inspect
-    
+
     winds = body.scan(/wiatr:\D*(\d+)\D*km\/h\s*</)
     #puts winds.inspect
 
@@ -30,7 +30,7 @@ class WeatherInteriaPl < WeatherBase
     snows = body.scan(/nieg:\D*(\d+\.?\d*)\D*mm\s*</)
     #puts snows.inspect
 
-    pressures = body.scan(/(\d{3,4}).*hpa/)
+    pressures = body.scan(/<b>(\d{3,4})<\/b>.*hpa/)
     #puts pressures.inspect
 
     # TODO fix it better!

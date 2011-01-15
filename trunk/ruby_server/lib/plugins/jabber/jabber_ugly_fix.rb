@@ -1,5 +1,18 @@
 # This class is ugly. I mean really ugly, ugly as hell. I should put bag on it...
 
+# works better in ruby 1.8
+module REXML
+  class IOSource
+    def position
+      begin
+        @er_source.pos
+      rescue
+        0
+      end
+    end
+  end
+end
+
 module Jabber
   module Protocol
     class REXMLJabberParser

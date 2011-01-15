@@ -28,8 +28,6 @@ class Supervisor
 
   attr_reader :components
 
-  START_JABBER_SERVER = true
-
   # Prepare TCP server
   def initialize
     self.class.reload_config
@@ -51,7 +49,7 @@ class Supervisor
 
     puts "Supervisor started"
 
-    if not START_JABBER_SERVER
+    if not @@config[:start_jabber_server] == true
       # start endless loop
       loop do
         sleep( 30 )
