@@ -24,10 +24,9 @@ class TextInterfaceProcessor
     return cities_header + cities_txt
   end
 
-  # Convert weather data in hash to string
-  def hash_to_s( h )
+  # Convert weather data, only city data, to string
+  def hash_city_to_s( h )
     str = ""
-
     str += "City: #{h[:city]}"
     if not h[:city_country].to_s == ""
       str += " (#{h[:city_country]})"
@@ -35,6 +34,14 @@ class TextInterfaceProcessor
     if not h[:city_metar].to_s == ""
       str += " - #{h[:city_metar]}"
     end
+    return str
+  end
+
+  # Convert weather data in hash to string
+  def hash_to_s( h )
+    str = ""
+
+    str += hash_city_to_s( h )
     str += "\n"
 
     str += "Time: #{h[:time].localtime.to_human}\n" unless h[:time].nil?
@@ -110,6 +117,63 @@ class TextInterfaceProcessor
     end
 
     return str
+  end
+
+  # Search metar archive
+  def search_metar( params )
+    t = create_time_from_string( params[2], params[3] )
+    h = @extractor.search_metar( params[1], t )
+    return "Not found" if h.nil?
+    return hash_to_s( h )
+  end
+
+  # Search metar archive
+  def search_weather( params )
+    t = create_time_from_string( params[2], params[3] )
+    h = @extractor.search_weather( params[1], t )
+    return "Not found" if h.nil?
+    return hash_to_s( h )
+  end
+
+  # Search metar archive
+  def search_metar_or_weather( params )
+    t = create_time_from_string( params[2], params[3] )
+    h = @extractor.search_metar_or_weather( params[1], t )
+    return "Not found" if h.nil?
+    return hash_to_s( h )
+  end
+
+  # Basic information about city logged data
+  def city_basic_info( city )
+    h = @extractor.city_basic_info( city )
+    return "Not found" if h.nil?
+
+    str = ""
+    str += hash_city_to_s( h )
+    str += "Metar count: #{h[:metar_count]}\n"
+    str += "Weather count: #{h[:weather_count]}\n"
+    str += "First metar at: #{h[:first_metar].time_from.localtime.to_human}\n" unless h[:first_metar].nil?
+    str += "Last metar at: #{h[:last_metar].time_from.localtime.to_human}\n" unless h[:last_metar].nil?
+    str += "First weather at: #{h[:first_weather].time_from.localtime.to_human}\n" unless h[:first_weather].nil?
+    str += "Last weather at: #{h[:last_weather].time_from.localtime.to_human}\n" unless h[:last_weather].nil?
+
+    return str
+  end
+
+  private
+
+  # Create Time from YYYY-MM-DD HH:mm string format
+  def create_time_from_string( date, time )
+    date =~ /(\d{4})-(\d{1,2})-(\d{1,2})/
+    y = $1.to_i
+    m = $2.to_i
+    d = $3.to_i
+
+    time =~ /(\d{1,2}):(\d{1,2})/
+    h = $1.to_i
+    min = $2.to_i
+
+    return Time.mktime(y, m, d, h, min, 0, 0)
   end
 
 end

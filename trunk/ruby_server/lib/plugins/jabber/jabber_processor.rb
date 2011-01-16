@@ -13,20 +13,25 @@ class JabberProcessor
     puts params.inspect
 
     return case params[0]
-    when 'help' then self.commands_help
-    when '?' then self.commands_help
-    when 'cities' then TextInterfaceProcessor.instance.get_cities
+    when 'help', '?' then self.commands_help
+    when 'c' then TextInterfaceProcessor.instance.get_cities
       # get last metar
-    when 'metar_city' then TextInterfaceProcessor.instance.get_last_metar( params[1] )
+    when 'wmc' then TextInterfaceProcessor.instance.get_last_metar( params[1] )
       # summary of last metars
-    when 'metar_summary' then TextInterfaceProcessor.instance.summary_metar_list
-    when 'metar_array' then TextInterfaceProcessor.instance.get_array_of_last_metar( params[1], params[2] )
-    when 'weather_array' then TextInterfaceProcessor.instance.get_array_of_last_weather( params[1], params[2] )
-      # TODO implement
-    when 'metar_search' then ExtractorActiveRecord.instance.str_search_metar( params )
-      # TODO
-    when 'count' then nil
-    else 'Bad command'
+    when 'wms' then TextInterfaceProcessor.instance.summary_metar_list
+      # some last metars
+    when 'wma' then TextInterfaceProcessor.instance.get_array_of_last_metar( params[1], params[2] )
+      # some last weathers
+    when 'wra' then TextInterfaceProcessor.instance.get_array_of_last_weather( params[1], params[2] )
+      # search metar at
+    when 'wmsr' then TextInterfaceProcessor.instance.search_metar( params )
+      # search weather (non-metar) at
+    when 'wmsr' then TextInterfaceProcessor.instance.search_weather( params )
+      # search weather at
+    when 'wsr' then TextInterfaceProcessor.instance.search_metar_or_weather( params )
+      # city information
+    when 'ci' then TextInterfaceProcessor.instance.city_basic_info( params[1] )
+    else 'Wrong command'
     end
 
     #city_weather = last_city( command )
@@ -39,12 +44,15 @@ class JabberProcessor
   def self.commands_help
     str = ""
     str += "'help', '?' - this help :]\n"
-    str += "'cities' - list of all cities\n"
-    str += "'metar_city <metar code or id>' - last metar data for city\n"
-    str += "'metar_summary' - metar summary of all cities\n"
-    str += "'metar_array <metar code or id> <count>' - get <count> last metars for city\n"
-    str += "'metar_search <metar code> <time ex. 2010-01-01 12:00' - coming soon, search for metar data for city at specified time\n"
-    str += ""
+    str += "'c' - list of all cities\n"
+    str += "'ci <id, metar code, name or name fragment>' - city logged data basic statistics\n"
+    str += "'wmc <id, metar code, name or name fragment>' - last metar data for city\n"
+    str += "'wms' - metar summary of all cities\n"
+    str += "'wma <id, metar code, name or name fragment> <count>' - get <count> last metars for city\n"
+    str += "'wra <id, metar code, name or name fragment> <count>' - get <count> last weather (non-metar) data for city\n"
+    str += "'wmsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for metar data for city at specified time\n"
+    str += "'wrsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for weather (non-metar) data for city at specified time\n"
+    str += "'wsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for weather (metar or non-metar) data for city at specified time\n"
     str += ""
     str += ""
     str += ""
