@@ -46,8 +46,8 @@ class TextInterfaceProcessor
 
     str += "Time: #{h[:time].localtime.to_human}\n" unless h[:time].nil?
     str += "Time to: #{h[:time_to].localtime.to_human}\n" unless h[:time_to].nil?
-    str += "Wind: #{h[:wind].to_s_round( 1 )} m/s\n" unless h[:wind].nil?
     str += "Temperature: #{h[:temperature].to_s_round( 1 )} C\n" unless h[:temperature].nil?
+    str += "Wind: #{h[:wind].to_s_round( 1 )} m/s\n" unless h[:wind].nil?
     str += "Pressure: #{h[:pressure]} hPa\n" unless h[:pressure].nil?
     str += "Cloudiness: #{h[:cloudiness]} %\n" unless h[:cloudiness].nil?
     str += "Rain level: #{h[:rain_metar]}\n" unless h[:rain_metar].nil?
@@ -143,21 +143,72 @@ class TextInterfaceProcessor
     return hash_to_s( h )
   end
 
-  # Basic information about city logged data
-  def city_basic_info( city )
-    h = @extractor.city_basic_info( city )
-    return "Not found" if h.nil?
+  # Show simplified WeatherMetarArchive
+  def wma_to_simple_s( wma )
+    str = ""
+    str += "Time: #{wma.time_from.localtime.to_human}\n"
+    str += "Temperature: #{wma.temperature.to_s_round( 1 )} C\n" unless wma.temperature.nil?
+    str += "Wind: #{wma.wind.to_s_round( 1 )} m/s\n" unless wma.wind.nil?
+    #str += "Pressure: #{h[:pressure]} hPa\n"
+    #str += "Cloudiness: #{h[:cloudiness]} %\n"
+    #str += "Rain level: #{h[:rain_metar]}\n"
+    #str += "Snow level: #{h[:snow_metar]}\n"
+    return str
+  end
 
+  # Show simplified WeatherArchive
+  def wa_to_simple_s( wa )
+    str = ""
+    str += "Time: #{wa.time_from.localtime.to_human}\n"
+    str += "Temperature: #{wa.temperature.to_s_round( 1 )} C\n" unless wa.temperature.nil?
+    str += "Wind: #{wa.wind.to_s_round( 1 )} m/s\n" unless wa.wind.nil?
+    #str += "Pressure: #{h[:pressure]} hPa\n" unless h[:pressure].nil?
+    #str += "Cloudiness: #{h[:cloudiness]} %\n" unless h[:cloudiness].nil?
+    str += "Provider: #{wa.weather_provider.name}\n" unless wa.weather_provider_id.nil?
+    str += "Future prediction\n" if true == wa.predicted?
+    return str
+  end
+
+  # City information and statistics
+  def hash_city_info_to_s( h )
     str = ""
     str += hash_city_to_s( h )
-    str += "Metar count: #{h[:metar_count]}\n"
-    str += "Weather count: #{h[:weather_count]}\n"
+
+    str += " \n"
+    str += "Metar count: #{h[:metar_count]} \n"
+    str += "Weather count: #{h[:weather_count]} \n \n"
+
     str += "First metar at: #{h[:first_metar].time_from.localtime.to_human}\n" unless h[:first_metar].nil?
     str += "Last metar at: #{h[:last_metar].time_from.localtime.to_human}\n" unless h[:last_metar].nil?
     str += "First weather at: #{h[:first_weather].time_from.localtime.to_human}\n" unless h[:first_weather].nil?
     str += "Last weather at: #{h[:last_weather].time_from.localtime.to_human}\n" unless h[:last_weather].nil?
 
+    str += " \nMETAR\n"
+    str += " \nHighest temperature\n#{wma_to_simple_s(h[:high_temp_metar])}\n\n" unless h[:high_temp_metar].nil?
+    str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_temp_metar])}\n\n" unless h[:low_temp_metar].nil?
+    str += " \nHighest wind\n#{wma_to_simple_s(h[:high_wind_metar])}\n\n" unless h[:high_wind_metar].nil?
+    str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_wind_metar])}\n\n" unless h[:low_wind_metar].nil?
+
+    str += " \nWeather\n"
+    str += " \nHighest temperature\n#{wa_to_simple_s(h[:high_temp_weather])}\n\n" unless h[:high_temp_weather].nil?
+    str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_temp_weather])}\n\n" unless h[:low_temp_weather].nil?
+    str += " \nHighest wind\n#{wa_to_simple_s(h[:high_wind_weather])}\n\n" unless h[:high_wind_weather].nil?
+    str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_wind_weather])}\n\n" unless h[:low_wind_weather].nil?
+
     return str
+  end
+
+  # Basic information about city logged data
+  def city_basic_info( city )
+    h = @extractor.city_basic_info( city )
+    return "Not found" if h.nil?
+    return hash_city_info_to_s( h )
+  end
+
+  def city_adv_info( city )
+    h = @extractor.city_adv_info( city )
+    return "Not found" if h.nil?
+    return hash_city_info_to_s( h )
   end
 
   private

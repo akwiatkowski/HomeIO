@@ -42,6 +42,7 @@ class AdvLog
 
   # Convert class to string name
   def class_name( k )
+    return k.to_s if k.class.to_s == "Class"
     return k.class.to_s
   end
 

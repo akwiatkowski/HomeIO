@@ -3,16 +3,19 @@
 
 require './lib/storage/extractors/extractor_active_record.rb'
 require './lib/plugins/jabber/text_interface_processor.rb'
+require './lib/utils/adv_log.rb'
 
 class JabberProcessor
-  def self.process_command( command )
+  def self.process_command( command, from = 'N/A' )
 
+    AdvLog.instance.logger( self ).info("C. from #{from}: #{command.inspect}")
     puts command
+    t = Time.now
 
     params = command.to_s.split(/ /)
     puts params.inspect
 
-    return case params[0]
+    output = case params[0]
     when 'help', '?' then self.commands_help
     when 'c' then TextInterfaceProcessor.instance.get_cities
       # get last metar
@@ -31,11 +34,14 @@ class JabberProcessor
     when 'wsr' then TextInterfaceProcessor.instance.search_metar_or_weather( params )
       # city information
     when 'ci' then TextInterfaceProcessor.instance.city_basic_info( params[1] )
+      # advanced city info and stats
+    when 'cii' then TextInterfaceProcessor.instance.city_adv_info( params[1] )
     else 'Wrong command'
     end
 
-    #city_weather = last_city( command )
-    #return response = city_weather.inspect
+    AdvLog.instance.logger( self ).info("C. from #{from}: time #{Time.now - t}")
+    
+    return output
   end
 
   private

@@ -55,7 +55,7 @@ class JabberBot
         # respond only for non blank messages
         if not message.body.to_s == ''
           begin
-            response = PROCESSOR.process_command( message.body )
+            response = PROCESSOR.process_command( message.body, message.from )
           rescue => e
             log_error( self, e )
             puts e.inspect

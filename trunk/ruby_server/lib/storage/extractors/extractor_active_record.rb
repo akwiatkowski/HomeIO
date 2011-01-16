@@ -221,7 +221,10 @@ class ExtractorActiveRecord
     last_weather = WeatherArchive.find(:last, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
 
     return {
-      :city => c,
+      :city_obj => c,
+      :city => c.name,
+      :city_country => c.country,
+      :city_metar => c.metar,
       :metar_count => metar_count,
       :weather_count => weather_count,
       :first_metar => first_metar,
@@ -229,6 +232,34 @@ class ExtractorActiveRecord
       :first_weather => first_weather,
       :last_weather => last_weather
     }
+  end
+
+  # Advanced city information
+  def city_adv_info( city )
+    data = city_basic_info( city )
+    return nil if data.nil?
+
+    c = data[:city_obj]
+
+    data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
+    puts "City Adv Info :high_temp_metar #{Time.now}"
+    data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+    puts "City Adv Info :low_temp_metar #{Time.now}"
+    data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
+    puts "City Adv Info :high_temp_weather #{Time.now}"
+    data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+    puts "City Adv Info :low_temp_weather #{Time.now}"
+
+    data[:high_wind_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+    puts "City Adv Info :high_wind_metar #{Time.now}"
+    data[:low_wind_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind ASC')
+    puts "City Adv Info :low_wind_metar #{Time.now}"
+    data[:high_wind_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+    puts "City Adv Info :high_wind_weather #{Time.now}"
+    data[:low_wind_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind ASC')
+    puts "City Adv Info :low_wind_weather #{Time.now}"
+
+    return data
   end
   
 

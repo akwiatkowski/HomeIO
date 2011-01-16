@@ -63,6 +63,10 @@ class WeatherBase
     # }]
   end
 
+  def weather_provider_id
+    return id
+  end
+
   private
 
   # Fetching and storing
@@ -96,17 +100,11 @@ class WeatherBase
     StorageActiveRecord.instance
 
     prov_name = self.class.provider_name
-    
-    #    wp = WeatherProvider.find_by_name( prov_name )
-    #    if wp.nil?
-    #      wp = WeatherProvider.new(:name => prov_name)
-    #      wp.save!
-    #    end
+
     wp = WeatherProvider.find_or_create_by_name( prov_name )
     wp.save!
     @id = wp.id
     return @id
   end
-  
 
 end
