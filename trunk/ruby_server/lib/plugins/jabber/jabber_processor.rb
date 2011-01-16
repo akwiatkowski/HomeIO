@@ -20,10 +20,12 @@ class JabberProcessor
     when 'metar_city' then TextInterfaceProcessor.instance.get_last_metar( params[1] )
       # summary of last metars
     when 'metar_summary' then TextInterfaceProcessor.instance.summary_metar_list
-    when 'metar_array' then ExtractorActiveRecord.instance.str_get_array_of_last_metar( params[1], params[2] )
-    when 'weather_array' then ExtractorActiveRecord.instance.str_get_array_of_last_weather( params[1], params[2] )
+    when 'metar_array' then TextInterfaceProcessor.instance.get_array_of_last_metar( params[1], params[2] )
+    when 'weather_array' then TextInterfaceProcessor.instance.get_array_of_last_weather( params[1], params[2] )
       # TODO implement
     when 'metar_search' then ExtractorActiveRecord.instance.str_search_metar( params )
+      # TODO
+    when 'count' then nil
     else 'Bad command'
     end
 

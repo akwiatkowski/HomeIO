@@ -35,7 +35,13 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         # TODO add other fields later
         t.timestamps
       end
-    
+
+      create_table :weather_providers do |t|
+        t.column :name, :string, :null => false
+        t.timestamps
+      end
+
+
       create_table :weather_archives do |t|
         t.column :time_from, :datetime, :null => false
         t.column :time_to, :datetime, :null => false
@@ -74,6 +80,8 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       add_index :meas_archives, [:meas_type_id, :time_from], :unique => true
       # weather
       add_index :weather_archives, [:weather_provider_id, :city_id, :time_from, :time_to], :unique => true, :name => 'weather_archives_index'
+      # weather providers
+      add_index :weather_providers, [:name], :unique => true
       # metar
       add_index :weather_metar_archives, [:time_from, :raw], :unique => true, :name => 'weather_metar_archives_raw_uniq_index'
       add_index :weather_metar_archives, [:time_from, :city_id], :unique => true, :name => 'weather_metar_archives_raw_city_uniq_index'
@@ -86,6 +94,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
     drop_table :cities
     drop_table :meas_archives
     drop_table :meas_types
+    drop_table :weather_providers
     drop_table :weather_archives
     drop_table :weather_metar_archives
   end

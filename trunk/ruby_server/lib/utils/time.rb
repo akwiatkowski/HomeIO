@@ -2,9 +2,21 @@
 
 class Time
 
-  # Nowa metoda wyświetlania czasu
+  # Show full time human formatted
   def to_human
-    return self.strftime("%Y-%m-%d %H:%M:%S")
+    return self.localtime.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
+  def to_timedate_human
+    to_human
+  end
+
+  def to_time_human
+    return self.localtime.strftime("%H:%M:%S")
+  end
+
+  def to_date_human
+    return self.localtime.strftime("%Y-%m-%d")
   end
 
   # Ustawia początek danego miesiąca

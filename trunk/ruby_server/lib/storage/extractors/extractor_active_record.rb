@@ -44,6 +44,7 @@ class ExtractorActiveRecord
   def metarcode_to_hash( m )
     return {
       :city => m.city_hash[:name],
+      :city_country => m.city_hash[:country],
       :city_metar => m.city,
       :time => m.output[:time].localtime,
       :wind => m.output[:wind_mps],
@@ -62,6 +63,7 @@ class ExtractorActiveRecord
     c = City.find( wma.city_id )
     return {
       :city => c.name,
+      :city_country => c.country,
       :city_metar => c.metar,
       :time => wma.time_from,
       :wind => wma.wind,
@@ -114,32 +116,61 @@ class ExtractorActiveRecord
     return array
   end
 
-
-
-
-  
-  
-  
-
-  
-
-  # Get table data of last metars
-  def str_get_array_of_last_metar( city, last_metars )
-    last_metars = last_metars.to_i
-    last_metars = 10 if last_metars < 1
-
+  # Get array of last metars
+  def get_array_of_last_metar( city, last_metars )
+    a = Array.new
     c = search_city( city )
-    str = "City: #{c.name} (#{c.country})\n"
-
     wmas = WeatherMetarArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_metars )
-
     wmas.reverse.each do |wma|
-      m = MetarCode.process_archived(wma.raw, wma.time_from.year, wma.time_from.month)
-      str += "#{m.output[:time].localtime.to_human}: #{m.output[:temperature].to_s_round( 1 )} C, #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
+      a << wma_with_metarcode_to_hash( wma )
     end
-
-    return str
+    return {:data => a, :city => c}
   end
+
+  # Convert WeatherArchive to hash
+  def wa_to_hash( wa )
+    c = City.find( wa.city_id )
+    if not wa.weather_provider_id.nil?
+      wp = wa.weather_provider.name
+    else
+      wp = 'N/A'
+    end
+    puts "***"
+    puts wa.weather_provider_id
+    puts wa.weather_provider.inspect
+    
+    return {
+      :city => c.name,
+      :city_country => c.country,
+      :time => wa.time_from,
+      :time_to => wa.time_to,
+      :temperature => wa.temperature,
+      :wind => wa.wind,
+      :pressure => wa.pressure,
+      :rain => wa.rain,
+      :snow => wa.snow,
+      :weather_provider => wp,
+      # was this predicted or measured by provider
+      :predicted => wa.predicted?
+    }
+  end
+
+  # Get table data of last weathers
+  def get_array_of_last_weather( city, last_metars )
+    a = Array.new
+    c = search_city( city )
+    was = WeatherArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_metars, :include => :weather_provider )
+    was.reverse.each do |wa|
+      a << wa_to_hash( wa )
+    end
+    return {:data => a, :city => c}
+  end
+
+  
+  
+  
+
+  
 
   def str_get_array_of_last_weather( city, last_w )
     last_w = last_w.to_i

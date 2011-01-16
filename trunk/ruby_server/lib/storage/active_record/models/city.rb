@@ -5,6 +5,7 @@ require './lib/weather_ripper.rb'
 
 class City < ActiveRecord::Base
   has_many :weather_metar_archives
+  has_many :weather_archives
 
   validates_presence_of :country, :name, :lat, :lon
 

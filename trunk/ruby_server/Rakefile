@@ -53,6 +53,13 @@ namespace :db do
     Storage.instance.init
   end
 
+  desc 'Initialize DBs (some dev fixes)'
+  task :init_tmp do
+    require './lib/storage/storage.rb'
+    StorageActiveRecord.instance
+    ActiveRecordInitMigration2.up
+  end
+
   desc 'Clean DBs'
   task :deinit do
     require './lib/storage/storage.rb'

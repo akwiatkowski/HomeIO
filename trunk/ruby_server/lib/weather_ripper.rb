@@ -23,17 +23,12 @@ class WeatherRipper
     @@config = ConfigLoader.instance.config( self.class )
 
     @providers = [
-      #WeatherOnetPl.new, # TODO big changes
+      WeatherOnetPl.new, # TODO big changes
       WeatherWpPl.new,
       WeatherInteriaPl.new
     ]
 
-    (0...(@providers.size)).each do |i|
-      @providers[i].id = i + 1
-    end
-
     puts "#{self.class.to_s} init - #{@providers.size} providers"
-
   end
 
   # Fetch weather from all providers, and all cities

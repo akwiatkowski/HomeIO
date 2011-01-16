@@ -13,7 +13,7 @@ class WeatherBase
   attr_reader :defs
 
   # Id used in DB
-  attr_accessor :id
+  # attr_reader :id
 
   def initialize
     @config = ConfigLoader.instance.config( self.class )
@@ -88,18 +88,23 @@ class WeatherBase
     return body
   end
 
-  # DEPRECATED
-  def DEP_store( data, defin )
-    #f = File.new( File.join("data", "weather", self.class.to_s+".txt"), "a")
-    f = File.new( File.join( WeatherRipper::WEATHER_DIR, self.class.to_s+".txt"), "a")
+  # Create WeatherProvider object and/or get id
+  def id
+    return @id if defined?( @id ) and not @id.nil?
 
-    data.each do |d|
-      f.puts("#{d[:time_created].to_i}; '#{defin[:city].to_s}'; #{d[:provider].to_s}; #{defin[:coord][:lat]}; #{defin[:coord][:lon]};   #{d[:time_from].to_i}; #{d[:time_to].to_i}; #{d[:temperature]}; #{d[:wind]}; #{d[:pressure]}; #{d[:rain]}; #{d[:snow]}")
-      DbStore.instance.store_weather_data( d, defin )
+    # establish connection
+    StorageActiveRecord.instance
 
-      puts "#{defin[:city].to_s}"
+    prov_name = self.class.provider_name
+    
+    wp = WeatherProvider.find_by_name( prov_name )
+    if wp.nil?
+      wp = WeatherProvider.new(:name => prov_name)
+      wp.save!
     end
-    f.close
+    @id = wp.id
+
+    return @id
   end
   
 

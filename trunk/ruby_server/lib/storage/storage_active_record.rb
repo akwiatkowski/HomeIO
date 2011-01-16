@@ -34,7 +34,7 @@ class StorageActiveRecord < StorageDbAbstract
   end
 
   def deinit
-    ActiveRecordInitMigration.down
+    ActiveRecordInitMigration2.down
   end
 
   # Store object
