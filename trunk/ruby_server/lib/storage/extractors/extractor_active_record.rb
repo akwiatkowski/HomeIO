@@ -16,14 +16,6 @@ class ExtractorActiveRecord
     return City.find(:all, :conditions => {}, :order => 'calculated_distance DESC')
   end
   
-  # Get all cities (for jabber communication)
-  def str_get_cities
-    cities = get_cities
-    cities_txt = cities.collect{|c| "#{c.id}. #{c.name} (#{c.country} - #{c.metar}) - #{c.calculated_distance.round}"}.join("\n")
-    cities_header = "ID. Name (Country - METAR) - distance [km]\n"
-    return cities_header + cities_txt
-  end
-
   # Search city using id, name, metar, partial of name
   def search_city( city )
     c = City.find_by_id( city )
@@ -33,46 +25,70 @@ class ExtractorActiveRecord
     return c
   end
 
+  # Get last metar for city
   def get_last_metar( city )
     c = search_city( city )
-    return :city_not_found if c.nil?
+    return nil if c.nil?
 
     wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')
+    return wma_with_metarcode_to_hash( wma )
+  end
+
+  # Convert WeatherMetarArchive to MetarCode
+  # Warning: WMA need to has correct metar (.raw)
+  def wma_to_metarcode( wma )
     return MetarCode.process_archived(wma.raw, wma.time_from.year, wma.time_from.month)
   end
 
-  # Convert MetarCode to string
-  # TODO: refactor
-  def str_metar_to_s( m )
-    str =  "City: #{m.city}\n"
-    str += "Time: #{m.output[:time].localtime.to_human}\n"
-    str += "Wind: #{m.output[:wind_mps].to_s_round( 1 )} m/s\n"
-    str += "Temperature: #{m.output[:temperature].to_s_round( 1 )} C\n"
-    str += "Pressure: #{m.output[:pressure]} hPa\n"
-    str += "Cloudiness: #{m.output[:cloudiness]} %\n"
-    str += "Rain level: #{m.output[:rain_metar]}\n"
-    str += "Snow level: #{m.output[:snow_metar]}\n"
-    str += "Specials:\n"
+  # Convert MetarCode to hash
+  def metarcode_to_hash( m )
+    return {
+      :city => m.city_hash[:name],
+      :city_metar => m.city,
+      :time => m.output[:time].localtime,
+      :wind => m.output[:wind_mps],
+      :temperature => m.output[:temperature],
+      :pressure => m.output[:pressure],
+      :cloudiness => m.output[:cloudiness],
+      :rain_metar => m.output[:rain_metar],
+      :snow_metar => m.output[:snow_metar],
+      :specials => m.output[:specials]
+    }
+  end
 
-    # specials
-    m.output[:specials].each do |s|
-      spec_str = "- #{s[:intensity]} #{s[:descriptor]} #{s[:precipitation]} #{s[:obscuration]} #{s[:misc]}\n"
-      str += spec_str
+  # Convert WeatherMetarArchive to hash
+  # Useful when WMA is without metar (.raw)
+  def wma_to_hash( wma )
+    c = City.find( wma.city_id )
+    return {
+      :city => c.name,
+      :city_metar => c.metar,
+      :time => wma.time_from,
+      :wind => wma.wind,
+      :temperature => wma.temperature,
+      :pressure => wma.pressure,
+      :rain_metar => wma.rain_metar,
+      :snow_metar => wma.snow_metar
+    }
+  end
+
+  # Try to use MetarCode, if not possible use direct conversion to hash
+  def wma_with_metarcode_to_hash( wma )
+    hash = wma_to_hash( wma )
+    begin
+      m = wma_to_metarcode( wma )
+      new_hash = metarcode_to_hash( m )
+      # if MetarCode is valid it can be used then
+      hash = new_hash if m.valid?
+    rescue
     end
-
-    return str
+    return hash
   end
 
-  def str_get_last_metar( city )
-    m = get_last_metar( city )
-    return m unless m.kind_of?(MetarCode) # return error message
-    return str_metar_to_s( m )
-  end
-
-  # Summary of last metars
-  def str_summary_metar_list
-    str = "ID. Name (Country - METAR) - temperature\n"
-
+  # Last metar summary
+  def summary_metar_list
+    array = Array.new
+    
     cities = get_cities
     cities.each do |c|
       # puts c.inspect
@@ -85,13 +101,27 @@ class ExtractorActiveRecord
         ],
         :order => 'time_from DESC')
       if not wma.nil?
-        str += "#{c.name} (#{c.country}): #{wma.temperature} C, #{wma.wind} m/s, #{wma.pressure} hPa, #{wma.rain_metar} rain, #{wma.snow_metar} snow\n"
+        array << {
+          :city => c.name,
+          :city_country => c.country,
+          :temperature => wma.temperature,
+          :wind => wma.wind,
+          :pressure => wma.pressure
+        }
       end
-      #end
     end
-
-    return str
+    
+    return array
   end
+
+
+
+
+  
+  
+  
+
+  
 
   # Get table data of last metars
   def str_get_array_of_last_metar( city, last_metars )

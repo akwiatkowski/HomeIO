@@ -9,7 +9,7 @@ require './lib/utils/adv_log.rb'
 class MetarCode
   include StorageInterface
   
-  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city, :city_id
+  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city, :city_id, :city_hash
 
   # Type from where come this metar, ex: :archived, :fresh
   attr_reader :type

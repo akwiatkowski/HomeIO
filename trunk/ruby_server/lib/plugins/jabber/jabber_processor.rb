@@ -2,6 +2,7 @@
 #encoding: utf-8
 
 require './lib/storage/extractors/extractor_active_record.rb'
+require './lib/plugins/jabber/text_interface_processor.rb'
 
 class JabberProcessor
   def self.process_command( command )
@@ -14,11 +15,11 @@ class JabberProcessor
     return case params[0]
     when 'help' then self.commands_help
     when '?' then self.commands_help
-    when 'cities' then ExtractorActiveRecord.instance.str_get_cities
+    when 'cities' then TextInterfaceProcessor.instance.get_cities
       # get last metar
-    when 'metar_city' then ExtractorActiveRecord.instance.str_get_last_metar( params[1] )
+    when 'metar_city' then TextInterfaceProcessor.instance.get_last_metar( params[1] )
       # summary of last metars
-    when 'metar_summary' then ExtractorActiveRecord.instance.str_summary_metar_list
+    when 'metar_summary' then TextInterfaceProcessor.instance.summary_metar_list
     when 'metar_array' then ExtractorActiveRecord.instance.str_get_array_of_last_metar( params[1], params[2] )
     when 'weather_array' then ExtractorActiveRecord.instance.str_get_array_of_last_weather( params[1], params[2] )
       # TODO implement
