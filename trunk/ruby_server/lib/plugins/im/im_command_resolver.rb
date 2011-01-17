@@ -2,40 +2,40 @@
 #encoding: utf-8
 
 require './lib/storage/extractors/extractor_active_record.rb'
-require './lib/plugins/jabber/text_interface_processor.rb'
+require './lib/plugins/im/im_processor.rb'
 require './lib/utils/adv_log.rb'
 
-class JabberProcessor
+class ImCommandResolver
   def self.process_command( command, from = 'N/A' )
 
     AdvLog.instance.logger( self ).info("C. from #{from}: #{command.inspect}")
-    puts command
+    puts "IM command received #{command}"
     t = Time.now
 
     params = command.to_s.split(/ /)
-    puts params.inspect
+    # puts params.inspect
 
     output = case params[0]
     when 'help', '?' then self.commands_help
-    when 'c' then TextInterfaceProcessor.instance.get_cities
+    when 'c' then ImProcessor.instance.get_cities
       # get last metar
-    when 'wmc' then TextInterfaceProcessor.instance.get_last_metar( params[1] )
+    when 'wmc' then ImProcessor.instance.get_last_metar( params[1] )
       # summary of last metars
-    when 'wms' then TextInterfaceProcessor.instance.summary_metar_list
+    when 'wms' then ImProcessor.instance.summary_metar_list
       # some last metars
-    when 'wma' then TextInterfaceProcessor.instance.get_array_of_last_metar( params[1], params[2] )
+    when 'wma' then ImProcessor.instance.get_array_of_last_metar( params[1], params[2] )
       # some last weathers
-    when 'wra' then TextInterfaceProcessor.instance.get_array_of_last_weather( params[1], params[2] )
+    when 'wra' then ImProcessor.instance.get_array_of_last_weather( params[1], params[2] )
       # search metar at
-    when 'wmsr' then TextInterfaceProcessor.instance.search_metar( params )
+    when 'wmsr' then ImProcessor.instance.search_metar( params )
       # search weather (non-metar) at
-    when 'wmsr' then TextInterfaceProcessor.instance.search_weather( params )
+    when 'wmsr' then ImProcessor.instance.search_weather( params )
       # search weather at
-    when 'wsr' then TextInterfaceProcessor.instance.search_metar_or_weather( params )
+    when 'wsr' then ImProcessor.instance.search_metar_or_weather( params )
       # city information
-    when 'ci' then TextInterfaceProcessor.instance.city_basic_info( params[1] )
+    when 'ci' then ImProcessor.instance.city_basic_info( params[1] )
       # advanced city info and stats
-    when 'cii' then TextInterfaceProcessor.instance.city_adv_info( params[1] )
+    when 'cii' then ImProcessor.instance.city_adv_info( params[1] )
     else 'Wrong command'
     end
 
@@ -59,9 +59,9 @@ class JabberProcessor
     str += "'wmsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for metar data for city at specified time\n"
     str += "'wrsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for weather (non-metar) data for city at specified time\n"
     str += "'wsr <id, metar code, name or name fragment> <time ex. 2010-01-01 12:00' - search for weather (metar or non-metar) data for city at specified time\n"
-    str += ""
-    str += ""
-    str += ""
+    #str += ""
+    #str += ""
+    #str += ""
 
     return str
   end

@@ -3,7 +3,7 @@ require './lib/storage/extractors/extractor_active_record.rb'
 
 # Process commands and output for text interface like jabber
 
-class TextInterfaceProcessor
+class ImProcessor
   include Singleton
   
   def initialize

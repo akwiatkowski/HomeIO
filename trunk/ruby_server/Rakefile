@@ -137,12 +137,16 @@ namespace :supervisor do
     s.start
   end
 
-  desc 'Start jabber server'
-  task :jabber do
-    require './lib/plugins/jabber/jabber_bot.rb'
-    require './lib/plugins/jabber/jabber_processor.rb'
-    j = JabberBot.instance
-    j.start
+  desc 'Start IM bots'
+  task :im do
+    require './lib/plugins/im/im_bots.rb'
+    im = ImBots.instance
+    im.start
+
+    puts "IM bots started at #{Time.now}"
+    loop do
+      sleep 10
+    end
   end
 
 end

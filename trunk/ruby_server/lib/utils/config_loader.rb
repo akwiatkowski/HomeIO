@@ -8,7 +8,11 @@ require 'yaml'
 class ConfigLoader
   include Singleton
 
+  # versioned configs, lower priority
   CONFIG_FILES_PATH = "config"
+  # local configs, not versioned, with higher priority, often with password
+  CONFIG_LOCAL_FILES_PATH = "config_local"
+  # folder to other configs
   INPUT_FILES_DIR = "input"
 
   # Load config if needed, or forced
@@ -17,7 +21,7 @@ class ConfigLoader
     type = type.to_s.to_sym
 
     if @@config[ type ].nil? or force == true
-      @@config[ type ] = YAML::load_file( File.join(CONFIG_FILES_PATH, "#{type.to_s}.yml") )
+      @@config[ type ] = load_config( type )
     end
 
     return @@config[ type ]
@@ -30,7 +34,18 @@ class ConfigLoader
 
   # Load other input files
   def load_input( type )
-    return YAML::load_file( File.join(CONFIG_FILES_PATH, INPUT_FILES_DIR, "#{type.to_s}.yml") )
+    return  YAML::load_file( File.join(CONFIG_FILES_PATH, INPUT_FILES_DIR, "#{type.to_s}.yml") )
+  end
+
+  private
+
+  # Load config, but first local version of config
+  def load_config( type )
+    begin
+      return YAML::load_file( File.join(CONFIG_LOCAL_FILES_PATH, "#{type.to_s}.yml") )
+    rescue
+      return YAML::load_file( File.join(CONFIG_FILES_PATH, "#{type.to_s}.yml") )
+    end
   end
 
 end

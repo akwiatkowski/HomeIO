@@ -1,26 +1,26 @@
 #!/usr/bin/ruby1.9.1
 #encoding: utf-8
 
-require 'rubygems'
-require 'singleton'
+require './lib/plugins/im/bots/im_bot_abstract.rb'
 require "jabber4r/jabber4r"
+
 # ugly fix for rexml in ruby 1.9, yuck!
-require './lib/plugins/jabber/jabber_ugly_fix.rb'
-require './lib/plugins/jabber/jabber_processor.rb'
-require './lib/utils/config_loader.rb'
+require './lib/plugins/im/bots/adds/jabber4r_ugly_fix.rb'
 
-class JabberBot
+# Works somehow at 1.9, better not use this
+# Code for deletion/rewrite or wait to library fixes
+
+class Jabber4rBot < ImBotAbstract
   include Singleton
-
-  PROCESSOR = JabberProcessor
 
   # Connect to server
   def initialize
+    super
   end
 
-  def start
-    @config = ConfigLoader.instance.config( self.class.to_s )
+  private
 
+  def _start
     @login = @config[:login]
     @password = @config[:password]
     @started = false
@@ -32,13 +32,11 @@ class JabberBot
     #}
   end
 
-  private
-
   def bot_loop
     loop do
       begin
         bot_thread
-      #rescue
+      rescue
       end
       sleep(5)
     end
@@ -48,6 +46,11 @@ class JabberBot
     begin
       @started = true
       session = Jabber::Session.bind("#{@login}/homeio", @password)
+
+      #puts 1
+      #session.connection.poll
+      #puts 2
+
       Thread.abort_on_exception=true
       my_thread = Thread.current
       mlid = session.add_message_listener do |message|
@@ -78,8 +81,3 @@ class JabberBot
     end
   end
 end
-
-# some links
-# http://home.gna.org/xmpp4r/
-# http://jabber4r.rubyforge.org/
-# http://socket7.net/software/jabber-bot
