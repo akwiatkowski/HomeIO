@@ -54,8 +54,12 @@ class WeatherBase
       log_error( self, e )
       puts e.inspect
       puts e.backtrace
+      
+      # processor must return array of hashes
+      return []
     end
   end
+
   #  def process( body_raw )
   #    raise 'Not implemented'
   #
