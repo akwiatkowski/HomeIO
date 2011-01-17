@@ -130,8 +130,22 @@ end
 # stars server
 namespace :supervisor do
 
-  desc 'Start supervisor server'
+  desc 'Start supervisor server without IM'
+  task :start_no_im do
+    require './lib/supervisor/supervisor.rb'
+    s = Supervisor.instance
+    s.start
+  end
+
+  desc 'Start supervisor server with IM'
   task :start do
+    require './lib/plugins/im/im_bots.rb'
+    im = ImBots.instance
+    im.start
+
+    # TODO crashing, why?
+    sleep(1)
+
     require './lib/supervisor/supervisor.rb'
     s = Supervisor.instance
     s.start

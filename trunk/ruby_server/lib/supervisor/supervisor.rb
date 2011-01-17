@@ -49,12 +49,15 @@ class Supervisor
 
     puts "Supervisor started"
 
-    if @@config[:start_im] == true
-      # start IM botsbot gg
-      require './lib/plugins/im/im_bots.rb'
-      im = ImBots.instance
-      im.start
-    end
+    # TODO remove from config
+    #if @@config[:start_im] == true
+    #  # start IM botsbot gg
+    #  sleep( 1 )
+    #
+    #  require './lib/plugins/im/im_bots.rb'
+    #  im = ImBots.instance
+    #  im.start
+    #end
 
     loop do
       sleep( 30 )

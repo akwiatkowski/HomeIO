@@ -1,8 +1,15 @@
 require './lib/weather_ripper/weather_base.rb'
+require './lib/weather_ripper/weather_onet_pl.rb'
 
 # Archived, format changed
 
 class WeatherOnetPlOld < WeatherBase
+
+  # Use same config as WeatherOnetPl
+  def initialize
+    @config = ConfigLoader.instance.config( WeatherOnetPl )
+    @defs = @config[:defs]
+  end
 
   def self.provider_name
     "Onet.pl"

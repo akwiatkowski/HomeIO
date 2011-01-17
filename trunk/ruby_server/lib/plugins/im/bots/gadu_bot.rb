@@ -22,6 +22,7 @@ class GaduBot < ImBotAbstract
     #@iconv = Iconv.new('ISO-8859-2','UTF-8')
     @iconv = Iconv.new('CP1250','UTF-8')
 
+    puts "#{@config[:gg]}, #{@config[:password]}, #{@config[:server]}"
     @g = GG.new(@config[:gg], @config[:password], {:server => @config[:server]})
     @g.status(:avail, "HomeIO", false)
 
