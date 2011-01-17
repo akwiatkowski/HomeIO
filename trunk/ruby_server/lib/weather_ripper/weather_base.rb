@@ -45,23 +45,34 @@ class WeatherBase
     Storage.instance.flush
   end
 
+  # Run within begin rescue, some portals like changing schema
   def process( body_raw )
-    raise 'Not implemented'
-
-    # this method should return Array of Hashes like this
-    # [{
-    #   :time_created => Time.now, # used for
-    #   :time_from => unix_time_soon_from, # begin of perdiod for theese values
-    #   :time_to => unix_time_soon_to,
-    #   :temperature => temperatures[1][0].to_f, # in Celsius
-    #   :pressure => pressures[1][0].to_f, # in hPa
-    #   :wind_kmh => winds[1][0].to_f, # in km/h
-    #   :wind => winds[1][0].to_f / 3.6, # in m/s - preferred
-    #   :snow => snows[1][0].to_f, # in mm
-    #   :rain => rains[1][0].to_f, # in mm
-    #   :provider => 'Onet.pl' # provider name
-    # }]
+    begin
+      return _process( body_raw )
+    rescue => e
+      # bigger error
+      log_error( self, e )
+      puts e.inspect
+      puts e.backtrace
+    end
   end
+  #  def process( body_raw )
+  #    raise 'Not implemented'
+  #
+  #    # this method should return Array of Hashes like this
+  #    # [{
+  #    #   :time_created => Time.now, # used for
+  #    #   :time_from => unix_time_soon_from, # begin of perdiod for theese values
+  #    #   :time_to => unix_time_soon_to,
+  #    #   :temperature => temperatures[1][0].to_f, # in Celsius
+  #    #   :pressure => pressures[1][0].to_f, # in hPa
+  #    #   :wind_kmh => winds[1][0].to_f, # in km/h
+  #    #   :wind => winds[1][0].to_f / 3.6, # in m/s - preferred
+  #    #   :snow => snows[1][0].to_f, # in mm
+  #    #   :rain => rains[1][0].to_f, # in mm
+  #    #   :provider => 'Onet.pl' # provider name
+  #    # }]
+  #  end
 
   def weather_provider_id
     return id

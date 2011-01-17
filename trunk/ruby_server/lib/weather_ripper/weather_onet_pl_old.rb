@@ -15,7 +15,8 @@ class WeatherOnetPlOld < WeatherBase
     "Onet.pl"
   end
 
-  def process( body_raw )
+  # Run within begin rescue, some portals like changing schema
+  def _process( body_raw )
 
     body = body_raw.downcase
 
