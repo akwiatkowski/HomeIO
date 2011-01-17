@@ -23,6 +23,7 @@ class WeatherRipper
     @@config = ConfigLoader.instance.config( self.class )
 
     @providers = [
+      WeatherOnetPlOld.new, # onet change www, again
       WeatherOnetPl.new, # TODO big changes
       WeatherWpPl.new,
       WeatherInteriaPl.new

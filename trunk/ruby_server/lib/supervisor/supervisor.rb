@@ -49,17 +49,15 @@ class Supervisor
 
     puts "Supervisor started"
 
-    if not @@config[:start_jabber_server] == true
-      # start endless loop
-      loop do
-        sleep( 30 )
-      end
-    else
-      # start jabber server - just like loop
-      require './lib/plugins/jabber/jabber_bot.rb'
-      require './lib/plugins/jabber/jabber_processor.rb'
-      j = JabberBot.instance
-      j.start
+    if @@config[:start_im] == true
+      # start IM botsbot gg
+      require './lib/plugins/im/im_bots.rb'
+      im = ImBots.instance
+      im.start
+    end
+
+    loop do
+      sleep( 30 )
     end
   end
 

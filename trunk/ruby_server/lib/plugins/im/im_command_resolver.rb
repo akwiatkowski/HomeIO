@@ -9,7 +9,7 @@ class ImCommandResolver
   def self.process_command( command, from = 'N/A' )
 
     AdvLog.instance.logger( self ).info("C. from #{from}: #{command.inspect}")
-    puts "IM command received #{command}"
+    puts "IM command received #{command}, from #{from}"
     t = Time.now
 
     params = command.to_s.split(/ /)
@@ -36,7 +36,7 @@ class ImCommandResolver
     when 'ci' then ImProcessor.instance.city_basic_info( params[1] )
       # advanced city info and stats
     when 'cii' then ImProcessor.instance.city_adv_info( params[1] )
-    else 'Wrong command'
+    else "Wrong command, try 'help'"
     end
 
     AdvLog.instance.logger( self ).info("C. from #{from}: time #{Time.now - t}")
