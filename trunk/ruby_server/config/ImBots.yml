@@ -1,4 +1,5 @@
 ---
 :nil: true
-# autoupdater change status every...
+# autoupdater change status every x second
+# alpha version
 :run_autoupdater: true

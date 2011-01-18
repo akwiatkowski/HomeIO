@@ -183,17 +183,23 @@ class ImProcessor
     str += "First weather at: #{h[:first_weather].time_from.localtime.to_human}\n" unless h[:first_weather].nil?
     str += "Last weather at: #{h[:last_weather].time_from.localtime.to_human}\n" unless h[:last_weather].nil?
 
-    str += " \nMETAR\n"
-    str += " \nHighest temperature\n#{wma_to_simple_s(h[:high_temp_metar])}\n\n" unless h[:high_temp_metar].nil?
-    str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_temp_metar])}\n\n" unless h[:low_temp_metar].nil?
-    str += " \nHighest wind\n#{wma_to_simple_s(h[:high_wind_metar])}\n\n" unless h[:high_wind_metar].nil?
-    str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_wind_metar])}\n\n" unless h[:low_wind_metar].nil?
+    # show only when data available
+    if not h[:high_temp_metar].nil? or h[:low_temp_metar].nil? or h[:high_wind_metar].nil? or h[:low_wind_metar].nil?
+      str += " \nMETAR\n"
+      str += " \nHighest temperature\n#{wma_to_simple_s(h[:high_temp_metar])}\n\n" unless h[:high_temp_metar].nil?
+      str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_temp_metar])}\n\n" unless h[:low_temp_metar].nil?
+      str += " \nHighest wind\n#{wma_to_simple_s(h[:high_wind_metar])}\n\n" unless h[:high_wind_metar].nil?
+      str += " \nLowest temperature\n#{wma_to_simple_s(h[:low_wind_metar])}\n\n" unless h[:low_wind_metar].nil?
+    end
 
-    str += " \nWeather\n"
-    str += " \nHighest temperature\n#{wa_to_simple_s(h[:high_temp_weather])}\n\n" unless h[:high_temp_weather].nil?
-    str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_temp_weather])}\n\n" unless h[:low_temp_weather].nil?
-    str += " \nHighest wind\n#{wa_to_simple_s(h[:high_wind_weather])}\n\n" unless h[:high_wind_weather].nil?
-    str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_wind_weather])}\n\n" unless h[:low_wind_weather].nil?
+    # show only when data available
+    if not h[:high_temp_weather].nil? or h[:low_temp_weather].nil? or h[:high_wind_weather].nil? or h[:low_wind_weather].nil?
+      str += " \nWeather\n"
+      str += " \nHighest temperature\n#{wa_to_simple_s(h[:high_temp_weather])}\n\n" unless h[:high_temp_weather].nil?
+      str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_temp_weather])}\n\n" unless h[:low_temp_weather].nil?
+      str += " \nHighest wind\n#{wa_to_simple_s(h[:high_wind_weather])}\n\n" unless h[:high_wind_weather].nil?
+      str += " \nLowest temperature\n#{wa_to_simple_s(h[:low_wind_weather])}\n\n" unless h[:low_wind_weather].nil?
+    end
 
     return str
   end
