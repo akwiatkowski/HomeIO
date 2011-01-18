@@ -3,6 +3,9 @@
 
 require './lib/plugins/im/bots/im_bot_abstract.rb'
 require 'gg'
+# fix
+require './lib/vendors/rgadu/lib/gg.rb'
+
 require 'iconv'
 
 # Gadu-gadu bot
@@ -42,14 +45,16 @@ class GaduBot < ImBotAbstract
 
   # Start bot code
   def _start
+    puts "Connecting #{self.class.to_s} at #{Time.now}"
+
     #@iconv = Iconv.new('ISO-8859-2','UTF-8')
     @iconv = Iconv.new('CP1250','UTF-8')
 
-    puts "#{@config[:gg]}, #{@config[:password]}, #{@config[:server]}"
+    # puts "#{@config[:gg]}, #{@config[:password]}, #{@config[:server]}"
     @g = GG.new(@config[:gg], @config[:password], {:server => @config[:server]})
 
     # startup status
-    # @g.status( STATUS_AVAIL, "HomeIO", false )
+    #@g.status( STATUS_AVAIL, "HomeIO", false )
     change_status( STATUS_AVAIL, "HomeIO", false )
 
     @g.on_msg do |uin, time, msg|

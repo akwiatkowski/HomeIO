@@ -51,6 +51,7 @@ class Xmpp4rBot < ImBotAbstract
   def _start
     @client = Jabber::Client.new(Jabber::JID::new( @config[:login] ))
 
+    Thread.abort_on_exception=true
     _keep_alive_connection
     _keep_alive_status
   end
@@ -60,8 +61,8 @@ class Xmpp4rBot < ImBotAbstract
     @client.auth( @config[:password] )
 
     # startup status
-    # @client.send(Jabber::Presence.new.set_type(:available))
-    change_status( STATUS_AVAIL, nil )
+    @client.send(Jabber::Presence.new.set_type(:available))
+    #change_status( STATUS_AVAIL, nil )
 
     @client.add_message_callback do |m|
       begin

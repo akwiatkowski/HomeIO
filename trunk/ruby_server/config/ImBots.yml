@@ -2,4 +2,4 @@
 :nil: true
 # autoupdater change status every x second
 # alpha version
-:run_autoupdater: true
+:run_autoupdater: false

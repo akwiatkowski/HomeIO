@@ -1,6 +1,5 @@
 require 'singleton'
 Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
-require './lib/plugins/im/im_autoupdated_status.rb'
 
 # Load and start IM bots
 
@@ -14,17 +13,18 @@ class ImBots
 
     @bots = [
       #Jabber4rBot.instance, # errors
+      GaduBot.instance,
       Xmpp4rBot.instance,
-      GaduBot.instance
     ]
   end
 
   def start
     @bots.each do |b|
-      puts b.start
+      b.start
     end
 
     if true == @config[:run_autoupdater]
+      require './lib/plugins/im/im_autoupdated_status.rb'
       ImAutoupdatedStatus.instance.run_autoupdater
     end
   end
