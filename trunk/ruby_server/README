@@ -1,24 +1,32 @@
-OBSOLOTE
-Check rake -T and Rakefile
+1. Requirements:
+* Ruby 1.8.7
+* Gems required. Prefered version in parenthesis.
+- activemodel (3.0.3)
+- activerecord (3.0.3)
+- activesupport (3.0.3)
+- geokit (1.5.0)
+- jabber4r (0.8.0)
+- mkrf (0.2.3)
+- mysql (2.8.1)
+- rgadu (0.2.1)
+- sqlite3-ruby (1.3.2)
+- xmpp4r (0.5)
 
---
+2. How to use.
+* install Ruby and gems
+* check config files (./config/*) and try get to know the project, most important files at start are:
+- Geolocation.yml - set your geographic coords here
+- MetarLogger.yml - choose cities which you are interested in if default set is not good enough
+- StorageActiveRecord.yml - choose sqlite, mysql or other Active Record capable database, and set configuration here.
+  Just like in Rails.
+- WeatherInteriaPl.yml, WeatherOnetPl.yml, WeatherWpPl.yml - you can set places to log weather using some popular Polish portals
+* create database, not schema
+* run 'rake db:init' - it should create and populate tables
+* run app:
+- 'rake supervisor:start' - it will start server which listen to commands
+- 'rake action:fetch_metar' - fetch metars set in  MetarLogger.yml
+- 'rake action:fetch_weather' - fetch weather data using WeatherRipper using (at this moment) some popular polish portals
+- 'rake client:fetch_metar' - send command to server started by 'rake supervisor:start', and make it do 'rake action:fetch_metar'
+- 'rake client:fetch_weather' - send command to server started by 'rake supervisor:start', and make it do 'rake action:fetch_weather'
 
-
-ruby metar_single_fetch.rb
-# fetch one time all cities using metar
-
-ruby metar_star_process.rb
-# process (and store in DB) current and previous (if needed because of month change) month
-
-ruby metar_star_process_all.rb
-# process (and store in DB) all raw metar data
-
-ruby metar_star_server.rb
-# start server which periodicaly fetch metar data
-
-ruby metar_client_start_process.rb
-# server stars processing all metar raw data and create graphs
-
-ruby weather_single_fetch.rb
-# fetch all non-metar weather data
-
+Other command are available after running 'rake -T'. If you have problems you can mail me login 'bobikx' and the server is poczta.fm.

@@ -30,7 +30,7 @@ class ImCommandResolver
       # search metar at
     when 'wmsr' then ImProcessor.instance.search_metar( params )
       # search weather (non-metar) at
-    when 'wmsr' then ImProcessor.instance.search_weather( params )
+    when 'wrsr' then ImProcessor.instance.search_weather( params )
       # search weather at
     when 'wsr' then ImProcessor.instance.search_metar_or_weather( params )
       # city information
