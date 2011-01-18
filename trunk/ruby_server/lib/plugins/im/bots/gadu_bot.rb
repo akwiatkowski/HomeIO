@@ -15,6 +15,29 @@ class GaduBot < ImBotAbstract
     super
   end
 
+  # status types:
+  # available
+  STATUS_AVAIL = :avail
+
+  # Change IM bot status
+  #
+  # type = :avail, :busy, :invisible, :notavail
+  def change_status( type = STATUS_AVAIL, status = nil, only_friends = false )
+    @status_type = type
+    @status_status = status
+    @status_friends = only_friends
+
+    @g.status( @status_type, @status_status, @status_friends )
+  end
+
+  # Change IM bot status
+  def change_status_only_text( status = nil )
+    @status_status = status
+    @g.status( @status_type, @status_status, @status_friends )
+  end
+
+
+
   private
 
   # Start bot code
@@ -24,7 +47,10 @@ class GaduBot < ImBotAbstract
 
     puts "#{@config[:gg]}, #{@config[:password]}, #{@config[:server]}"
     @g = GG.new(@config[:gg], @config[:password], {:server => @config[:server]})
-    @g.status(:avail, "HomeIO", false)
+
+    # startup status
+    # @g.status( STATUS_AVAIL, "HomeIO", false )
+    change_status( STATUS_AVAIL, "HomeIO", false )
 
     @g.on_msg do |uin, time, msg|
       # puts "#{uin} #{msg} #{time}"
@@ -39,6 +65,8 @@ class GaduBot < ImBotAbstract
 
           begin
             response = PROCESSOR.process_command( msg, "gg:#{uin.to_s}" )
+            # add to contact list
+            @g.add( uin )
           rescue => e
             log_error( self, e )
             puts e.inspect

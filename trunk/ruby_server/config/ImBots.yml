@@ -1,2 +1,4 @@
 ---
 :nil: true
+# autoupdater change status every...
+:run_autoupdater: true

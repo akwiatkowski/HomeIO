@@ -13,9 +13,10 @@ class ImCommandResolver
     t = Time.now
 
     params = command.to_s.split(/ /)
-    # puts params.inspect
 
-    output = case params[0]
+    # compare downcase
+    # some mobile phones, clients, write first letter with big letter
+    output = case params[0].to_s.downcase
     when 'help', '?' then self.commands_help
     when 'c' then ImProcessor.instance.get_cities
       # get last metar
@@ -35,7 +36,7 @@ class ImCommandResolver
       # city information
     when 'ci' then ImProcessor.instance.city_basic_info( params[1] )
       # advanced city info and stats
-    when 'cii' then ImProcessor.instance.city_adv_info( params[1] )
+    when 'cix' then ImProcessor.instance.city_adv_info( params[1] )
     else "Wrong command, try 'help'"
     end
 
