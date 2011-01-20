@@ -104,4 +104,29 @@ class GG
 			end
 		end
 	end
+
+  def msg_received(sender, seq, time, cl, message)
+		if cl == 0x10 and message.chomp(0.chr) == 2.chr
+			if @dcc_recv_action and ip = get_ip(sender) and port = get_port(sender) and port > 1
+				@dcc_client_thread << Thread.new(ip, port, @uin, sender, @dcc_recv_action) do |ip, port, uin1, uin2, dcc_recv_action|
+					begin
+						client = DCCClient.new(ip, port, uin1, uin2)
+						@dcc_client << client
+						client.client_recv {|uin, filename, filesize| dcc_recv_action.call(uin, filename, filesize) }
+					rescue
+						warn "Error: #{$!}"
+					end
+				end
+			end
+		else
+      # my modification to not not destroy server then @msg_action has
+      # errors
+      begin
+        @msg_action.call(sender, Time.at(time), message.chomp(0.chr)) if @msg_action
+      rescue => e
+        puts e.inspect
+        puts e.backtrace
+      end
+		end
+	end
 end
