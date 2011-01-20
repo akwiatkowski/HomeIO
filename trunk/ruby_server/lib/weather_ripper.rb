@@ -1,7 +1,6 @@
 require 'singleton'
 require './lib/utils/config_loader.rb'
 
-require './lib/weather_ripper/weather_onet_pl_old.rb'
 require './lib/weather_ripper/weather_onet_pl.rb'
 require './lib/weather_ripper/weather_wp_pl.rb'
 require './lib/weather_ripper/weather_interia_pl.rb'
@@ -24,8 +23,7 @@ class WeatherRipper
     @@config = ConfigLoader.instance.config( self.class )
 
     @providers = [
-      WeatherOnetPlOld.new, # onet change www, again
-      WeatherOnetPl.new, # TODO big changes
+      WeatherOnetPl.new, # detailed
       WeatherWpPl.new,
       WeatherInteriaPl.new
     ]

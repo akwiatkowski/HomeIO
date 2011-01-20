@@ -82,7 +82,7 @@ class WeatherBase
     return id
   end
 
-  private
+  #private
 
   # Fetching and storing
   def check_online( defin )
