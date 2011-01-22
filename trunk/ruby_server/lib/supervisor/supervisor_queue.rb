@@ -1,4 +1,6 @@
 require './lib/supervisor/comm_queue.rb'
+require './lib/supervisor/supervisor_commands.rb'
+
 
 # Standard queue enhanced by HomeIO remote command proccesor
 
@@ -6,30 +8,30 @@ class SupervisorQueue < CommQueue
 
   private
 
-  # Start processing task
+  # Start processing CommQueueTask
   # After finish, result should be stored into :response key
   # Status changes are done elsewhere
-  def process_task( task )
-    task.set_in_proccess!
-    command = task.command
+  def process_q_task( q_task )
+    q_task.set_in_proccess!
 
     # running commans
-    if task.type_proc?
+    if q_task.type_proc?
       # run proc
-      command.run_proc( Supervisor.instance )
+      q_task.command.run_proc( Supervisor.instance )
     else
-      # TODO rewrite to make response accesor private
-      task.response = process_symbol( command )
+      q_task.response = process_symbol_command( q_task.command, q_task.params )
     end
 
-    task.set_done!
+    q_task.set_done!
   end
 
   # Process command when it is send as symbol
-  def process_symbol( command )
-    return case command[:command]
+  def process_symbol_command( command, params )
+    return case command
     when :fetch_weather then Supervisor.instance.components[:WeatherRipper].start
     when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
+      # process IM command
+    when SupervisorCommands::IM_COMMAND then Supervisor.instance.components[:ImCommandResolver].process_command( command[:string], command[:from] )
     when :process_metar_city then
       begin
         MetarMassProcessor.instance.process_all_for_city( command[:city] )

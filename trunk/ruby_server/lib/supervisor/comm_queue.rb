@@ -1,4 +1,5 @@
 require './lib/supervisor/comm_queue_task.rb'
+require './lib/supervisor/task.rb'
 
 # Communication commands queue
 
@@ -31,59 +32,81 @@ class CommQueue
   # Decide what do with received command:
   # :ping - reply now
   # :fetch - fetch response of command
-  def process_server_command( command )
-
-    puts @queue.inspect
+  #
+  # Should return only Task objects
+  def process_server_command( task )
+    # is more standarized object than hash
+    task = Task.factory( task )
 
     # ping
-    if command == :ping
+    if task.command == :ping
       # server is alive
-      return :ok
+      task.response = :ok
+      return task
 
       # fetch response
-    elsif command[:command] == :fetch #and not command[:id].nil?
+    elsif task.command == :fetch
+      id_task_to_fetch = task.params[:id]
+
       # fetch response from queue
-      if command[:id].nil?
-        return {:result => :failed, :reason => :no_id}
+      if id_task_to_fetch.nil?
+        task.set_fetch_no_id!
+        return task
       else
-        return fetch_task_by_id( command[:id] )
+        # searching by id
+        fetched_q_task = fetch_q_task_by_id( id_task_to_fetch )
+        if fetched_q_task.nil?
+          # not found
+          task.set_fetch_not_found!
+          return task
+
+        elsif not fetched_q_task.finished?
+          # task is not ready
+          task.set_fetch_not_ready!
+          return task
+
+        else
+          # found
+          # mark that it will be that long awaited response
+          fetched_q_task.task.set_fetch_ok!
+          fetched_q_task.set_sent!
+          return fetched_q_task.task
+        end
       end
 
-    elsif not command[:command].nil?
-      # jest dodane do listy do przetworzenia
-      return add_to_list( command )
+    elsif not task.command.nil?
+      # add to queue
+      # if task is very hurry it will be processed now
+      return add_task_to_queue( task )
 
-    elsif not command[:receive_queue].nil?
-      # zwraca kolejkę
-      return @queue
+    elsif task.command == :receive_queue
+      # return queue's Tasks, not CommQueueTasks
+      task.response = @queue.collect{|q| q.task }
+      return task
       
     end
   end
 
   # Add command to list as task, return it status and id to fetch later response
   # Or Process hurry task now
-  def add_to_list( command )
+  def add_task_to_queue( task )
     # clean old items from list
     clean_list
 
-    # creating task
-    h = Hash.new
-    # received command
-    h[:command] = command
-    # id for fetching
-    h[:id] = command.object_id
-    # przetworzenie na obiekt zadania
-    task = CommQueueTask.new( h )
+    q_task = CommQueueTask.new( task )
 
     # check if task needs processing now, hurry
-    if task.process_now?
+    if q_task.process_now?
       # do it now
-      process_task( task )
-      return task.to_h_for_sending
+      process_q_task( q_task )
+      q_task.set_sent!
+      return q_task.task
     else
       # add to list
-      @queue << task
-      return {:status => :added, :id => task.fetch_id}
+      # generate id, and change status
+      q_task.added_on_queue!
+      @queue << q_task
+      return q_task.task
     end
   end
 
@@ -96,18 +119,20 @@ class CommQueue
 
 
   # Wysłanie odpowiedzi przetworzonego polecenia
-  def fetch_task_by_id( id )
+  def fetch_q_task_by_id( id )
     # delete old
     clean_list
 
     # select
-    tasks = @queue.select{|q| q.fetch_id == id}
+    q_tasks = @queue.select{|q| q.fetch_id == id}
 
     # checking is in queue
-    if not tasks.size == 1
-      return :not_in_queue
+    if not q_tasks.size == 1
+      return nil
     else
-      return tasks.first.to_h_for_sending
+      # sending task object, not only hash
+      t = q_tasks.first
+      return t
     end
   end
 
@@ -119,11 +144,11 @@ class CommQueue
     loop do
       # flag for start/stop
       if @is_running == true
-        task = queue_first_new
-        if not task.nil?
+        q_task = find_first_new_q_task
+        if not q_task.nil?
           # process it
-          puts task.inspect
-          process_task( task )
+          puts "Processing #{q_task.inspect}"
+          process_q_task( q_task )
         end
       end
 
@@ -131,8 +156,8 @@ class CommQueue
     end
   end
 
-  # Find first new
-  def queue_first_new
+  # Find first new CommQueueTask
+  def find_first_new_q_task
     @queue.each do |q|
       if q.is_new?
         return q
@@ -141,7 +166,7 @@ class CommQueue
     return nil
   end
 
-   # Another method for possible uniq id generation
+  # Another method for possible uniq id generation
   def self.generate_id
     str = Time.now.to_s + Time.now.to_f.to_s + rand(12345).to_s
     hash = Digest::SHA2.new << str

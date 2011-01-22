@@ -1,5 +1,5 @@
 require './lib/supervisor/comm.rb'
-require './lib/supervisor/comm_queue_task.rb'
+require './lib/supervisor/task.rb'
 require './lib/utils/config_loader.rb'
 
 class SupervisorClient < Comm
@@ -7,18 +7,22 @@ class SupervisorClient < Comm
   # checks if task was finished every this seconds
   CHECK_EXEC_END_INTERVAL = 1
 
-  # Wyślij polecenie do serwera
+  # Send command to server
   def send_to_server( comm )
-    return super( comm, SupervisorClient.port )
+    task = Task.factory( comm )
+    return super( task, SupervisorClient.port )
   end
 
   # Wait for finishing of execution of task
-  def self.wait_for_task( id )
-    command = {:command => :fetch, :id => id }
+  # *response_task* - task returned by server as notice of added task into queue
+  def self.wait_for_task( response_task )
+    command = {:command => :fetch, :params => {:id => response_task.fetch_id} }
 
     while true
       res = SupervisorClient.new.send_to_server( command )
-      return res if res.finished?
+      if res.fetch_is_ready?
+        return res
+      end
       sleep( CHECK_EXEC_END_INTERVAL )
     end
   end

@@ -172,8 +172,7 @@ namespace :client do
   desc 'Ping server'
   task :ping do
     require './lib/supervisor/supervisor_client.rb'
-    #command = {:command => :ping, :now => true}
-    command = :ping
+    command = {:command => :ping, :now => true}
     response = SupervisorClient.new.send_to_server( command )
     puts response.inspect
   end
@@ -185,6 +184,16 @@ namespace :client do
     response = SupervisorClient.new.send_to_server( command )
     puts response.inspect
   end
+
+  desc 'Test command processor'
+  task :test_wait do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :test}
+    response_task = SupervisorClient.new.send_to_server( command )
+    last_response = SupervisorClient.wait_for_task( response_task )
+    puts last_response.inspect
+  end
+
 
   desc 'Process METAR for city'
   task :process_metar_city do
@@ -209,8 +218,18 @@ namespace :client do
   task :fetch_weather_wait do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_weather}
-    response = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response[:id] )
+    response_task = SupervisorClient.new.send_to_server( command )
+    last_response = SupervisorClient.wait_for_task( response_task )
+    puts last_response.inspect
+  end
+
+  # Send task and wait for answer
+  desc 'Fetch weather (wait for end)'
+  task :fetch_weather_wait_b do
+    require './lib/supervisor/supervisor_client.rb'
+    command = {:command => :fetch_weather}
+    response_task = SupervisorClient.new.send_to_server( command )
+    last_response = SupervisorClient.wait_for_task( response_task )
     puts last_response.inspect
   end
 
@@ -239,7 +258,7 @@ namespace :client do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_metar}
     response = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response[:id] )
+    last_response = SupervisorClient.wait_for_task( response )
     puts last_response.inspect
   end
 

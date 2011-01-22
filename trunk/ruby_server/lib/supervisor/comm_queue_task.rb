@@ -1,13 +1,9 @@
 require './lib/utils/adv_log.rb'
+require './lib/supervisor/task.rb'
 
 # One server task, queue element
 
 class CommQueueTask
-
-  DONE = :done
-  NEW = :new
-  SENT = :sent
-  IN_PROCESS = :in_process
 
   # After this interval after process finished taks will be deleted
   TASK_LIFETIME = 2*60
@@ -15,120 +11,103 @@ class CommQueueTask
   # Task should be in queue after process at least for this interval
   TASK_LIFETIME_MIN = 5
 
-  # When task was created, Time
-  attr_reader :time_new
-
-  # When task was started, Time or nil
-  attr_reader :time_started
-
-  # When task was finished, Time or nil
-  attr_reader :time_finished
-
-  # When task response was sent, Time or nil
-  attr_reader :time_sent
-
 
   # Create self, hash-like object
-  def initialize( h )
-    @time_new = Time.now
-
-    # internal hash
-    @h = h
-    # so it's new by default
-    @h[:status] = NEW
+  def initialize( t )
+    # internal Task
+    @t = Task.factory( t )
   end
 
-  # Czy nowe, niewykonane
+  # Accesor for task
+  def task
+    return @t
+  end
+
+  # Is new?, not done yet
   def is_new?
-    return true if @h[:status] == NEW
-    return false
+    @t.is_new?
   end
 
-  # Czy jest gotowe, przetowrzone
+  # Is ready?
   def is_ready?
-    return true if @h[:status] == DONE
-    return false
+    @t.is_ready?
   end
 
-  # Czy został wysłany
+  # Was sent?
   def is_sent?
-    return true if @h[:status] == SENT
-    return false
+    @t.is_sent?
+  end
+
+  # Client can fetch result ot task
+  def finished?
+    @t.finished?
   end
 
   # Is processed right now?
   def is_in_process?
-    return true if @h[:status] == IN_PROCESS
-    return false
+    @t.is_in_process?
   end
 
-  # Was taks finished?
+  # Was task finished?
   def finished?
-    return true if is_ready? or is_sent?
-    return false
+    @t.finished?
   end
 
-  # Set when tast is beign processed now
+  # Set task is beign processed right now
   def set_in_proccess!
-    @h[:status] = IN_PROCESS
-    @time_started = Time.now
+    @t.set_in_proccess!
   end
 
-  # Ustaw na zakończone
+  # Set task id sone
   def set_done!
-    @h[:status] = DONE
-    @time_finished = Time.now
-    
-    @h[:process_time] = @time_finished - @time_started
+    @t.set_done!
   end
 
-  # Ustaw na wysłane
+  # Set task result was sent
   def set_sent!
-    @h[:status] = SENT
-    @time_sent = Time.now
+    @t.set_sent!
   end
 
   def response
-    return @h[:response]
+    @t.response
+  end
+
+  # For setting response by server
+  def response=(r)
+    @t.response = r
   end
 
   def command
-    return @h[:command]
+    return @t.command
   end
 
-  # Time cost of processing command
-  attr_reader :process_time
+  def params
+    return @t.params
+  end
 
   # Is command with Proc
   def type_proc?
-    self.command.kind_of?(Proc)
-  end
-
-  # Run Proc command
-  def run_proc( klass_instance )
-    return nil if false == self.type_proc?
-
-    begin
-      self.response = command.call( klass_instance )
-    rescue => e
-      self.response = nil
-      # TODO add accesor
-      @h[:error] = true
-
-      puts e.inspect
-      puts e.backtrace
-      log_error( self, e, "task.inspect #{self.inspect}" )
-    end
+    @t.type_proc?
   end
 
   # Is command normal, not Proc
   def type_normal?
-    self.command.kind_of?(Symbol) or self.command.kind_of?(Symbol)
+    @t.type_normal?
   end
 
-  # Set response in internal hash
-  def response=( resp )
-    @h[:response] = resp
+  # When task was finished, Time or nil
+  def time_finished
+    @t.time_finished
+  end
+
+  # When task response was sent, Time or nil
+  def time_sent
+    @t.time_sent
+  end
+
+  # Run Proc command
+  def run_proc( klass_instance )
+    @t.run_proc( klass_instance )
   end
 
   # Is task ready to be deleted
@@ -161,24 +140,20 @@ class CommQueueTask
     end
   end
 
-  # Very hurry task
+  # Very hurry task, is processed outside queue
   def process_now?
-    return true if true == @h[:now]
-    return false
-  end
-
-  # Return internal hash for replying
-  #
-  # Security notice, object can be manipulated by due to old memory computers
-  # I prefer not to use too much clone, some responses could be massive
-  def to_h_for_sending
-    set_sent!
-    return @h
+    @t.process_now?
   end
 
   # Id used for fetching response
   def fetch_id
-    return @h[:id]
+    @t.fetch_id
+  end
+
+  # Generate id for fetching it later
+  def added_on_queue!
+    @t.generate_id!
+    @t.set_response_added!
   end
 
 

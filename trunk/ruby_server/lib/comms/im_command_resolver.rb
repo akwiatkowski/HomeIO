@@ -7,6 +7,9 @@ require './lib/utils/adv_log.rb'
 # 
 require './lib/supervisor/supervisor.rb'
 
+# Direct command resolver
+# If bots should be directly connected and run direct commands
+
 class ImCommandResolver
   include Singleton
 
