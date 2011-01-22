@@ -26,7 +26,7 @@ class ImBots
       require './lib/comms/im_command_resolver.rb'
       @processor = ImCommandResolver.instance
     end
-    if COMMAND_RESOLVER_DIRECT == COMMAND_RESOLVER
+    if COMMAND_RESOLVER_VIA_TCP == COMMAND_RESOLVER
       require './lib/comms/tcp_command_resolver.rb'
       @processor = TcpCommandResolver.instance
     end

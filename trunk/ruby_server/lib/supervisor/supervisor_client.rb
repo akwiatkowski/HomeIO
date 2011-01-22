@@ -7,15 +7,29 @@ class SupervisorClient < Comm
   # checks if task was finished every this seconds
   CHECK_EXEC_END_INTERVAL = 1
 
-  # Send command to server
+  # Simple send command to server
   def send_to_server( comm )
     self.class.send_to_server( comm )
   end
 
-  # Send command to server
+  # Simple send command to server
   def self.send_to_server( comm )
     task = Task.factory( comm )
     return super( task, SupervisorClient.port )
+  end
+
+  # Send command to server, choose to wait or not
+  def self.send_to_server_uni( comm, wait = true )
+    if true == wait
+      return send_to_server_and_wait( comm )
+    else
+      return send_to_server_non_wait( comm )
+    end
+  end
+
+  # Send command to server, non wait
+  def self.send_to_server_non_wait( comm )
+    return send_to_server( comm.merge({:now => true}) )
   end
 
   # Send command to server, and wait

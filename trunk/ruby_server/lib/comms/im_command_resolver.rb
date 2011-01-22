@@ -134,8 +134,6 @@ class ImCommandResolver
         :proc => Proc.new{ |params| 2+2 },
         #:restricted => false
       },
-
-
     ]
   end
 

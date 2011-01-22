@@ -22,10 +22,15 @@ class TcpCommandResolver
       }
     }
 
-    response_task = SupervisorClient.new.send_to_server( tcp_command )
-    last_response = SupervisorClient.wait_for_task( response_task )
+    # all commands are queued, all but 'help'
+    wait = true
+    if string_command == '?' or string_command == 'help'
+      wait = false
+    end
+    
+    response_task = SupervisorClient.send_to_server_uni( tcp_command, wait )
 
-    return last_response.response
+    return response_task.response
   end
 
 end

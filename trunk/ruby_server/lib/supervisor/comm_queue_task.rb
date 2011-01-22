@@ -5,12 +5,12 @@ require './lib/supervisor/task.rb'
 
 class CommQueueTask
 
-  # After this interval after process finished taks will be deleted
-  TASK_LIFETIME = 2*60
-
-  # Task should be in queue after process at least for this interval
-  TASK_LIFETIME_MIN = 5
-
+  # After this interval after sending result task can be deleted
+  TASK_LIFETIME_AFTER_SENT = 2*60
+  # After this interval after finishing task can be deleted
+  TASK_LIFETIME_AFTER_DONE = 30*60
+  # Min lifetime
+  TASK_LIFETIME_MIN = 10
 
   # Create self, hash-like object
   def initialize( t )
@@ -114,14 +114,22 @@ class CommQueueTask
   def old?
     if self.is_sent?
       # current time is bigger than finish + interval
-      if Time.now > ( self.time_finished + TASK_LIFETIME )
+      if Time.now > ( self.time_sent + TASK_LIFETIME_AFTER_SENT )
         return true
       else
         return false
       end
+    elsif self.is_done?
+      # current time is bigger than finish + interval
+      if Time.now > ( self.time_finished + TASK_LIFETIME_AFTER_DONE )
+        return true
+      else
+        return false
+      end
+
     else
       # not read
-      return nil
+      return false
     end
   end
 

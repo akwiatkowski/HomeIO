@@ -173,33 +173,32 @@ namespace :client do
   task :ping do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :ping, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    response = SupervisorClient.send_to_server_non_wait( command )
     puts response.inspect
   end
 
   desc 'Test command processor'
   task :test do
     require './lib/supervisor/supervisor_client.rb'
-    command = {:command => :test, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    command = {:command => :test}
+    response = SupervisorClient.send_to_server_non_wait( command )
     puts response.inspect
   end
 
-  desc 'Test command processor'
+  desc 'Test command processor (wait)'
   task :test_wait do
     require './lib/supervisor/supervisor_client.rb'
-    command = {:command => :test}
-    response_task = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response_task )
-    puts last_response.inspect
+    command = {:command => :test_wait}
+    response = SupervisorClient.send_to_server_and_wait( command )
+    puts response.inspect
   end
 
   desc 'Fetch queue'
   task :queue do
+    require 'yaml'
     require './lib/supervisor/supervisor_client.rb'
-    puts SupervisorClient.get_queue.inspect
+    puts SupervisorClient.get_queue.to_yaml
   end
-
 
   desc 'Process METAR for city'
   task :process_metar_city do
