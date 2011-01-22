@@ -9,8 +9,29 @@ class SupervisorClient < Comm
 
   # Send command to server
   def send_to_server( comm )
+    self.class.send_to_server( comm )
+  end
+
+  # Send command to server
+  def self.send_to_server( comm )
     task = Task.factory( comm )
     return super( task, SupervisorClient.port )
+  end
+
+  # Send command to server, and wait
+  def self.send_to_server_and_wait( comm )
+    res = send_to_server( comm )
+    last_response = SupervisorClient.wait_for_task( res )
+    return last_response
+  end
+
+  # Get tasks list
+  def self.get_queue
+    res = send_to_server({
+        :command => :fetch_queue,
+        :now => true
+      })
+    return res
   end
 
   # Wait for finishing of execution of task

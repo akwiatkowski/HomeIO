@@ -28,13 +28,13 @@ class SupervisorQueue < CommQueue
   # Process command when it is send as symbol
   def process_symbol_command( command, params )
     return case command
-    when :fetch_weather then Supervisor.instance.components[:WeatherRipper].start
-    when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
+    when SupervisorCommands::FETCH_WEATHER then Supervisor.instance.components[:WeatherRipper].start
+    when SupervisorCommands::FETCH_METAR then Supervisor.instance.components[:MetarLogger].start
       # process IM command
-    when SupervisorCommands::IM_COMMAND then Supervisor.instance.components[:ImCommandResolver].process_command( command[:string], command[:from] )
-    when :process_metar_city then
+    when SupervisorCommands::IM_COMMAND then Supervisor.instance.components[:ImCommandResolver].process_command( params[:string], params[:from] )
+    when SupervisorCommands::PROCESS_METAR_CITY then
       begin
-        MetarMassProcessor.instance.process_all_for_city( command[:city] )
+        MetarMassProcessor.instance.process_all_for_city( params[:city] )
         {:status => :ok}
       rescue => e
         log_error( self, e )
@@ -42,7 +42,7 @@ class SupervisorQueue < CommQueue
         puts e.backtrace
         return {:status => :failed}
       end
-    when :test then {:test => :ok}
+    when SupervisorCommands::TEST then {:test => :ok}
       # extracting data remotely
       #when :extract then Supervisor.instance.components[:Extractor].remote_command( command )
       # DEV

@@ -16,16 +16,16 @@ class TcpCommandResolver
   def process_command( string_command, from = 'N/A' )
     tcp_command = {
       :command => SupervisorCommands::IM_COMMAND,
-      :string => string_command,
-      # to_s - xmpp4r's from is not string
-      :from => from.to_s
+      :params => {
+        :string => string_command,
+        :from => from.to_s
+      }
     }
-    puts "TcpCommandResolver tcp_command.inspect - #{tcp_command.inspect}"
-    response = SupervisorClient.new.send_to_server( tcp_command )
-    puts "TcpCommandResolver response.inspect - #{response.inspect}"
-    last_response = SupervisorClient.wait_for_task( response.fetch_id )
-    puts "TcpCommandResolver last_response.inspect - #{last_response.inspect}"
-    return last_response[:response]
+
+    response_task = SupervisorClient.new.send_to_server( tcp_command )
+    last_response = SupervisorClient.wait_for_task( response_task )
+
+    return last_response.response
   end
 
 end

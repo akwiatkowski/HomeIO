@@ -16,14 +16,21 @@ class Comm
   # rozmiar ramki przeznaczonej do wysyłu
   MAX_WRITE_FRAME_SIZE = 16384
 
+
+
   # Wyślij polecenie do serwera
-  def send_to_server( comm, port )
+  def self.send_to_server( comm, port )
     stream_sock = TCPSocket.new( "localhost", port )
     stream_sock.puts( comm_encode( comm ) )
     resp = comm_decode( stream_sock.recv( MAX_WRITE_FRAME_SIZE ) )
     stream_sock.close
 
     return resp
+  end
+
+  # Wyślij polecenie do serwera
+  def send_to_server( comm, port )
+    self.class.send_to_server( comm, port )
   end
 
   private

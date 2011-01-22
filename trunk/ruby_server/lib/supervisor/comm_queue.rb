@@ -74,15 +74,15 @@ class CommQueue
         end
       end
 
+    elsif task.command == :fetch_queue
+      # return queue's Tasks, not CommQueueTasks
+      task.response = @queue.collect{|q| q.task }
+      return task
+
     elsif not task.command.nil?
       # add to queue
       # if task is very hurry it will be processed now
       return add_task_to_queue( task )
-
-    elsif task.command == :receive_queue
-      # return queue's Tasks, not CommQueueTasks
-      task.response = @queue.collect{|q| q.task }
-      return task
       
     end
   end

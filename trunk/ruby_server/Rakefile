@@ -194,6 +194,12 @@ namespace :client do
     puts last_response.inspect
   end
 
+  desc 'Fetch queue'
+  task :queue do
+    require './lib/supervisor/supervisor_client.rb'
+    puts SupervisorClient.get_queue.inspect
+  end
+
 
   desc 'Process METAR for city'
   task :process_metar_city do
