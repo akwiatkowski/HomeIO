@@ -1,4 +1,5 @@
 require 'singleton'
+require './lib/comms/im_processor.rb'
 Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
 
 # Load and start IM bots
@@ -10,7 +11,7 @@ class ImBots
 
   def initialize
     @config = ConfigLoader.instance.config( self.class )
-
+    @processor = ImCommandResolver.instance
     @bots = [
       #Jabber4rBot.instance, # errors
       GaduBot.instance,
@@ -20,6 +21,7 @@ class ImBots
 
   def start
     @bots.each do |b|
+      b.processor = @processor
       b.start
     end
 
@@ -29,8 +31,3 @@ class ImBots
     end
   end
 end
-
-# some links
-# http://home.gna.org/xmpp4r/
-# http://jabber4r.rubyforge.org/
-# http://socket7.net/software/jabber-bot

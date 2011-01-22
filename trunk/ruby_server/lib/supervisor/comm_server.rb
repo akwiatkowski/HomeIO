@@ -1,10 +1,12 @@
 require './lib/supervisor/comm.rb'
 
+# TCP remote command server
+
 class CommServer < Comm
   
-  # Ustawia tylko serwer
+  # Set up server
   #
-  # +queue_processor+ - obiekt zajmujący się kolejką
+  # +queue_processor+ - qeueue manager object 
   # +port+ - port
   def initialize( queue_processor, port )
 
@@ -13,14 +15,14 @@ class CommServer < Comm
 
   end
   
-  # Uruchamia wątek
+  # Start thread
   def start
     return Thread.new{ start_server }
   end
 
   private
 
-  # Uruchamia serwer TCP
+  # Start TCP server
   def start_server
 
     dts = TCPServer.new('localhost', @port )
@@ -29,17 +31,17 @@ class CommServer < Comm
     loop do
 			Thread.start( dts.accept ) do |s|
 
-        # odebranie polecenia
+        # command receved
         command = comm_decode( s.recv( MAX_COMMAND_SIZE ) )
 
-        # co zrobić z poleceniem decyduje kolejka
+        # add to queue
         response = @queue_processor.process_server_command( command )
 
-        # odesłąnie odpowiedzi od kolejki
+        # reply response
         s.write( comm_encode( response) )
 
+        # say goodbye
         s.close
-
 
 			end
 		end

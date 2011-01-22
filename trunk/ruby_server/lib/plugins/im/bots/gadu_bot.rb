@@ -13,11 +13,6 @@ require 'iconv'
 class GaduBot < ImBotAbstract
   include Singleton
 
-  # Connect to server
-  def initialize
-    super
-  end
-
   # status types:
   # available
   STATUS_AVAIL = :avail
@@ -69,7 +64,7 @@ class GaduBot < ImBotAbstract
           # puts msg.to_s
 
           begin
-            response = PROCESSOR.process_command( msg, "gg:#{uin.to_s}" )
+            response = @processor.process_command( msg, "gg:#{uin.to_s}" )
             # add to contact list
             @g.add( uin )
           rescue => e

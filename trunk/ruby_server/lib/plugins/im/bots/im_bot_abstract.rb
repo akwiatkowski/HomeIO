@@ -4,8 +4,8 @@
 require 'rubygems'
 require 'singleton'
 
-require './lib/plugins/im/im_command_resolver.rb'
-require './lib/plugins/im/im_processor.rb'
+require './lib/comms/im_command_resolver.rb'
+require './lib/comms/im_processor.rb'
 require './lib/utils/config_loader.rb'
 
 # Abstract class to all IM comm. classes
@@ -13,8 +13,15 @@ require './lib/utils/config_loader.rb'
 class ImBotAbstract
   include Singleton
 
-  # processor class used for resolving commands
-  PROCESSOR = ImCommandResolver
+  # Processor class used for resolving commands
+  attr_reader :processor
+
+  # Processor can only be changed while bot is not running
+  def processor=( pr )
+    if false == @started_now
+      @processor = pr
+    end
+  end
 
   # interval how ofthen check if bot is started
   BOT_CHECK_INTERVAL = 60
@@ -22,7 +29,7 @@ class ImBotAbstract
   # is bot enabled
   attr_reader :enabled
 
-  # Load config
+  # Load config and setup link to processor
   def initialize
     @config = ConfigLoader.instance.config( self.class )
     @enabled = @config[:enabled]

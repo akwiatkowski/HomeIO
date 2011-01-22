@@ -129,4 +129,16 @@ class GG
       end
 		end
 	end
+
+  def read_header
+		begin
+      type=@socket.read(4).unpack('L')[0]
+      length=@socket.read(4).unpack('L')[0]
+      return type, length
+    rescue
+      # my modification to be alive after gg server restart
+      sleep 5
+      return nil, 0
+    end
+	end
 end

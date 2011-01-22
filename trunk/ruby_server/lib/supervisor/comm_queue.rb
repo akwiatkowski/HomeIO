@@ -5,7 +5,7 @@ require './lib/supervisor/comm_queue_task.rb'
 class CommQueue
 
   # check queue every this seconds, interval between tasks
-  QUEUE_LOOP_INTERVAL = 0.5
+  QUEUE_LOOP_INTERVAL = 1 # 0.5
 
   # the queue
   attr_reader :queue
@@ -28,20 +28,25 @@ class CommQueue
     Thread.new{ queue_loop }
   end
 
-  # Decide what do with received command
+  # Decide what do with received command:
+  # :ping - reply now
+  # :fetch - fetch response of command
   def process_server_command( command )
+
+    puts @queue.inspect
 
     # ping
     if command == :ping
       # server is alive
       return :ok
-      
+
+      # fetch response
     elsif command[:command] == :fetch #and not command[:id].nil?
       # fetch response from queue
       if command[:id].nil?
         return {:result => :failed, :reason => :no_id}
       else
-        return send_task( command[:id] )
+        return fetch_task_by_id( command[:id] )
       end
 
     elsif not command[:command].nil?
@@ -55,96 +60,88 @@ class CommQueue
     end
   end
 
-  # Dodaje polecenie do listy i zwraca jego status (dodane) oraz id
-  # w celu późniejszego pobrania wyniku lub statusu jego przetwarzania
+  # Add command to list as task, return it status and id to fetch later response
+  # Or Process hurry task now
   def add_to_list( command )
+    # clean old items from list
+    clean_list
+
+    # creating task
     h = Hash.new
-    # polecenie które zostało przysłane
+    # received command
     h[:command] = command
-    # identyfikator do wyszukiwania
+    # id for fetching
     h[:id] = command.object_id
-    #h[:id] = self.class.generate_id
-    # status
-    h[:status] = :new
-
     # przetworzenie na obiekt zadania
-    qp = CommQueueTask.new( h )
+    task = CommQueueTask.new( h )
 
-    # gdy jest to zadanie pilne to wykonywane jest teraz i odpowiedź wysłana
-    # od razu
-    if command[:now] == true
-      # od razu
-      process( qp )
-      return generate_qp_response( qp )
+    # check if task needs processing now, hurry
+    if task.process_now?
+      # do it now
+      process_task( task )
+      return task.to_h_for_sending
     else
-      # dodane do listy
-      @queue << qp
-      return {:status => :added, :id => h[:id]}
+      # add to list
+      @queue << task
+      return {:status => :added, :id => task.fetch_id}
     end
-
-    
-
-    
   end
+
+  # Check if some tasks should be deleted from list
+  def clean_list
+    @queue.delete_if{|q|
+      q.old?
+    }
+  end
+
 
   # Wysłanie odpowiedzi przetworzonego polecenia
-  def send_task( id )
+  def fetch_task_by_id( id )
+    # delete old
+    clean_list
 
-    # znalezienie polecenia
-    qps = @queue.select{|q| q[:id] == id}
+    # select
+    tasks = @queue.select{|q| q.fetch_id == id}
 
-    # nie ma jednego takiego zadania na liście
-    if not qps.size == 1
+    # checking is in queue
+    if not tasks.size == 1
       return :not_in_queue
+    else
+      return tasks.first.to_h_for_sending
     end
-
-    qp = qps.first
-
-    # gotowe, wysłanie odpowiedzi
-    return generate_qp_response( qp )
-  end
-
-  # Generate response after finishing task
-  def generate_qp_response( qp )
-    qp.set_sent! if qp.is_ready?
-    return qp
   end
 
   private
 
-  # Obsługuje przetwarzanie po kolei
+  # Mantain processing queue
   def queue_loop
-
-    # pętla główna
+    # main loop
     loop do
-
-      # jeśli jest włączone to przetwarzaj kolejkę
+      # flag for start/stop
       if @is_running == true
-
-        # dla wszystkich elementów nowych kolejki włącza przetwarzanie
-        @queue.select{|q| q.is_new? }.each do |q|
-          # wykonaj
-          process( q )
-          # ustaw na wykonane
-          q.set_done!
+        task = queue_first_new
+        if not task.nil?
+          # process it
+          puts task.inspect
+          process_task( task )
         end
-
-        # usuwa wszystkie wysłane elementy
-        @queue.delete_if{|q| q.is_sent? }
-
       end
 
       sleep( QUEUE_LOOP_INTERVAL )
-
     end
-    
   end
 
-  # Ustawia że polecenie jest wykonane
-  def queue_position_done( q )
-    q[:status] = :done
+  # Find first new
+  def queue_first_new
+    @queue.each do |q|
+      if q.is_new?
+        return q
+      end
+    end
+    return nil
   end
 
+   # Another method for possible uniq id generation
   def self.generate_id
     str = Time.now.to_s + Time.now.to_f.to_s + rand(12345).to_s
     hash = Digest::SHA2.new << str

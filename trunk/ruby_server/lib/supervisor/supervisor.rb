@@ -6,6 +6,7 @@ require './lib/utils/config_loader.rb'
 
 require './lib/metar_logger.rb'
 require './lib/weather_ripper.rb'
+require './lib/extractors/extractor.rb'
 
 # Supervisor which run taks for remote command
 # Tasks are performed in queue
@@ -76,6 +77,7 @@ class Supervisor
     @components = Hash.new
     @components[ :MetarLogger ] = MetarLogger.instance
     @components[ :WeatherRipper ] = WeatherRipper.instance
+    @components[ :Extractor ] = Extractor.instance
 
     @init_time = Time.now
   end

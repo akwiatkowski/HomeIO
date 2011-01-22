@@ -1,28 +1,33 @@
 require './lib/supervisor/comm_queue.rb'
 
-# Zajmie się przetwarzaniem poleceń dla serwera METAR które dostanie przez TCP
+# Standard queue enhanced by HomeIO remote command proccesor
 
 class SupervisorQueue < CommQueue
 
   private
 
-  # Uruchamia przetwarzanie polecenia
-  # po wykonaniu należy odpowiedź przechowywać w [:response]
-  # nie trzeba zmieniać statusu zadania, jest to wykonywane gdzie indziej
-  def process( command_enc )
+  # Start processing task
+  # After finish, result should be stored into :response key
+  # Status changes are done elsewhere
+  def process_task( task )
+    task.set_in_proccess!
+    command = task.command
 
-    # do obliczania czasu przetwarzania
-    start_time = Time.now.to_f
-    command_enc.set_in_proccess!
+    # running commans
+    if task.type_proc?
+      # run proc
+      command.run_proc( Supervisor.instance )
+    else
+      # TODO rewrite to make response accesor private
+      task.response = process_symbol( command )
+    end
 
-    # processing
-    command_enc[:status] = :processing
+    task.set_done!
+  end
 
-    # właściwie w tym miejsu jest polecenie wysłane z serwera
-    command = command_enc[:command]
-
-
-    result = case command[:command]
+  # Process command when it is send as symbol
+  def process_symbol( command )
+    return case command[:command]
     when :fetch_weather then Supervisor.instance.components[:WeatherRipper].start
     when :fetch_metar then Supervisor.instance.components[:MetarLogger].start
     when :process_metar_city then
@@ -36,14 +41,12 @@ class SupervisorQueue < CommQueue
         return {:status => :failed}
       end
     when :test then {:test => :ok}
-    # DEV
+      # extracting data remotely
+      #when :extract then Supervisor.instance.components[:Extractor].remote_command( command )
+      # DEV
     when :list_components then {:components => Supervisor.instance.components.keys, :status => :ok}
     else :wrong_command
     end
-
-    command_enc[:response] = result
-    command_enc[:process_time] = Time.now.to_f - start_time
-    command_enc.set_done!
   end
 
 end

@@ -9,11 +9,6 @@ require "xmpp4r"
 class Xmpp4rBot < ImBotAbstract
   include Singleton
 
-  # Connect to server
-  def initialize
-    super
-  end
-
   # status types:
   # available
   STATUS_AVAIL = :available
@@ -76,7 +71,7 @@ class Xmpp4rBot < ImBotAbstract
         if (m.chat_state == :active or m.chat_state.nil?) and not m.body.nil?
 
           begin
-            response = PROCESSOR.process_command( m.body, m.from )
+            response = @processor.process_command( m.body, m.from )
           rescue => e
             log_error( self, e )
             puts e.inspect
@@ -119,7 +114,7 @@ class Xmpp4rBot < ImBotAbstract
         end
         
         # wait more
-        sleep(120)
+        sleep(30*60)
       end
     }
   end

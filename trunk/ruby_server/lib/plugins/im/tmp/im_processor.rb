@@ -113,7 +113,7 @@ class ImProcessor
     str = "City: #{data[:city].name} (#{data[:city].country})\n"
 
     data[:data].each do |d|
-      str += "#{d[:time].localtime.to_human} - #{d[:time_to].localtime.to_time_human}#{" FP" if true == d[:predicted]} [#{d[:weather_provider].to_s}] #{d[:temperature].to_s_round( 1 )} C, #{d[:wind].to_s_round( 1 )} m/s\n"
+      str += "#{d[:time].localtime.to_human} - #{d[:time_to].localtime.to_time_human}#{" FP" if true == d[:predicted]} [#{d[:weather_provider].to_s}] #{d[:temperature].to_s_round( 1 )} C, #{d[:wind].to_s_round( 1 )} m/s, #{d[:rain].to_s_round( 1 )} mm rain, #{d[:snow].to_s_round( 1 )} mm snow\n"
     end
 
     return str
