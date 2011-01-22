@@ -119,7 +119,7 @@ class CommQueueTask
       else
         return false
       end
-    elsif self.is_done?
+    elsif self.is_ready?
       # current time is bigger than finish + interval
       if Time.now > ( self.time_finished + TASK_LIFETIME_AFTER_DONE )
         return true

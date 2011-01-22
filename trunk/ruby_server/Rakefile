@@ -200,21 +200,22 @@ namespace :client do
     puts SupervisorClient.get_queue.to_yaml
   end
 
-  desc 'Process METAR for city'
-  task :process_metar_city do
-    require './lib/supervisor/supervisor_client.rb'
-    #command = {:command => :process_metar_city, :city => 'EPPO', :now => true}
-    command = {:command => :process_metar_city, :city => 'EPPO'}
-    response = SupervisorClient.new.send_to_server( command )
-    puts response.inspect
-  end
+  #  # TODO write interface, need priorities and threads
+  #  desc 'Process METAR for city'
+  #  task :process_metar_city do
+  #    require './lib/supervisor/supervisor_client.rb'
+  #    #command = {:command => :process_metar_city, :city => 'EPPO', :now => true}
+  #    command = {:command => :process_metar_city, :city => 'EPPO'}
+  #    response = SupervisorClient.new.send_to_server( command )
+  #    puts response.inspect
+  #  end
 
   # Send task to queue
   desc 'Fetch weather (non wait)'
   task :fetch_weather do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_weather}
-    response = SupervisorClient.new.send_to_server( command )
+    response = SupervisorClient.send_to_server( command )
     puts response.inspect
   end
 
@@ -223,27 +224,16 @@ namespace :client do
   task :fetch_weather_wait do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_weather}
-    response_task = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response_task )
-    puts last_response.inspect
-  end
-
-  # Send task and wait for answer
-  desc 'Fetch weather (wait for end)'
-  task :fetch_weather_wait_b do
-    require './lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_weather}
-    response_task = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response_task )
-    puts last_response.inspect
+    response = SupervisorClient.send_to_server_and_wait( command )
+    puts response.inspect
   end
 
   # Send task and do it now
   desc 'Fetch weather (now!)'
   task :fetch_weather_now do
     require './lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_weather, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    command = {:command => :fetch_weather}
+    response = SupervisorClient.send_to_server_non_wait( command )
     puts response.inspect
   end
 
@@ -253,7 +243,7 @@ namespace :client do
   task :fetch_metar do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_metar}
-    response = SupervisorClient.new.send_to_server( command )
+    response = SupervisorClient.send_to_server( command )
     puts response.inspect
   end
 
@@ -262,17 +252,16 @@ namespace :client do
   task :fetch_metar_wait do
     require './lib/supervisor/supervisor_client.rb'
     command = {:command => :fetch_metar}
-    response = SupervisorClient.new.send_to_server( command )
-    last_response = SupervisorClient.wait_for_task( response )
-    puts last_response.inspect
+    response = SupervisorClient.send_to_server_and_wait( command )
+    puts response.inspect
   end
 
   # Send task and do it now
   desc 'Fetch METAR (now!)'
   task :fetch_metar_now do
     require './lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_metar, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    command = {:command => :fetch_metar}
+    response = SupervisorClient.send_to_server_non_wait( command )
     puts response.inspect
   end
 
@@ -281,7 +270,7 @@ end
 
 namespace :action do
 
-  desc 'Fetch weather'
+  desc 'Fetch weather (supervisor not needed)'
   task :fetch_weather do
     t = Time.now
     require './lib/weather_ripper.rb'
@@ -290,7 +279,7 @@ namespace :action do
     puts "Time: #{Time.now.to_f - t.to_f}"
   end
 
-  desc 'Fetch weather and then metar'
+  desc 'Fetch weather and then metar (supervisor not needed)'
   task :fetch_weather_metar do
     t = Time.now
     require './lib/weather_ripper.rb'
@@ -304,7 +293,7 @@ namespace :action do
     puts "Time: #{Time.now.to_f - t.to_f}"
   end
 
-  desc 'Fetch METAR'
+  desc 'Fetch METAR (supervisor not needed)'
   task :fetch_metar do
     t = Time.now
     require './lib/metar_logger.rb'

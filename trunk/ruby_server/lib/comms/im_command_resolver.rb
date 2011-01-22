@@ -127,13 +127,6 @@ class ImCommandResolver
         :proc => Proc.new{ |params| ImProcessor.instance.search_metar_or_weather( params ) },
         #:restricted => false
       },
-      {
-        :command => ['test'],
-        :desc => 'TEST',
-        #:usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-        :proc => Proc.new{ |params| 2+2 },
-        #:restricted => false
-      },
     ]
   end
 
