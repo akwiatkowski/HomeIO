@@ -11,97 +11,100 @@ class WeatherWpPl < WeatherBase
 
     body = body_raw.downcase
 
-    hours = body.scan(/>(\d+)-(\d+)/)
-    #puts hours.inspect
-    temperatures = body.scan(/temperatura: <strong>(\d*)[^<]*<\/strong>/)
-    #puts temperatures.inspect
-    winds = body.scan(/<strong>(\d*\.?\d*)\s*km\/h<\/strong>/)
-    winds.slice!(0,5)
-    #puts winds.inspect
+    # days from detailed weather
+    days = body.scan(/(\d{1,2})\.(\d{1,2})\.(\d{4})/)
+    #puts days.inspect
+    #puts days.size
 
+    hours = body.scan(/(\d{2})-(\d{2})/)
+    hours = hours.select{|h| h[0].to_i <= 24 and h[1].to_i <= 24 }
+    #puts hours.inspect
     #puts hours.size
+
+    # create times
+    i_day = 0
+    times = Array.new
+
+    ( 0...(hours.size) ).each do |ih|
+      # next day
+      if ih > 0 and hours[ih][0].to_i < hours[ih - 1][0].to_i
+        i_day += 1
+      end
+
+      # can not create time with hour 24
+      hour_from = hours[ ih ][0].to_i
+      hour_from = 0 if hour_from == 24
+      time_from = Time.mktime(
+        days[ i_day ][2].to_i,
+        days[ i_day ][1].to_i,
+        days[ i_day ][0].to_i,
+        hour_from,
+        0,
+        0,
+        0
+      )
+      time_from += 24*3600 if hours[ ih ][0].to_i == 24
+
+      hour_to = hours[ ih ][1].to_i
+      hour_to = 0 if hour_to == 24
+      time_to = Time.mktime(
+        days[ i_day ][2].to_i,
+        days[ i_day ][1].to_i,
+        days[ i_day ][0].to_i,
+        hour_to,
+        0,
+        0,
+        0
+      )
+      time_to += 24*3600 if hours[ ih ][1].to_i == 24
+
+      h = {:time_from => time_from, :time_to => time_to}
+      times << h
+    end
+    # puts times.to_yaml
+    #puts times.size
+
+    temperatures = body.scan(/temperatura:\s*<strong>(-?\d+)[^<]*<\/strong>/)
+    #puts temperatures.inspect
     #puts temperatures.size
+
+    #winds = body.scan(/<strong>(\d*\.?\d*)\s*km\/h<\/strong>/)
+    #winds.slice!(0,5)
+    winds = body.scan(/<td width=\"30%\">[^<]*<strong>(\d*\.?\d*)\s*km\/h<\/strong>/)
+    #puts winds.inspect
     #puts winds.size
 
-    #    data = Array.new
-    #    (0...(hours.size)).each do |i|
-    #      data << {
-    #        :hours => hours[i],
-    #        :temperatures => temperatures[i],
-    #        :wind => winds[i],
-    #      }
-    #
-    #      puts "h #{hours[i]}\ntemp #{temperatures[i]}\nwind #{winds[i]}\n\n"
-    #    end
+    data = Array.new
+    
+    ( 0...(temperatures.size) ).each do |i|
+      t = temperatures[i][0]
+      t = t.to_f unless t.nil?
 
-    #puts data.inspect
+      wkmh = winds[i][0]
+      if t.nil?
+        wkmh = nil
+        w = nil
+      else
+        wkmh = wkmh.to_f
+        w = wkmh / 3.6
+      end
 
-    unix_time_today = Time.mktime(
-      Time.now.year,
-      Time.now.month,
-      Time.now.day,
-      0, 0, 0, 0)
-
-    unix_time_now_from = unix_time_today + 3600 * hours[0][0].to_i
-    unix_time_now_to = unix_time_today + 3600 * hours[0][1].to_i
-    if hours[0][1].to_i < hours[0][0].to_i
-      # next day
-      unix_time_now_to += 24 * 3600
-    end
-
-    unix_time_soon_from = unix_time_today + 3600 * hours[1][0].to_i
-    unix_time_soon_to = unix_time_today + 3600 * hours[1][1].to_i
-    if hours[1][1].to_i < hours[1][0].to_i
-      # next day
-      unix_time_soon_to += 24 * 3600
-    end
-    if hours[1][0].to_i > hours[1][0].to_i
-      # time soon is whole new day
-      unix_time_soon_from += 24 * 3600
-      unix_time_soon_to += 24 * 3600
-    end
-
-    # if 1 data is for next day morning
-    if hours[0][1].to_i < Time.now.hour
-      unix_time_now_to += 24 * 3600
-      unix_time_now_from += 24 * 3600
-
-      unix_time_soon_to += 24 * 3600
-      unix_time_soon_from += 24 * 3600
-    end
-
-
-    data = [
-      {
+      h = {
         :time_created => Time.now,
-        :time_from => unix_time_now_from,
-        :time_to => unix_time_now_to,
-        :temperature => temperatures[0][0].to_f,
+        :time_from => times[i][:time_from],
+        :time_to => times[i][:time_to],
+        :temperature => t,
         #:pressure => nil,
-        :wind_kmh => winds[0][0].to_f,
-        :wind => winds[0][0].to_f / 3.6,
+        :wind_kmh => wkmh,
+        :wind => w,
         #:snow => snows[0][0].to_f,
         #:rain => rains[0][0].to_f,
         :provider => self.class.provider_name,
         :weather_provider_id => id
-      },
-      {
-        :time_created => Time.now,
-        :time_from => unix_time_soon_from,
-        :time_to => unix_time_soon_to,
-        :temperature => temperatures[1][0].to_f,
-        #:pressure => pressures[1][0].to_f,
-        :wind_kmh => winds[1][0].to_f,
-        :wind => winds[1][0].to_f / 3.6,
-        #:snow => snows[1][0].to_f,
-        #:rain => rains[1][0].to_f,
-        :provider => self.class.provider_name,
-        :weather_provider_id => id
       }
-    ]
 
-    #puts data.inspect
-    #exit!
+      data << h
+    end
 
     return data
   end
