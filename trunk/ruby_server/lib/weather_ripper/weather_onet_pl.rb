@@ -37,7 +37,13 @@ class WeatherOnetPl < WeatherBase
   # 2 details
   def _process_a( body_raw )
 
-    body = body_raw.downcase
+    body_tmp = body_raw.downcase
+    #    if body_tmp =~ /szczeg..owa(.*)Prognoza/
+    #      body = $1
+    #    else
+    #      return []
+    #    end
+    body = body_tmp
 
     temperatures = body.scan(/<b\s*title=\"temperatura\">([^<]*)<\/b>/)
     pressures = body.scan(/\>(\d*)\s*hpa\s*\</)
@@ -125,7 +131,13 @@ class WeatherOnetPl < WeatherBase
   # Daily
   def _process_c( body_raw )
 
-    body = body_raw.downcase
+    body_tmp = body_raw.downcase
+    #    if body_tmp =~ /.*lna(.*)/
+    #      body = $1
+    #    else
+    #      return []
+    #    end
+    body = body_tmp
 
     #times = time_now = body.scan(/<span class=\"ar2 gold\">([0-9.]+)<\/span>/)
     times = body.scan(/<span class=\"ar2 gold\">(\d{1,2})\.(\d{1,2})\.(\d{4})<\/span>/)
@@ -157,7 +169,8 @@ class WeatherOnetPl < WeatherBase
     # wind speed in m/s
     winds = body.scan(/(\d+)\s*km\/h/)
     winds = winds.collect{|t| t[0].to_f / 3.6}
-    # puts winds.inspect
+    puts winds.inspect
+    # exit!
 
     snows = body.scan(/nieg:<\/td><td class="[^"]*">([0-9.]*)\s*mm</)
     snows = snows.collect{|t| t[0].to_f}

@@ -13,6 +13,7 @@ class ExtractorActiveRecord
 
   # Get all cities
   def get_cities
+    #return City.find(:all, :conditions => {}, :order => 'calculated_distance DESC')
     return City.find(:all, :conditions => {}, :order => 'calculated_distance DESC')
   end
   
@@ -21,8 +22,8 @@ class ExtractorActiveRecord
     c = City.find_by_id( city )
     c = City.find_by_name( city ) if c.nil?
     c = City.find_by_metar( city ) if c.nil?
-    #c = City.find(:first, :conditions => ["name like ?", "%#{city}%"])
-    c = City.find(:first, :conditions => ["lower(name) like lower(?)", "%#{city}%"])
+    #c = City.find(:first, :conditions => ["name like ?", "%#{city}%"]) if c.nil?
+    c = City.find(:first, :conditions => ["lower(name) like lower(?)", "%#{city}%"]) if c.nil?
     return c
   end
 

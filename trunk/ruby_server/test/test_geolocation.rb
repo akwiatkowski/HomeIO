@@ -1,4 +1,4 @@
-require 'lib/geolocation'
+require './lib/utils/geolocation.rb'
 require 'test/unit'
 
 class TestConfigLoader < Test::Unit::TestCase
@@ -6,6 +6,7 @@ class TestConfigLoader < Test::Unit::TestCase
   def test_basic
     g = Geolocation.new
 
+    puts "simple geolocation data"
     puts g.lat
     puts g.lon
 
@@ -22,8 +23,6 @@ class TestConfigLoader < Test::Unit::TestCase
 
     assert_in_delta distance_should_be, distance_calculated, 30.0, 'wrong calcualted distance'
     assert_in_delta 1.0, distance_should_be / distance_calculated, 0.02, 'wrong relative calcualted distance'
-
-    puts
   end
 
 end

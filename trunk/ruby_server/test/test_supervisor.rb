@@ -8,49 +8,40 @@ class TestSupervisor < Test::Unit::TestCase
     start_sv
 
     # ping
-    assert_equal :ok, SupervisorClient.new.send_to_server(:ping)
+    assert_equal :ok, SupervisorClient.send_to_server( Task.factory(:command => :ping) )
 
     # test immediate execution
-    command = {:command => :test, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    command = Task.factory({:command => :test, :now => true})
+    response = SupervisorClient.send_to_server( command )
     # assert_equal :ok, response[:status]
     puts response.inspect
-    assert_equal :ok, response[:response][:test]
+    assert_equal :ok, response.response
 
     # number of components
-    command = {:command => :list_components, :now => true}
-    response = SupervisorClient.new.send_to_server( command )
+    command = Task.factory({:command => :list_components, :now => true})
+    response = SupervisorClient.send_to_server( command )
     puts "components: #{response.inspect}"
-    assert_equal :ok, response[:response][:status]
-    assert_kind_of Array, response[:response][:components]
+    assert_equal :ok, response.response[:status]
+    assert_kind_of Array, response.response[:components]
 
     sleep 0.5
   end
 
-  def test_long_actions
+  def TODO_test_long_actions
     # start fetching metar
     #command = {:command => :fetch_metar }
-    command = {:command => :fetch_weather }
-    result = SupervisorClient.new.send_to_server( command )
+    command = Task.factory({:command => :fetch_weather })
+    result = SupervisorClient.send_to_server( command )
     # puts result.inspect
-    id = result[:id]
+    id = result.fetch_id
 
     #waiting for ending
-    command = {:command => :fetch, :id => id }
+    command = Task.factory({:command => :fetch, :id => id })
 
     need_to_wait = true
     while need_to_wait
-      res = SupervisorClient.new.send_to_server( command )
-      # something like do-while
-      need_to_wait = ( res != :not_in_queue and res[:status] != :done )
-
-      if need_to_wait
-        puts "... test"
-      else
-        puts res.inspect
-      end
-
-      sleep(5)
+      res = SupervisorClient.send_to_server( command )
+      SupervisorClient.wait_for_task( res )
     end
 
   end

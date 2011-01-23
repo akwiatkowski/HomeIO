@@ -1,4 +1,4 @@
-require 'lib/dev_info'
+require './lib/utils/dev_info.rb'
 require 'test/unit'
 
 class TestDevInfo < Test::Unit::TestCase

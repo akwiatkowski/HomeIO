@@ -45,6 +45,9 @@ class MetarCode
   end
 
   # Zwraca utworzony obiekt typu MetarCode przetwarzając kod METAR
+  #
+  # *type* - is this :archived or :fresh
+  # TODO check if it is :fresh
   def process( string, year, month, type )
 
     # type:

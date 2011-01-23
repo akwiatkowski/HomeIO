@@ -10,7 +10,7 @@ class MetarCodeTest < Test::Unit::TestCase
   def test_validate
     m = "HPP 252000Z 34001MPS 9999 BKN020CB BKN100 01/M00 Q1010 NOSIG RMK QFE754/1005 SC045 05 05"
     mc = MetarCode.new
-    mc.process(m, 2010, 11)
+    mc.process(m, 2010, 11, :archived)
     # puts mc.inspect
     # puts mc.valid?
   end
@@ -23,19 +23,19 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "2010/08/15 05:00 CXAT 150500Z AUTO 31009KT 04/03 RMK AO1 6PAST HR 3001 P0002 T00370033 50006 "
 
     mc = MetarCode.new
-    mc.process(wrong_metar_a, 2010, 11)
+    mc.process(wrong_metar_a, 2010, 11, :archived)
     assert_equal false, mc.valid?
 
     mc = MetarCode.new
-    mc.process(wrong_metar_b, 2010, 11)
+    mc.process(wrong_metar_b, 2010, 11, :archived)
     assert_equal false, mc.valid?
 
     mc = MetarCode.new
-    mc.process(wrong_metar_c, 2010, 11)
+    mc.process(wrong_metar_c, 2010, 11, :archived)
     assert_equal false, mc.valid?
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
   end
 
@@ -44,7 +44,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "2010/08/15 05:00 CXAT 150500Z AUTO 31009KT 04/03 RMK AO1 6PAST HR 3001 P0002 T00370033 50006 "
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'CXAT', mc.output[:city]
@@ -89,7 +89,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "EPPO 171800Z 04007KT 1400 R29/P2000 -DZ BR BKN002 06/06 Q1011"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'EPPO', mc.output[:city]
@@ -134,7 +134,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "NZSP 151250Z 11005KT 9999 FEW020 SCT060 M42/ A2830 RMK CLN AIR 11004KT ALL WNDS GRID SDG/HDG"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'NZSP', mc.output[:city]
@@ -187,7 +187,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "BIAR 130700Z 17003KT 0350 R01/0900V1500U +SN VV001 M04/M04 Q0996"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'BIAR', mc.output[:city]
@@ -241,7 +241,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "KRMG 021153Z AUTO 10006KT 10SM BKN060 OVC070 14/06 A3024 RMK AO2 SLP236 T01390061 10144 20117 51007"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'KRMG', mc.output[:city]
@@ -289,7 +289,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "OMDB 060500Z 17006KT 140V210 8000 NSC 36/14 Q1004 NOSIG"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'OMDB', mc.output[:city]
@@ -323,9 +323,9 @@ class MetarCodeTest < Test::Unit::TestCase
     # clouds info
     assert_kind_of Array, mc.output[:clouds]
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].size
-    assert_nil mc.output[:clouds].first[:bottom]
-    assert_equal (0.5 * 100.0 / 8.0).round, mc.output[:cloudiness]
+    assert_equal 0, mc.output[:clouds].size
+    #assert_nil mc.output[:clouds].first[:bottom]
+    #assert_equal (0.5 * 100.0 / 8.0).round, mc.output[:cloudiness]
     
     #puts mc.output[:clouds].inspect
     #assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
@@ -340,7 +340,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "PHNL 151953Z 07009KT 10SM FEW026 SCT035 BKN070 25/21 A3010 RMK AO2 RAE06 SLP192 VCSH OMTNS N-NE AND E-SE P0000 T02500206"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
 
     assert_equal 'PHNL', mc.output[:city]
@@ -389,7 +389,7 @@ class MetarCodeTest < Test::Unit::TestCase
     good_metar = "2010/11/16 23:00 EPPO 162300Z 06013KT 8000 -RA BKN007 OVC013 05/04 Q1018"
 
     mc = MetarCode.new
-    mc.process(good_metar, 2010, 11)
+    mc.process(good_metar, 2010, 11, :archived)
 
     #puts mc.inspect
     #return
