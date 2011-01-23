@@ -169,8 +169,7 @@ class WeatherOnetPl < WeatherBase
     # wind speed in m/s
     winds = body.scan(/(\d+)\s*km\/h/)
     winds = winds.collect{|t| t[0].to_f / 3.6}
-    puts winds.inspect
-    # exit!
+    # puts winds.inspect
 
     snows = body.scan(/nieg:<\/td><td class="[^"]*">([0-9.]*)\s*mm</)
     snows = snows.collect{|t| t[0].to_f}

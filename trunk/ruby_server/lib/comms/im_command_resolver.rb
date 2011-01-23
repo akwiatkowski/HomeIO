@@ -29,7 +29,7 @@ class ImCommandResolver
 
     # find command
     # command can has aliases
-    command = @commands.select{|c| (c[:command] & [ params[0] ]).size > 0 }.first
+    command = @commands.select{|c| (c[:command] & [ params[0].to_s.downcase ]).size > 0 }.first
     if command.nil?
       output = wrong_command
     else
