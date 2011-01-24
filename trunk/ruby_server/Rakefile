@@ -137,8 +137,16 @@ namespace :supervisor do
     s.start
   end
 
-  desc 'Start supervisor server with IM'
+  desc 'Start supervisor server without IM'
   task :start do
+    require './lib/supervisor/supervisor.rb'
+    s = Supervisor.instance
+    s.start
+  end
+
+
+  desc 'Start supervisor server with IM'
+  task :start_with_im do
     require './lib/plugins/im/im_bots.rb'
     im = ImBots.instance
     im.start

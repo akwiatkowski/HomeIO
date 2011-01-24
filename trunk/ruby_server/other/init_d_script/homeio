@@ -1,0 +1,116 @@
+#!/bin/bash
+#
+# chkconfig: 35 90 12
+# description: HomeIO Server
+#
+
+# Start the service HomeIO
+start() {
+        if [ -f /var/lock/HomeIO ];
+        then
+          echo "HomeIO is running"
+        else
+          logger Starting HomeIO
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio rake supervisor:start_no_im &
+          ### Create the lock file ###
+          touch /var/lock/HomeIO
+          logger HomeIO server startup
+          echo "HomeIO server startup"
+        fi
+}
+
+# Restart the service HomeIO
+stop() {
+        logger Stopping HomeIO server
+        screen -S homeio -X quit
+        ### Now, delete the lock file ###
+        rm -f /var/lock/HomeIO
+        logger HomeIO server stopped
+        echo "HomeIO server stopped"
+}
+
+status() {
+        if [ -f /var/lock/HomeIO ];
+        then
+          echo "HomeIO Running"
+          exit 0
+        else
+          echo "HomeIO Not running"
+          exit 1
+        fi
+}
+
+# IM
+im_start() {
+        if [ -f /var/lock/HomeIOim ];
+        then
+          echo "HomeIO-IM is running"
+        else
+          logger Starting HomeIO-IM
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeioim rake supervisor:im &
+          ### Create the lock file ###
+          touch /var/lock/HomeIOim
+          logger HomeIO-IM server startup
+          echo "HomeIO-IM server startup"
+        fi
+}
+
+im_stop() {
+        logger Stopping HomeIO-IM server
+        screen -S homeioim -X quit
+        ### Now, delete the lock file ###
+        rm -f /var/lock/HomeIOim
+        logger HomeIO-IM server stopped
+        echo "HomeIO-IM server stopped"
+}
+
+
+im_status() {
+        if [ -f /var/lock/HomeIOim ];
+        then
+          echo "HomeIO-IM Running"
+          exit 0
+        else
+          echo "HomeIO-IM Not running"
+          exit 1
+        fi
+}
+
+### main logic ###
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status
+        ;;
+  restart|reload|condrestart)
+        stop
+        sleep 1
+        start
+        ;;
+
+  im_start)
+        im_start
+        ;;
+  im_stop)
+        im_stop
+        ;;
+  im_status)
+        im_status
+        ;;
+  im_restart|im_reload|im_condrestart)
+        im_stop
+        sleep 1
+        im_start
+        ;;
+
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status|im_start|im_stop|im_restart|im_reload|im_status}"
+        exit 1
+esac
+
+exit 0
