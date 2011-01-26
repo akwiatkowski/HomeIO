@@ -27,6 +27,7 @@ class ExtractorActiveRecord
   include Singleton
 
   def initialize
+    @config = ConfigLoader.instance.config( 'ExtractorActiveRecord' )
     StorageActiveRecord.instance
   end
 
@@ -50,6 +51,7 @@ class ExtractorActiveRecord
   def get_last_metar( city )
     c = search_city( city )
     return nil if c.nil?
+    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
 
     wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')
     return wma_with_metarcode_to_hash( wma )
@@ -146,6 +148,8 @@ class ExtractorActiveRecord
   def get_array_of_last_metar( city, last_metars )
     a = Array.new
     c = search_city( city )
+    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
+    
     wmas = WeatherMetarArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_metars )
     wmas.reverse.each do |wma|
       a << wma_with_metarcode_to_hash( wma )
@@ -182,6 +186,8 @@ class ExtractorActiveRecord
   def get_array_of_last_weather( city, last_metars )
     a = Array.new
     c = search_city( city )
+    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
+
     was = WeatherArchive.find(:all, :conditions => {:city_id => c.id}, :order => 'time_from DESC', :limit => last_metars, :include => :weather_provider )
     was.reverse.each do |wa|
       a << wa_to_hash( wa )
@@ -193,6 +199,8 @@ class ExtractorActiveRecord
   def search_wma( city, time )
     c = search_city( city )
     return nil if c.nil?
+    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
+    
     return _search_archived_data( WeatherMetarArchive, 'city_id', c.id, 2*24*3600, time )
   end
 
@@ -200,6 +208,8 @@ class ExtractorActiveRecord
   def search_wa( city, time )
     c = search_city( city )
     return nil if c.nil?
+    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
+
     return _search_archived_data( WeatherArchive, 'city_id', c.id, 2*24*3600, time )
   end
 
@@ -231,14 +241,26 @@ class ExtractorActiveRecord
     c = search_city( city )
     return nil if c.nil?
 
-    metar_count = WeatherMetarArchive.count(:all, :conditions => {:city_id => c.id})
-    weather_count = WeatherArchive.count(:all, :conditions => {:city_id => c.id})
+    # lazy searching, not lazy, but efficient! :]
+    if true == @config[:lazy_search] and false == c.logged_metar
+      metar_count = 0
+      first_metar = nil
+      last_metar = nil
+    else
+      metar_count = WeatherMetarArchive.count(:all, :conditions => {:city_id => c.id})
+      first_metar = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
+      last_metar = WeatherMetarArchive.find(:last, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
+    end
 
-    first_metar = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
-    last_metar = WeatherMetarArchive.find(:last, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
-
-    first_weather = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
-    last_weather = WeatherArchive.find(:last, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
+    if true == @config[:lazy_search] and false == c.logged_weather
+      weather_count = 0
+      first_weather = nil
+      last_weather = nil
+    else
+      weather_count = WeatherArchive.count(:all, :conditions => {:city_id => c.id})
+      first_weather = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
+      last_weather = WeatherArchive.find(:last, :conditions => {:city_id => c.id}, :order => 'time_from ASC')
+    end
 
     return {
       :city_obj => c,
@@ -261,27 +283,129 @@ class ExtractorActiveRecord
 
     c = data[:city_obj]
 
-    data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
-    puts "City Adv Info :high_temp_metar #{Time.now}"
-    data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
-    puts "City Adv Info :low_temp_metar #{Time.now}"
-    data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
-    puts "City Adv Info :high_temp_weather #{Time.now}"
-    data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
-    puts "City Adv Info :low_temp_weather #{Time.now}"
+    if true == @config[:lazy_search] and true == c.logged_metar
+      data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
+      puts "City Adv Info :high_temp_metar #{Time.now}"
+      data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+      puts "City Adv Info :low_temp_metar #{Time.now}"
+      data[:high_wind_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+      puts "City Adv Info :high_wind_metar #{Time.now}"
+    end
 
-    data[:high_wind_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
-    puts "City Adv Info :high_wind_metar #{Time.now}"
-    data[:low_wind_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind ASC')
-    puts "City Adv Info :low_wind_metar #{Time.now}"
-    data[:high_wind_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
-    puts "City Adv Info :high_wind_weather #{Time.now}"
-    data[:low_wind_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind ASC')
-    puts "City Adv Info :low_wind_weather #{Time.now}"
+    if true == @config[:lazy_search] and true == c.logged_weather
+      data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
+      puts "City Adv Info :high_temp_weather #{Time.now}"
+      data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+      puts "City Adv Info :low_temp_weather #{Time.now}"
+      data[:high_wind_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+      puts "City Adv Info :high_wind_weather #{Time.now}"
+    end
 
     return data
   end
   
+  # Generate statistics
+  #
+  # *city_id* - id of city
+  # *time_from* - Time from
+  # *time_to* - Time to
+  # *metar*:
+  #   - true - only metar
+  #   - false - only weather
+  #   - nil - use both of them
+  def city_periodical_stats_for_city_name( city, time_from, time_to, metar = nil)
+    c = search_city( city )
+    return nil if c.nil?
+
+    return city_periodical_stats( c.id, time_from, time_to, metar)
+  end
+
+  # Generate statistics
+  #
+  # *city_id* - id of city
+  # *time_from* - Time from
+  # *time_to* - Time to
+  # *metar*:
+  #   - true - only metar
+  #   - false - only weather
+  #   - nil - use both of them
+  def city_periodical_stats( city_id, time_from, time_to, metar = nil)
+    t_conds = [
+      "city_id = ? and time_from >= ? and time_to <= ? and temperature is not null",
+      city_id,
+      time_from,
+      time_to
+    ]
+
+    w_conds = [
+      "city_id = ? and time_from >= ? and time_to <= ? and wind is not null",
+      city_id,
+      time_from,
+      time_to
+    ]
+
+    h = Hash.new
+    c = City.find( city_id )
+    h[:city_id] = c.id
+    # TODO add time ranges
+
+    unless true == @config[:lazy_search] and true == c.logged_metar
+      h[:t_wma_sum] = WeatherMetarArchive.sum(:temperature, :conditions => t_conds)
+      h[:t_wma_count] = WeatherMetarArchive.count(:conditions => t_conds)
+
+      h[:w_wma_sum] = WeatherMetarArchive.sum(:wind, :conditions => w_conds)
+      h[:w_wma_count] = WeatherMetarArchive.count(:conditions => w_conds)
+    else
+      h[:t_wma_sum] = 0.0
+      h[:t_wma_count] = 0
+
+      h[:w_wma_sum] = 0.0
+      h[:w_wma_count] = 0
+    end
+
+    unless true == @config[:lazy_search] and true == c.logged_weather
+      h[:t_wa_sum] = WeatherArchive.sum(:temperature, :conditions => t_conds)
+      h[:t_wa_count] = WeatherArchive.count(:conditions => t_conds)
+
+      h[:w_wa_sum] = WeatherArchive.sum(:wind, :conditions => w_conds)
+      h[:w_wa_count] = WeatherArchive.count(:conditions => w_conds)
+    else
+      h[:t_wa_sum] = 0.0
+      h[:t_wa_count] = 0
+
+      h[:w_wa_sum] = 0.0
+      h[:w_wa_count] = 0
+    end
+
+    # sum everything
+    if true == metar
+      h[:t_sum] =  h[:t_wma_sum]
+      h[:t_count] = h[:t_wma_count]
+
+      h[:w_sum] = h[:w_wma_sum]
+      h[:w_count] = h[:w_wma_count]
+
+    elsif false == metar
+      h[:t_sum] =  h[:t_wa_sum]
+      h[:t_count] = h[:t_wa_count]
+
+      h[:w_sum] = h[:w_wa_sum]
+      h[:w_count] = h[:w_wa_count]
+
+    else
+      h[:t_sum] =  h[:t_wa_sum] + h[:t_wma_sum]
+      h[:t_count] = h[:t_wa_count] + h[:t_wma_count]
+
+      h[:w_sum] = h[:w_wa_sum] + h[:w_wma_sum]
+      h[:w_count] = h[:w_wa_count] + h[:w_wma_count]
+    end
+
+    # calculate average
+    h[:t_avg] =  h[:t_sum].to_f / h[:t_count] if h[:t_count] > 0
+    h[:w_avg] = h[:w_sum].to_f / h[:w_count] if h[:w_count] > 0
+    
+    return h
+  end
 
   private
 

@@ -31,7 +31,7 @@ class WeatherCityProxy
   # Verbose mode
   attr_accessor :verbose
   # Log warning when city with other name is near another city
-  # And they are joined
+  # and they are joined
   attr_accessor :log_different_city_names
 
   # when we have to create another city with the same name we use suffix

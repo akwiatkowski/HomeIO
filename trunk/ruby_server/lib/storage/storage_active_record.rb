@@ -48,12 +48,14 @@ class StorageActiveRecord < StorageDbAbstract
     @pool = Array.new
   end
 
+  # Create tables in DB
   def init
     ActiveRecordInitMigration.up
   end
 
+  # Drop tables in DB
   def deinit
-    ActiveRecordInitMigration2.down
+    ActiveRecordInitMigration.down
   end
 
   # Store object
@@ -95,6 +97,23 @@ class StorageActiveRecord < StorageDbAbstract
 
     # clearing pool
     @pool = Array.new
+  end
+
+  # Set flag if this city stores metar or weather
+  # When city has no metars and we want to find metar it has to search through
+  # all record which is log task
+  def update_logged_flag
+    cities = WeatherCityProxy.instance.cities_array
+    cities.each do |ch|
+      wa = WeatherArchive.find(:last, :conditions => {:city_id => ch[:id]})
+      wma = WeatherMetarArchive.find(:last, :conditions => {:city_id => ch[:id]})
+      c = City.find_by_id( ch[:id] )
+
+      c.update_attributes!({
+        :logged_metar => !wma.nil?,
+        :logged_weather => !wa.nil?,
+      })
+    end
   end
 
   private

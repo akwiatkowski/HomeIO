@@ -142,6 +142,13 @@ class ImCommandResolver
         :proc => Proc.new{ |params| ImProcessor.instance.search_metar_or_weather( params ) },
         #:restricted => false
       },
+      {
+        :command => ['cps'],
+        :desc => 'calculate city periodical stats (metar or non-metar) at specified time interval',
+        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00> <time ex. 2010-01-02 12:00>',
+        :proc => Proc.new{ |params| ImProcessor.instance.city_calculate_periodical_stats( params ) },
+        #:restricted => false
+      },
     ]
   end
 

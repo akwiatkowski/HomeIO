@@ -1,0 +1,6 @@
+---
+# lazy searching
+# search only for weather/metar archives only where there was records
+# searching for weather archive for city which does not use WeatherRipper
+# takes very long time
+:lazy_search: true

@@ -239,6 +239,20 @@ class ImProcessor
     return hash_city_info_to_s( h )
   end
 
+  # Basic information about city logged data
+  def city_calculate_periodical_stats( params )
+    puts params.inspect
+
+    tfrom = create_time_from_string( params[2], params[3] )
+    tto = create_time_from_string( params[4], params[5] )
+    # TODO add variable
+
+    h = @extractor.city_periodical_stats_for_city_name( params[1], tfrom, tto, nil)
+    return "Not found" if h.nil?
+    # TODO code hash processor
+    return h.inspect
+  end
+
   private
 
   # Create Time from YYYY-MM-DD HH:mm string format

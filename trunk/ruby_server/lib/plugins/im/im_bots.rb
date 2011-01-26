@@ -18,7 +18,7 @@
 
 
 require 'singleton'
-
+require './lib/utils/core_classes.rb'
 Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
 
 # Load and start IM bots

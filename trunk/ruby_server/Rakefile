@@ -87,6 +87,12 @@ namespace :db do
     City.create_from_config
   end
 
+  desc 'Update logged mark'
+  task :update_logged_mark do
+    require './lib/storage/storage.rb'
+    StorageActiveRecord.instance.update_logged_flag
+  end
+
 end
 
 namespace :metar do

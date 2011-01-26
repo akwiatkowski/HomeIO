@@ -36,6 +36,10 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.column :lon, :float, :null => false
         # from predefined location
         t.column :calculated_distance, :float, :null => true
+        # has metar records logged, used for searching data
+        t.column :logged_metar, :bool, :null => false, :default => false
+        # has weather records logged, used for searching data
+        t.column :logged_weather, :bool, :null => false, :default => false
       end
     
       create_table :meas_archives do |t|

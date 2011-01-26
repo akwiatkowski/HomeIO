@@ -1,5 +1,4 @@
-#!/usr/bin/ruby
-#encoding: utf-8
+#!/bin/bash
 
 # This file is part of HomeIO.
 #
@@ -17,29 +16,11 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Some new methods
+# Start IM server and restart it after crash
+# It is easier and safer than fixing rgadu to be reliable on some networks
 
-class Object
-
-  # Wypełnij zerami aż do długości
-  def to_s2( places )
-    tmp = self.to_s
-
-    while( tmp.size < places )
-      tmp = "0" + tmp
-    end
-
-    return tmp
-  end
-
-  def to_s_round( places )
-    if self.nil?
-      return nil
-    end
-
-    tmp = ( self * (10 ** places ) ).round.to_f
-    tmp /= (10.0 ** places )
-    return tmp
-  end
-
-end
+for (( c=1; c>=0; c++ ))
+do
+  echo "Starting backend server for $c time..."
+  rake supervisor:start
+done
