@@ -249,9 +249,29 @@ class ImProcessor
 
     h = @extractor.city_periodical_stats_for_city_name( params[1], tfrom, tto, nil)
     return "Not found" if h.nil?
-    # TODO code hash processor
-    return h.inspect
+
+    str = "Periodical stats: \n"
+    # very basic city info
+    str += hash_city_to_s( @extractor.city_very_basic_info( params[1]) )
+    str += " \n\n"
+
+    str += "Avg temp.: #{h[:t_avg].to_s_round( 1 )} C \n" unless h[:t_avg].nil?
+    str += "Avg wind: #{h[:w_avg].to_s_round( 1 )} m/s \n" unless h[:w_avg].nil?
+    str += " \n"
+
+    str += "Max temp.: #{h[:t_max][:value].to_s_round( 1 )} C @ #{h[:t_max][:time].to_human} \n" unless h[:t_max].nil?
+    str += "Min temp.: #{h[:t_min][:value].to_s_round( 1 )} C @ #{h[:t_min][:time].to_human} \n" unless h[:t_min].nil?
+    str += "Max wind: #{h[:w_max][:value].to_s_round( 1 )} m/s @ #{h[:w_max][:time].to_human} \n" unless h[:w_max].nil?
+    str += " \n"
+
+    str += "Temp. count.: #{h[:t_count]} \n" unless h[:t_count].nil?
+    str += "Wind count.: #{h[:w_count]} \n" unless h[:w_count].nil?
+
+    # str += "#{h.to_yaml}\n"
+
+    return str
   end
+
 
   private
 
