@@ -27,22 +27,24 @@ start() {
           echo "HomeIO is running"
         else
           logger Starting HomeIO
-          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio rake supervisor:start_no_im &
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_backend rake supervisor:start_no_im &
           ### Create the lock file ###
           touch /var/lock/HomeIO
           logger HomeIO server startup
           echo "HomeIO server startup"
+          echo `date` backend start >> /var/log/homeio.txt
         fi
 }
 
 # Restart the service HomeIO
 stop() {
         logger Stopping HomeIO server
-        screen -S homeio -X quit
+        screen -S homeio_backend -X quit
         ### Now, delete the lock file ###
         rm -f /var/lock/HomeIO
         logger HomeIO server stopped
         echo "HomeIO server stopped"
+        echo `date` backend stop >> /var/log/homeio.txt
 }
 
 status() {
@@ -63,21 +65,23 @@ im_start() {
           echo "HomeIO-IM is running"
         else
           logger Starting HomeIO-IM
-          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeioim rake supervisor:im &
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_im rake supervisor:im &
           ### Create the lock file ###
           touch /var/lock/HomeIOim
           logger HomeIO-IM server startup
           echo "HomeIO-IM server startup"
+          echo `date` im start >> /var/log/homeio.txt
         fi
 }
 
 im_stop() {
         logger Stopping HomeIO-IM server
-        screen -S homeioim -X quit
+        screen -S homeio_im -X quit
         ### Now, delete the lock file ###
         rm -f /var/lock/HomeIOim
         logger HomeIO-IM server stopped
         echo "HomeIO-IM server stopped"
+        echo `date` im stop >> /var/log/homeio.txt
 }
 
 

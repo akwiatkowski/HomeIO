@@ -343,13 +343,15 @@ class ExtractorActiveRecord
   #   - false - only weather
   #   - nil - use both of them
   def city_periodical_stats( city_id, time_from, time_to, metar = nil)
+    # conditions
+    # temp
     t_conds = [
       "city_id = ? and time_from >= ? and time_to <= ? and temperature is not null",
       city_id,
       time_from,
       time_to
     ]
-
+    # wind
     w_conds = [
       "city_id = ? and time_from >= ? and time_to <= ? and wind is not null",
       city_id,
@@ -373,15 +375,15 @@ class ExtractorActiveRecord
       h[:t_wma_sum] = WeatherMetarArchive.sum(:temperature, :conditions => t_conds)
       h[:t_wma_count] = WeatherMetarArchive.count(:conditions => t_conds)
       # min/max
-      h[:t_wma_max] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
-      h[:t_wma_min] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+      h[:t_wma_max] = WeatherMetarArchive.find(:first, :conditions => t_conds, :order => 'temperature DESC')
+      h[:t_wma_min] = WeatherMetarArchive.find(:first, :conditions => t_conds, :order => 'temperature ASC')
 
       # wind
       # avg
       h[:w_wma_sum] = WeatherMetarArchive.sum(:wind, :conditions => w_conds)
       h[:w_wma_count] = WeatherMetarArchive.count(:conditions => w_conds)
       # max
-      h[:w_wma_max] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+      h[:w_wma_max] = WeatherMetarArchive.find(:first, :conditions => w_conds, :order => 'wind DESC')
     else
       h[:t_wma_sum] = 0.0
       h[:t_wma_count] = 0
@@ -399,15 +401,15 @@ class ExtractorActiveRecord
       h[:t_wa_sum] = WeatherArchive.sum(:temperature, :conditions => t_conds)
       h[:t_wa_count] = WeatherArchive.count(:conditions => t_conds)
       # min/max
-      h[:t_wa_max] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
-      h[:t_wa_min] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
+      h[:t_wa_max] = WeatherArchive.find(:first, :conditions => t_conds, :order => 'temperature DESC')
+      h[:t_wa_min] = WeatherArchive.find(:first, :conditions => t_conds, :order => 'temperature ASC')
 
       # wind
       # avg
       h[:w_wa_sum] = WeatherArchive.sum(:wind, :conditions => w_conds)
       h[:w_wa_count] = WeatherArchive.count(:conditions => w_conds)
       # max
-      h[:w_wa_max] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'wind DESC')
+      h[:w_wa_max] = WeatherArchive.find(:first, :conditions => w_conds, :order => 'wind DESC')
     else
       h[:t_wa_sum] = 0.0
       h[:t_wa_count] = 0
