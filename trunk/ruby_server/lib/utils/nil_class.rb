@@ -22,8 +22,8 @@
 class NilClass
 
   # Fix fo xmpp gem
-  def empty?
-    return true
-  end
+  #def empty?
+  #  return true
+  #end
 
 end

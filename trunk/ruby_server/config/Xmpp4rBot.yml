@@ -1,4 +1,6 @@
 ---
 :enabled: false
 :login: 'jid@jabber.org'
+# fix for some ruby version
+:domain: 'jabber.org'
 :password: 'password'

@@ -59,7 +59,11 @@ class Xmpp4rBot < ImBotAbstract
 
   # Start bot code
   def _start
-    @client = Jabber::Client.new(Jabber::JID::new( @config[:login] ))
+    @jid = Jabber::JID::new( @config[:login] )
+    @jid.domain = @config[:domain]
+    
+    @jid.domain = "jabbim.pl"
+    @client = Jabber::Client.new( @jid )
 
     Thread.abort_on_exception=true
     _keep_alive_connection
