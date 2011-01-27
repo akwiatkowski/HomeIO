@@ -272,6 +272,11 @@ class ImProcessor
     return str
   end
 
+  # Get current queue
+  def queue
+    data = @extractor.city_basic_info( city )
+    return data.inspect
+  end
 
   private
 

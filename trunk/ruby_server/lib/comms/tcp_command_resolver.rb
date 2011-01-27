@@ -27,25 +27,44 @@ require './lib/supervisor/supervisor_commands.rb'
 class TcpCommandResolver
   include Singleton
 
+  NO_WAIT_COMMANDS = [
+    '?',
+    'help',
+    'queue'
+  ]
+
   # Send command via tcp
   def process_command( string_command, from = 'N/A' )
-    tcp_command = {
+    tcp_command = encapsulate_command( string_command, from )
+
+    # all commands are queued, all but 'help' and 'queue'
+    wait = true
+    if ( [ string_command ] & NO_WAIT_COMMANDS ).size > 0
+      wait = false
+    end
+
+    if "queue" == string_command
+      # special command - get queue
+      response_task = SupervisorClient.get_queue
+      puts response_task.inspect
+    else
+      response_task = SupervisorClient.send_to_server_uni( tcp_command, wait )
+    end
+    
+
+    return response_task.response
+  end
+
+  private
+
+  def encapsulate_command( string_command, from )
+    return {
       :command => SupervisorCommands::IM_COMMAND,
       :params => {
         :string => string_command,
         :from => from.to_s
       }
     }
-
-    # all commands are queued, all but 'help'
-    wait = true
-    if string_command == '?' or string_command == 'help'
-      wait = false
-    end
-    
-    response_task = SupervisorClient.send_to_server_uni( tcp_command, wait )
-
-    return response_task.response
   end
 
 end

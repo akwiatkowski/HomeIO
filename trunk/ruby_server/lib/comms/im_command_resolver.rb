@@ -149,6 +149,13 @@ class ImCommandResolver
         :proc => Proc.new{ |params| ImProcessor.instance.city_calculate_periodical_stats( params ) },
         #:restricted => false
       },
+      {
+        :command => ['queue'],
+        :desc => 'get queue',
+        :usage_desc => '',
+        :proc => Proc.new{ |params| 'implemented elsewhere' },
+        #:restricted => false
+      },
     ]
   end
 
