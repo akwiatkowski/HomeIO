@@ -59,12 +59,12 @@ class Supervisor
   # Components need to be initialized before starting supervisor
   def start
     # queue commands
-    mq = SupervisorQueue.new
-    mq.start
+    @mq = SupervisorQueue.new
+    @mq.start
 
     # uses queue to process comands
-    ms = SupervisorServer.new( mq, Supervisor.port )
-    ms.start
+    @ms = SupervisorServer.new( @mq, Supervisor.port )
+    @ms.start
 
     Thread.abort_on_exception = true
 
@@ -83,6 +83,11 @@ class Supervisor
     loop do
       sleep( 30 )
     end
+  end
+
+  # Get queue
+  def get_queue
+    @mq.get_queue
   end
 
   def self.port

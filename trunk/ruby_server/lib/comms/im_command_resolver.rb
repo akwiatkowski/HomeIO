@@ -153,7 +153,7 @@ class ImCommandResolver
         :command => ['queue'],
         :desc => 'get queue',
         :usage_desc => '',
-        :proc => Proc.new{ |params| 'implemented elsewhere' },
+        :proc => Proc.new{ |params| get_queue },
         #:restricted => false
       },
     ]
@@ -180,4 +180,22 @@ class ImCommandResolver
     return str
   end
 
+  # Get queue when possible
+  # Show it with some like human format
+  def get_queue
+    begin
+      data = Supervisor.instance.get_queue
+      str = "Queue size: #{data.size} \n"
+      str += data.collect{|d| "#{d.command.inspect}, #{d.status}, #{d.process_time}"}.join("\n")
+      str
+    rescue => e
+      # TODO create 'puts_exception' function near adv_logger
+      puts e.inspect
+      puts e.backtrace
+      # TODO
+      # i'm not sure, but when it is direct it could be not available
+      # require needed
+      'Not available when using direct ImCommandResolver'
+    end
+  end
 end

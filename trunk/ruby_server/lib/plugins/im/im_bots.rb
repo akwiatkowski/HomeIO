@@ -16,12 +16,44 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-
 require 'singleton'
 require './lib/utils/core_classes.rb'
 Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
 
 # Load and start IM bots
+#
+# reformat it http://rdoc.sourceforge.net/doc/index.html
+#
+# How bots works:
+#
+# Bot communication is multilayer:
+# 1. Bot object (ex. Xmpp4rBot, GaduBot) has accesor +processor+ which store
+#    used first step processor:
+#    
+# 2. Processor is an object which has method +process_command( msg, from )+
+#    to sens processing of command somewhere else, or to process it by self
+#    when it is better way. There are 2 possible processors:
+#    - +ImCommandResolver+ - direct processor, currenty can be outdated because
+#      is not used
+#    - +TcpCommandResolver+ - remote processor, use another layers described later
+#
+#  3. When processor +TcpCommandResolver+ is choosed:
+#     Send command via tcp homeio protocol using +SupervisorClient+ to
+#     +SupervisorServer+. HomeIO uses special protocol which works by sending
+#     command in +Hash+ or +Task+ object.
+#
+#     Commands '?', 'help', and in soon future 'queue' are executed instantly,
+#     others go to +SupervisorQueue+
+#
+#  4. When +SupervisorQueue+ get IM command it use +ImCommandResolver+ to
+#     resolve it. Just like it was not any TCP communication.
+#
+#     
+#
+# 
+
+
+
 
 class ImBots
   include Singleton

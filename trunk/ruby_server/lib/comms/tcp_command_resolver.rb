@@ -43,14 +43,7 @@ class TcpCommandResolver
       wait = false
     end
 
-    if "queue" == string_command
-      # special command - get queue
-      response_task = SupervisorClient.get_queue
-      puts response_task.inspect
-    else
-      response_task = SupervisorClient.send_to_server_uni( tcp_command, wait )
-    end
-    
+    response_task = SupervisorClient.send_to_server_uni( tcp_command, wait )
 
     return response_task.response
   end

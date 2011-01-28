@@ -95,7 +95,7 @@ class CommQueue
 
     elsif task.command == :fetch_queue
       # return queue's Tasks, not CommQueueTasks
-      task.response = @queue.collect{|q| q.task }
+      task.response = get_queue
       return task
 
     elsif not task.command.nil?
@@ -136,6 +136,10 @@ class CommQueue
     }
   end
 
+  # Get all queue
+  def get_queue
+    @queue.collect{|q| q.task }
+  end
 
   # Wysłanie odpowiedzi przetworzonego polecenia
   def fetch_q_task_by_id( id )
