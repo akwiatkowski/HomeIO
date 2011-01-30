@@ -27,7 +27,8 @@ start() {
           echo "HomeIO is running"
         else
           logger Starting HomeIO
-          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_backend rake supervisor:start_no_im &
+          #cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_backend rake supervisor:start_no_im &
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_backend bash start_backend.sh &
           ### Create the lock file ###
           touch /var/lock/HomeIO
           logger HomeIO server startup
@@ -65,7 +66,8 @@ im_start() {
           echo "HomeIO-IM is running"
         else
           logger Starting HomeIO-IM
-          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_im rake supervisor:im &
+          #cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_im rake supervisor:im &
+          cd /opt/home_io/ && /usr/bin/screen -fa -d -m -S homeio_im bash start_im.sh &
           ### Create the lock file ###
           touch /var/lock/HomeIOim
           logger HomeIO-IM server startup

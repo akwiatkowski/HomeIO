@@ -46,13 +46,28 @@ int main(int argc, char** argv) {
     tcsetattr(tty_fd, TCSANOW, &tio);
 
     unsigned int tmp = 0;
-    unsigned int error = 0;
-    unsigned int ok = 0;
+
+    c = 's';
+    write(tty_fd, &c, 1);
+    read(tty_fd, &cin, 1);
+    tmp = (unsigned int) cin;
+    printf("OUT s = %d\n", tmp);
+
+
+    c = 't';
+    write(tty_fd, &c, 1);
+    read(tty_fd, &cin, 1);
+    tmp = (unsigned int) cin;
+    printf("OUT test = %d\n", tmp);
+
+    read(tty_fd, &cin, 1);
+    tmp = (unsigned int) cin;
+    printf("OUT test = %d\n", tmp);
 
     int i;
-    for (i = 0; i < 1000; i++) {
-        c = 't';
-        tmp = 0;
+    for (i = 0; i < 8; i++) {
+        c = '0';
+        c += i;
 
         write(tty_fd, &c, 1);
         read(tty_fd, &cin, 1);
@@ -61,16 +76,8 @@ int main(int argc, char** argv) {
         read(tty_fd, &cin, 1);
         tmp += (unsigned int) cin;
 
-        if (12345 != tmp) {
-            //printf("OUT %d = %d\n", i, tmp);
-            error++;
-        }
-        else {
-            ok++;
-        }
+        printf("OUT %d = %d\n", i, tmp);
     }
-
-    printf("error %d ok %d\n", error, ok);
 
     close(tty_fd);
 }
