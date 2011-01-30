@@ -66,8 +66,8 @@ class Xmpp4rBot < ImBotAbstract
     @client = Jabber::Client.new( @jid )
 
     Thread.abort_on_exception=true
-    _keep_alive_connection
-    _keep_alive_status
+    # _keep_alive_connection
+    # _keep_alive_status
   end
 
   def _connect_bot
