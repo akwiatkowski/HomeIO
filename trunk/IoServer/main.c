@@ -1,76 +1,84 @@
+// for RS
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <termios.h>
+
+// RS configuration
+#include "tcp_server.c"
+#include "rs.c"
+
+// IO Server
+//
+// Usage:
+// ioserver.bin <port>
+//
+// transmission parameters are changeable only in config.h
+
 
 int main(int argc, char** argv) {
-    struct termios tio;
-    struct termios stdio;
-
-    fd_set rdset;
-
     unsigned char c = 'D';
     unsigned char cin = 0;
-    char rs[] = "/dev/ttyS0";
 
-    /*
-    printf("Please start with %s /dev/ttyS1 (for example)\n", argv[0]);
-    //memset(&stdio, 0, sizeof (stdio));
-    stdio.c_iflag = 0;
-    stdio.c_oflag = 0;
-    stdio.c_cflag = 0;
-    stdio.c_lflag = 0;
-    stdio.c_cc[VMIN] = 1;
-    stdio.c_cc[VTIME] = 0;
-    tcsetattr(STDOUT_FILENO, TCSANOW, &stdio);
-    tcsetattr(STDOUT_FILENO, TCSAFLUSH, &stdio);
-    fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK); // make the reads non-blocking
-     */
+    // create port using parameter
+    int tty_fd = openRS( argv[1] );
 
-    //memset(&tio, 0, sizeof (tio));
-    tio.c_iflag = 0;
-    tio.c_oflag = 0;
-    tio.c_cflag = CS8 | CREAD | CLOCAL; // 8n1, see termios.h for more information
-    tio.c_lflag = 0;
-    tio.c_cc[VMIN] = 1;
-    tio.c_cc[VTIME] = 5;
+    // crate TCP server
+    char buffer[MAX_LINE]; /*  character buffer          */
+    int conn_s; /*  connection socket         */
+    int list_s = createTcpServer();
 
-    int tty_fd;
-    //tty_fd = open(argv[1], O_RDWR | O_NONBLOCK);
-    //tty_fd = open(rs, O_RDWR | O_NONBLOCK);
-    tty_fd = open(rs, O_RDWR);
-    cfsetospeed(&tio, B38400); // 115200 baud
-    cfsetispeed(&tio, B38400); // 115200 baud
 
-    tcsetattr(tty_fd, TCSANOW, &tio);
+    /*  Enter an infinite loop to respond
+        to client requests and echo input  */
 
-    unsigned int tmp = 0;
-    unsigned int error = 0;
-    unsigned int ok = 0;
+    while (1) {
 
-    int i;
-    for (i = 0; i < 1000; i++) {
-        c = 't';
-        tmp = 0;
+        /*  Wait for a connection, then accept() it  */
+
+        if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
+            fprintf(stderr, "ECHOSERV: Error calling accept()\n");
+            exit(EXIT_FAILURE);
+        }
+
+
+        /*  Retrieve an input line from the connected socket
+            then simply write it back to the same socket.     */
+
+        Readline(conn_s, buffer, MAX_LINE - 1);
+
+        unsigned char command = buffer[0];
+        unsigned int result = 0;
+
+        c = command;
+        result = 0;
 
         write(tty_fd, &c, 1);
         read(tty_fd, &cin, 1);
-        tmp = (unsigned int) cin;
-        tmp *= 256;
+        buffer[0] = cin;
+        result = (unsigned int) cin;
+        result *= 256;
         read(tty_fd, &cin, 1);
-        tmp += (unsigned int) cin;
+        buffer[1] = cin;
+        result += (unsigned int) cin;
 
-        if (12345 != tmp) {
-            //printf("OUT %d = %d\n", i, tmp);
-            error++;
-        }
-        else {
-            ok++;
+        buffer[2] = 0;
+        printf("result %d\n", result);
+
+
+        Writeline(conn_s, buffer, 2);
+
+
+        /*  Close the connected socket  */
+
+        if (close(conn_s) < 0) {
+            fprintf(stderr, "ECHOSERV: Error calling close()\n");
+            exit(EXIT_FAILURE);
         }
     }
 
-    printf("error %d ok %d\n", error, ok);
 
-    close(tty_fd);
+
+
+    
 }

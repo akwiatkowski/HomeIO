@@ -1,2 +1,2 @@
-gcc main.c
-time ./a.out -Wall
+gcc main.c -Wall -o ioserver
+./a.out /dev/ttyS0
