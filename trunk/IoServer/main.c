@@ -15,62 +15,97 @@
 //
 // transmission parameters are changeable only in config.h
 
+/*
+ * Protocol:
+ * Send to server array of chars:
+ * <count of command bytes> <count of response bytes> <command bytes>
+ *
+ * After retrieving uC response it reply
+ * <response bytes>
+ *
+ * And close connection
+ *
+ */
+
+
 
 int main(int argc, char** argv) {
-    unsigned char c = 'D';
-    unsigned char cin = 0;
-
     // create port using parameter
-    int tty_fd = openRS( argv[1] );
+
+    // temporary char used for sending command (loop)
+    unsigned char tmp_char = 0;
+    // temporary char used for sending command (loop)
+    unsigned char i = 0;
+    // count of command bytes
+    unsigned char count_command = 0;
+    // count of response bytes
+    unsigned char count_response = 0;
+
+    // file descriptor to RS
+    int tty_fd = openRS(argv[1]);
 
     // crate TCP server
-    char buffer[MAX_LINE]; /*  character buffer          */
-    int conn_s; /*  connection socket         */
+    char buffer[MAX_LINE]; // character buffer
+    int conn_s; // connection socket
     int list_s = createTcpServer();
 
-
-    /*  Enter an infinite loop to respond
-        to client requests and echo input  */
-
+    // infinite server loop
     while (1) {
-
-        /*  Wait for a connection, then accept() it  */
-
+        // Wait for a connection, then accept() it
         if ((conn_s = accept(list_s, NULL, NULL)) < 0) {
             fprintf(stderr, "ECHOSERV: Error calling accept()\n");
             exit(EXIT_FAILURE);
         }
 
+        // Retrieve command
+        readLine(conn_s, buffer, MAX_LINE - 1);
+        printf("Command received\n%s\n", buffer);
 
-        /*  Retrieve an input line from the connected socket
-            then simply write it back to the same socket.     */
+        // command and response char count
+        count_command = buffer[0];
+        count_response = buffer[1];
+        
+        // send to uC
+        for (i=0; i<count_command; i++) {
+            tmp_char = buffer[2 + i];
+            write(tty_fd, &tmp_char, 1);
+        }
+        // receive from uC
+        unsigned long int tmp = 0;
+        for (i=0; i<count_response; i++) {
+            // next byte, *256 current value
+            tmp *= 256;
 
-        Readline(conn_s, buffer, MAX_LINE - 1);
+            read(tty_fd, &tmp_char, 1);
+            buffer[i] = tmp_char;
+            // sum for displaying result
+            tmp += (unsigned long int) tmp_char;
+        }
+        buffer[count_response] = 0;
+        printf("result %d\n", tmp);
 
-        unsigned char command = buffer[0];
-        unsigned int result = 0;
-
-        c = command;
-        result = 0;
-
-        write(tty_fd, &c, 1);
-        read(tty_fd, &cin, 1);
-        buffer[0] = cin;
-        result = (unsigned int) cin;
-        result *= 256;
-        read(tty_fd, &cin, 1);
-        buffer[1] = cin;
-        result += (unsigned int) cin;
-
+        
+        
+        
+        /*
+        read(tty_fd, &i, 1);
+        buffer[0] = i;
+        tmp = (unsigned int) i;
+        tmp *= 256;
+        
+        buffer[1] = i;
+        tmp += (unsigned int) i;
+        printf("%d\n", tmp);
         buffer[2] = 0;
-        printf("result %d\n", result);
+         */
 
 
-        Writeline(conn_s, buffer, 2);
 
+        // send uC reply via socket
+        // count_response + 1 to add \0
+        writeLine(conn_s, buffer, count_response);
 
-        /*  Close the connected socket  */
-
+        // Close the connected socket
         if (close(conn_s) < 0) {
             fprintf(stderr, "ECHOSERV: Error calling close()\n");
             exit(EXIT_FAILURE);
@@ -80,5 +115,5 @@ int main(int argc, char** argv) {
 
 
 
-    
+
 }

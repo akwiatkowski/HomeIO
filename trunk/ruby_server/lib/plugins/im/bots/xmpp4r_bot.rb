@@ -66,8 +66,11 @@ class Xmpp4rBot < ImBotAbstract
     @client = Jabber::Client.new( @jid )
 
     Thread.abort_on_exception=true
-    # _keep_alive_connection
-    # _keep_alive_status
+    _keep_alive_connection
+    #_keep_alive_status
+
+    # when keepalive is not used it is needed to connect bot to server
+    #_connect_bot, TODO rewrite, it is without echo
   end
 
   def _connect_bot
