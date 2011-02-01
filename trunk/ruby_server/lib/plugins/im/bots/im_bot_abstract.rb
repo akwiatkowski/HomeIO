@@ -55,13 +55,13 @@ class ImBotAbstract
 
   # Bot starter
   # Start only if enabled
-  def start_old
+  def start
     _start if true == @enabled
   end
 
   # Bot starter
   # Start only if enabled
-  def start
+  def start_with_wrong_safety
     Thread.abort_on_exception = true
     Thread.new do
       loop do

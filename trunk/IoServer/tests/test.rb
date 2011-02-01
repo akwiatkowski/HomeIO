@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 
-require 'socket'      # Sockets are in standard library
+# Simple test for IoServer
+
+require 'socket'
 
 hostname = 'localhost'
 port = 2002
@@ -18,6 +20,7 @@ t = Time.now
   puts int_data if int_data != 12345
   s.close               # Close the socket when done
 end
+puts "'t' test"
 puts Time.now.to_f - t.to_f
 
 # 's' test
@@ -33,5 +36,6 @@ t = Time.now
   puts int_data if int_data != 0
   s.close               # Close the socket when done
 end
+puts "'0' test"
 puts Time.now.to_f - t.to_f
 

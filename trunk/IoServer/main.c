@@ -24,7 +24,6 @@
  * <response bytes>
  *
  * And close connection
- *
  */
 
 
@@ -84,10 +83,8 @@ int main(int argc, char** argv) {
         buffer[count_response] = 0;
         printf("result %d\n", tmp);
 
-        
-        
-        
         /*
+         * // OLD CODE
         read(tty_fd, &i, 1);
         buffer[0] = i;
         tmp = (unsigned int) i;
@@ -98,8 +95,6 @@ int main(int argc, char** argv) {
         printf("%d\n", tmp);
         buffer[2] = 0;
          */
-
-
 
         // send uC reply via socket
         // count_response + 1 to add \0
