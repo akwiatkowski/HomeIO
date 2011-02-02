@@ -17,26 +17,13 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Weather archives, non-metar
+# Weather provider
+# Has class for non-metar weather aquisition
 
-class WeatherArchive < ActiveRecord::Base
-  belongs_to :city
-  belongs_to :weather_provider
+class WeatherProvider < ActiveRecord::Base
+  has_many :weather_archives
 
-  validates_uniqueness_of :time_from, :scope => [:weather_provider_id, :city_id, :time_to]
-  validates_presence_of :time_from, :time_to, :city_id, :weather_provider_id
-
-  # will paginate
-  cattr_reader :per_page
-  @@per_page = 20
-
-  # This was stored based by future prediction
-  def predicted?
-    if self.updated_at >= self.time_from
-      return false
-    else
-      return true
-    end
-  end
+  validates_uniqueness_of :name
+  validates_presence_of :name
 
 end

@@ -2,7 +2,8 @@ class CitiesController < ApplicationController
   # GET /cities
   # GET /cities.xml
   def index
-    @cities = City.all
+    #@cities = City.all
+    @cities = City.paginate( :page => params[:page] )
 
     respond_to do |format|
       format.html # index.html.erb

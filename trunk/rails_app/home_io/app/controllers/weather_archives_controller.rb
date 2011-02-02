@@ -2,7 +2,8 @@ class WeatherArchivesController < ApplicationController
   # GET /weather_archives
   # GET /weather_archives.xml
   def index
-    @weather_archives = WeatherArchive.all
+    #@weather_archives = WeatherArchive.all
+    @weather_archives = WeatherArchive.paginate( :page => params[:page], :conditions => {:city_id => params[:city_id]} )
 
     respond_to do |format|
       format.html # index.html.erb

@@ -10,6 +10,10 @@ gem 'mysql2'
 # Use unicorn as the web server
 # gem 'unicorn'
 
+# faster, but probably not best for development
+# http://code.macournoyer.com/thin/
+gem 'thin'
+
 # Deploy with Capistrano
 # gem 'capistrano'
 
@@ -24,6 +28,32 @@ gem 'mysql2'
 # gem 'aws-s3', :require => 'aws/s3'
 
 gem 'haml'
+gem 'default_value_for'
+
+# has error 'can't convert nil into Array'
+gem 'will_paginate', " >= 3.0.pre2"
+
+# https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
+gem 'simple-navigation'
+
+# https://github.com/ryanb/cancan/blob/master/README.rdoc
+gem 'cancan'
+
+# https://github.com/binarylogic/authlogic/blob/master/README.rdoc
+gem 'authlogic'
+
+gem 'jrails'
+
+# https://github.com/probablycorey/mini_magick/blob/master/README.rdoc
+gem 'mini_magick'
+
+# http://pullmonkey.com/projects/open_flash_chart/view_source_code/y_right
+#gem 'open_flash_chart'
+
+gem 'geokit'
+
+# ...
+# http://ruby-toolbox.com/
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
