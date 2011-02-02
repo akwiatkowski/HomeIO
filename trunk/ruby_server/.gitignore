@@ -1,0 +1,11 @@
+config_local
+data/logs/*
+data/metar_log/**
+data/sqlite/*
+data/weather/*
+data/DevInfo.yml
+doc_other
+homeio/.idea
+nbproject
+TODO.*
+test_full.sh

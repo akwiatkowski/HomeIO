@@ -1,0 +1,35 @@
+<h1>Listing weather_archives</h1>
+
+<table>
+  <tr>
+    <th>Time from</th>
+    <th>Time to</th>
+    <th>Temperature</th>
+    <th>Wind</th>
+    <th>Pressure</th>
+    <th>Rain</th>
+    <th>Snow</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weather_archives.each do |weather_archive| %>
+  <tr>
+    <td><%= weather_archive.time_from %></td>
+    <td><%= weather_archive.time_to %></td>
+    <td><%= weather_archive.temperature %></td>
+    <td><%= weather_archive.wind %></td>
+    <td><%= weather_archive.pressure %></td>
+    <td><%= weather_archive.rain %></td>
+    <td><%= weather_archive.snow %></td>
+    <td><%= link_to 'Show', weather_archive %></td>
+    <td><%= link_to 'Edit', edit_weather_archive_path(weather_archive) %></td>
+    <td><%= link_to 'Destroy', weather_archive, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Weather archive', new_weather_archive_path %>

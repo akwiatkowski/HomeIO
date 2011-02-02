@@ -1,4 +1,10 @@
 HomeIo::Application.routes.draw do
+  resources :weather_metar_archives
+
+  resources :weather_archives
+
+  resources :cities
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

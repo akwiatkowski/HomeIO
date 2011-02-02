@@ -1,0 +1,2 @@
+module WeatherMetarArchivesHelper
+end
