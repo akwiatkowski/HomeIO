@@ -25,7 +25,7 @@ require 'active_record'
 require 'singleton'
 
 # better way to load all models from dir, + migrations
-Dir["./lib/storage/active_record/models/*.rb"].each {|file| require file }
+Dir["./lib/storage/active_record/backend_models/*.rb"].each {|file| require file }
 Dir["./lib/storage/active_record/*.rb"].each {|file| require file }
 
 # Storage using custom active record connection

@@ -20,11 +20,9 @@
 # Weather provider
 # Has class for non-metar weather aquisition
 
-class WeatherProvider < ActiveRecord::Base
-  has_many :weather_archives
+require './lib/storage/active_record/rails_models/weather_provider.rb'
 
-  validates_uniqueness_of :name
-  validates_presence_of :name
+class WeatherProvider
 
   # Create weather providers from configuration
   def self.create_from_config

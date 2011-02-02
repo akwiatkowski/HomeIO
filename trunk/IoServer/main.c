@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
 
         // Retrieve command
         readLine(conn_s, buffer, MAX_LINE - 1);
-        printf("Command received\n%s\n", buffer);
+        printf("Command received: %s\n", buffer);
 
         // command and response char count
         count_command = buffer[0];
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
             tmp += (unsigned long int) tmp_char;
         }
         buffer[count_response] = 0;
-        printf("result %d\n", tmp);
+        printf(" result %d\n", tmp);
 
         /*
          * // OLD CODE

@@ -17,26 +17,13 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
+require './lib/storage/active_record/rails_models/city.rb'
 require 'yaml'
 require './lib/weather_ripper.rb'
 
 # Cities
 
-class City < ActiveRecord::Base
-  has_many :weather_metar_archives
-  has_many :weather_archives
-
-  validates_presence_of :country, :name, :lat, :lon
-
-  # verbose mode, for development
-  VERBOSE = true
-
-  # Calculate distance for a city
-  def recalculate_distance
-    self.calculated_distance = Geolocation.distance( self.lat , self.lon )
-  end
-
-  before_save :recalculate_distance
+class City
 
   # Create or update cities
   def self.create_or_update( h )
@@ -45,11 +32,10 @@ class City < ActiveRecord::Base
     if c.nil?
       puts "not found city #{h[:id]} - #{h[:name]}"
       res = City.new( h ).safe_save
-      puts City.find_by_name( h[:name]).inspect
       return res
     else
-      #puts "found city #{h[:id]} - #{c.id}, #{h[:name].to_s} - #{c.name.to_s}"
-      puts h.inspect, c.inspect
+      # use hash to update attributes without removing old
+      c.update_attributes( c.attributes.merge( h ) )
     end
     
   end

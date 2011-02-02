@@ -17,7 +17,7 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/storage/active_record/models/city.rb'
+require './lib/storage/active_record/backend_models/city.rb'
 
 # TODO
 # przeliczanie wszystkich miast z yamli pogodowych, i dodawanie jako
