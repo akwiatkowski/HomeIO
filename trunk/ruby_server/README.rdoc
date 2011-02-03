@@ -1,3 +1,37 @@
+= HomeIO backend
+
+This file explain directory structure of backend server
+
+== Structure
+
+
+
+* +config+
+
+  Configuration files used for all project classed. When it was sensible
+  I moved to configuration yaml file. Name of file is exact, or should be, as class
+  name.
+
+  - <tt>config/input</tt>
+
+    Place to store input data, no configuration. This data is ofter processed
+    one time, or used for populating DB tables.
+
+    - <tt>config/input/other/EPPO.csv</tt>
+
+      Old weather data logged using KDE weather plugin. You can use <tt>lib/other/custom_old_import.rb</tt>
+      to import that kind of data as metars.
+
+--
+  TODO: Consider convert to 1 level tree structure for tasks, like 'weather_ripper.
+++
+
+* +config_local+
+  Local, not versioned configuration files. All passwords I'm storing here.
+  Structure is exactly like +config+.
+
+
+--
 1. Requirements:
 * Ruby 1.8.7
 * Gems required. Prefered version in parenthesis.
@@ -30,3 +64,4 @@
 - 'rake client:fetch_weather' - send command to server started by 'rake supervisor:start', and make it do 'rake action:fetch_weather'
 
 Other command are available after running 'rake -T'. If you have problems you can mail me login 'bobikx' and the server is poczta.fm.
+++

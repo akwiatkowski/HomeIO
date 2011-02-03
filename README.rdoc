@@ -12,7 +12,8 @@ b. MetarLogger G. Win - tool for storing METAR weather data and creating graphs.
 
 ...but this is not a merge of two projects. It is recreated version which utilize code and ideas from this two projects with a lot of new features. 
 
-It is not something unreal - my wind control system works from 2008 and has nearly 30 million of measurements.
+It is not something unreal - my wind control system works from 2008 and has nearly 30 million of measurements. This is photo of hardware
+http://www.flickr.com/photos/32921659@N03/5090655232/sizes/l/in/photostream/ for that project.
 
 == What is it now?
 
@@ -64,11 +65,12 @@ c. 'rake action:fetch_weather' - fetch weather data using WeatherRipper using (a
 d. 'rake client:fetch_metar' - send command to server started by 'rake supervisor:start', and make it do 'rake action:fetch_metar'
 e. 'rake client:fetch_weather' - send command to server started by 'rake supervisor:start', and make it do 'rake action:fetch_weather'
 
-== Licence ==
+== Licence
 
 As code and LICENCE stands - everything is in GPLv3. I'm not going to change it or close the project.
 
-== Help and contribution ==
+== Help and contribution
 
 Other command are available after running 'rake -T'. If you have problems you can mail me login 'bobikx' and the server is 'poczta.fm'.
 Feel free to post bugs, feature reports, or (wishful thinking :] ) contribution offer at https://sourceforge.net/projects/homeio/
+
