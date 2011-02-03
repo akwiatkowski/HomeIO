@@ -16,6 +16,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'rubygems'
+require 'robustthread'
 require 'singleton'
 require './lib/utils/core_classes.rb'
 Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
@@ -69,6 +71,11 @@ class ImBots
   #COMMAND_RESOLVER = COMMAND_RESOLVER_DIRECT
   COMMAND_RESOLVER = COMMAND_RESOLVER_VIA_TCP
 
+  # Restart IM bots every ... seconds
+  #RESTART_EVERY = 60*60
+  # XXX to test nightly craches
+  RESTART_EVERY = 24*60*60
+
   def initialize
     @config = ConfigLoader.instance.config( self.class )
 
@@ -89,6 +96,7 @@ class ImBots
     ]
   end
 
+  # Start bots
   def start
     @bots.each do |b|
       b.processor = @processor
@@ -98,6 +106,34 @@ class ImBots
     if true == @config[:run_autoupdater]
       require './lib/plugins/im/im_autoupdated_status.rb'
       ImAutoupdatedStatus.instance.run_autoupdater
+    end
+  end
+
+  # Stop all bots
+  def stop
+    @bots.each do |b|
+      b.stop
+    end
+  end
+
+  # Show debug information
+  def debug
+    @bots.each do |b|
+      b.debug
+    end
+  end
+
+  # Start IM bots loop
+  def start_loop
+    @loop_thread = RobustThread.new(:label => "start bots") do
+      puts "Starting IM bots in loop"
+
+      loop do
+        start
+        sleep RESTART_EVERY
+        stop
+      end
+
     end
   end
 end

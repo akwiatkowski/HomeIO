@@ -81,3 +81,14 @@ def log_error( klass, exception, additional_info = nil )
   l.error( exception.backtrace )
   l.error( additional_info ) unless additional_info.nil?
 end
+
+# Easy error showing
+def show_error( exception )
+  puts exception.inspect
+  puts exception.backtrace
+end
+
+# Set logger for RobustThread
+require 'rubygems'
+require 'robustthread'
+RobustThread.logger = AdvLog.instance.logger( RobustThread )

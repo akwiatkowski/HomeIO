@@ -31,6 +31,11 @@ This file explain directory structure of backend server
   Structure is exactly like +config+.
 
 
+== Notes
+
+- Gem 'daemons' is probably not usable for me. New daemons has root working path.
+
+
 --
 1. Requirements:
 * Ruby 1.8.7

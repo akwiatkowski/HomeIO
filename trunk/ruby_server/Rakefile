@@ -183,12 +183,8 @@ namespace :supervisor do
   task :im do
     require './lib/plugins/im/im_bots.rb'
     im = ImBots.instance
-    im.start
-
-    puts "IM bots started at #{Time.now}"
-    loop do
-      sleep 10
-    end
+    puts "IM bots starting at #{Time.now}"
+    im.start_loop
   end
 
 end

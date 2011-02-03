@@ -19,6 +19,9 @@
 require './lib/plugins/im/bots/im_bot_abstract.rb'
 require "xmpp4r"
 
+# for fixing problems
+Jabber::warnings = true
+
 # Xmpp4rBot - should works better
 
 class Xmpp4rBot < ImBotAbstract
@@ -50,6 +53,16 @@ class Xmpp4rBot < ImBotAbstract
     @client.send( p )
   end
 
+  # Debug information
+  def debug
+    puts "XMPP"
+    #puts "self.client.fd.eof #{@client.fd.eof}"
+    puts "self.client.fd.sync #{@client.fd.sync}"
+    puts "self.client.fd.sync_close #{@client.fd.sync_close}"
+    #puts "self.client.status #{@client.status}"
+    puts "\n"
+  end
+
 
 
   private
@@ -59,21 +72,18 @@ class Xmpp4rBot < ImBotAbstract
 
   # Start bot code
   def _start
+    puts "Connecting #{self.class.to_s} at #{Time.now}"
+
     @jid = Jabber::JID::new( @config[:login] )
     @jid.domain = @config[:domain]
+    @jid.resource = 'HomeIO'
     
-    @jid.domain = "jabbim.pl"
     @client = Jabber::Client.new( @jid )
 
-    Thread.abort_on_exception=true
-    _keep_alive_connection
-    #_keep_alive_status
-
-    # when keepalive is not used it is needed to connect bot to server
-    #_connect_bot, TODO rewrite, it is without echo
+    _connect_bot_and_process_msgs
   end
 
-  def _connect_bot
+  def _connect_bot_and_process_msgs
     @client.connect
     @client.auth( @config[:password] )
 
@@ -83,9 +93,6 @@ class Xmpp4rBot < ImBotAbstract
 
     @client.add_message_callback do |m|
       begin
-
-        #puts "#{m.chat_state} - #{m.body}"
-
         # only valid messages
         # first version
         #if m.chat_state == :active and not m.body.nil?
@@ -96,8 +103,7 @@ class Xmpp4rBot < ImBotAbstract
             response = @processor.process_command( m.body, m.from )
           rescue => e
             log_error( self, e )
-            puts e.inspect
-            puts e.backtrace
+            show_error( e )
             response = 'Error'
           end
 
@@ -106,55 +112,18 @@ class Xmpp4rBot < ImBotAbstract
           msg.type = :chat
           @client.send( msg )
         end
+
       rescue => e
-        # bigger error
+        # xmpp4r die quietly when exception hit callback
         log_error( self, e )
-        puts e.inspect
-        puts e.backtrace
+        show_error( e )
       end
     end
   end
 
-  # New keep alive thread - change status
-  # ... or it should be
-  def _keep_alive_status
-    Thread.new{
-      loop do
-        # only execeute when connected
-        if @client.status == Jabber::Stream::CONNECTED
-          # store old
-          status = @status_status
-          type = @status_type
-
-          # set new
-          change_status( :dnd, 'Bazinga!' )
-          # wait a little
-          sleep(1)
-
-          # set old
-          change_status( type, status )
-        end
-        
-        # wait more
-        sleep(30*60)
-      end
-    }
+  # Stop bot
+  def _stop
+    @client.close
   end
 
-  # New keep alive thread - check if bot is connected
-  # ... or it should be
-  def _keep_alive_connection
-    Thread.new{
-      loop do
-        if @client.status == Jabber::Stream::DISCONNECTED
-          puts "Connecting #{self.class.to_s} at #{Time.now}"
-          _connect_bot
-        end
-
-        sleep(10)
-        #sleep(120)
-      end
-    }
-  end
-  
 end

@@ -49,14 +49,19 @@ class GaduBot < ImBotAbstract
     @g.status( @status_type, @status_status, @status_friends )
   end
 
+  # Debug information
+  def debug
+    puts "GG"
+    puts "plugin has nothing to add"
+    puts "\n"
+  end
+
 
 
   private
 
   # Start bot code
   def _start
-    puts "Connecting #{self.class.to_s} at #{Time.now}"
-
     #@iconv = Iconv.new('ISO-8859-2','UTF-8')
     @iconv = Iconv.new('CP1250','UTF-8')
 
@@ -84,8 +89,7 @@ class GaduBot < ImBotAbstract
             @g.add( uin )
           rescue => e
             log_error( self, e )
-            puts e.inspect
-            puts e.backtrace
+            show_error( e )
             response = 'Error'
           end
 
@@ -98,11 +102,15 @@ class GaduBot < ImBotAbstract
       rescue => e
         # bigger error
         log_error( self, e )
-        puts e.inspect
-        puts e.backtrace
+        show_error( e )
       end
     end
 
   end
   
+  # Stop bot
+  def _stop
+    @g.close
+  end
+
 end

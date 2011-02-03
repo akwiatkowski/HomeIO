@@ -20,9 +20,9 @@
 require 'singleton'
 require './lib/utils/config_loader.rb'
 
-require './lib/weather_ripper/weather_onet_pl.rb'
-require './lib/weather_ripper/weather_wp_pl.rb'
-require './lib/weather_ripper/weather_interia_pl.rb'
+require './lib/weather_ripper/rippers/weather_onet_pl.rb'
+require './lib/weather_ripper/rippers/weather_wp_pl.rb'
+require './lib/weather_ripper/rippers/weather_interia_pl.rb'
 
 # Fetch weather information from various web pages (mainly polish ones)
 class WeatherRipper

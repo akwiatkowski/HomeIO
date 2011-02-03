@@ -56,9 +56,36 @@ class ImBotAbstract
   # Bot starter
   # Start only if enabled
   def start
-    _start if true == @enabled
+    if true == @enabled
+      puts "Connecting #{self.class.to_s} at #{Time.now}"
+      _start
+    end
   end
 
+  def stop
+    if true == @enabled
+      puts "Stopping #{self.class.to_s} at #{Time.now}"
+      begin
+        _stop
+      rescue => e
+        # when server crach it is hard to say what will happen
+        log_error( self, e )
+        show_error( e )
+      end
+    end
+  end
+
+  # Default debug
+  def debug
+    puts "DEBUG #{self.class.to_s}"
+    puts self.to_yaml
+    puts "\n\n"
+  end
+
+  private
+
+
+  # DEPRECATED
   # Bot starter
   # Start only if enabled
   def start_with_wrong_safety
@@ -82,6 +109,7 @@ class ImBotAbstract
     end
   end
 
+
   # Test method for checking server reliability
   def _dev_crash
     crach_the_server
@@ -94,8 +122,6 @@ class ImBotAbstract
     end
   end
 
-
-  private
 
 
 
