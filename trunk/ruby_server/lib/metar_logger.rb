@@ -14,78 +14,81 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 require 'singleton'
-require './lib/utils/config_loader.rb'
-require './lib/metar/metar_constants.rb'
-require './lib/metar/metar_ripper/metar_ripper.rb'
-require './lib/metar/metar_code.rb'
-require './lib/metar/metar_mass_processor.rb'
+require 'lib/utils/config_loader.rb'
+require 'lib/metar/metar_constants.rb'
+require 'lib/metar/metar_ripper/metar_ripper.rb'
+require 'lib/metar/metar_code.rb'
+require 'lib/metar/metar_mass_processor.rb'
 
-# Singleton for fetching and sharing metars to other classes
+# Singleton for fetching and storing metar to other classes
 
 class MetarLogger
   include Singleton
 
+  # Cities definition array
   attr_reader :cities
-  
-  def initialize
-    # TODO - użyj tej klasy do pobrania metar
-    # ewentualnie jakaś dodatkowa metoda, dziedzinienie na home io config loader
-    @cities = ConfigLoader.instance.config( self.class.to_s )[:cities]
-    
-    puts "#{self.class.to_s} init - #{@cities.size} cities"
-    # cits = @cities.collect{|c| "#{c[:code]} (#{c[:name].to_s})"}
-    # puts "Cities: #{cits.join(", ")}"
 
-    # deadlock, bad deadlock!
-    #@processor = MetarMassProcessor.instance
+  # Get cities list for fetching
+  def initialize
+    @cities = ConfigLoader.instance.config(self.class.to_s)[:cities]
+    puts "#{self.class.to_s} init - #{@cities.size} cities"
   end
 
-  # Get array of metar codes of cities which has logs
+  ##
+  # Get array of cities definitions used for metar fetching
+  #
+  # :call-seq:
+  #    get_logged_cities => array of cities definitions fetched on disk
   def get_logged_cities
     require './lib/metar/metar_mass_processor.rb'
-    mmp = MetarMassProcessor.instance
-
-    logged_cities = mmp.cities # logged on disk
-    metar_cities = cities # defined
+    mmp           = MetarMassProcessor.instance
+    # array of codes of logged on disk
+    logged_cities = mmp.cities
+    # definitions from yaml
+    metar_cities  = cities
     # only cities which has logs
-    metar_cities = metar_cities.select{|c| ( [ c[:code] ] & logged_cities ).size == 1 }
+    metar_cities  = metar_cities.select { |c| ([c[:code]] & logged_cities).size == 1 }
     # list of cities
-    return metar_cities.sort{|c,d| c[:code] <=> d[:code]}
+    return metar_cities.sort { |c, d| c[:code] <=> d[:code] }
   end
 
   # Start by remote command
+  #
+  # :call-seq:
+  #   start => array of metars
   def start
-    o = fetch_and_store
-    # TODO check it!
-    o_filterd = Array.new
-    o.collect{|a| a[1]}.each do |ma|
+    o      = fetch_and_store
+    # convert to array of metars
+    o_raws = Array.new
+    o.collect { |a| a[1] }.each do |ma|
       ma.each do |m|
-        o_filterd << m.raw
+        o_filtered << m.raw
       end
     end
 
-    return {:status => :ok, :data => o_filterd}
+    return {:status => :ok, :data => o_raws}
   end
 
   # Fetch and store metar for all cities
   #
-  # Return hash of arrays with MetarCodes
+  # :call-seq:
+  #   fetch_and_store => hash of arrays of MetarCodes
   def fetch_and_store
     o = _fetch_and_store
     Storage.instance.flush
     return o
   end
 
-  # Fetch and store metar for city
-  # Use all sites
+  # Fetch and store metar for city. Use all sites
   #
-  # Return array of MetarCode
-  def fetch_and_store_city( metar_city )
-    o = _fetch_and_store_city( metar_city )
+  # :call-seq:
+  #   fetch_and_store_city => array of MetarCodes
+  def fetch_and_store_city(metar_city)
+    o = _fetch_and_store_city(metar_city)
     Storage.instance.flush
     return o
   end
@@ -95,12 +98,13 @@ class MetarLogger
 
   # Fetch and store metar for all cities
   #
-  # Return hash of arrays with MetarCodes
+  # :call-seq:
+  #    _fetch_and_store => hash of arrays of MetarCodes
   def _fetch_and_store
     h = Hash.new
     @cities.each do |c|
-      metar_code = c[:code]
-      h[ metar_code ] = _fetch_and_store_city( metar_code )
+      metar_code    = c[:code]
+      h[metar_code] = _fetch_and_store_city(metar_code)
     end
     return h
   end
@@ -109,17 +113,17 @@ class MetarLogger
   # Use all sites
   #
   # Return array of MetarCode
-  def _fetch_and_store_city( metar_city )
-    year = Time.now.year
-    month = Time.now.month
+  def _fetch_and_store_city(metar_city)
+    year        = Time.now.year
+    month       = Time.now.month
 
     # fetch metars
-    m = MetarRipper.instance
-    o = m.fetch( metar_city )
+    m           = MetarRipper.instance
+    o           = m.fetch(metar_city)
 
     # process them
     # *metar_array* - array of processed metars
-    metar_array = MetarCode.process_array( o , year, month, MetarConstants::METAR_CODE_JUST_DOWNLOADED )
+    metar_array = MetarCode.process_array(o, year, month, MetarConstants::METAR_CODE_JUST_DOWNLOADED)
 
     # store them
     metar_array.each do |ma|
@@ -129,12 +133,5 @@ class MetarLogger
 
     return metar_array
   end
-
-  # Run processing of
-  #def process_all
-  #  @processor.process_all
-  #end
-
-
 
 end

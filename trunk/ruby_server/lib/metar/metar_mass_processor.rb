@@ -22,6 +22,7 @@ require './lib/storage/metar_storage.rb'
 
 # Load raw metar logs and process it
 #
+# Warning:
 # Storage.instance.flush needed after finish
 
 class MetarMassProcessor

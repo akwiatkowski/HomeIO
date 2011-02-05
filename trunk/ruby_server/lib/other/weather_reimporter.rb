@@ -60,7 +60,7 @@ class WeatherReimporter
 
   # Process line from file
   def process_line( line, prov )
-    #return "#{data[:time_created].to_i}; '#{defin[:city].to_s}'; #{data[:provider].to_s}; #{defin[:coord][:lat]}; #{defin[:coord][:lon]};   #{data[:time_from].to_i}; #{data[:time_to].to_i}; #{data[:temperature]}; #{data[:wind]}; #{data[:pressure]}; #{data[:rain]}; #{data[:snow]}"
+    #return "#{data[:time_created].to_i}; '#{definition[:city].to_s}'; #{data[:provider].to_s}; #{definition[:coord][:lat]}; #{definition[:coord][:lon]};   #{data[:time_from].to_i}; #{data[:time_to].to_i}; #{data[:temperature]}; #{data[:wind]}; #{data[:pressure]}; #{data[:rain]}; #{data[:snow]}"
 
     data = line.scan(/([^;]+);/)
     data_snow = line.scan(/;([^;]+)/)

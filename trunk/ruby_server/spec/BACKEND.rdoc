@@ -7,44 +7,146 @@
   monitoring and controlling process
 * DB - database
 
-= Deamonized tasks
+= Tasks - main classes
 
-Backend has very important background tasks:
+Deamonized tasks:
+- MetarLogger
+- WeatherRipper
+- MeasFetcher
+- OverseersMaster
 
-- <tt>MetarLogger</tt>:
-  * run every 30min
-  * decrease verbosity because other threads print too
-  * data accessible via <tt>Extractor</tt> singleton, does not (need to) share data for other components
-  * metar code processor should be usable from rails model to get specials from raw
-    metar code
-- <tt>WeatherRipper</tt>:
-  * run every 1 or 2h
-  * decrease verbosity a little (make shorter), but add wind speed, rain, snow, and pressure
-    if available
-  * data accessible via <tt>Extractor</tt>, does not (need to) share data for other components
-- <tt>MeasFetcher</tt>:
-  * if enabled do test connection, send 't', receive and check
-  * timeout (ex. 200ms) implementation, ignore
-  * <tt>Meas</tt>'es are fetched very often via <tt>IoServer</tt>, probably every 100ms at default/minimal time
-  * every ex. 5s they are printed on screen as a summary
-  * has <tt>MeasTypesArray</tt> - table of all predefined <tt>Meas</tt>
-- OverseersMaster - generate threads for controlling system
-  * think about predefined Algorithms for Actions.
-  * plugins can add new algorithms to pool
-  * user can choose algorithm, change parameter
-  * user can not manipulate running control unit
-  * user can restart them
+All main threads has self cron like threads. Then task is started start time is
+stored +t+ and later anfter it finish it wait when <tt>Time.now - t > interval</tt>.
 
-All main threads has self cron like threads.
+Executable on demand task:
+- DbExtractor
+- DbModificator
+- GraphGenerator
+
+= Plugins
+
+What is it? Code which:
+- add functionality to other main classes listed above
+- become specialized object used in main classes (like PowerOverseer)
+
+Some plugin ideas:
+- PowerOverseer
+- TODO...
 
 
-= Executable on demand task
+== Class description
 
-Other tasks can be executed on demand:
-- data extractor - extract data from DB for all other components
-  Note: Overseers use also direct meas connection.
-- graph generator
-  * can generatore graphs for meases and weather data
+= MetarLogger
+
+Description: Fetch and store weather data using METAR[http://en.wikipedia.org/wiki/METAR]
+
+TODOs:
+- Run every 30min
+- Decrease verbosity because other threads print too
+- Data accessible via <tt>Extractor</tt> singleton, does not (need to) share
+  data for other components
+- Metar code processor should be usable from rails model to get specials from raw
+  metar code
+
+
+= WeatherRipper
+
+Description: Fetch and store weather data using providers. It is easy to modify,
+and create new providers.
+
+TODOs:
+- Run every 1 or 2h
+- Decrease verbosity a little (make shorter), but add wind speed, rain, snow,
+  and pressure if available
+- Data accessible via <tt>Extractor</tt>, does not (need to) share data for other components
+
+
+= MeasFetcher
+
+Description: Fetch and log measured data using +IoServer+.
+
+TODOs:
+- If enabled do test connection, send 't', receive and check. When failed
+- Timeout (ex. 200ms) implementation, ignore
+- <tt>Meas</tt>es are fetched very often via <tt>IoServer</tt>, probably
+  every 100ms at default/minimal time
+- Every ex. 5s they are printed on screen as a summary
+- Has <tt>MeasTypesArray</tt> - table of all predefined <tt>Meas</tt>
+- Run every some time (ex. 15m) connection test.
+
+
+= OverseersMaster
+
+Description: Generate threads for controlling system.
+
+TODOs:
+- Think about predefined <tt>Algorithm</tt>s for <tt>Action</tt>s.
+- Plugins can add new algorithms to pool
+- User can choose algorithm, change parameter
+- User can not manipulate running control unit
+- User can restart them
+
+
+= DbExtractor
+
+Description: Singleton for extracting and simple processing of data stored
+in DB using active record.
+
+TODOs:
+- Change class name
+- +Overseer+ can use +MeasFetcher+ and +DbExtractor+
+
+
+= DbModificator
+
+Description: Singleton for modifying data in DB. Logged data is not modified.
+
+TODOs:
+- Make TODO as it go
+- No use exemples availabe at the moment, sorry, maybe when there will be need
+  to clean logged data
+
+
+
+= GraphGenerator
+
+Description: Singleton for modifying data in DB. Logged data is not modified.
+
+TODOs:
+- Make TODO as it go
+- No use exemples availabe at the moment, sorry, maybe when there will be need
+  to clean logged data
+
+
+= PowerOverseer
+
+Description: Acts like normal +Overseer+ but has specialized algorithms for
+home power generators (fuel powered, wind turbine, solar), and inverters.
+Purpose of this plugin is to maximize utilization and safety for home energy system.
+
+At the moment this plugin will use only wind turbine. So it has only 1
+suboverseer +PowerWindOverseer+
+
+TODOs:
+- Process data every 15m
+- Get current wind speed for site via DbExtractor, and prediction for average speed for another
+  6 hours, and day, and past 6 hours
+- Get generated energy amount for past 6 hours
+- Calculate power/wind speed ratio
+- Predict energy calucation
+- Store prediction
+- TODO what else?
+
+
+
+
+---
+
+Overseet
+- download all overseer parameters in 1 step, and then use them when creating
+overseet threads
+
+
 
 = IoServer
 
@@ -59,21 +161,30 @@ Other tasks can be executed on demand:
 = <tt>Meas</tt>
 1. Signle type of measurement
 2. Parameters:
-   - values array
+   - values array:
      * defined size
-     * methods for last value, time, ...
+     * methods for last (value, time), and logged (value, time)
      * methods for avg for x last measurements
      * store array of value, time, raw_value, coefs (linear and offset)
    - unit, ex. 'V'
    - internationalized description - hashlike,
      ex. {:en = 'Battery voltage', :pl => 'Napięcie na akumulatorach'}
-   - log intervals
+   - log conditions:
      * min - do not log more frequent than this, default 100ms
+     * max - do not log less frequent than this, default 300s
+     * sig_change - when above conditions does not solve situation
+       difference from last logged value higher than this will enforce logging
+   - total counts:
+     * measurements fetched from <tt>IoServer</tt>
+     * logged
+   - command - ascii or int
+     * response length - bytes count
+     * frequency - 1 every meas fetch loop (ex. 100ms), 2 every 200ms, ...
+     * standard value - min, max, normal - used graphs
+   - other accessors:
+     * value - last value from values array
+     * time - as above
 
-- command - ascii or int
-   - response length - bytes count
-   - frequency - 1 every meas fetch loop (ex. 100ms), 2 every 200ms
-   - standard value - min, max, normal - used graphs
 
 Rails application:
 - user registration with needed admin acceptation

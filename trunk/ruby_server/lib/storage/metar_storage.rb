@@ -75,7 +75,7 @@ class MetarStorage
     )
   end
 
-  # Get all cities
+  # Get all cities which realy has logs on disk
   def self.cities_logged
     dpath = File.join(
       Constants::DATA_DIR,

@@ -14,28 +14,31 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 require 'singleton'
-require './lib/utils/config_loader.rb'
+require 'lib/utils/config_loader.rb'
 
-require './lib/weather_ripper/rippers/weather_onet_pl.rb'
-require './lib/weather_ripper/rippers/weather_wp_pl.rb'
-require './lib/weather_ripper/rippers/weather_interia_pl.rb'
+require 'lib/weather_ripper/rippers/weather_onet_pl.rb'
+require 'lib/weather_ripper/rippers/weather_wp_pl.rb'
+require 'lib/weather_ripper/rippers/weather_interia_pl.rb'
 
-# Fetch weather information from various web pages (mainly polish ones)
+# Fetch weather information from various web pages
+
 class WeatherRipper
   include Singleton
 
+  # Array of providers instances
   attr_reader :providers
 
-  # weather raw logs are stored here
+  # Weather raw logs are stored here
   WEATHER_DIR = File.join(
     Constants::DATA_DIR,
     'weather'
   )
 
+  # Setup providers
   def initialize
     prepare_directories
 
@@ -67,6 +70,7 @@ class WeatherRipper
 
   private
 
+  # Prepare directories for saving raw weather data
   def prepare_directories
     if not File.exists?( Constants::DATA_DIR )
       Dir.mkdir( Constants::DATA_DIR )
