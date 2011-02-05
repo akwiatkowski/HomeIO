@@ -1,0 +1,113 @@
+== HomeIO - backend specification
+
+= Terminology
+
+* meas - acronym of measurement
+* overseer - controlling object which has own algorith (Proc like object) for
+  monitoring and controlling process
+* DB - database
+
+= Deamonized tasks
+
+Backend has very important background tasks:
+
+- <tt>MetarLogger</tt>:
+  * run every 30min
+  * decrease verbosity because other threads print too
+  * data accessible via <tt>Extractor</tt> singleton, does not (need to) share data for other components
+  * metar code processor should be usable from rails model to get specials from raw
+    metar code
+- <tt>WeatherRipper</tt>:
+  * run every 1 or 2h
+  * decrease verbosity a little (make shorter), but add wind speed, rain, snow, and pressure
+    if available
+  * data accessible via <tt>Extractor</tt>, does not (need to) share data for other components
+- <tt>MeasFetcher</tt>:
+  * if enabled do test connection, send 't', receive and check
+  * timeout (ex. 200ms) implementation, ignore
+  * <tt>Meas</tt>'es are fetched very often via <tt>IoServer</tt>, probably every 100ms at default/minimal time
+  * every ex. 5s they are printed on screen as a summary
+  * has <tt>MeasTypesArray</tt> - table of all predefined <tt>Meas</tt>
+- OverseersMaster - generate threads for controlling system
+  * think about predefined Algorithms for Actions.
+  * plugins can add new algorithms to pool
+  * user can choose algorithm, change parameter
+  * user can not manipulate running control unit
+  * user can restart them
+
+All main threads has self cron like threads.
+
+
+= Executable on demand task
+
+Other tasks can be executed on demand:
+- data extractor - extract data from DB for all other components
+  Note: Overseers use also direct meas connection.
+- graph generator
+  * can generatore graphs for meases and weather data
+
+= IoServer
+
+* what if command parameters were bad? add timeout
+* rs port and tcp port default values and command line
+
+= IM server
+
+= <tt>MeasTypesArray</tt>
+* store all <tt>MeasType</tt>
+
+= <tt>Meas</tt>
+1. Signle type of measurement
+2. Parameters:
+   - values array
+     * defined size
+     * methods for last value, time, ...
+     * methods for avg for x last measurements
+     * store array of value, time, raw_value, coefs (linear and offset)
+   - unit, ex. 'V'
+   - internationalized description - hashlike,
+     ex. {:en = 'Battery voltage', :pl => 'Napięcie na akumulatorach'}
+   - log intervals
+     * min - do not log more frequent than this, default 100ms
+
+- command - ascii or int
+   - response length - bytes count
+   - frequency - 1 every meas fetch loop (ex. 100ms), 2 every 200ms
+   - standard value - min, max, normal - used graphs
+
+Rails application:
+- user registration with needed admin acceptation
+- user roles
+- graph creator
+
+= <tt>MeasArchive</tt>
+1. Rails model
+2. Accessors 'utime_from', 'utime_to' for fixig missing microsends
+
+--
+List of main threads:
+
+Use RobustThread, all exceptions should be logged in RobustThread.log. Other classes should use exception logging with begin-rescue on their own.
+
+
+
+
+Meas parameters:
+
+!! read legacy edition
+
+Action
+
+Overseer:
+- can send communication via all IM channels
+
+
+IM Bots:
+- refactor to other server due to library instability
+- find out best interprocess communication, possible not TCP
+- both sides can start transmission
+
+
+All this object will be stored every some time in yaml or db
+
+++

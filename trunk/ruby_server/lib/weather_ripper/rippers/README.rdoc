@@ -1,0 +1,3 @@
+== Weather rippers
+
+Classes for downloading weather from various sites
