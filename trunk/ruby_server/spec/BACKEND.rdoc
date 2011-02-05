@@ -1,5 +1,16 @@
 == HomeIO - backend specification
 
+= Most important TODOs
+
+* AR storage is obligatory
+* At the start, on initialization of MetarLogger and WeatherRipper it should use special class to get ids fo all cities
+* There would be opportunity to run withour AR but id of all cities has to be defined in configuration file before start
+* This special class doesn't have name yet, it will be changed from WeatherCityProxy and it do:
+  - fetch all cities from db
+  - try to match them with cities defined within MetarLogger and WeatherRipper and use that id
+  - if not found, create new cities, calculate distance using Geolocation
+  - all this processed cities should be accesible as array
+
 = Terminology
 
 * meas - acronym of measurement

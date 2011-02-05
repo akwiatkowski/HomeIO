@@ -14,12 +14,12 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/storage/active_record/rails_models/city.rb'
+require 'lib/storage/active_record/rails_models/city'
 require 'yaml'
-require './lib/weather_ripper.rb'
+require 'lib/weather_ripper'
 
 # Cities
 
@@ -37,7 +37,7 @@ class City
       # use hash to update attributes without removing old
       c.update_attributes( c.attributes.merge( h ) )
     end
-    
+
   end
 
   # Save method which log errors into HomeIO logs
@@ -68,11 +68,6 @@ class City
       arc.lon = c[:lon]
       arc.safe_save
     end
-    
-    #City.transaction do
-    #  self.create_from_config_metar
-    #  self.create_from_config_nonmetar
-    #end
   end
 
   private

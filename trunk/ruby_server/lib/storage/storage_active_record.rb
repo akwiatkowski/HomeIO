@@ -14,12 +14,12 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 # TODO mutex when adding to pool
 
-require './lib/storage/storage_db_abstract.rb'
+require 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
 require 'singleton'

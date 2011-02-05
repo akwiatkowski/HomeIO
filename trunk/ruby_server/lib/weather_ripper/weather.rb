@@ -62,17 +62,28 @@ class Weather
   end
 
   # Short information used for printing on screen
+  #
+  # :call-seq:
+  #   short_info => String
   def short_info
-    return "#{data[:provider].to_s}: #{definition[:city].to_s} @ #{data[:time_from].to_human} - #{data[:temperature]}"
+    str = "#{data[:provider].to_s}: #{definition[:city].to_s} @ #{data[:time_from].to_human}"
+    str += " #{data[:temperature]}C" unless data[:temperature].nil?
+    str += " #{data[:pressure]}hPa" unless data[:pressure].nil?
+    str += " #{data[:wind]}m/s" unless data[:wind].nil?
+    str += " #{data[:rain]}r.mm" unless data[:rain].nil?
+    str += " #{data[:snow]}s.mm" unless data[:snow].nil?
+    return str
   end
 
-  # Is valid for storing?
+  # Return true is Weather valid for storing. It means that there is information about time period, weather provider,
+  # temperature and wind speed.
+  #
+  # :call-seq:
+  #   valid? => true or false
   def valid?
-    if data[:time_from].nil? or data[:time_to].nil? or data[:provider].nil? or data[:temperature].nil?
+    if data[:time_from].nil? or data[:time_to].nil? or data[:provider].nil? or data[:temperature].nil? or data[:wind].nil?
       return false
-      # TODO add wind?
     end
-
     return true
   end
 
@@ -81,7 +92,10 @@ class Weather
     Storage.instance.store(self)
   end
 
-  # Convert to hash object prepared to store in DB
+  # Convert to hash object for storing in DB. Created (but used also by) for first, non ActiveRecord storage engines.
+  #
+  # :call-seq:
+  #   to_db_data? => Hash used for storing
   def to_db_data
     # time of saving
     data[:created_at] = Time.now if data[:created_at].nil?
@@ -121,6 +135,9 @@ class Weather
   end
 
   # One line inserted into raw weather logs
+  #
+  # :call-seq:
+  #   text_weather_store_string => String
   def text_weather_store_string
     return "#{data[:time_created].to_i}; '#{definition[:city].to_s}'; #{data[:provider].to_s}; #{definition[:coord][:lat]}; #{definition[:coord][:lon]};   #{data[:time_from].to_i}; #{data[:time_to].to_i}; #{data[:temperature]}; #{data[:wind]}; #{data[:pressure]}; #{data[:rain]}; #{data[:snow]}"
   end
