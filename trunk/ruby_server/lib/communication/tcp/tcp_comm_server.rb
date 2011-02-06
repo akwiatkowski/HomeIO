@@ -24,7 +24,7 @@
 # create worker
 # queue create workers at start
 
-require 'lib/supervisor/tcp_comm_protocol'
+require 'lib/communication/tcp/tcp_comm_protocol'
 require 'lib/utils/adv_log'
 require 'lib/utils/start_threaded'
 
@@ -43,9 +43,9 @@ class TcpCommServer < TcpCommProtocol
     @port = port
   end
 
-  # Start thread
+  # Start threaded server
   def start
-    return Thread.new { start_server }
+    start_server_wrapped
   end
 
   private
@@ -64,14 +64,20 @@ class TcpCommServer < TcpCommProtocol
 
     loop do
       Thread.start(dts.accept) do |s|
-        # command received
-        command  = comm_decode(s.recv(MAX_COMMAND_SIZE))
-        # process command
-        response = @queue_processor.process_server_command(command)
-        # reply response
-        s.write(comm_encode(response))
-        # say goodbye
-        s.close
+        begin
+          # command received
+          command  = comm_decode(s.recv(MAX_COMMAND_SIZE))
+          # process command
+          response = process_command(command)
+          # reply response
+          s.write(comm_encode(response))
+          # say goodbye
+        rescue => e
+          log_error(self, e)
+          show_error(e)
+        ensure
+          s.close
+        end
       end
     end
   end
@@ -80,7 +86,7 @@ class TcpCommServer < TcpCommProtocol
   #
   # :call-seq:
   #   process_command( command to process ) => reply
-  def process_command( command )
+  def process_command(command)
     return command
   end
 
