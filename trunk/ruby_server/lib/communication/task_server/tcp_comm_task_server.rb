@@ -24,9 +24,11 @@ require 'lib/communication/task_server/tcp_task_queue'
 class TcpCommTaskServer < TcpCommServer
 
   def initialize(*args)
-    super(*args)
+    puts "Creating queue"
     @queue = TcpTaskQueue.new
     @queue.start
+
+    super(*args)
   end
 
   # Add command to queue

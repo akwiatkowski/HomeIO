@@ -1,0 +1,8 @@
+%h1="Register"
+
+= semantic_form_for @user, :url => account_path do |form|
+  = form.semantic_errors :state
+  = render :partial => "form", :object => form
+  = form.submit "Register"
+
+= debug @user

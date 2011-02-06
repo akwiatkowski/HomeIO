@@ -30,15 +30,18 @@ class TcpTaskQueue
   def initialize
     @queue = Array.new
     @workers = Array.new
+    start
   end
 
   # Add command to queue
   def push(command)
     command = TcpTask.factory(command)
+    @queue << command
   end
 
   # Start workers
   def start
+    puts "Starting workers"
     @workers = Array.new
     WORKERS_LIMIT.times do
       w = TaskWorker.new( @queue )

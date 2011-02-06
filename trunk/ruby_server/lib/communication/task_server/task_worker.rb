@@ -9,6 +9,7 @@ class TaskWorker
   end
 
   def start
+    puts "Worker started"
     StartThreaded.start_threaded(1, self) do
       start_searching
     end

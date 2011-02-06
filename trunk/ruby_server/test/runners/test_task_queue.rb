@@ -5,7 +5,7 @@ class TestTaskQueue < Test::Unit::TestCase
   PORT = 12365
 
   def test_simple
-    t = TcpCommServer.new(PORT)
+    t = TcpCommTaskServer.new(PORT)
     t.start
 
     sleep 0.5
