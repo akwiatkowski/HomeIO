@@ -14,16 +14,20 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 require 'lib/weather_ripper/rippers/weather_abstract'
 
+# Meteogroup.pl weather processor
+# Not yet implemented
 # http://www.meteogroup.pl/pl/home/pogoda/pogoda-na-swiecie/pogoda-lokalna/miasto/48X23/poznan/dzis.html
 
 class WeatherMeteoGroup < WeatherAbstract
 
-  def process( body_raw )
+  # Process response body and rip out weather data
+  def _process( body_raw )
+    raise 'Not implemented'
 
     body = body_raw.downcase
 

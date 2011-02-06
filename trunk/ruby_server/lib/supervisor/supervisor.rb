@@ -19,16 +19,16 @@
 
 require 'singleton'
 
-require './lib/supervisor/supervisor_queue.rb'
-require './lib/supervisor/supervisor_server.rb'
-require './lib/utils/config_loader.rb'
+require 'lib/supervisor/supervisor_queue.rb'
+require 'lib/supervisor/supervisor_server.rb'
+require 'lib/utils/config_loader.rb'
 
-require './lib/metar_logger.rb'
-require './lib/weather_ripper.rb'
-require './lib/extractors/extractor.rb'
-require './lib/comms/im_command_resolver.rb'
+require 'lib/metar_logger.rb'
+require 'lib/weather_ripper.rb'
+require 'lib/extractors/extractor.rb'
+require 'lib/comms/im_command_resolver.rb'
 
-# Supervisor which run taks for remote command
+# Supervisor which run tasks for remote command
 # Tasks are performed in queue
 
 # Commands:
@@ -75,7 +75,7 @@ class Supervisor
     #  # start IM botsbot gg
     #  sleep( 1 )
     #
-    #  require './lib/plugins/im/im_bots.rb'
+    #  require 'lib/plugins/im/im_bots.rb'
     #  im = ImBots.instance
     #  im.start
     #end

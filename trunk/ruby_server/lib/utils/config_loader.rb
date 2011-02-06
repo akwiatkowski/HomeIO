@@ -14,26 +14,30 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
 require 'yaml'
+require 'lib/utils/adv_log'
 
-# Singleton class which load and store config files inself
+# Singleton class which load and store config files in self
+
 class ConfigLoader
   include Singleton
 
-  # versioned configs, lower priority
+  # configs from repository, lower priority
   CONFIG_FILES_PATH = "config"
-  # local configs, not versioned, with higher priority, often with password
+  # local configs, not in repository, with higher priority, often with password
   CONFIG_LOCAL_FILES_PATH = "config_local"
   # folder to other configs
   INPUT_FILES_DIR = "input"
 
   # Load config if needed, or forced
+  #
   def config( type, force = false )
     # convert to symbol
-    type = type.to_s.to_sym
+    #type = type.to_s.to_sym
+    type = AdvLog.instance.class_name( type ).to_sym
 
     if @@config[ type ].nil? or force == true
       @@config[ type ] = load_config( type )

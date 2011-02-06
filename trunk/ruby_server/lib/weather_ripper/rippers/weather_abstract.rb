@@ -14,7 +14,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 require 'net/http'
@@ -22,7 +22,6 @@ require 'rubygems'
 require 'hpricot'
 require 'lib/storage/storage'
 require 'lib/utils/adv_log'
-#require 'lib/weather_ripper'
 require 'lib/weather_ripper/utils/city_proxy'
 require 'lib/weather_ripper/weather'
 
@@ -30,18 +29,16 @@ require 'lib/weather_ripper/weather'
 
 class WeatherAbstract
 
+  # Cities definition used by ripper
   attr_reader :defs
 
-  # Id used in DB
-  # attr_reader :id
-
+  # Load configuration
   def initialize
-    @config = ConfigLoader.instance.config( self.class )
-    @defs = @config[:defs]
+    @config = ConfigLoader.instance.config(self.class)
+    @defs   = @config[:defs]
   end
 
-  # Safec accesor
-  #attr_reader :config
+  # Safer accessor for ripper configuration
   def config
     return @config.clone
   end
@@ -49,12 +46,12 @@ class WeatherAbstract
   # Check weather for all configured cities
   def check_all
     @defs.each do |d|
-      
+
       begin
-        check_online( d )
+        check_online(d)
       rescue => e
-        # log errors using standarized method
-        log_error( self, e )
+        # log errors using standardized method
+        log_error(self, e)
         # when set it blow up everything to pieces :]
         if true == @config[:stop_on_error]
           raise e
@@ -66,15 +63,17 @@ class WeatherAbstract
   end
 
   # Run within begin rescue, some portals like changing schema
-  def process( body_raw )
+  #
+  # :call-seq:
+  #   process( html code ) => Array of Hash with weather data
+  def process(body_raw)
     begin
-      return _process( body_raw )
+      return _process(body_raw)
     rescue => e
       # bigger error
-      log_error( self, e )
-      puts e.inspect
-      puts e.backtrace
-      
+      log_error(self, e)
+      show_error(e)
+
       # processor must return array of hashes
       return []
     end
@@ -98,18 +97,20 @@ class WeatherAbstract
   #    # }]
   #  end
 
+  # Create WeatherProvider object if needed, get provider id
   def weather_provider_id
     return id
   end
 
-  #private
+  # Fetch and store weather data for 1 city and 1 weather provider, and store this data
+  #
+  # :call-seq:
+  #   check_online( definition hash )
+  def check_online(definition)
+    body      = fetch(definition)
+    processed = process(body)
+    weathers  = Weather.create_from(processed, definition)
 
-  # Fetching and storing
-  def check_online( defin )
-    body = fetch( defin )
-    processed = process( body )
-    weathers = Weather.create_from( processed, defin )
-    
     #puts weathers.inspect
     weathers.each do |w|
       w.store
@@ -119,24 +120,24 @@ class WeatherAbstract
   end
 
   # Download website
-  def fetch( defin )
-    body = Net::HTTP.get( URI.parse( defin[:url] ) )
-    f = File.new('delme.txt','w')
-    f.puts body
-    f.close
+  #
+  # :call-seq:
+  #   fetch( definition hash ) => html String
+  def fetch(definition)
+    body = Net::HTTP.get(URI.parse(definition[:url]))
     return body
   end
 
-  # Create WeatherProvider object and/or get id
+  # Create WeatherProvider object if needed, get provider id
   def id
-    return @id if defined?( @id ) and not @id.nil?
+    return @id if defined?(@id) and not @id.nil?
 
     # establish connection
     StorageActiveRecord.instance
 
     prov_name = self.class.provider_name
 
-    wp = WeatherProvider.find_or_create_by_name( prov_name )
+    wp        = WeatherProvider.find_or_create_by_name(prov_name)
     wp.save!
     @id = wp.id
     return @id
