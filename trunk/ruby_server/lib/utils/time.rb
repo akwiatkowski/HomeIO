@@ -14,10 +14,10 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Some new methods
+# Time class additions
 
 class Time
 
@@ -26,38 +26,53 @@ class Time
     return self.localtime.strftime("%Y-%m-%d %H:%M:%S")
   end
 
+  # Show full time human formatted without seconds
+  def to_human_wo_seconds
+    return self.localtime.strftime("%Y-%m-%d %H:%M")
+  end
+
+  # Show full time human formatted
   def to_timedate_human
     to_human
   end
 
+  # Show time human formatted
   def to_time_human
     return self.localtime.strftime("%H:%M:%S")
   end
 
+  # Show time human formatted without seconds
+  def to_time_human_wo_seconds
+    return self.localtime.strftime("%H:%M")
+  end
+
+  # Show date human formatted
   def to_date_human
     return self.localtime.strftime("%Y-%m-%d")
   end
 
-  # Ustawia początek danego miesiąca
+  # Create begin of month time
   def utc_begin_of_month
-    t = Time.utc( self.year, self.month, 1, 0, 0, 0)
-    #puts "* " + t.to_s
+    t = Time.utc(self.year, self.month, 1, 0, 0, 0)
     return t
   end
 
-  # Ilość dni w miesiącu
-  def self.days_in_month( month, year = Time.now.year )
+  # Create last second of month time
+  def utc_end_of_month
+    days = Time.days_in_month(self.month)
+    t    = Time.utc(self.year, self.month, days, 0, 0, 0)
+    t    += 24*3600 - 1
+    return t
+  end
+
+  # Count days in month
+  #
+  # :call-seq:
+  #   Time.days_in_month( Fixnum month ) => days in month in current year
+  #   Time.days_in_month( Fixnum month, Fixnum year ) => days in month 
+  def self.days_in_month(month, year = Time.now.year)
     return ((Date.new(year, month, 1) >> 1) - 1).day
   end
 
-  # Ustawia koniec danego miesiąca
-  def utc_end_of_month
-    days = Time.days_in_month( self.month )
-    t = Time.utc( self.year, self.month, days, 0, 0, 0)
-    # przejdź na koniec danego dnia
-    t += 24*3600 - 1
-    #puts "- " + t.to_s
-    return t
-  end
 
 end

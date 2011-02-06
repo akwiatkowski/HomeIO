@@ -32,11 +32,20 @@ class ConfigLoader
   # folder to other configs
   INPUT_FILES_DIR = "input"
 
-  # Load config if needed, or forced
+  # Create hash for all configs
+  def initialize
+    @@config = Hash.new unless defined? @@config
+  end
+  
+  # Load YAML config if needed, or forced
   #
+  # :call-seq:
+  #   config( String class name ) => load config for class
+  #   config( Class ) => load config for class, force reload
+  #   config( Object instance ) => load config for class
+  #   config( String class name ) => load config for class
   def config( type, force = false )
     # convert to symbol
-    #type = type.to_s.to_sym
     type = AdvLog.instance.class_name( type ).to_sym
 
     if @@config[ type ].nil? or force == true
@@ -46,12 +55,10 @@ class ConfigLoader
     return @@config[ type ]
   end
 
-  # Create hash for all configs
-  def initialize
-    @@config = Hash.new unless defined? @@config
-  end
-
-  # Load other input files
+  # Load other input files in YAML format
+  #
+  # :call-seq:
+  #   load_input( String ) =>
   def load_input( type )
     return  YAML::load_file( File.join(CONFIG_FILES_PATH, INPUT_FILES_DIR, "#{type.to_s}.yml") )
   end
@@ -59,6 +66,10 @@ class ConfigLoader
   private
 
   # Load config, but first local version of config
+  #
+  # :call-seq:
+  #   load_config( String )
+  #   load_config( Symbol )
   def load_config( type )
     begin
       return YAML::load_file( File.join(CONFIG_LOCAL_FILES_PATH, "#{type.to_s}.yml") )

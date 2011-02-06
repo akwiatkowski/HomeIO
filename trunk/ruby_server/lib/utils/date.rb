@@ -14,18 +14,20 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Some new methods
+# Date class additions
 
 class Date
 
-  # Obliczanie ostatniego dnia miesiąca
-  def self.last_day_of_the_month yyyy, mm
-    d = new yyyy, mm
-    d += 42                  # warp into the next month
-    new(d.year, d.month) - 1 # back off one day from first of that month
+  # Calculate last day of month
+  def self.last_day_of_the_month(yyyy, mm)
+    d = new(yyyy, mm)
+    # warp into the next month
+    d += 42
+    # back off one day from first of that month
+    new(d.year, d.month) - 1
   end
 
 end

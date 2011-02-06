@@ -14,21 +14,9 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Some new methods
+# String class additions
 
 class String
-
-  # Odkodowanie co oznacza dany kod METAR - jakie miasto
-  def encode_metar_name
-    c = MetarTools.load_config
-    o = c[:cities].select{|city| city[:code] == self}
-    if o.size == 1
-      return o.first[:name]
-    else
-      return self
-    end
-  end
 end

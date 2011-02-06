@@ -14,20 +14,21 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Other universal constants
+# Universal HomeIO constants
 
 class Constants
-  # all outputs
+
+  # directory for all outputs
   DATA_DIR = "data"
-  # logs
+  # logs directory
   LOGS_DIR = File.join( DATA_DIR, "logs" )
 
   
-  # przetworzone dane
+  # processed data
   OUTPUT_DIR = "output"
-  # wykresy
+  # created graphs
   OUTPUT_GRAPH_DIR = "graphs"
 end
