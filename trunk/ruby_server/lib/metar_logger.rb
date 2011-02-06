@@ -70,7 +70,7 @@ class MetarLogger
     o_raws = Array.new
     o.collect { |a| a[1] }.each do |ma|
       ma.each do |m|
-        o_filtered << m.raw
+        o_raws << m.raw
       end
     end
 

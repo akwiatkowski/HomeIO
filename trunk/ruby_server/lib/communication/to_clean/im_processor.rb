@@ -19,9 +19,9 @@
 
 require 'singleton'
 #require './lib/storage/extractors/extractor_active_record.rb'
-require './lib/comms/direct_extractor.rb'
+require './lib/communication/direct_extractor.rb'
 # not ready, and I don't know if it will be used
-#require './lib/comms/tcp_client_extractor.rb'
+#require './lib/communication/tcp_client_extractor.rb'
 
 # Process commands and output for text interface like jabber, gg
 

@@ -14,32 +14,30 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-
-
-# Klasa określająca protokół przesyłania, port oraz kodowanie
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'zlib'
 require 'socket'
 
+# Communication protocol for easy sending ruby objects via TCP socket.
 
-class Comm
+class TcpCommProtocol
+  # TCP port for communication
   attr_reader :port
   
-  # maksymalny rozmiar polecenia jakie dostaje serwer, zakodowana
+  # Max command size which can server get
   MAX_COMMAND_SIZE = 200
 
-  # rozmiar pojedyńczej ramki jaka jest wysyłana i odbierana
-  #MAX_FRAME_SIZE = 4096
-
-  # rozmiar ramki przeznaczonej do wysyłu
+  # Max write frame size
   MAX_WRITE_FRAME_SIZE = 16384
 
-
-
-  # Wyślij polecenie do serwera
-  def self.send_to_server( comm, port )
-    stream_sock = TCPSocket.new( "localhost", port )
+  # Send command to server, receive reply
+  #
+  # :call-seq:
+  #   TcpCommProtocol.send_to_server( comm, port ) => send to localhost
+  #   TcpCommProtocol.send_to_server( comm, port, server )
+  def self.send_to_server( comm, port, server = "localhost" )
+    stream_sock = TCPSocket.new( server, port )
     stream_sock.puts( comm_encode( comm ) )
     resp = comm_decode( stream_sock.recv( MAX_WRITE_FRAME_SIZE ) )
     stream_sock.close
@@ -47,36 +45,35 @@ class Comm
     return resp
   end
 
-  # Wyślij polecenie do serwera
-  def send_to_server( comm, port )
-    self.class.send_to_server( comm, port )
+  # Send command to server, receive reply
+  #
+  # :call-seq:
+  #   send_to_server( comm, port ) => send to localhost
+  #   send_to_server( comm, port, server )
+  def send_to_server( comm, port, server = "localhost" )
+    self.class.send_to_server( comm, port, server )
   end
 
   private
 
-  # Metody styczny i instancyjne, statyczne do odbioru aby nie było konieczne tworzenie instancji
-  # aby można było utworzyć instancje modelu korzystając z wzorca Fabryka
-
-  # Przygotowanie do przesłania
+  # Encode message
   def self.comm_encode( obj )
     return Zlib::Deflate.deflate( Marshal.dump( obj ), 9 )
   end
 
-  # Przetworzenie przesłanego obiektu
+  # Decode message
   def self.comm_decode( obj )
     return Marshal.load( Zlib::Inflate.inflate( obj ) )
   end
 
-  # Metody instancyjne
+  # Encode message
   def comm_encode( obj )
     return self.class.comm_encode( obj )
   end
-  
+
+  # Decode message
   def comm_decode( obj )
     return self.class.comm_decode( obj )
   end
-
-  
-
 
 end

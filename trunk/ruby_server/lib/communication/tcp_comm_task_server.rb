@@ -14,25 +14,17 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'lib/communication/tcp_comm_server'
 
-# I put here all supervisor commands here, there are in 1 place now, or at least
-# should be
+# Server used for processing TcpTask
 
-class SupervisorCommands
-  # testo command
-  TEST = :test
+class TcpCommTaskServer < TcpCommServer
 
-  # text command send from IM bot
-  IM_COMMAND = :im_command
+  # Process command
+  def process_command(command)
+    return command
+  end
 
-  # start weather fetch
-  FETCH_WEATHER = :fetch_weather
-
-  # start metar fetch
-  FETCH_METAR = :fetch_metar
-
-  # process metars for 1 city
-  PROCESS_METAR_CITY = :process_metar_city
 end

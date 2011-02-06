@@ -17,7 +17,7 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require './lib/comms/im_processor.rb'
+require './lib/communication/im_processor.rb'
 require './lib/utils/adv_log.rb'
 # 
 require './lib/supervisor/supervisor.rb'

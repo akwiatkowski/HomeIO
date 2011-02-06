@@ -42,7 +42,7 @@ Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
 #  3. When processor +TcpCommandResolver+ is choosed:
 #     Send command via tcp homeio protocol using +SupervisorClient+ to
 #     +SupervisorServer+. HomeIO uses special protocol which works by sending
-#     command in +Hash+ or +Task+ object.
+#     command in +Hash+ or +TcpTask+ object.
 #
 #     Commands '?', 'help', and in soon future 'queue' are executed instantly,
 #     others go to +SupervisorQueue+
@@ -81,11 +81,11 @@ class ImBots
 
     # commands resolver
     if COMMAND_RESOLVER_DIRECT == COMMAND_RESOLVER
-      require './lib/comms/im_command_resolver.rb'
+      require './lib/communication/im_command_resolver.rb'
       @processor = ImCommandResolver.instance
     end
     if COMMAND_RESOLVER_VIA_TCP == COMMAND_RESOLVER
-      require './lib/comms/tcp_command_resolver.rb'
+      require './lib/communication/tcp_command_resolver.rb'
       @processor = TcpCommandResolver.instance
     end
 

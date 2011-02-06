@@ -8,17 +8,17 @@ class TestSupervisor < Test::Unit::TestCase
     start_sv
 
     # ping
-    assert_equal :ok, SupervisorClient.send_to_server( Task.factory(:command => :ping) )
+    assert_equal :ok, SupervisorClient.send_to_server( TcpTask.factory(:command => :ping) )
 
     # test immediate execution
-    command = Task.factory({:command => :test, :now => true})
+    command = TcpTask.factory({:command => :test, :now => true})
     response = SupervisorClient.send_to_server( command )
     # assert_equal :ok, response[:status]
     puts response.inspect
     assert_equal :ok, response.response
 
     # number of components
-    command = Task.factory({:command => :list_components, :now => true})
+    command = TcpTask.factory({:command => :list_components, :now => true})
     response = SupervisorClient.send_to_server( command )
     puts "components: #{response.inspect}"
     assert_equal :ok, response.response[:status]
@@ -30,13 +30,13 @@ class TestSupervisor < Test::Unit::TestCase
   def TODO_test_long_actions
     # start fetching metar
     #command = {:command => :fetch_metar }
-    command = Task.factory({:command => :fetch_weather })
+    command = TcpTask.factory({:command => :fetch_weather })
     result = SupervisorClient.send_to_server( command )
     # puts result.inspect
     id = result.fetch_id
 
     #waiting for ending
-    command = Task.factory({:command => :fetch, :id => id })
+    command = TcpTask.factory({:command => :fetch, :id => id })
 
     need_to_wait = true
     while need_to_wait

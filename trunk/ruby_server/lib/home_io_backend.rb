@@ -14,10 +14,30 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
+
+require "lib/utils/start_threaded"
+require "lib/metar_logger"
+require "lib/weather_ripper"
 
 
-require './lib/supervisor/comm_server.rb'
+class HomeIoBackend
+  def initialize
+    rt_metar   = StartThreaded.start_threaded(180, self) do
+      sleep 10
+      MetarLogger.instance.start
+    end
 
-class SupervisorServer < CommServer
+    rt_weather = StartThreaded.start_threaded(120, self) do
+      sleep 5
+      WeatherRipper.instance.start
+    end
+
+    rt_hello   = StartThreaded.start_threaded(10, self) do
+      puts "HELLO #{Time.now}"
+    end
+  end
+
 end
+
+a = HomeIoBackend.new

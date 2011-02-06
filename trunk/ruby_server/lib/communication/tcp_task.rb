@@ -14,15 +14,12 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Simple task
-# From it is created CommQueueTask
+# Simple task used for communication with TcpTaskSupervisor
 
-class Task
-
-
+class TcpTask
   # When task was created, Time
   attr_reader :time_new
 
@@ -35,7 +32,7 @@ class Task
   # When task response was sent, Time or nil
   attr_reader :time_sent
 
-  # When taks can't be processed @error is true
+  # When task can't be processed @error is true
   attr_reader :error
 
   # Command sent to server
@@ -124,14 +121,14 @@ class Task
     @time_new = Time.now
   end
 
-  # Create new Task from hash or return Task object
+  # Create new TcpTask from hash or return TcpTask object
   def self.factory( obj )
-    if obj.kind_of?(Task)
+    if obj.kind_of?(TcpTask)
       return obj
     end
 
     if obj.kind_of?(Hash)
-      return Task.new( obj )
+      return TcpTask.new( obj )
     end
 
     return nil
@@ -167,13 +164,12 @@ class Task
     return false
   end
 
-  # Set task is beign processed right now
-  def set_in_proccess!
+  # Set task is processing right now
+  def set_in_process!
     @status = IN_PROCESS
     @time_started = Time.now
   end
 
-  # Set task id sone
   def set_done!
     @status = DONE
     @time_finished = Time.now
@@ -196,7 +192,7 @@ class Task
     end
   end
 
-  # Taks can not be processed
+  # Task can not be processed
   def set_error!( reason = :unknown, error_params = nil )
     set_done!
     @error = true

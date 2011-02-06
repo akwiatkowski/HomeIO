@@ -29,19 +29,20 @@ class StartThreaded
   # Wrap code block to be started in loop with begin-rescue-end
   #
   # :call-seq:
-  #   StartThreaded.start_threaded( Numeric interval, parent instance) {code block}
+  #   StartThreaded.start_threaded( Numeric interval, parent instance) {code block} => RobustThread handle
   def self.start_threaded(interval, parent, &block)
 
     # create new thread
     label = AdvLog.instance.class_name(parent)
-    RobustThread.new(:label => label, :args => [interval, parent, block]) do |t_interval, t_parent, t_block|
+    rt = RobustThread.new(:label => label, :args => [interval, parent, block]) do |t_interval, t_parent, t_block|
 
       # loop in thread
+      time_ok = nil
       loop do
         begin
           # is it time to execute?
           # if never executed or interval has passed
-          if not defined? time_ok or (Time.now - time_ok) > t_interval
+          if time_ok.nil? or (Time.now - time_ok) > t_interval
             # used later fo interval checking
             time_started = Time.now
 
@@ -51,7 +52,7 @@ class StartThreaded
 
             # when execution is done without errors set this variable
             # when Time.now - time_ok > t_interval execute another time
-            time_ok = Time.now
+            time_ok = time_started
           else
             # do nothing
           end
@@ -68,6 +69,7 @@ class StartThreaded
 
     end
 
+    return rt
   end
 
 end
