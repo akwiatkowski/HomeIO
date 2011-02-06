@@ -67,11 +67,11 @@ class Weather
   #   short_info => String
   def short_info
     str = "#{data[:provider].to_s}: #{definition[:city].to_s} @ #{data[:time_from].to_human}"
-    str += " #{data[:temperature]}C" unless data[:temperature].nil?
-    str += " #{data[:pressure]}hPa" unless data[:pressure].nil?
-    str += " #{data[:wind]}m/s" unless data[:wind].nil?
-    str += " #{data[:rain]}r.mm" unless data[:rain].nil?
-    str += " #{data[:snow]}s.mm" unless data[:snow].nil?
+    str += "   #{data[:temperature]}C" unless data[:temperature].nil?
+    str += "   #{data[:pressure]}hPa" unless data[:pressure].nil?
+    str += "   #{data[:wind].to_s_round(1)}m/s" unless data[:wind].nil?
+    str += "   #{data[:rain].to_s_round(1)}r.mm" unless data[:rain].nil?
+    str += "   #{data[:snow].to_s_round(1)}s.mm" unless data[:snow].nil?
     return str
   end
 

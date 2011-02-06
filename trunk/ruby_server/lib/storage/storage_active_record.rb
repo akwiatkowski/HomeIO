@@ -25,8 +25,8 @@ require 'active_record'
 require 'singleton'
 
 # better way to load all models from dir, + migrations
-Dir["./lib/storage/active_record/backend_models/*.rb"].each {|file| require file }
-Dir["./lib/storage/active_record/*.rb"].each {|file| require file }
+Dir["lib/storage/active_record/backend_models/*.rb"].each {|file| require file }
+Dir["lib/storage/active_record/*.rb"].each {|file| require file }
 
 # Storage using custom active record connection
 # Just like the Rails :)
@@ -69,7 +69,7 @@ class StorageActiveRecord < StorageDbAbstract
     check_pool_size
   end
 
-  # Add AdtiveRecord object to pool without processing it
+  # Add ActiveRecord object to pool without processing it
   def add_ar_object_to_pool( obj )
     @pool << obj
     
@@ -103,7 +103,7 @@ class StorageActiveRecord < StorageDbAbstract
   # When city has no metars and we want to find metar it has to search through
   # all record which is log task
   def update_logged_flag
-    cities = WeatherCityProxy.instance.cities_array
+    cities = CityProxy.instance.cities_array
     cities.each do |ch|
       wa = WeatherArchive.find(:last, :conditions => {:city_id => ch[:id]})
       wma = WeatherMetarArchive.find(:last, :conditions => {:city_id => ch[:id]})
@@ -162,14 +162,14 @@ class StorageActiveRecord < StorageDbAbstract
       :wind => obj.data[:wind],
       :snow => obj.data[:snow],
       :rain => obj.data[:rain],
-      :city_id => obj.defin[:id],
+      :city_id => obj.definition[:id],
       :weather_provider_id => obj.data[:weather_provider_id]
     }
     # updating metar if stored in DB
     wa = WeatherArchive.find(
       :last,
       :conditions => {
-        :city_id => obj.defin[:id],
+        :city_id => obj.definition[:id],
         :time_from => obj.data[:time_from],
         :weather_provider_id => obj.data[:weather_provider_id]
       }

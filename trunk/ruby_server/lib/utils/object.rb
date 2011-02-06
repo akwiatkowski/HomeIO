@@ -21,7 +21,10 @@
 
 class Object
 
-  # Wypełnij zerami aż do długości
+  # Convert to String and fill zeroes to demanded size
+  #
+  # :call-seq:
+  #   to_s2( proper string length ) => String
   def to_s2( places )
     tmp = self.to_s
 
@@ -32,7 +35,11 @@ class Object
     return tmp
   end
 
-  def to_s_round( places )
+  # Convert numeric objects to String with rounding
+  #
+  # :call-seq:
+  #   to_s_round( number precision ) => String
+  def to_s_round( places = 1 )
     if self.nil?
       return nil
     end

@@ -20,9 +20,9 @@
 require 'singleton'
 require 'lib/utils/config_loader.rb'
 
-require 'lib/weather_ripper/rippers/weather_onet_pl.rb'
-require 'lib/weather_ripper/rippers/weather_wp_pl.rb'
-require 'lib/weather_ripper/rippers/weather_interia_pl.rb'
+require 'lib/weather_ripper/rippers/weather_onet_pl'
+require 'lib/weather_ripper/rippers/weather_wp_pl'
+require 'lib/weather_ripper/rippers/weather_interia_pl'
 
 # Fetch weather information from various web pages
 
@@ -55,7 +55,8 @@ class WeatherRipper
 
   # Fetch weather from all providers, and all cities
   def fetch
-    WeatherCityProxy.instance.post_init
+    # get cities id at start when needed
+    CityProxy.instance.post_init
 
     @providers.each do |p|
       p.check_all

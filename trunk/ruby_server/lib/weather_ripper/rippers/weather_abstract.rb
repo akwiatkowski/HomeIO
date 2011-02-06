@@ -20,11 +20,11 @@
 require 'net/http'
 require 'rubygems'
 require 'hpricot'
-require './lib/storage/storage.rb'
-require './lib/utils/adv_log.rb'
-require './lib/weather_ripper.rb'
-require './lib/weather_ripper/utils/weather_city_proxy.rb'
-require './lib/weather_ripper/weather.rb'
+require 'lib/storage/storage'
+require 'lib/utils/adv_log'
+#require 'lib/weather_ripper'
+require 'lib/weather_ripper/utils/city_proxy'
+require 'lib/weather_ripper/weather'
 
 # Abstract class for all rippers
 

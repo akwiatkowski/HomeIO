@@ -18,7 +18,7 @@
 
 require 'logger'
 require 'singleton'
-require './lib/utils/constants.rb'
+require 'lib/utils/constants'
 
 # Store loggers instances
 

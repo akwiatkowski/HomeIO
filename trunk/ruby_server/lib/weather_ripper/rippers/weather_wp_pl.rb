@@ -17,7 +17,7 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/weather_ripper/rippers/weather_abstract.rb'
+require 'lib/weather_ripper/rippers/weather_abstract'
 
 class WeatherWpPl < WeatherAbstract
 

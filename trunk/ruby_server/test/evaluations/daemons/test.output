@@ -1,0 +1,19 @@
+/home/olek/NetBeansProjects/HomeIO/homeio/trunk/ruby_server/test/evaluations/daemons
+Thu Feb 03 23:15:20 +0100 2011
+/home/olek/NetBeansProjects/HomeIO/homeio/trunk/ruby_server/test/evaluations/daemons
+Thu Feb 03 23:15:21 +0100 2011
+d.rb:23: undefined local variable or method `a' for main:Object (NameError)
+	from d.rb:14:in `loop'
+	from d.rb:14
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/application.rb:250:in `call'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/application.rb:250:in `start_proc'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/daemonize.rb:199:in `call'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/daemonize.rb:199:in `call_as_daemon'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/application.rb:254:in `start_proc'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/application.rb:294:in `start'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/controller.rb:70:in `run'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons.rb:193:in `run_proc'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/cmdline.rb:112:in `call'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons/cmdline.rb:112:in `catch_exceptions'
+	from /home/olek/.rvm/gems/ruby-1.8.7-p330/gems/daemons-1.1.0/lib/daemons.rb:192:in `run_proc'
+	from d.rb:13

@@ -1,0 +1,42 @@
+# Logfile created on Thu Feb 03 20:56:25 +0100 2011 by logger.rb/22285
+I, [2011-02-03T20:56:25.289280 #9367]  INFO -- : RobustThread: waiting on "do_something with x and y"
+I, [2011-02-03T20:56:30.294453 #9367]  INFO -- : RobustThread: "do_something with x and y" exited cleanly
+I, [2011-02-03T20:56:30.294863 #9367]  INFO -- : RobustThread: exited cleanly
+I, [2011-02-03T20:56:58.016258 #9381]  INFO -- : RobustThread: waiting on "do_something with x and y"
+E, [2011-02-03T20:56:59.017531 #9381] ERROR -- : RobustThread: Unhandled exception:
+divided by 0 (ZeroDivisionError): 
+	test.rb:9:in `/'
+	test.rb:9
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `call'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `initialize'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `new'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `initialize'
+	test.rb:6:in `new'
+	test.rb:6
+I, [2011-02-03T20:56:59.017808 #9381]  INFO -- : RobustThread: "do_something with x and y" exited cleanly
+I, [2011-02-03T20:56:59.018012 #9381]  INFO -- : RobustThread: exited cleanly
+I, [2011-02-03T20:58:11.377944 #9412]  INFO -- : RobustThread: waiting on "do_something with x and y"
+E, [2011-02-03T20:58:12.378267 #9412] ERROR -- : RobustThread: Unhandled exception:
+divided by 0 (ZeroDivisionError): 
+	test.rb:9:in `/'
+	test.rb:9
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `call'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `initialize'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `new'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `initialize'
+	test.rb:6:in `new'
+	test.rb:6
+I, [2011-02-03T20:58:12.378567 #9412]  INFO -- : RobustThread: "do_something with x and y" exited cleanly
+I, [2011-02-03T20:58:12.378773 #9412]  INFO -- : RobustThread: waiting on "do_something with 2x and y"
+E, [2011-02-03T20:58:13.379063 #9412] ERROR -- : RobustThread: Unhandled exception:
+divided by 0 (ZeroDivisionError): 
+	test.rb:15:in `/'
+	test.rb:15
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `call'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:26:in `initialize'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `new'
+	/home/olek/.rvm/gems/ruby-1.8.7-p330/gems/robustthread-0.5.2/lib/robustthread.rb:23:in `initialize'
+	test.rb:12:in `new'
+	test.rb:12
+I, [2011-02-03T20:58:13.379233 #9412]  INFO -- : RobustThread: "do_something with 2x and y" exited cleanly
+I, [2011-02-03T20:58:13.379349 #9412]  INFO -- : RobustThread: exited cleanly

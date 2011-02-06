@@ -17,7 +17,7 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/weather_ripper/rippers/weather_abstract.rb'
+require 'lib/weather_ripper/rippers/weather_abstract'
 
 # http://www.meteogroup.pl/pl/home/pogoda/pogoda-na-swiecie/pogoda-lokalna/miasto/48X23/poznan/dzis.html
 

@@ -18,7 +18,7 @@
 
 
 require 'singleton'
-require './lib/utils/constants.rb'
+require 'lib/utils/constants'
 
 # better way to load all files from dir
 Dir["./lib/storage/*.rb"].each {|file| require file }

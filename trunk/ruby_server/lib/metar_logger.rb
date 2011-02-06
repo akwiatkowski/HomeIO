@@ -23,6 +23,7 @@ require 'lib/metar/metar_constants.rb'
 require 'lib/metar/metar_ripper/metar_ripper.rb'
 require 'lib/metar/metar_code.rb'
 require 'lib/metar/metar_mass_processor.rb'
+require 'lib/weather_ripper/utils/city_proxy'
 
 # Singleton for fetching and storing metar to other classes
 
@@ -61,6 +62,9 @@ class MetarLogger
   # :call-seq:
   #   start => array of metars
   def start
+    # get cities id at start when needed
+    CityProxy.instance.post_init
+
     o      = fetch_and_store
     # convert to array of metars
     o_raws = Array.new
