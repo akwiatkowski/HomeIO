@@ -18,8 +18,8 @@
 
 
 require 'singleton'
-require './lib/storage/storage.rb'
-require './lib/metar/metar_code.rb'
+require 'lib/storage/storage'
+require 'lib/metar/metar_code'
 
 # Retrieve data from DB
 
@@ -33,24 +33,33 @@ class ExtractorActiveRecord
 
   # Get all cities
   def get_cities
-    #return City.find(:all, :conditions => {}, :order => 'calculated_distance DESC')
     return City.find(:all, :conditions => {}, :order => 'calculated_distance DESC')
   end
   
-  # Search city using id, name, metar, partial of name
+  # Search city
+  #
+  # :call-seq:
+  #   search_city( city id from DB ) => City instance of nil
+  #   search_city( name ) => City instance of nil
+  #   search_city( metar code ) => City instance of nil
+  #   search_city( part of name ) => City instance of nil
   def search_city( city )
     c = City.find_by_id( city )
     c = City.find_by_name( city ) if c.nil?
     c = City.find_by_metar( city ) if c.nil?
-    #c = City.find(:first, :conditions => ["name like ?", "%#{city}%"]) if c.nil?
     c = City.find(:first, :conditions => ["lower(name) like lower(?)", "%#{city}%"]) if c.nil?
     return c
   end
 
   # Get last metar for city
+  #
+  # :call-seq:
+  #   get_last_metar( city id from DB ) => City instance of nil
   def get_last_metar( city )
     c = search_city( city )
+    # when not found
     return nil if c.nil?
+    # when city has no metars
     return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
 
     wma = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'time_from DESC')

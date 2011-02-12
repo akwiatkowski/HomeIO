@@ -18,22 +18,76 @@
 
 require 'lib/communication/tcp/tcp_comm_server'
 require 'lib/communication/task_server/tcp_task_queue'
+require 'lib/utils/config_loader'
 
 # Server used for processing TcpTask
+#
+# How to use:
+# 1. Create server. Port is configured in TcpCommTaskServer.yml.
+#
+#   t = TcpCommTaskServer.new
+#   t.start
+#
+# 2. Send TcpTask object to server.
+#
+#   task = TcpTask.factory({:command => :test})
+#   res = TcpCommProtocol.send_to_server(task, t.port)
+#
+#   Note: Normal tasks has +command+ and is added to queue. There are also other type of command which will be
+#         described later.
+#
+# 3. Wait for response
+
+# Special commands:
+# * queue
+# * fetch
 
 class TcpCommTaskServer < TcpCommServer
 
-  def initialize(*args)
-    puts "Creating queue"
+  # Initialize TCP server on port defined in config file
+  def initialize
+    @config = ConfigLoader.instance.config(self)
+
+    puts "#{self.class.to_s} Creating queue"
     @queue = TcpTaskQueue.new
     @queue.start
 
-    super(*args)
+    super(port)
   end
 
   # Add command to queue
   def process_command(command)
-    @queue.push( command )
+    # check if this was special command
+    special_command_result = process_special_command(command)
+    return special_command_result unless special_command_result.nil?
+
+    command.generate_fetch_id!
+    @queue.push(command)
+    return command
   end
+
+  # Port accessor
+  def port
+    return @config[:port]
+  end
+
+  private
+
+  # Process commands which are no typical task
+  # For ex. fetch, queue
+  def process_special_command(command)
+    if command.command == :fetch
+      command.response = 1
+      return command
+    end
+    if command.command == :queue
+      command.response = @queue
+      return command
+    end
+
+    # this was not special command
+    return nil
+  end
+
 
 end

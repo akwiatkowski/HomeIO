@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<%= render_navigation :renderer => :breadcrumbs, :join_with => " &gt; " %>
+<hr/>
+<%= render_navigation :expand_all => true %>
+
 <%= yield %>
 
 </body>

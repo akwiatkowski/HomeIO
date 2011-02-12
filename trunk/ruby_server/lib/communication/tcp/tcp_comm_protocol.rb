@@ -24,7 +24,7 @@ require 'socket'
 class TcpCommProtocol
   # TCP port for communication
   attr_reader :port
-  
+
   # Max command size which can server get
   MAX_COMMAND_SIZE = 200
 
@@ -36,10 +36,10 @@ class TcpCommProtocol
   # :call-seq:
   #   TcpCommProtocol.send_to_server( comm, port ) => send to localhost
   #   TcpCommProtocol.send_to_server( comm, port, server )
-  def self.send_to_server( comm, port, server = "localhost" )
-    stream_sock = TCPSocket.new( server, port )
-    stream_sock.puts( comm_encode( comm ) )
-    resp = comm_decode( stream_sock.recv( MAX_WRITE_FRAME_SIZE ) )
+  def self.send_to_server(comm, port, server = "localhost")
+    stream_sock = TCPSocket.new(server, port)
+    stream_sock.puts(comm_encode(comm))
+    resp = comm_decode(stream_sock.recv(MAX_WRITE_FRAME_SIZE))
     stream_sock.close
 
     return resp
@@ -48,32 +48,32 @@ class TcpCommProtocol
   # Send command to server, receive reply
   #
   # :call-seq:
-  #   send_to_server( comm, port ) => send to localhost
-  #   send_to_server( comm, port, server )
-  def send_to_server( comm, port, server = "localhost" )
-    self.class.send_to_server( comm, port, server )
+  #   send_to_server( TcpTask command, port ) => send to localhost
+  #   send_to_server( TcpTask command, port, server )
+  def send_to_server(comm, port, server = "localhost")
+    self.class.send_to_server(comm, port, server)
   end
 
   private
 
   # Encode message
-  def self.comm_encode( obj )
-    return Zlib::Deflate.deflate( Marshal.dump( obj ), 9 )
+  def self.comm_encode(obj)
+    return Zlib::Deflate.deflate(Marshal.dump(obj), 9)
   end
 
   # Decode message
-  def self.comm_decode( obj )
-    return Marshal.load( Zlib::Inflate.inflate( obj ) )
+  def self.comm_decode(obj)
+    return Marshal.load(Zlib::Inflate.inflate(obj))
   end
 
   # Encode message
-  def comm_encode( obj )
-    return self.class.comm_encode( obj )
+  def comm_encode(obj)
+    return self.class.comm_encode(obj)
   end
 
   # Decode message
-  def comm_decode( obj )
-    return self.class.comm_decode( obj )
+  def comm_decode(obj)
+    return self.class.comm_decode(obj)
   end
 
 end

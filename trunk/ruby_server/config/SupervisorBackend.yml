@@ -1,0 +1,6 @@
+# Backend configuration
+---
+# interval how often execute background actions
+:intervals
+  :MetarLogger: 30*60
+  :WeatherRipper: 2*60*60

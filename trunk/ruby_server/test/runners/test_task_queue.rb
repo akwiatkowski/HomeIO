@@ -1,22 +1,32 @@
 require 'lib/communication/task_server/tcp_comm_task_server'
+require 'lib/communication/task_server/tcp_comm_task_client'
 require 'test/unit'
 
 class TestTaskQueue < Test::Unit::TestCase
-  PORT = 12365
-
   def test_simple
-    t = TcpCommTaskServer.new(PORT)
+    t = TcpCommTaskServer.new
     t.start
 
     sleep 0.5
 
-    task = TcpTask.factory({:command => :test})
-    res = TcpCommProtocol.send_to_server(task, PORT)
+#    (1..5).each do |i|
+#      #task = TcpTask.factory({:command => :test, :id => i})
+#      task = TcpTask.factory({:command => :c})
+#      res = TcpCommProtocol.send_to_server(task, t.port)
+#      puts res.inspect
+#    end
+
+    task = TcpTask.factory({:command => :c})
+    res = TcpCommTaskClient.instance.send_to_server(task)
     puts res.inspect
 
-    loop do
-      sleep 1
-    end
+    res_b = TcpCommTaskClient.instance.wait_for_task(res)
+    puts res_b.inspect
+
+    #loop do
+    #  sleep 1
+    #end
+    sleep 0.5
 
   end
 

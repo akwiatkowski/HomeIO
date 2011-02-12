@@ -19,34 +19,32 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/communication/task_server/tcp_task'
-require 'lib/communication/task_server/home_io_task_worker'
 
-# Every command sent to task server goes to task queue 
+require "lib/utils/start_threaded"
+require "lib/metar_logger"
+require "lib/weather_ripper"
 
-class TcpTaskQueue
-  WORKERS_LIMIT = 2
+# Backend supervisor
 
+class SupervisorBackend
   def initialize
-    @queue = Array.new
-    @workers = Array.new
-    start
-  end
+    @config    = ConfigLoader.instance.config(self)
 
-  # Add command to queue
-  def push(command)
-    command = TcpTask.factory(command)
-    @queue << command
-  end
+    rt_metar   = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
+      sleep 10
+      MetarLogger.instance.start
+    end
 
-  # Start workers
-  def start
-    puts "Starting #{WORKERS_LIMIT} workers"
-    @workers = Array.new
-    WORKERS_LIMIT.times do
-      w = HomeIoTaskWorker.new( @queue )
-      w.start
-      @workers << w
+    rt_weather = StartThreaded.start_threaded(@config[:intervals][:WeatherRipper], self) do
+      sleep 5
+      WeatherRipper.instance.start
+    end
+
+    rt_hello   = StartThreaded.start_threaded(10, self) do
+      puts "HELLO #{Time.now}"
     end
   end
+
 end
+
+a = SupervisorBackend.new

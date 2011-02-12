@@ -1,5 +1,7 @@
 HomeIo::Application.routes.draw do
 
+  resources :meas_archives
+
   resources :cities do
     resources :weather_metar_archives
     resources :weather_archives
@@ -62,7 +64,8 @@ HomeIo::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => "welcome#index"
-  root :controller => "user_sessions", :action => "new"
+  #root :controller => "user_sessions", :action => "new"
+  root :controller => "welcome", :action => "index"
 
   # See how all your routes lay out with "rake routes"
 

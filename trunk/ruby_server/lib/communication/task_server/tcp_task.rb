@@ -59,7 +59,7 @@ class TcpTask
   IN_PROCESS = :in_process
 
   # Id used for fetching response later
-  attr_reader :fetch_id
+  attr_reader :result_fetch_id
 
   # Fetch status - status for fetch
   attr_reader :fetch_status
@@ -232,8 +232,8 @@ class TcpTask
   end
 
   # Generate id for fetching it later
-  def generate_id!
-    @fetch_id = self.object_id
+  def generate_fetch_id!
+    @result_fetch_id = self.object_id
   end
 
   # Set response that task was added to queue

@@ -43,7 +43,6 @@ class ConfigLoader
   #   config( String class name ) => load config for class
   #   config( Class ) => load config for class, force reload
   #   config( Object instance ) => load config for class
-  #   config( String class name ) => load config for class
   def config( type, force = false )
     # convert to symbol
     type = AdvLog.instance.class_name( type ).to_sym
