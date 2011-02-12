@@ -58,44 +58,16 @@ class TcpTask
   SENT = :sent
   IN_PROCESS = :in_process
 
-  # Id used for fetching response later
-  attr_reader :result_fetch_id
-
-  # Fetch status - status for fetch
-  attr_reader :fetch_status
-
-  FETCH_OK = :ok
-  FETCH_NOT_READY = :not_ready
-  FETCH_NOT_FOUND = :not_found
-  FETCH_NO_ID = :no_id
-
-  def set_fetch_ok!
-    @fetch_status = FETCH_OK
-  end
-
-  def set_fetch_not_ready!
-    @fetch_status = FETCH_NOT_READY
-  end
-
-  def set_fetch_not_found!
-    @fetch_status = FETCH_NOT_FOUND
-  end
-
-  def set_fetch_no_id!
-    @fetch_status = FETCH_NO_ID
-  end
-
-  # Used for wait loop
+  # Used for waiting loop
   def fetch_is_ready?
-    if FETCH_NOT_READY == @fetch_status
-      return false
-    elsif FETCH_OK == @fetch_status
-      return true
-    else
-      puts "Fetch ERROR, status #{@fetch_status}"
+    if self.status == DONE
       return true
     end
+    return false
   end
+
+  # Id used for fetching response later
+  attr_reader :result_fetch_id
 
   # Reason for error
   attr_reader :reason
@@ -105,7 +77,10 @@ class TcpTask
 
 
   # Create new task
-  def initialize( h = {} )
+  #
+  # :call-seq:
+  #   TcpTask.new({:command => Symbol, :now => Boolean, :priority => Integer}
+  def initialize(h = {})
     # main command
     @command = h[:command]
     @params = h[:params]
@@ -117,18 +92,21 @@ class TcpTask
     @status = NEW
     @status = h[:status] unless h[:status].nil?
 
+    @priority = 0
+    @priority = h[:priority].to_i unless h[:priority].nil?
+
     @error = false
     @time_new = Time.now
   end
 
   # Create new TcpTask from hash or return TcpTask object
-  def self.factory( obj )
+  def self.factory(obj)
     if obj.kind_of?(TcpTask)
       return obj
     end
 
     if obj.kind_of?(Hash)
-      return TcpTask.new( obj )
+      return TcpTask.new(obj)
     end
 
     return nil
@@ -174,7 +152,7 @@ class TcpTask
     @status = DONE
     @time_finished = Time.now
 
-    if not @time_finished.nil? and not@time_started.nil?
+    if not @time_finished.nil? and not @time_started.nil?
       @process_time = @time_finished.to_f - @time_started.to_f
     else
       @process_time = nil
@@ -193,7 +171,7 @@ class TcpTask
   end
 
   # Task can not be processed
-  def set_error!( reason = :unknown, error_params = nil )
+  def set_error!(reason = :unknown, error_params = nil)
     set_done!
     @error = true
     @error_reason = reason
@@ -211,18 +189,18 @@ class TcpTask
   end
 
   # Run Proc command
-  def run_proc( klass_instance )
+  def run_proc(klass_instance)
     return nil if false == self.type_proc?
 
     begin
-      self.response = command.call( klass_instance )
+      self.response = command.call(klass_instance)
     rescue => e
       self.response = nil
-      set_error!( :proc_failed, e.inspect )
+      set_error!(:proc_failed, e.inspect)
 
       puts e.inspect
       puts e.backtrace
-      log_error( self, e, "task.inspect #{self.inspect}" )
+      log_error(self, e, "task.inspect #{self.inspect}")
     end
   end
 
@@ -241,6 +219,5 @@ class TcpTask
     @response = :added
   end
 
-  
 
 end

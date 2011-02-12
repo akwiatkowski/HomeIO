@@ -39,12 +39,17 @@ class TcpTaskQueue
     @queue << command
   end
 
+  # Search for task from queue
+  def fetch_by_id(result_fetch_id)
+    return @queue.select { |q| q.result_fetch_id == result_fetch_id }.first
+  end
+
   # Start workers
   def start
     puts "Starting #{WORKERS_LIMIT} workers"
     @workers = Array.new
     WORKERS_LIMIT.times do
-      w = HomeIoTaskWorker.new( @queue )
+      w = HomeIoTaskWorker.new(@queue)
       w.start
       @workers << w
     end

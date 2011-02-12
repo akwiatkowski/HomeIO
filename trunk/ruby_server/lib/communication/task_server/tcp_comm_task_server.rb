@@ -40,7 +40,10 @@ require 'lib/utils/config_loader'
 
 # Special commands:
 # * queue
-# * fetch
+# * fetch        - return task by id. When task is added server return it with generated id. Fetching response get this
+#                  task, of course when it is not ready it does not have result.
+#
+#                  Sample command: {:command => :fetch, :params => {:id => 1243}}
 
 class TcpCommTaskServer < TcpCommServer
 
@@ -74,11 +77,10 @@ class TcpCommTaskServer < TcpCommServer
   private
 
   # Process commands which are no typical task
-  # For ex. fetch, queue
+  # Special commands are described at the top of this file
   def process_special_command(command)
     if command.command == :fetch
-      command.response = 1
-      return command
+      return @queue.fetch_by_id(command.params[:id])
     end
     if command.command == :queue
       command.response = @queue
@@ -88,6 +90,7 @@ class TcpCommTaskServer < TcpCommServer
     # this was not special command
     return nil
   end
+
 
 
 end

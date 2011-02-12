@@ -28,9 +28,9 @@ require "lib/weather_ripper"
 
 class SupervisorBackend
   def initialize
-    @config    = ConfigLoader.instance.config(self)
+    @config = ConfigLoader.instance.config(self)
 
-    rt_metar   = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
+    rt_metar = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
       sleep 10
       MetarLogger.instance.start
     end
@@ -40,7 +40,7 @@ class SupervisorBackend
       WeatherRipper.instance.start
     end
 
-    rt_hello   = StartThreaded.start_threaded(10, self) do
+    rt_hello = StartThreaded.start_threaded(10, self) do
       puts "HELLO #{Time.now}"
     end
   end

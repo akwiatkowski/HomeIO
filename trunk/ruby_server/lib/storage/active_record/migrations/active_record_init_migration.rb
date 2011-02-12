@@ -16,14 +16,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'rubygems'
+require 'foreigner'
 
-require './lib/storage/active_record/backend_models/city.rb'
-
-# TODO
-# przeliczanie wszystkich miast z yamli pogodowych, i dodawanie jako
-# nowe jeżeli odległość od dodanego jest mniejsza niż ileś
-#
-# rozważyć klucze obce
+# Create standard DB scheme
 
 class ActiveRecordInitMigration < ActiveRecord::Migration
   def self.up
@@ -41,29 +37,26 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         # has weather records logged, used for searching data
         t.column :logged_weather, :bool, :null => false, :default => false
       end
-    
-      create_table :meas_archives do |t|
-        t.column :time_from, :datetime, :null => false
-        t.column :time_to, :datetime, :null => false
-        # when time with microseconds is needed
-        #t.column :time_from_us, :integer, :null => false, :default => 0
-        #t.column :time_to_us, :integer, :null => false
-        t.column :value, :float, :null => false
-        t.references :meas_type
-        # TODO zrobić meas_types
-      end
 
       create_table :meas_types do |t|
         t.column :type, :string, :limit => 16, :null => false
-        # TODO add other fields later
         t.timestamps
+      end
+
+      create_table :meas_archives do |t|
+        t.column :time_from, :datetime, :null => false
+        t.column :time_to, :datetime, :null => false
+        t.column :time_from_us, :float, :null => false, :default => 0.0
+        t.column :time_to_us, :float, :null => false, :default => 0.0
+        t.column :value, :float, :null => false
+
+        t.references :meas_type
       end
 
       create_table :weather_providers do |t|
         t.column :name, :string, :null => false
         t.timestamps
       end
-
 
       create_table :weather_archives do |t|
         t.column :time_from, :datetime, :null => false
@@ -78,7 +71,6 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.timestamps
         t.references :city
         t.references :weather_provider
-        # TODO zrobić to
       end
 
       create_table :weather_metar_archives do |t|
@@ -96,7 +88,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.references :city
       end
 
-      # cities
+      # indexes
       add_index :cities, [:lat, :lon], :unique => true
       add_index :cities, [:name, :country], :unique => true
       # meas
@@ -108,17 +100,28 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       # metar
       add_index :weather_metar_archives, [:time_from, :raw], :unique => true, :name => 'weather_metar_archives_raw_uniq_index'
       add_index :weather_metar_archives, [:time_from, :city_id], :unique => true, :name => 'weather_metar_archives_raw_city_uniq_index'
-    end
 
-    City.create_from_config
+      # foreign key
+      add_foreign_key :meas_archives, :meas_types, :dependent => :restrict
+      add_foreign_key :weather_archives, :cities, :dependent => :restrict
+      add_foreign_key :weather_archives, :weather_providers, :dependent => :restrict
+      add_foreign_key :weather_metar_archives, :cities, :dependent => :restrict
+
+    end
   end
 
   def self.down
-    drop_table :cities
+    remove_foreign_key :weather_archives, :cities
+    remove_foreign_key :weather_metar_archives, :cities
+    remove_foreign_key :meas_archives, :meas_types
+    remove_foreign_key :weather_archives, :weather_providers
+
     drop_table :meas_archives
-    drop_table :meas_types
-    drop_table :weather_providers
     drop_table :weather_archives
     drop_table :weather_metar_archives
+
+    drop_table :cities
+    drop_table :meas_types
+    drop_table :weather_providers
   end
 end

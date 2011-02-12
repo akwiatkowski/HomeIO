@@ -7,23 +7,43 @@
 #:enabled: true
 #:pool_size: 100
 :pool_size: 500
+
 :connection_sqlite:
-  #adapter => "mysql",
-  #host => "localhost",
-  #database => "appdb",
-  #username => "appuser",
-  #password => "secret"
   adapter: 'sqlite3'
   database: 'data/sqlite/test.sqlite'
+
 :connection_mysql:
   adapter: "mysql"
   host: "localhost"
   database: "appdb"
   username: "appuser"
   password: "secret"
-:connection:
+
+:connection_used_mysql:
   adapter: "mysql"
   host: "localhost"
   database: "homeio"
   username: "homeio"
   password: "homeio"
+
+:connection_postgres:
+# CREATE USER homeio WITH PASSWORD 'homeio';
+# CREATE DATABASE homeio;
+# GRANT ALL PRIVILEGES ON DATABASE homeio to homeio;
+  adapter: postgresql
+  database: homeio
+  username: homeio
+  password: homeio
+  #host: /var/run/postgresql
+  host: localhost
+
+:connection:
+# CREATE USER homeio WITH PASSWORD 'homeio';
+# CREATE DATABASE homeio;
+# GRANT ALL PRIVILEGES ON DATABASE homeio to homeio;
+  adapter: postgresql
+  database: homeio
+  username: homeio
+  password: homeio
+  #host: /var/run/postgresql
+  host: localhost

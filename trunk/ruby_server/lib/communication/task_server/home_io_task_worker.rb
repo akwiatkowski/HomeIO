@@ -1,5 +1,5 @@
 require "lib/communication/task_server/task_worker"
-require "lib/communication/task_server/workers/tcp_standard_worker"
+require "lib/communication/task_server/workers/home_io_standard_worker"
 
 # Worker for HomeIO, process command in queue
 
@@ -19,7 +19,7 @@ class HomeIoTaskWorker < TaskWorker
     end
 
     # process command using standardized worker
-    q.response = TcpStandardWorker.instance.process(q.command)
+    q.response = HomeIoStandardWorker.instance.process(q)
     return q
 
   end

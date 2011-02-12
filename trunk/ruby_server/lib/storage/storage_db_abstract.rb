@@ -42,7 +42,7 @@ class StorageDbAbstract
     load_config
   end
 
-  # Accesor for enabled/disabled
+  # Accessor for enabled/disabled
   def enabled
     return @config[:enabled]
   end

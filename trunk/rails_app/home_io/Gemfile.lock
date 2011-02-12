@@ -45,6 +45,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
+    foreigner (0.9.1)
     formtastic (1.2.3)
       actionpack (>= 2.3.7)
       activesupport (>= 2.3.7)
@@ -63,6 +64,7 @@ GEM
     mini_magick (3.2)
       subexec (~> 0.0.4)
     mysql2 (0.2.6)
+    pg (0.10.1)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -108,12 +110,14 @@ DEPENDENCIES
   authlogic!
   cancan
   default_value_for
+  foreigner
   formtastic
   geokit
   haml
   jrails
   mini_magick
   mysql2
+  pg
   rails (= 3.0.3)
   ruby-debug
   simple-navigation

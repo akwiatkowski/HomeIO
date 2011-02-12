@@ -50,11 +50,13 @@ class StorageActiveRecord < StorageDbAbstract
 
   # Create tables in DB
   def init
+    Dir["lib/storage/active_record/migrations/*.rb"].each {|file| require file }
     ActiveRecordInitMigration.up
   end
 
   # Drop tables in DB
   def deinit
+    Dir["lib/storage/active_record/migrations/*.rb"].each {|file| require file }
     ActiveRecordInitMigration.down
   end
 
