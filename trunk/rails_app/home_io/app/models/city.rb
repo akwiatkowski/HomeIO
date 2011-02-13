@@ -35,4 +35,28 @@ class City < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
 
+  # Update flags used for not searching entire table for data which is not available
+  def update_search_flags
+    puts "Updating search flag for city ID #{self.id} - #{self.name}"
+    if WeatherArchive.find(:all, :conditions => {:city_id => self.id}, :limit => 1).size > 0
+      update_attribute(:logged_weather, true)
+    else
+      update_attribute(:logged_weather, false)
+    end
+
+    if WeatherMetarArchive.find(:all, :conditions => {:city_id => self.id}, :limit => 1).size > 0
+      update_attribute(:logged_metar, true)
+    else
+      update_attribute(:logged_metar, false)
+    end
+    puts "...done"
+  end
+
+  # Update flags for all cities
+  def self.update_search_flags_for_all_cities
+    City.all.each do |c|
+      c.update_search_flags
+    end
+  end
+
 end

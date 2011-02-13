@@ -29,14 +29,58 @@ class ExtractorBasicObject < ExtractorActiveRecord
   # Get all cities
   def get_cities
     cities = super
-    attrs  = cities.collect { |c| {
-        :name    => c.attributes["name"],
+    attrs = cities.collect { |c| {
+        :name => c.attributes["name"],
         :country => c.attributes["country"],
-        :lat     => c.attributes["lat"],
-        :lon     => c.attributes["lon"],
-        :id      => c.attributes["id"],
+        :lat => c.attributes["lat"],
+        :lon => c.attributes["lon"],
+        :id => c.attributes["id"],
     } }
     return attrs
   end
 
+  # City basic statistics
+  def city_basic_info(city)
+    res = super(city)
+    return convert_ar_objects(res)
+  end
+
+  # City advanced statistics
+  def city_adv_info(city)
+    res = super(city)
+    return convert_ar_objects(res)
+  end
+
+  private
+
+  # Convert data structure to not have active record object. Instead of them it return attributes.
+  def convert_ar_objects(obj)
+    case obj.class.to_s
+      when 'Hash' then
+        obj.keys.each do |k|
+          obj[k] = convert_ar_objects(obj[k])
+        end
+        return obj
+
+      when 'Array' then
+        (0...(obj.size)).each do |i|
+          obj[i] = convert_ar_objects(obj[i])
+        end
+        return obj
+
+      else
+        if obj.kind_of? ActiveRecord::Base
+          # convert keys to symbols
+          attrs = obj.attributes
+          h = Hash.new
+          attrs.keys.each do |k|
+            h[k.to_sym] = attrs[k]
+          end
+          return h
+        else
+          return obj
+        end
+
+    end
+  end
 end

@@ -84,19 +84,19 @@ class HomeIoStandardWorker
         },
         {
             :command => ['ci'],
-            :desc => 'city logged data basic statistics',
+            :desc => 'city basic statistics (weather and metar counts, first and last)',
             :params_desc => [
                 'id, metar code, name or name fragment'
             ],
-            :proc => Proc.new { |params| ExtractorBasicObject.instance.city_basic_info(params[1]) },
+            :proc => Proc.new { |params| ExtractorBasicObject.instance.city_basic_info(params[0]) },
             :restricted => false
         },
         {
             :command => ['cix'],
-            :desc => 'city logged data advanced statistics',
+            :desc => 'city advanced statistics (weather and metar counts, first and last, min/max/avg temperature and wind)',
             :usage_desc => '<id, metar code, name or name fragment>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.city_adv_info(params[1]) },
-            #:restricted => false
+            :proc => Proc.new { |params| ExtractorBasicObject.instance.city_adv_info(params[0]) },
+            :restricted => false
         },
         {
             :command => ['wmc'],

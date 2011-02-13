@@ -108,6 +108,15 @@ class StorageActiveRecord < StorageDbAbstract
   # When city has no metars and we want to find metar it has to search through
   # all record which is log task
   def update_logged_flag
+    City.update_search_flags_for_all_cities
+  end
+
+  # Set flag if this city stores metar or weather
+  # When city has no metars and we want to find metar it has to search through
+  # all record which is log task
+  #
+  # Old version
+  def update_logged_flag_old
     cities = CityProxy.instance.cities_array
     cities.each do |ch|
       wa = WeatherArchive.find(:last, :conditions => {:city_id => ch[:id]})

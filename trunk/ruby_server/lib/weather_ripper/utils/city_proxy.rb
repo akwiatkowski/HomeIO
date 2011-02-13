@@ -162,5 +162,4 @@ class CityProxy
     return nil
   end
 
-
 end

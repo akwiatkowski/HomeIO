@@ -30,7 +30,7 @@ class TcpCommTaskClient < TcpCommProtocol
   include Singleton
 
   # When waiting for result loop is checking every this seconds
-  CHECK_EXEC_END_INTERVAL = 1
+  CHECK_EXEC_END_INTERVAL = 0.2
   
   # Initialize TCP server on port defined in config file
   def initialize

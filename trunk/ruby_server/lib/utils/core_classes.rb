@@ -21,8 +21,9 @@
 
 # Load additions to Ruby standard classes
 
-require './lib/utils/object.rb'
-require './lib/utils/date.rb'
-require './lib/utils/string.rb'
-require './lib/utils/time.rb'
-require './lib/utils/nil_class.rb'
+require 'lib/utils/object'
+require 'lib/utils/date'
+require 'lib/utils/string'
+require 'lib/utils/time'
+require 'lib/utils/nil_class'
+require 'lib/utils/proc'

@@ -33,7 +33,7 @@ class TcpCommProtocol
 
   # Max write frame size
   MAX_WRITE_FRAME_SIZE = 16384
-
+  
   # Send command to server, receive reply
   #
   # :call-seq:

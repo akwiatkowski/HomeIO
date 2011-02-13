@@ -34,7 +34,7 @@ class TaskWorker
 
   def start
     puts "Worker started"
-    StartThreaded.start_threaded(2, self) do
+    StartThreaded.start_threaded(1, self) do
       start_searching
     end
   end

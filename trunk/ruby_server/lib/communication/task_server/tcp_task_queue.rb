@@ -44,6 +44,17 @@ class TcpTaskQueue
     return @queue.select { |q| q.result_fetch_id == result_fetch_id }.first
   end
 
+  # Response to 'queue' command from TCP client. Responses of tasks are not send by this command - protocol error.
+  def queue
+    a = Array.new
+    @queue.each do |q|
+      new_task = q.clone
+      new_task.response = nil
+      a << new_task
+    end
+    return a
+  end
+
   # Start workers
   def start
     puts "Starting #{WORKERS_LIMIT} workers"

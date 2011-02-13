@@ -253,14 +253,14 @@ class ExtractorActiveRecord
     return nil if c.nil?
 
     return {
-      :city_obj => c,
+      :city_object => c,
       :city => c.name,
       :city_country => c.country,
       :city_metar => c.metar
     }
   end
 
-  # Basic city information
+  # Basic city information: weather and metar counts, first and last
   def city_basic_info( city )
     c = search_city( city )
     return nil if c.nil?
@@ -287,7 +287,7 @@ class ExtractorActiveRecord
     end
 
     return {
-      :city_obj => c,
+      :city_object => c,
       :city => c.name,
       :city_country => c.country,
       :city_metar => c.metar,
@@ -300,12 +300,12 @@ class ExtractorActiveRecord
     }
   end
 
-  # Advanced city information
+  # Advanced city information. Same as basic city information but also: min/max/avg temperature and wind
   def city_adv_info( city )
     data = city_basic_info( city )
     return nil if data.nil?
 
-    c = data[:city_obj]
+    c = data[:city_object]
 
     if true == @config[:lazy_search] and true == c.logged_metar
       data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')

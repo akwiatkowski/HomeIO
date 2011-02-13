@@ -86,7 +86,7 @@ class TcpCommTaskServer < TcpCommServer
       return @queue.fetch_by_id(command.params[:id])
     end
     if command.command == :queue
-      command.response = @queue
+      command.response = @queue.queue
       return command
     end
 
