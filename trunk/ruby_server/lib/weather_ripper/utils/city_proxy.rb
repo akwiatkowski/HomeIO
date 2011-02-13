@@ -1,20 +1,23 @@
 #!/usr/bin/ruby
 #encoding: utf-8
 
+# HomeIO - home control system.
+# Copyright (C) 2011 Aleksander Kwiatkowski
+#
 # This file is part of HomeIO.
 #
-#    HomeIO is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# HomeIO is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    HomeIO is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# HomeIO is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
 require 'lib/metar_logger'
@@ -33,7 +36,7 @@ class CityProxy
   # Verbose mode
   attr_accessor :verbose
 
-  # location within this distance is threated like the same city [km]
+  # location within this distance is threaten like the same city [km]
   CITY_DISTANCE_TOLERANCE = 15
 
   # Deadlock safe initialization
@@ -58,13 +61,13 @@ class CityProxy
     a = Array.new
     @cities.each do |c|
       a << {
-          :id      => m[:id],
+          :id => m[:id],
           :country => m[:country],
-          :name    => m[:name],
-          :city    => m[:city],
-          :metar   => m[:code],
-          :lat     => m[:coord][:lat],
-          :lon     => m[:coord][:lon]
+          :name => m[:name],
+          :city => m[:city],
+          :metar => m[:code],
+          :lat => m[:coord][:lat],
+          :lon => m[:coord][:lon]
       }
     end
 
@@ -77,9 +80,9 @@ class CityProxy
   def id_fix
     # fetch from db
     StorageActiveRecord.instance
-    @db_cities    = City.all
+    @db_cities = City.all
 
-    @cities       = Array.new
+    @cities = Array.new
 
     # fetch from metar
     @metar_cities = MetarLogger.instance.cities
@@ -103,18 +106,41 @@ class CityProxy
       search_id_result = search_db_cities_for_id(c)
       if search_id_result.nil?
         # create city in DB
-        new_city = City.new({
-                                :name                => c[:city],
-                                :country             => c[:country],
-                                :lat                 => c[:coord][:lat],
-                                :lon                 => c[:coord][:lon],
-                                :calculated_distance => Geolocation.distance(c[:coord][:lat], c[:coord][:lon])
-                            })
+        h = {
+            :name => c[:city],
+            :country => c[:country],
+            :metar => c[:code],
+            :lat => c[:coord][:lat],
+            :lon => c[:coord][:lon],
+            :calculated_distance => Geolocation.distance(c[:coord][:lat], c[:coord][:lon])
+        }
+        puts c.inspect
+        new_city = City.new(h)
+
+        if not new_city.valid?
+          AdvLog.instance.logger(self).error("City can not be created #{c.inspect}")
+          AdvLog.instance.logger(self).error("City can not be created #{c.errors.inspect}")
+          puts "City can not be created #{c.inspect}"
+        else
+          puts "Creating city #{c.name}"
+        end
+
         new_city.save!
         c[:id] = new_city.id
+
+        # add to cities from db - it is now i db
+        @db_cities << new_city
+      else
+        # update some attributes only
+        # find in DB
+        city_to_update = City.find(search_id_result[:id])
+        # update metar when it is needed
+        city_to_update.update_attribute(:metar, search_id_result[:metar]) unless search_id_result[:metar].nil?
+        # place to add other updates like :calculated_distance
       end
       # compatibility issue
       c[:name] = c[:city]
+      c[:metar] = c[:code]
     end
   end
 

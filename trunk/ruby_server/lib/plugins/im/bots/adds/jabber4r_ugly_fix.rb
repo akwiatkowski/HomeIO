@@ -1,6 +1,6 @@
 # This class is ugly. I mean really ugly, ugly as hell. I should put bag on it...
+# Probably works better in ruby 1.8. Using Xmpp4r instead of this.
 
-# works better in ruby 1.8
 module REXML
   class IOSource
     def position
