@@ -1,0 +1,6 @@
+= Workers
+
+Worker process command which often was queued.
+
+In future it could be possible to write other workers for other servers ex.: IM bots special commands, rails app
+special commands.

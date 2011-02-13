@@ -36,7 +36,6 @@ class ExtractorBasicObject < ExtractorActiveRecord
         :lon     => c.attributes["lon"],
         :id      => c.attributes["id"],
     } }
-    puts attrs.inspect
     return attrs
   end
 

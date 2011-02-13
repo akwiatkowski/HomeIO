@@ -51,11 +51,16 @@ class TcpCommServer < TcpCommProtocol
     start_server_wrapped
   end
 
+  # Stop threaded server
+  def stop
+    @thread.thread.kill
+  end
+
   private
 
   # Start wrapped in looped begin-rescue-end
   def start_server_wrapped
-    StartThreaded.start_threaded(WRAPPER_INTERVAL, self) do
+    @thread = StartThreaded.start_threaded(WRAPPER_INTERVAL, self) do
       start_server
     end
   end

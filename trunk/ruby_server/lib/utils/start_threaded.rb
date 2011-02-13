@@ -75,4 +75,11 @@ class StartThreaded
     return rt
   end
 
+  # Kill all threads, all but main
+  def self.kill_all_sub_threads
+    Thread.list.each do |t|
+      t.kill unless t == Thread.main
+    end
+  end
+
 end
