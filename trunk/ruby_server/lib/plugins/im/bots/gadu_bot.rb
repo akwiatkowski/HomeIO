@@ -19,10 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require './lib/plugins/im/bots/im_bot_abstract.rb'
+require 'lib/plugins/im/bots/im_bot_abstract'
 require 'gg'
 # fix
-require './lib/vendors/rgadu/lib/gg.rb'
+require 'lib/vendors/rgadu/lib/gg'
 
 require 'iconv'
 

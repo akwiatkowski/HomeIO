@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/utils/config_loader.rb'
+require 'lib/utils/config_loader'
 
 require 'lib/weather_ripper/rippers/weather_onet_pl'
 require 'lib/weather_ripper/rippers/weather_wp_pl'

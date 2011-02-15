@@ -19,11 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require './lib/plugins/im/bots/im_bot_abstract.rb'
+require 'lib/plugins/im/bots/im_bot_abstract'
 require "jabber4r/jabber4r"
 
 # ugly fix for rexml in ruby 1.9, yuck!
-require './lib/plugins/im/bots/adds/jabber4r_ugly_fix.rb'
+require 'lib/plugins/im/bots/adds/jabber4r_ugly_fix'
 
 # Works somehow at 1.9, better not use this
 # Code for deletion/rewrite or wait to library fixes

@@ -22,8 +22,8 @@
 require 'rubygems'
 require 'robustthread'
 require 'singleton'
-require './lib/utils/core_classes.rb'
-Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file }
+require 'lib/utils/core_classes'
+Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
 
 # Load and start IM bots
 #

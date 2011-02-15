@@ -21,10 +21,10 @@
 
 
 require 'singleton'
-require './lib/utils/core_classes.rb'
-require './lib/metar/metar_code.rb'
-require './lib/utils/dev_info.rb'
-require './lib/weather_ripper/weather.rb'
+require 'lib/utils/core_classes'
+require 'lib/metar/metar_code'
+require 'lib/utils/dev_info'
+require 'lib/weather_ripper/weather'
 
 # Basic raw weather (non-metar) storage in text files
 

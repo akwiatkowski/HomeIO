@@ -22,9 +22,9 @@
 require 'rubygems'
 require 'singleton'
 
-require './lib/communication/im_command_resolver.rb'
-require './lib/communication/im_processor.rb'
-require './lib/utils/config_loader.rb'
+require 'lib/communication/im_command_resolver'
+require 'lib/communication/im_processor'
+require 'lib/utils/config_loader'
 
 # Abstract class to all IM comm. classes
 

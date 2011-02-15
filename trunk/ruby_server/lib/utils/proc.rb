@@ -20,9 +20,18 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Measurements
+# Methods for cheating marshalling
 
-require 'lib/storage/active_record/rails_models/meas_archive'
+class Proc
 
-class MeasArchive
+  # Method for cheating marshalling
+  def _dump level
+    Marshal.dump(nil)
+  end
+
+  def self._load args
+    Proc.new { nil }
+  end
+
+
 end

@@ -21,9 +21,9 @@
 
 
 require 'singleton'
-require './lib/utils/core_classes.rb'
-require './lib/metar/metar_code.rb'
-require './lib/utils/dev_info.rb'
+require 'lib/utils/core_classes'
+require 'lib/metar/metar_code'
+require 'lib/utils/dev_info'
 
 # Basic raw metar storage in text files
 
@@ -78,7 +78,7 @@ class MetarStorage
     )
   end
 
-  # Get all cities which realy has logs on disk
+  # Get all cities which really has logs on disk
   def self.cities_logged
     dpath = File.join(
       Constants::DATA_DIR,
@@ -188,25 +188,18 @@ class MetarStorage
 
   # Full path to file
   def filepath( obj )
-    return File.join( dirpath( obj ), filename( obj ) )
+    return File.join( dir_path( obj ), filename( obj ) )
     #return self.class.filepath( obj )
   end
 
   # Filename where metar should be logged
   def filename( obj )
-    #return "metar_" + obj.city.to_s + "_" + obj.year.to_s2( 4 ) + "_" + obj.month.to_s2( 2 ) + ".log"
-    return self.class.filename( obj.city, obj.year, obj.month )
+    return self.class.filename( obj.city_metar, obj.year, obj.month )
   end
 
   # Directory path where metar should be logged
-  def dirpath( obj )
-    #    return File.join(
-    #      Constants::DATA_DIR,
-    #      MetarConstants::METAR_LOG_DIR,
-    #      obj.city,
-    #      obj.year.to_s2( 4 )
-    #    )
-    return self.class.dirpath( obj.city, obj.year )
+  def dir_path( obj )
+    return self.class.dirpath( obj.city_metar, obj.year )
   end
 
 
@@ -217,7 +210,7 @@ class MetarStorage
     metar_log_dir = File.join(
       Constants::DATA_DIR,
       MetarConstants::METAR_LOG_DIR,
-      obj.city
+      obj.city_metar
     )
     if not File.exists?( metar_log_dir )
       Dir.mkdir( metar_log_dir )
@@ -227,7 +220,7 @@ class MetarStorage
     metar_log_dir = File.join(
       Constants::DATA_DIR,
       MetarConstants::METAR_LOG_DIR,
-      obj.city,
+      obj.city_metar,
       obj.year.to_s2( 4 )
     )
     if not File.exists?( metar_log_dir )
@@ -249,30 +242,5 @@ class MetarStorage
       Dir.mkdir( d )
     end
   end
-
-
-
-  # XXX delete it and test
-  # Zapisuje METAR
-  def __save_metar( datahash )
-
-    # jeśli plik istnieje to sprawdza czy nie ma już w nim tej linijki
-    
-    # jeżeli pliku nie ma lub nie ma w nim wpisu dodanie wpisu na koniec
-    
-
-    # zapisanie jako ostatni do wykorzystania
-    @last_metars[ datahash[:city] ] = datahash
-
-    # poprawnie dodane jako nowe
-    return true
-
-  end
-
-
-
-
-
-
 
 end

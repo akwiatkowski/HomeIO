@@ -20,8 +20,8 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require 'lib/storage/storage.rb'
-require 'lib/storage/storage_interface.rb'
+require 'lib/storage/storage'
+require 'lib/storage/storage_interface'
 
 # HomeIO weather model. Used for storing in various store engines. When using ActiveRecord it could be little
 # deprecated but it is a nice idea to not remove simple Sqlite support for future use in very low performance

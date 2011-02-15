@@ -21,10 +21,10 @@
 
 
 require 'singleton'
-require './lib/utils/core_classes.rb'
-require './lib/storage/storage.rb'
-require './lib/utils/geolocation.rb'
-#require './lib/utils/dev_info.rb'
+require 'lib/utils/core_classes'
+require 'lib/storage/storage'
+require 'lib/utils/geolocation'
+#require 'lib/utils/dev_info'
 
 # Abstract class to all storage classes
 class StorageDbAbstract

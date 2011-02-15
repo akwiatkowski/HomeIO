@@ -22,7 +22,7 @@
 
 # Weather archives, non-metar
 
-require './lib/storage/active_record/rails_models/weather_archive.rb'
+require 'lib/storage/active_record/rails_models/weather_archive'
 
 class WeatherArchive
 end

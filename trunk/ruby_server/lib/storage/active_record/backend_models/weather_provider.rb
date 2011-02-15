@@ -21,9 +21,9 @@
 
 
 # Weather provider
-# Has class for non-metar weather aquisition
+# Has class for non-metar weather acquisition
 
-require './lib/storage/active_record/rails_models/weather_provider.rb'
+require 'lib/storage/active_record/rails_models/weather_provider'
 
 class WeatherProvider
 end

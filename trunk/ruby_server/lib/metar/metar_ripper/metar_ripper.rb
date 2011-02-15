@@ -23,7 +23,8 @@
 require 'singleton'
 
 # better way to load all files from dir
-Dir["./lib/metar/metar_ripper/*.rb"].each {|file| require file }
+#Dir["./lib/metar/metar_ripper/*.rb"].each {|file| require file }
+Dir["./lib/metar/metar_ripper/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
 
 
 # Rips raw metar from various sites
