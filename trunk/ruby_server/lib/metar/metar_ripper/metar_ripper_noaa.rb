@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/metar/metar_ripper/metar_ripper_abstract.rb'
+require 'lib/metar/metar_ripper/metar_ripper_abstract'
 
 class MetarRipperNoaa < MetarRipperAbstract
 

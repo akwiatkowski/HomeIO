@@ -1,12 +1,9 @@
-# TODO doda sprawdzanie czy się nie wywali jak dostanie głupie znaki np
-# "KLAX 031453Z 00000KT 10SM SCT023 BKN03�OVC045 13/09 A3003 RMK AO2 SLP167 SCT V BKN T01330094 53007"
-
 require 'test/unit'
-require './lib/metar/metar_code.rb'
+require 'lib/metar/metar_code'
 
 class MetarCodeTest < Test::Unit::TestCase
 
-  # Method for testing manualy metars
+  # Method for testing manually metars
   def test_validate
     m = "HPP 252000Z 34001MPS 9999 BKN020CB BKN100 01/M00 Q1010 NOSIG RMK QFE754/1005 SC045 05 05"
     mc = MetarCode.new
@@ -46,8 +43,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'CXAT', mc.output[:city]
+    assert_equal 'CXAT', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -61,7 +57,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 0, mc.output[:time].min
 
     # wind
-    assert_equal 9 * 1.85, mc.output[:wind]
+    assert_equal 9 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 310, mc.output[:wind_direction]
 
     # temperature
@@ -81,7 +77,6 @@ class MetarCodeTest < Test::Unit::TestCase
 
     assert_kind_of Array, mc.output[:specials]
 
-    
 
   end
 
@@ -91,8 +86,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'EPPO', mc.output[:city]
+    assert_equal 'EPPO', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -106,7 +100,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 0, mc.output[:time].min
 
     # wind
-    assert_equal 7 * 1.85, mc.output[:wind]
+    assert_equal 7 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 40, mc.output[:wind_direction]
 
     # temperature
@@ -121,13 +115,13 @@ class MetarCodeTest < Test::Unit::TestCase
 
     # clouds info
     assert_equal 1, mc.output[:clouds].size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == 75 and c[:bottom] == 2 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == 75 and c[:bottom] == 2 * 30 }.size
     assert_equal 75, mc.output[:cloudiness]
 
     assert_kind_of Array, mc.output[:specials]
     # specials
-    assert_not_nil mc.output[:specials].select{|s| s[:obscuration] == "mist"}.first
-    assert_not_nil mc.output[:specials].select{|s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
+    assert_not_nil mc.output[:specials].select { |s| s[:obscuration] == "mist" }.first
+    assert_not_nil mc.output[:specials].select { |s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
   end
 
   def test_metar_c
@@ -136,8 +130,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'NZSP', mc.output[:city]
+    assert_equal 'NZSP', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -151,7 +144,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 50, mc.output[:time].min
 
     # wind
-    assert_equal 5 * 1.85, mc.output[:wind]
+    assert_equal 5 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 110, mc.output[:wind_direction]
 
     # temperature
@@ -159,7 +152,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal nil, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
+    assert_equal MetarCode::MAX_VISIBILITY, mc.visibility
 
 
     # metar pressure
@@ -169,15 +162,15 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 2, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (1.5 * 100.0 / 8.0).round and c[:bottom] == 20 * 30 }.size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (1.5 * 100.0 / 8.0).round and c[:bottom] == 20 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
     assert_equal (3.5 * 100.0 / 8.0).round, mc.output[:cloudiness]
 
 
     assert_kind_of Array, mc.output[:specials]
     # specials - no specials
-    assert_nil mc.output[:specials].select{|s| s[:obscuration] == "mist"}.first
-    assert_nil mc.output[:specials].select{|s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
+    assert_nil mc.output[:specials].select { |s| s[:obscuration] == "mist" }.first
+    assert_nil mc.output[:specials].select { |s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
     assert_equal [], mc.output[:specials]
 
 
@@ -189,8 +182,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'BIAR', mc.output[:city]
+    assert_equal 'BIAR', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -204,7 +196,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 0, mc.output[:time].min
 
     # wind
-    assert_equal 3 * 1.85, mc.output[:wind]
+    assert_equal 3 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 170, mc.output[:wind_direction]
 
     # temperature
@@ -212,7 +204,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal -4, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal 350, mc.output[:visibility]
+    assert_equal 350, mc.visibility
 
     # metar pressure
     #assert_in_delta 2830.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -222,17 +214,16 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 1, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == 100 and c[:bottom] == nil and c[:vertical_visibility] == 30 }.size
-    assert_equal 0, mc.output[:clouds].select{|c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == 100 and c[:bottom] == nil and c[:vertical_visibility] == 30 }.size
+    assert_equal 0, mc.output[:clouds].select { |c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
     assert_equal 100, mc.output[:cloudiness]
 
     # specials
     assert_kind_of Array, mc.output[:specials]
     assert_not_equal [], mc.output[:specials]
-    assert_nil mc.output[:specials].select{|s| s[:obscuration] == "mist"}.first
-    assert_nil mc.output[:specials].select{|s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
-    assert_equal 1, mc.output[:specials].select{|s| s[:intensity] == "heavy" and s[:precipitation] == "snow" }.size
-    
+    assert_nil mc.output[:specials].select { |s| s[:obscuration] == "mist" }.first
+    assert_nil mc.output[:specials].select { |s| s[:precipitation] == "drizzle" and s[:intensity] == "light" }.first
+    assert_equal 1, mc.output[:specials].select { |s| s[:intensity] == "heavy" and s[:precipitation] == "snow" }.size
 
 
   end
@@ -243,8 +234,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'KRMG', mc.output[:city]
+    assert_equal 'KRMG', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -258,7 +248,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 53, mc.output[:time].min
 
     # wind
-    assert_equal 6 * 1.85, mc.output[:wind]
+    assert_equal 6 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 100, mc.output[:wind_direction]
 
     # temperature
@@ -266,7 +256,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 6, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
+    assert_equal MetarCode::MAX_VISIBILITY, mc.visibility
 
     # metar pressure
     assert_in_delta 3024.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -276,8 +266,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 2, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (8 * 100.0 / 8.0).round and c[:bottom] == 70 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (8 * 100.0 / 8.0).round and c[:bottom] == 70 * 30 }.size
     assert_equal 100, mc.output[:cloudiness]
 
     # specials
@@ -291,8 +281,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'OMDB', mc.output[:city]
+    assert_equal 'OMDB', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -306,7 +295,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 0, mc.output[:time].min
 
     # wind
-    assert_equal 6 * 1.85, mc.output[:wind]
+    assert_equal 6 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 170, mc.output[:wind_direction]
 
     # temperature
@@ -314,7 +303,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 14, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal 8000, mc.output[:visibility]
+    assert_equal 8000, mc.visibility
 
     # metar pressure
     #assert_in_delta 3024.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -326,7 +315,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 0, mc.output[:clouds].size
     #assert_nil mc.output[:clouds].first[:bottom]
     #assert_equal (0.5 * 100.0 / 8.0).round, mc.output[:cloudiness]
-    
+
     #puts mc.output[:clouds].inspect
     #assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
     #assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (8 * 100.0 / 8.0).round and c[:bottom] == 70 * 30 }.size
@@ -342,8 +331,7 @@ class MetarCodeTest < Test::Unit::TestCase
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
     assert_equal true, mc.valid?
-
-    assert_equal 'PHNL', mc.output[:city]
+    assert_equal 'PHNL', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -357,7 +345,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 53, mc.output[:time].min
 
     # wind
-    assert_equal 9 * 1.85, mc.output[:wind]
+    assert_equal 9 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 70, mc.output[:wind_direction]
 
     # temperature
@@ -365,7 +353,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 21, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
+    assert_equal MetarCode::MAX_VISIBILITY, mc.visibility
 
     # metar pressure
     assert_in_delta 3004.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -375,9 +363,9 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 3, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (1.5 * 100.0 / 8.0).round and c[:bottom] == 26 * 30 }.size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 35 * 30 }.size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 70 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (1.5 * 100.0 / 8.0).round and c[:bottom] == 26 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 35 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 70 * 30 }.size
 
     # specials
     # TODO
@@ -385,17 +373,14 @@ class MetarCodeTest < Test::Unit::TestCase
     #assert_equal 1, mc.output[:specials].size
   end
 
-  def test_metar_g
+  def test_metar_h
     good_metar = "2010/11/16 23:00 EPPO 162300Z 06013KT 8000 -RA BKN007 OVC013 05/04 Q1018"
 
     mc = MetarCode.new
     mc.process(good_metar, 2010, 11, :archived)
 
-    #puts mc.inspect
-    #return
-
     assert_equal true, mc.valid?
-    assert_equal 'EPPO', mc.output[:city]
+    assert_equal 'EPPO', mc.city_metar
 
     # time
     # metars don't need to have '2010/08/15'
@@ -409,7 +394,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 00, mc.output[:time].min
 
     # wind
-    assert_equal 13 * 1.85, mc.output[:wind]
+    assert_equal 13 * 1.85 / 3.6, mc.output[:wind]
     assert_equal 60, mc.output[:wind_direction]
 
     # temperature
@@ -417,7 +402,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 4, mc.output[:temperature_dew]
 
     # max visibility
-    assert_equal 8000, mc.output[:visibility]
+    assert_equal 8000, mc.visibility
 
     # metar pressure
     #assert_in_delta 3004.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -427,8 +412,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 2, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 7 * 30 }.size
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == (8 * 100.0 / 8.0).round and c[:bottom] == 13 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (6 * 100.0 / 8.0).round and c[:bottom] == 7 * 30 }.size
+    assert_equal 1, mc.output[:clouds].select { |c| c[:coverage] == (8 * 100.0 / 8.0).round and c[:bottom] == 13 * 30 }.size
   end
 
 

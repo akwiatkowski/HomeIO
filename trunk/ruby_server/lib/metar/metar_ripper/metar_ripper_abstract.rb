@@ -21,7 +21,7 @@
 
 
 require 'open-uri'
-require './lib/utils/adv_log.rb'
+require 'lib/utils/adv_log'
 
 class MetarRipperAbstract
 

@@ -80,7 +80,8 @@ class CityProxy
   #   find_city_by_metar( String metar code ) => Hash
   def find_city_by_metar(metar_code)
     post_init
-    @cities.select { |c| metar == c[:metar] }.first
+    city = @cities.select { |c| metar_code == c[:metar] }.first
+    city
   end
 
   private
@@ -123,7 +124,6 @@ class CityProxy
           :lon => c[:coord][:lon],
           :calculated_distance => Geolocation.distance(c[:coord][:lat], c[:coord][:lon])
         }
-        puts c.inspect
         new_city = City.new(h)
 
         if not new_city.valid?

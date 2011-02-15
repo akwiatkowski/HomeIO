@@ -26,6 +26,7 @@ require 'lib/storage/storage'
 require 'lib/storage/storage_interface'
 require 'lib/utils/adv_log'
 require 'lib/weather_ripper/utils/city_proxy'
+require 'lib/weather_ripper'
 
 # Metar code model and processor
 
@@ -81,12 +82,29 @@ class MetarCode
   end
 
   # Rain amount in read world units - mm (probably per m^2)
-  def snow
+  def rain
     @output[:rain]
   end
 
+  # Visibility
+  def visibility
+    @output[:visibility]
+  end
+
+  # City id
   def city_id
-    # FIXME
+    @city_id || @city_hash[:id]
+  end
+
+  # City name
+  attr_reader :city
+
+  # Country
+  attr_reader :city_country
+
+  # City Metar code
+  def city_metar
+    @city_metar
   end
 
   # Processed data in Hash
@@ -121,6 +139,9 @@ class MetarCode
 
   # max visibility
   MAX_VISIBILITY = 10_000
+
+  # If visibility is greater than this it assume it is maximum
+  NEARLY_MAX_VISIBILITY = 9_500
 
   # default metar time interval
   TIME_INTERVAL = 30*60
@@ -166,14 +187,14 @@ class MetarCode
 
       # processing
       decode
-    rescue
+    rescue => e
       AdvLog.instance.logger(self).error("Error when processing '#{@metar_string}'")
+      show_error(e)
     ensure
       # when something go wrong
-      clear
+      #puts self.inspect
+      #clear
     end
-
-    return @output
   end
 
   # Process metar string in newly created MetarCode instance
@@ -192,7 +213,6 @@ class MetarCode
   def self.process_array(array, year, month, type)
     oa = Array.new
     array.each do |a|
-      puts a
       mc = process(a, year, month, type)
       oa << mc
     end
@@ -202,22 +222,22 @@ class MetarCode
   # If metar string is valid, processed ok with basic data, and time was correct
   def valid?
     if TYPE_ARCHIVED == @type
-      if not @output[:temperature].nil? and
-        not @output[:wind].nil? and
-        not @output[:time].nil? and
-        @output[:time] <= Time.now
+      if not @city_metar.nil? and
+        not self.temperature.nil? and
+        not self.wind.nil? and
+        not self.time_from.nil? and
+        self.time_from <= Time.now
         return true
       end
 
     elsif TYPE_FRESH == @type
       # time should be near now
-      if not @output[:temperature].nil? and
-        not @output[:wind].nil? and
-        not @output[:time].nil? and
-        @output[:time] <= Time.now and
-        @output[:time] >= (Time.now - 3*24*3600) and
-        @output[:time].year == self.year.to_i and
-        @output[:time].month == self.month.to_i
+      if not @city_metar.nil? and
+        not self.temperature.nil? and
+        not self.wind.nil? and
+        not self.time_from.nil? and
+        self.time_from <= Time.now and
+        self.time_from >= (Time.now - 3*24*3600)
         return true
       end
 
@@ -237,18 +257,19 @@ class MetarCode
     return {
       :data => {
         :created_at => Time.now.to_i,
-        :time_from => @output[:time].to_i,
-        :time_to => (@output[:time].to_i + TIME_INTERVAL),
-        :temperature => @output[:temperature],
-        :pressure => @output[:pressure],
-        :wind_kmh => @output[:wind],
-        :wind => @output[:wind].nil? ? nil : @output[:wind].to_f / 3.6,
-        :snow_metar => @output[:snow_metar],
-        :rain_metar => @output[:rain_metar],
+        :time_from => self.time_from,
+        :time_to => self.time_to,
+        :temperature => self.temperature,
+        :pressure => self.pressure,
+        :wind => self.wind,
+        :snow_metar => self.snow_metar,
+        :snow => self.snow,
+        :rain_metar => self.rain_metar,
+        :rain => self.rain,
         :provider => "'METAR'",
         # escaping slashes
         #:raw => "'#{@metar_string.gsub(/\'/,"\\\\"+'\'')}'",
-        :raw => "'#{@metar_string}'",
+        :raw => "'#{self.raw}'",
         :city_id => @city_id,
         :city => "'#{@city}'",
         :city_hash => @city_hash
@@ -295,16 +316,17 @@ class MetarCode
   # City. Information about city is at the begin
   def decode_city(s)
     # only first
-    return if not @output[:city].nil?
+    return if not @city_metar.nil?
 
     # decode metar and fetch from CityProxy
-    if s =~ /^([A-Z]{4})$/ and not s == 'AUTO' and not s == 'GRID'
-      @output[:city_metar] = $1
+    if s =~ /^([A-Z]{4})$/ and not s == 'AUTO' and not s == 'GRID' and not s == 'WNDS'
+      @city_metar = $1
+      @city_hash = CityProxy.instance.find_city_by_metar(@city_metar)
+
+      @city_id = @city_hash[:id]
+      @city = @city_hash[:name] || @city_hash[:city]
+      @city_country = @city_hash[:country] || @city_hash[:country]
     end
-    @city_hash = CityProxy.instance.find_city_by_metar(@output[:city_metar])
-    @city_id = @city_hash[:id]
-    @city = @city_hash[:name] || @city_hash[:city]
-    @city_country = @city_hash[:country] || @city_hash[:country]
   end
 
   # Decode time
@@ -467,7 +489,7 @@ class MetarCode
     end
 
     # constant max value
-    if @output[:visibility].to_i >= MAX_VISIBILITY
+    if @output[:visibility].to_i >= NEARLY_MAX_VISIBILITY
       @output[:visibility] = MAX_VISIBILITY
     end
   end
@@ -768,7 +790,6 @@ class MetarCode
     # Runway 01, touchdown zone visual range is variable from a minimum of 0900 meters until a maximum of 1500 meters, and increasing
     # http://heras-gilsanz.com/manuel/METAR-Decoder.html
   end
-
 
 
 end
