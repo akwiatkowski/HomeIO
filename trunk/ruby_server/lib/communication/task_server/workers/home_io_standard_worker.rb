@@ -94,16 +94,20 @@ class HomeIoStandardWorker
         {
             :command => ['cix'],
             :desc => 'city advanced statistics (weather and metar counts, first and last, min/max/avg temperature and wind)',
-            :usage_desc => '<id, metar code, name or name fragment>',
+            :params_desc => [
+                '<id, metar code, name or name fragment>'
+            ],
             :proc => Proc.new { |params| ExtractorBasicObject.instance.city_adv_info(params[0]) },
             :restricted => false
         },
         {
             :command => ['wmc'],
             :desc => 'last metar data for city',
-            :usage_desc => '<id, metar code, name or name fragment>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_last_metar(params[1]) },
-            #:restricted => false
+            :usage_desc => [
+                '<id, metar code, name or name fragment>'
+            ],
+            :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_last_metar(params[0]) },
+            :restricted => false
         },
         {
             :command => ['wms'],

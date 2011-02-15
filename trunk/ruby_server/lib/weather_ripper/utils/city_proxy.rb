@@ -54,24 +54,33 @@ class CityProxy
     end
   end
 
-  # Return unified cities array
+  # Return unified cities array (Array of Hashes {:id, :country, :name, ...}
   def cities_array
     post_init
 
     a = Array.new
     @cities.each do |c|
       a << {
-          :id => m[:id],
-          :country => m[:country],
-          :name => m[:name],
-          :city => m[:city],
-          :metar => m[:code],
-          :lat => m[:coord][:lat],
-          :lon => m[:coord][:lon]
+        :id => c[:id],
+        :country => c[:country],
+        :name => c[:name],
+        :city => c[:city],
+        :metar => c[:code],
+        :lat => c[:coord][:lat],
+        :lon => c[:coord][:lon]
       }
     end
 
     return a.uniq.sort { |a, b| a[:id] <=> b[:id] }
+  end
+
+  # Get city information by metar code
+  #
+  # :call-seq:
+  #   find_city_by_metar( String metar code ) => Hash
+  def find_city_by_metar(metar_code)
+    post_init
+    @cities.select { |c| metar == c[:metar] }.first
   end
 
   private
@@ -107,22 +116,22 @@ class CityProxy
       if search_id_result.nil?
         # create city in DB
         h = {
-            :name => c[:city],
-            :country => c[:country],
-            :metar => c[:code],
-            :lat => c[:coord][:lat],
-            :lon => c[:coord][:lon],
-            :calculated_distance => Geolocation.distance(c[:coord][:lat], c[:coord][:lon])
+          :name => c[:city],
+          :country => c[:country],
+          :metar => c[:code],
+          :lat => c[:coord][:lat],
+          :lon => c[:coord][:lon],
+          :calculated_distance => Geolocation.distance(c[:coord][:lat], c[:coord][:lon])
         }
         puts c.inspect
         new_city = City.new(h)
 
         if not new_city.valid?
-          AdvLog.instance.logger(self).error("City can not be created #{c.inspect}")
-          AdvLog.instance.logger(self).error("City can not be created #{c.errors.inspect}")
-          puts "City can not be created #{c.inspect}"
+          AdvLog.instance.logger(self).error("City can not be created #{new_city.inspect}")
+          AdvLog.instance.logger(self).error("City can not be created #{new_city.errors.inspect}")
+          puts "City can not be created #{new_city.inspect}"
         else
-          puts "Creating city #{c.name}"
+          puts "Creating city #{new_city.name}"
         end
 
         new_city.save!

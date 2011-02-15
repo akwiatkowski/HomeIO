@@ -20,33 +20,117 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require './lib/metar/metar_constants.rb'
-require './lib/utils/config_loader.rb'
-require './lib/storage/storage.rb'
-require './lib/storage/storage_interface.rb'
-require './lib/utils/adv_log.rb'
+require 'lib/metar/metar_constants'
+require 'lib/utils/config_loader'
+require 'lib/storage/storage'
+require 'lib/storage/storage_interface'
+require 'lib/utils/adv_log'
+require 'lib/weather_ripper/utils/city_proxy'
 
-# Metar code model
+# Metar code model and processor
 
 class MetarCode
   include StorageInterface
-  
-  attr_reader :output, :metar_string, :metar_splits, :year, :month, :city, :city_id, :city_hash
+
+  # Raw metar string
+  def raw
+    @metar_string
+  end
+
+  # Raw metar string
+  attr_reader :metar_string
+
+  # Begin of time period
+  def time_from
+    @output[:time]
+  end
+
+  # End of time period
+  def time_to
+    @output[:time] + TIME_INTERVAL
+  end
+
+  # Temperature
+  def temperature
+    @output[:temperature]
+  end
+
+  # Pressure in hPa
+  def pressure
+    @output[:pressure]
+  end
+
+  # Wind in m/s
+  def wind
+    @output[:wind]
+  end
+
+  # Snow amount in internal unit based on specials
+  def snow_metar
+    @output[:snow_metar]
+  end
+
+  # Snow amount in read world units - mm (probably per m^2)
+  def snow
+    @output[:snow]
+  end
+
+  # Snow amount in internal unit based on specials
+  def rain_metar
+    @output[:rain_metar]
+  end
+
+  # Rain amount in read world units - mm (probably per m^2)
+  def snow
+    @output[:rain]
+  end
+
+  def city_id
+    # FIXME
+  end
+
+  # Processed data in Hash
+  attr_reader :output
+
+  # Metar string was not downloaded
+  TYPE_ARCHIVED = :archived
+  # Metar string was just downloaded
+  TYPE_FRESH = :fresh
+  # Cloud level - clear sky
+  CLOUD_CLEAR = (0 * 100.0 / 8.0).round
+  # Cloud level - few clouds
+  CLOUD_FEW = (1.5 * 100.0 / 8.0).round
+  #Cloud level - scattered
+  CLOUD_SCATTERED = (3.5 * 100.0 / 8.0).round
+  #Cloud level - broken
+  CLOUD_BROKEN = (6 * 100.0 / 8.0).round
+  #Cloud level - overcast
+  CLOUD_OVERCAST = (8 * 100.0 / 8.0).round
+  #Cloud level - not significant
+  CLOUD_NOT_SIGN = (0.5 * 100.0 / 8.0).round
+
+
+  # Year
+  attr_reader :year
+
+  # Month
+  attr_reader :month
 
   # Type from where come this metar, ex: :archived, :fresh
   attr_reader :type
 
-  # maksymalna widoczność jaką zapisujemy
-  MAX_VISIBLITY = 10_000
+  # max visibility
+  MAX_VISIBILITY = 10_000
 
-  # once metar is normally for 30 minutes
+  # default metar time interval
   TIME_INTERVAL = 30*60
 
+  # New metar code
   def initialize
     clear
   end
 
-  # Czyszczenie danych przed przetwarzaniem
+  # Clear data before processing
   def clear
     @output = Hash.new
     @metar_string = ""
@@ -58,109 +142,103 @@ class MetarCode
     @output[:clouds] = Array.new
 
     @city_hash = Hash.new
-    @city = @city_hash[:code]
   end
 
-  # Process non-fresh metar string
-  def process_archived( string, year, month )
-    process( string, year, month, :archived )
+  # Process metar string which was not downloaded
+  def process_archived(string, year, month)
+    process(string, year, month, :archived)
   end
 
-  # Zwraca utworzony obiekt typu MetarCode przetwarzając kod METAR
+  # Process metar string
   #
-  # *type* - is this :archived or :fresh
-  # TODO check if it is :fresh
-  def process( string, year, month, type )
-
-    # type:
-    # :archived => stored raw in text files, can only update DB (not implememted yet), but not raw logs
-    # :fresh => just downloaded, can be store everywhere
-    @type = type
-
-    # usuń wcześniejsze dane
+  # :call-seq:
+  #   process( metar string, year, month, type: :archived or :fresh) => Hash
+  def process(string, year, month, type)
     clear
+
     begin
-      @metar_string = string.to_s.gsub(/\s/,' ').strip
+      @metar_string = string.to_s.gsub(/\s/, ' ').strip
       @metar_splits = @metar_string.split(' ')
+
       @year = year
       @month = month
+      @type = type
 
-      # przetwarzanie
+      # processing
       decode
     rescue
-      AdvLog.instance.logger( self ).error("Error when processing '#{@metar_string}'")
+      AdvLog.instance.logger(self).error("Error when processing '#{@metar_string}'")
+    ensure
+      # when something go wrong
+      clear
     end
 
     return @output
-
   end
 
   # Process metar string in newly created MetarCode instance
-  def self.process( string, year, month, type )
+  def self.process(string, year, month, type)
     mc = self.new
-    mc.process( string, year, month, type )
+    mc.process(string, year, month, type)
     return mc
   end
 
   # Process non-fresh metar string
-  def self.process_archived( string, year, month )
-    self.process( string, year, month, :archived )
+  def self.process_archived(string, year, month)
+    self.process(string, year, month, :archived)
   end
 
   # Process array of metar strings
-  def self.process_array( array, year, month, type )
+  def self.process_array(array, year, month, type)
     oa = Array.new
     array.each do |a|
       puts a
-      mc = process( a, year, month, type )
+      mc = process(a, year, month, type)
       oa << mc
     end
     return oa
   end
 
-  # Accesor
-  def raw
-    return @metar_string
-  end
-
-  # If metar string id valid, processed ok with basic data, and time was correct
+  # If metar string is valid, processed ok with basic data, and time was correct
   def valid?
-    # metar doesn't need to have temp., wind
-    if not @output[:temperature].nil? and
+    if TYPE_ARCHIVED == @type
+      if not @output[:temperature].nil? and
+        not @output[:wind].nil? and
+        not @output[:time].nil? and
+        @output[:time] <= Time.now
+        return true
+      end
+
+    elsif TYPE_FRESH == @type
+      # time should be near now
+      if not @output[:temperature].nil? and
         not @output[:wind].nil? and
         not @output[:time].nil? and
         @output[:time] <= Time.now and
+        @output[:time] >= (Time.now - 3*24*3600) and
         @output[:time].year == self.year.to_i and
         @output[:time].month == self.month.to_i
-      return true
+        return true
+      end
+
     end
 
     return false
   end
 
-  # If metar string was decoded and it contains basic data
-  def valid_basic_data?
-    if not @output[:temperature].nil? and
-        not @output[:wind].nil? and
-        not @output[:time].nil?
-      return true
-    end
-    return false
-  end
-
-  # Store
+  # Enforce store
   def store
     # send self to Storage
-    Storage.instance.store( self ) if valid?
+    Storage.instance.store(self) if valid?
   end
 
-  # Convert decoded METAR to hash object prepared to store in DB
+  # Convert decoded METAR to hash object prepared to store in DB. Not used by ActiveRecord storage engine.
   def to_db_data
     return {
       :data => {
         :created_at => Time.now.to_i,
         :time_from => @output[:time].to_i,
-        :time_to => (@output[:time].to_i + 30*60), # TODO przenieść do stałych
+        :time_to => (@output[:time].to_i + TIME_INTERVAL),
         :temperature => @output[:temperature],
         :pressure => @output[:pressure],
         :wind_kmh => @output[:wind],
@@ -184,72 +262,55 @@ class MetarCode
 
   private
 
-  # Przetworzenie kodu po kolei
+  # Decode all string fragments
   def decode
-    @metar_splits.each do |s|
-      decode_city( s )
+    @metar_splits.each do |split|
+      decode_city(split)
+      decode_time(split)
+      decode_wind(split)
+      decode_wind_variable(split)
+      decode_temperature(split)
+      decode_pressure(split)
+      decode_visibility(split)
+      decode_clouds(split)
+      decode_specials(split)
+      check_cavok(split)
 
-      decode_time( s )
-      decode_wind( s )
-      decode_wind_variable( s )
-      decode_temperature( s )
-      decode_pressure( s )
-      decode_visiblity( s )
-      decode_clouds( s )
-      
-
-      decode_specials( s )
-
-      check_cavok( s )
-
-      decode_humidity
     end
 
     # one time last processes
-    fetch_additional_city_info
+    calculate_humidity
     calculate_cloud
-    # calculate in metar units
     calculate_rain_and_snow
 
-
     # if metar is invalid store it in log to check if decoder has error
-    if true == ConfigLoader.instance.config( self.class.to_s )[:store_decoder_errors]
-      unless valid_basic_data?
-        AdvLog.instance.logger( self ).error("Cant decode metar: '#{self.raw}', city '#{self.city}'")
+    if true == ConfigLoader.instance.config(self.class.to_s)[:store_decoder_errors]
+      unless valid?
+        AdvLog.instance.logger(self).error("Cant decode metar: '#{self.raw}', city '#{self.city}'")
       end
     end
 
   end
 
-  # Miasto
-  def decode_city( s )
+  # City. Information about city is at the begin
+  def decode_city(s)
     # only first
     return if not @output[:city].nil?
 
+    # decode metar and fetch from CityProxy
     if s =~ /^([A-Z]{4})$/ and not s == 'AUTO' and not s == 'GRID'
-      @output[:city] = $1
+      @output[:city_metar] = $1
     end
+    @city_hash = CityProxy.instance.find_city_by_metar(@output[:city_metar])
+    @city_id = @city_hash[:id]
+    @city = @city_hash[:name] || @city_hash[:city]
+    @city_country = @city_hash[:country] || @city_hash[:country]
   end
 
-  # Store all additional information from metar.yml
-  def fetch_additional_city_info
-    # uses singleton to store all configs
-    # load 'metar' config
-    # search for current city
-    @city_hash = ConfigLoader.instance.config( MetarConstants::CONFIG_TYPE )[:cities].select{|c| c[:code] == @output[:city]}.first
-    if @city_hash.nil?
-      @city_id = nil
-      @city = nil
-    else
-      @city_id = @city_hash[:id]
-      @city = @city_hash[:code]
-    end
-  end
-
-  # Czas
-  def decode_time( s )
+  # Decode time
+  def decode_time(s)
     begin
-      if s =~ /(\d{2})(\d{2})(\d{2})Z/
+      if raw =~ /(\d{2})(\d{2})(\d{2})Z/
         @output[:time] = Time.utc(@year, @month, $1.to_i, $2.to_i, $3.to_i, 0, 0)
         @output[:time_unix] = @output[:time].to_i
       end
@@ -257,25 +318,31 @@ class MetarCode
     end
   end
 
-  # Wiatr
-  def decode_wind( s )
-    #if s =~ /(\d{3})(\d{2})(KT|MPS|KMH)/ # bez porywistości
+  # Wind parameters in meters per second
+  def decode_wind(s)
     if s =~ /(\d{3})(\d{2})G?(\d{2})?(KT|MPS|KMH)/
-      # podzial na rozne jednostki predkosci
-
+      # different units
       wind = case $4
-      when "KT" then $2.to_f * 1.85
-      when "MPS" then $2.to_f * 1.6
-      when "KMH" then $2.to_f
-      else nil
-      end
+               when "KT" then
+                 $2.to_f * 1.85 / 3.6
+               when "MPS" then
+                 $2.to_f * 1.6 / 3.6
+               when "KMH" then
+                 $2.to_f / 3.6
+               else
+                 nil
+             end
 
       wind_max = case $4
-      when "KT" then $3.to_f * 1.85
-      when "MPS" then $3.to_f * 1.6
-      when "KMH" then $3.to_f
-      else nil
-      end
+                   when "KT" then
+                     $3.to_f * 1.85 / 3.6
+                   when "MPS" then
+                     $3.to_f * 1.6 / 3.6
+                   when "KMH" then
+                     $3.to_f / 3.6
+                   else
+                     nil
+                 end
 
       # wind_max is not less than normal wind
       if wind_max < wind or wind_max.nil?
@@ -284,18 +351,17 @@ class MetarCode
 
       # additional wind data
       if not @output[:wind].nil?
-        if @output[:wind_additionals].nil?
-          @output[:wind_additionals] = Array.new
+        if @output[:wind_additional].nil?
+          @output[:wind_additional] = Array.new
         end
 
-        @output[:wind_additionals] << {
+        @output[:wind_additional] << {
           :wind => wind,
           :wind_max => wind_max,
           :wind_direction => $1.to_i
         }
       else
         @output[:wind] = wind
-        @output[:wind_mps] = wind / 3.6
         @output[:wind_max] = wind_max
         @output[:wind_direction] = $1.to_i
       end
@@ -304,48 +370,46 @@ class MetarCode
     # variable/unknown direction
     if s =~ /VRB(\d{2})(KT|MPS|KMH)/
       wind = case $2
-      when "KT" then $1.to_f * 1.85
-      when "MPS" then $1.to_f * 1.6
-      when "KMH" then $1.to_f
-      else nil
-      end
+               when "KT" then
+                 $1.to_f * 1.85 / 3.6
+               when "MPS" then
+                 $1.to_f * 1.6/ 3.6
+               when "KMH" then
+                 $1.to_f/ 3.6
+               else
+                 nil
+             end
 
       # additional wind data
       if not @output[:wind].nil?
-        if @output[:wind_additionals].nil?
-          @output[:wind_additionals] = Array.new
+        if @output[:wind_additional].nil?
+          @output[:wind_additional] = Array.new
         end
 
-        @output[:wind_additionals] << {
+        @output[:wind_additional] << {
           :wind => wind,
           :wind_max => wind_max,
           :wind_direction => $1.to_i
         }
       else
         @output[:wind] = wind
-        @output[:wind_mps] = wind / 3.6
         @output[:wind_max] = wind_max
         @output[:wind_direction] = $1.to_i
       end
-      
     end
-
-
   end
 
-  # Zmienny kierunek wiatru
-  def decode_wind_variable( s )
+  # Variable wind direction
+  def decode_wind_variable(s)
     if s =~ /(\d{3})V(\d{3})/
       @output[:wind_variable_direction_from] = $1.to_i
       @output[:wind_variable_direction_to] = $2.to_i
     end
-
   end
 
-  # Temperatura
-  def decode_temperature( s )
+  # Temperature in Celsius degrees
+  def decode_temperature(s)
     if s =~ /^(M?)(\d{2})\/(M?)(\d{2})$/
-
       if $1 == "M"
         @output[:temperature] = -1.0 * $2.to_f
       else
@@ -361,8 +425,8 @@ class MetarCode
       return
     end
 
+    # shorter version
     if s =~ /^(M?)(\d{2})\/$/
-
       if $1 == "M"
         @output[:temperature] = -1.0 * $2.to_f
       else
@@ -371,12 +435,11 @@ class MetarCode
 
       return
     end
-
   end
 
-  # Ciśnienie
-  def decode_pressure( s )
-    # Europa
+  # Pressure in hPa
+  def decode_pressure(s)
+    # Europe
     if s =~ /Q(\d{4})/
       @output[:pressure] = $1.to_i
     end
@@ -387,82 +450,82 @@ class MetarCode
     end
   end
 
-  # Widoczność
-  def decode_visiblity( s )
+  # Visibility in meters
+  def decode_visibility(s)
     # Europa
     if s =~ /^(\d{4})$/
-      @output[:visiblity] = $1.to_i
+      @output[:visibility] = $1.to_i
     end
 
     # US
     if s =~ /^(\d{1,3})\/?(\d{0,2})SM$/
-
       if $2 == ""
-        @output[:visiblity] = $1.to_i * 1600.0
+        @output[:visibility] = $1.to_i * 1600.0
       else
-        @output[:visiblity] = $1.to_f * 1600.0 / $2.to_f
+        @output[:visibility] = $1.to_f * 1600.0 / $2.to_f
       end
     end
 
-    #aby byla stala wartosc maksymalna
-    if @output[:visiblity].to_i >= 9999
-      @output[:visiblity] = MAX_VISIBLITY
+    # constant max value
+    if @output[:visibility].to_i >= MAX_VISIBILITY
+      @output[:visibility] = MAX_VISIBILITY
     end
   end
-  
-  # Zachmurzenie
-  def decode_clouds( s )
-    #zachmurzenie
 
-    # TODO create constants
-    
+  # Cloudiness
+  def decode_clouds(s)
+
     if s =~ /^(SKC|FEW|SCT|BKN|OVC|NSC)(\d{3}?)$/
       cl = case $1
-      when "SKC" then 0
-      when "FEW" then 1.5
-      when "SCT" then 3.5
-      when "BKN" then 6
-      when "OVC" then 8
-      when "NSC" then 0.5
-      else 0
-      end
+             when "SKC" then
+               CLOUD_CLEAR
+             when "FEW" then
+               CLOUD_FEW
+             when "SCT" then
+               CLOUD_SCATTERED
+             when "BKN" then
+               CLOUD_BROKEN
+             when "OVC" then
+               CLOUD_OVERCAST
+             when "NSC" then
+               CLOUD_NOT_SIGN
+             else
+               CLOUD_CLEAR
+           end
 
       cloud = {
-        :coverage => (cl * 100.0 / 8.0).round,
+        :coverage => cl
       }
-      # optionaly cloud bottom
+      # optionally cloud bottom
       unless '' == $2.to_s
         cloud[:bottom] = $2.to_i * 30
-        #puts s, $2.inspect
-        #exit!
       end
 
       @output[:clouds] << cloud
       @output[:clouds].uniq!
     end
 
-    # obscured by clouds
+    # obscured by clouds, vertical visibility
     if s =~ /^(VV)(\d{3}?)$/
       @output[:clouds] << {
-        :coverage => 100,
-        :vertical_visiblity => $2.to_i * 30
+        :coverage => CLOUD_OVERCAST,
+        :vertical_visibility => $2.to_i * 30
       }
 
       @output[:clouds].uniq!
     end
-
   end
 
   # Calculate numeric description of clouds
   def calculate_cloud
-    @output[ :cloudiness ] = 0
+    @output[:cloudiness] = 0
     @output[:clouds].each do |c|
-      @output[ :cloudiness ] = c[:coverage] if @output[ :cloudiness ] < c[:coverage]
+      @output[:cloudiness] = c[:coverage] if @output[:cloudiness] < c[:coverage]
     end
   end
 
-  # CAVOK
-  def check_cavok( s )
+  # CAVOK - clouds and visibility ok
+  def check_cavok(s)
     #CAVOK
     if s =~ /^(CAVOK)$/
       @output[:clouds] = [
@@ -471,87 +534,127 @@ class MetarCode
           :bottom => 0
         }
       ]
-      @output[:visiblity] = MAX_VISIBLITY
+      @output[:visibility] = MAX_VISIBILITY
     end
   end
 
-  # Oblicza wilgotność względną
-  #
-  # http://github.com/brandonh/ruby-metar/blob/master/lib/metar.rb
-  # http://www.faqs.org/faqs/meteorology/temp-dewpoint/
-  def decode_humidity
+  # Calculate relative humidity
+  def calculate_humidity
     return if @output[:temperature_dew].nil? or @output[:temperature].nil?
+
+    # http://github.com/brandonh/ruby-metar/blob/master/lib/metar.rb
+    # http://www.faqs.org/faqs/meteorology/temp-dewpoint/
 
     es0 = 6.11 # hPa
     t0 = 273.15 # kelvin
-    td = @output[:temperature_dew] + t0 # w kelwinach
-    t = @output[:temperature] + t0 # w kelwinach
+    td = @output[:temperature_dew] + t0 # kelvin
+    t = @output[:temperature] + t0 # kelvin
     lv = 2500000 # joules/kg
     rv = 461.5 # joules*kelvin/kg
     e = es0 * Math::exp(lv/rv * (1.0/t0 - 1.0/td))
     es = es0 * Math::exp(lv/rv * (1.0/t0 - 1.0/t))
     rh = 100 * e/es
+
     @output[:humidity] = rh
   end
 
-  # Zjawiska dodatkowe
-  def decode_specials( s )
+  # Specials
+  def decode_specials(s)
 
-		if s =~ /^(VC|\-|\+|\b)(MI|PR|BC|DR|BL|SH|TS|FZ|)(DZ|RA|SN|SG|IC|PE|GR|GS|UP|)(BR|FG|FU|VA|DU|SA|HZ|PY|)(PO|SQ|FC|SS|)$/
-			intensity = case $1
-      when "VC" then "in the vicinity"
-      when "+" then "heavy"
-      when "-" then "light"
-      else "moderate"
-			end
+    # description http://www.ofcm.gov/fmh-1/pdf/H-CH8.pdf
 
-			descriptor = case $2
-      when "MI" then "shallow"
-      when "PR" then "partial"
-      when "BC" then "patches"
-      when "DR" then "low drifting"
-      when "BL" then "blowing"
-      when "SH" then "shower"
-      when "TS" then "thunderstorm"
-      when "FZ" then "freezing"
-      else nil
-			end
+    if s =~ /^(VC|\-|\+|\b)(MI|PR|BC|DR|BL|SH|TS|FZ|)(DZ|RA|SN|SG|IC|PE|GR|GS|UP|)(BR|FG|FU|VA|DU|SA|HZ|PY|)(PO|SQ|FC|SS|)$/
+      intensity = case $1
+                    when "VC" then
+                      "in the vicinity"
+                    when "+" then
+                      "heavy"
+                    when "-" then
+                      "light"
+                    else
+                      "moderate"
+                  end
 
-			precipitation = case $3
-      when "DZ" then "drizzle"
-      when "RA" then "rain"
-      when "SN" then "snow"
-      when "SG" then "snow grains"
-      when "IC" then "ice crystals"
-      when "PE" then "ice pellets"
-      when "GR" then "hail"
-      when "GS" then "small hail/snow pellets"
-      when "UP" then "unknown"
-      else nil
-			end
+      descriptor = case $2
+                     when "MI" then
+                       "shallow"
+                     when "PR" then
+                       "partial"
+                     when "BC" then
+                       "patches"
+                     when "DR" then
+                       "low drifting"
+                     when "BL" then
+                       "blowing"
+                     when "SH" then
+                       "shower"
+                     when "TS" then
+                       "thunderstorm"
+                     when "FZ" then
+                       "freezing"
+                     else
+                       nil
+                   end
 
-			obscuration = case $4
-      when "BR" then "mist"
-      when "FG" then "fog"
-      when "FU" then "smoke"
-      when "VA" then "volcanic ash"
-      when "DU" then "dust"
-      when "SA" then "sand"
-      when "HZ" then "haze"
-      when "PY" then "spray"
-      else nil
-			end
+      precipitation = case $3
+                        when "DZ" then
+                          "drizzle"
+                        when "RA" then
+                          "rain"
+                        when "SN" then
+                          "snow"
+                        when "SG" then
+                          "snow grains"
+                        when "IC" then
+                          "ice crystals"
+                        when "PE" then
+                          "ice pellets"
+                        when "GR" then
+                          "hail"
+                        when "GS" then
+                          "small hail/snow pellets"
+                        when "UP" then
+                          "unknown"
+                        else
+                          nil
+                      end
 
-			misc = case $5
-      when "PO" then "dust whirls"
-      when "SQ" then "squalls"
-				#when "FC " then "funnel cloud/tornado/waterspout"
-      when "FC" then "funnel cloud/tornado/waterspout"
-      when "SS" then "duststorm"
-      else nil
-			end
+      obscuration = case $4
+                      when "BR" then
+                        "mist"
+                      when "FG" then
+                        "fog"
+                      when "FU" then
+                        "smoke"
+                      when "VA" then
+                        "volcanic ash"
+                      when "DU" then
+                        "dust"
+                      when "SA" then
+                        "sand"
+                      when "HZ" then
+                        "haze"
+                      when "PY" then
+                        "spray"
+                      else
+                        nil
+                    end
 
-      # gdy nie ma sensownych danych to nic nie rób
+      misc = case $5
+               when "PO" then
+                 "dust whirls"
+               when "SQ" then
+                 "squalls"
+        #when "FC " then "funnel cloud/tornado/waterspout"
+               when "FC" then
+                 "funnel cloud/tornado/waterspout"
+               when "SS" then
+                 "duststorm"
+               else
+                 nil
+             end
+
+      # when no sensible data do nothing
       return if descriptor.nil? and precipitation.nil? and obscuration.nil? and misc.nil?
 
       @output[:specials] << {
@@ -566,61 +669,62 @@ class MetarCode
         :misc => misc,
         :misc_raw => $5
       }
-			
-		end
-	end
 
-  # Calculate precip. in metar units
+    end
+  end
+
+  # Calculate precipitation in self defined units and aproximated real world units
   def calculate_rain_and_snow
     @snow_metar = 0
     @rain_metar = 0
 
-    # TODO dopisać zgodnie z http://weather.cod.edu/notes/metar.html
-    # sumować oceniany wielkość opadów w pseudojednostce
-
     @output[:specials].each do |s|
       new_rain = 0
       new_snow = 0
-      coef = 1
+      coefficient = 1
       case s[:precipitation]
-      when 'drizzle' then
-        new_rain = 5
+        when 'drizzle' then
+          new_rain = 5
 
-      when 'rain' then
-        new_rain = 10
+        when 'rain' then
+          new_rain = 10
 
-      when 'snow' then
-        new_snow = 10
-      
-      when 'snow grains' then
-        new_snow = 5
+        when 'snow' then
+          new_snow = 10
 
-      when 'ice crystals' then
-        new_snow = 1
-        new_rain = 1
+        when 'snow grains' then
+          new_snow = 5
 
-      when 'ice pellets' then
-        new_snow = 2
-        new_rain = 2
+        when 'ice crystals' then
+          new_snow = 1
+          new_rain = 1
 
-      when 'hail' then
-        new_snow = 3
-        new_rain = 3
+        when 'ice pellets' then
+          new_snow = 2
+          new_rain = 2
 
-      when 'small hail/snow pellets' then
-        new_snow = 1
-        new_rain = 1
+        when 'hail' then
+          new_snow = 3
+          new_rain = 3
+
+        when 'small hail/snow pellets' then
+          new_snow = 1
+          new_rain = 1
       end
 
       case s[:intensity]
-      when 'in the vicinity' then coef = 1.5
-      when 'heavy' then coef = 3
-      when 'light' then coef = 0.5
-      when 'moderate' then coef = 1
+        when 'in the vicinity' then
+          coefficient = 1.5
+        when 'heavy' then
+          coefficient = 3
+        when 'light' then
+          coefficient = 0.5
+        when 'moderate' then
+          coefficient = 1
       end
 
-      snow = new_snow * coef
-      rain = new_rain * coef
+      snow = new_snow * coefficient
+      rain = new_rain * coefficient
 
       if @snow_metar < snow
         @snow_metar = snow
@@ -634,9 +738,17 @@ class MetarCode
     @output[:snow_metar] = @snow_metar
     @output[:rain_metar] = @rain_metar
 
+    # http://www.ofcm.gov/fmh-1/pdf/H-CH8.pdf page 3
+    # 10 units means more than 0.3 (I assume 0.5) inch per hour, so:
+    # 10 units => 0.5 * 25.4mm
+    real_world_coefficient = 0.5 * 25.4 / 10.0
+
+    @output[:snow] = @snow_metar * real_world_coefficient
+    @output[:rain] = @rain_metar * real_world_coefficient
+
   end
 
-  def decode_other( s )
+  def decode_other(s)
     if s.strip == 'AO1'
       @output[:station] = :auto_without_precipitation
     elsif s.strip == 'A02'
@@ -650,16 +762,12 @@ class MetarCode
 
   end
 
-  def decode_runway( s )
-    # NOT IMPLEMENTED
-
+  # Decode runway data. Not yet implemented.
+  def decode_runway(s)
     # BIAR 130700Z 17003KT 0350 R01/0900V1500U +SN VV001 M04/M04 Q0996
     # Runway 01, touchdown zone visual range is variable from a minimum of 0900 meters until a maximum of 1500 meters, and increasing
     # http://heras-gilsanz.com/manuel/METAR-Decoder.html
   end
-  
-  
-  
 
 
 

@@ -20,7 +20,6 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
 require 'singleton'
 require 'lib/utils/config_loader.rb'
 require 'lib/metar/metar_constants.rb'
@@ -50,13 +49,13 @@ class MetarLogger
   #    get_logged_cities => array of cities definitions fetched on disk
   def get_logged_cities
     require './lib/metar/metar_mass_processor.rb'
-    mmp           = MetarMassProcessor.instance
+    mmp = MetarMassProcessor.instance
     # array of codes of logged on disk
     logged_cities = mmp.cities
     # definitions from yaml
-    metar_cities  = cities
+    metar_cities = cities
     # only cities which has logs
-    metar_cities  = metar_cities.select { |c| ([c[:code]] & logged_cities).size == 1 }
+    metar_cities = metar_cities.select { |c| ([c[:code]] & logged_cities).size == 1 }
     # list of cities
     return metar_cities.sort { |c, d| c[:code] <=> d[:code] }
   end
@@ -69,7 +68,7 @@ class MetarLogger
     # get cities id at start when needed
     CityProxy.instance.post_init
 
-    o      = fetch_and_store
+    o = fetch_and_store
     # convert to array of metars
     o_raws = Array.new
     o.collect { |a| a[1] }.each do |ma|
@@ -78,7 +77,7 @@ class MetarLogger
       end
     end
 
-    return {:status => :ok, :data => o_raws}
+    return { :status => :ok, :data => o_raws }
   end
 
   # Fetch and store metar for all cities
@@ -111,7 +110,7 @@ class MetarLogger
   def _fetch_and_store
     h = Hash.new
     @cities.each do |c|
-      metar_code    = c[:code]
+      metar_code = c[:code]
       h[metar_code] = _fetch_and_store_city(metar_code)
     end
     return h
@@ -122,12 +121,12 @@ class MetarLogger
   #
   # Return array of MetarCode
   def _fetch_and_store_city(metar_city)
-    year        = Time.now.year
-    month       = Time.now.month
+    year = Time.now.year
+    month = Time.now.month
 
     # fetch metars
-    m           = MetarRipper.instance
-    o           = m.fetch(metar_city)
+    m = MetarRipper.instance
+    o = m.fetch(metar_city)
 
     # process them
     # *metar_array* - array of processed metars

@@ -307,7 +307,8 @@ class ExtractorActiveRecord
 
     c = data[:city_object]
 
-    if true == @config[:lazy_search] and true == c.logged_metar
+    #TODO where could be some problem with AR/Hash due to ExtractorBasicObject
+    if true == @config[:lazy_search] and true == c[:logged_metar]
       data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
       puts "City Adv Info :high_temp_metar #{Time.now}"
       data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')
@@ -316,7 +317,7 @@ class ExtractorActiveRecord
       puts "City Adv Info :high_wind_metar #{Time.now}"
     end
 
-    if true == @config[:lazy_search] and true == c.logged_weather
+    if true == @config[:lazy_search] and true == c[:logged_weather]
       data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature DESC')
       puts "City Adv Info :high_temp_weather #{Time.now}"
       data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => {:city_id => c.id}, :order => 'temperature ASC')

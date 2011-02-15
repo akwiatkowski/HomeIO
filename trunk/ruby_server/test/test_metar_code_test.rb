@@ -71,8 +71,8 @@ class MetarCodeTest < Test::Unit::TestCase
     # metar without pressure
     assert_equal nil, mc.output[:pressure]
 
-    # euro-like visiblity
-    assert_equal 3001, mc.output[:visiblity]
+    # euro-like visibility
+    assert_equal 3001, mc.output[:visibility]
 
     # no clouds info
     assert_equal [], mc.output[:clouds]
@@ -116,8 +116,8 @@ class MetarCodeTest < Test::Unit::TestCase
     # metar pressure
     assert_equal 1011, mc.output[:pressure]
 
-    # euro-like visiblity
-    assert_equal 1400, mc.output[:visiblity]
+    # euro-like visibility
+    assert_equal 1400, mc.output[:visibility]
 
     # clouds info
     assert_equal 1, mc.output[:clouds].size
@@ -158,8 +158,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal -42, mc.output[:temperature]
     assert_equal nil, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal MetarCode::MAX_VISIBLITY, mc.output[:visiblity]
+    # max visibility
+    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
 
 
     # metar pressure
@@ -211,8 +211,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal -4, mc.output[:temperature]
     assert_equal -4, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal 350, mc.output[:visiblity]
+    # max visibility
+    assert_equal 350, mc.output[:visibility]
 
     # metar pressure
     #assert_in_delta 2830.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -222,7 +222,7 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_kind_of Array, mc.output[:clouds]
     assert_equal 1, mc.output[:clouds].size
     #puts mc.output[:clouds].inspect
-    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == 100 and c[:bottom] == nil and c[:vertical_visiblity] == 30 }.size
+    assert_equal 1, mc.output[:clouds].select{|c| c[:coverage] == 100 and c[:bottom] == nil and c[:vertical_visibility] == 30 }.size
     assert_equal 0, mc.output[:clouds].select{|c| c[:coverage] == (3.5 * 100.0 / 8.0).round and c[:bottom] == 60 * 30 }.size
     assert_equal 100, mc.output[:cloudiness]
 
@@ -265,8 +265,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 14, mc.output[:temperature]
     assert_equal 6, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal MetarCode::MAX_VISIBLITY, mc.output[:visiblity]
+    # max visibility
+    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
 
     # metar pressure
     assert_in_delta 3024.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -313,8 +313,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 36, mc.output[:temperature]
     assert_equal 14, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal 8000, mc.output[:visiblity]
+    # max visibility
+    assert_equal 8000, mc.output[:visibility]
 
     # metar pressure
     #assert_in_delta 3024.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -364,8 +364,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 25, mc.output[:temperature]
     assert_equal 21, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal MetarCode::MAX_VISIBLITY, mc.output[:visiblity]
+    # max visibility
+    assert_equal MetarCode::MAX_VISIBILITY, mc.output[:visibility]
 
     # metar pressure
     assert_in_delta 3004.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0
@@ -416,8 +416,8 @@ class MetarCodeTest < Test::Unit::TestCase
     assert_equal 5, mc.output[:temperature]
     assert_equal 4, mc.output[:temperature_dew]
 
-    # max visiblity
-    assert_equal 8000, mc.output[:visiblity]
+    # max visibility
+    assert_equal 8000, mc.output[:visibility]
 
     # metar pressure
     #assert_in_delta 3004.to_f * 1018.0 / 3006, mc.output[:pressure], 2.0

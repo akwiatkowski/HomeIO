@@ -20,8 +20,6 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# TODO mutex when adding to pool
-
 require 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
@@ -140,17 +138,21 @@ class StorageActiveRecord < StorageDbAbstract
     end
   end
 
+  # Store metar weather data by adding it object pool
+  #
+  # :call-seq:
+  #   store_metar( MetarCode )
   def store_metar( obj )
     # wrong records can be not saved - there are always raw metars in text files
     return unless obj.valid?
     h = {
-      :time_from => obj.output[:time],
-      :time_to => obj.output[:time] + MetarCode::TIME_INTERVAL,
-      :temperature => obj.output[:temperature],
-      :pressure => obj.output[:pressure],
-      :wind => obj.output[:wind_mps],
-      :snow_metar => obj.output[:snow_metar],
-      :rain_metar => obj.output[:rain_metar],
+      :time_from => obj.time_from,
+      :time_to => obj.time_to,
+      :temperature => obj.temperature,
+      :pressure => obj.pressure,
+      :wind => obj.wind,
+      :snow_metar => obj.snow_metar,
+      :rain_metar => obj.rain_metar,
       :raw => obj.raw,
       :city_id => obj.city_id,
     }

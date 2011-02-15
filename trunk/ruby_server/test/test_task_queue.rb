@@ -11,9 +11,10 @@ class TestTaskQueue < Test::Unit::TestCase
     t = TcpCommTaskServer.new
     t.start
 
-    _test_city_list_and_queue
-    _test_system_commands
-    _test_city_statistics
+    #_test_city_list_and_queue
+    #_test_system_commands
+    #_test_city_statistics
+    _test_metars
 
     # servers live they own life
     StartThreaded.kill_all_sub_threads
@@ -71,6 +72,30 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_kind_of Fixnum, res.response[:metar_count]
     assert_equal "Poznań", res.response[:city]
     assert_equal "Poland", res.response[:city_object][:country]
+
+    # adv stats
+    task = TcpTask.factory({:command => :cix, :params => ['poz']})
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    assert_kind_of Fixnum, res.response[:metar_count]
+    assert_equal "Poznań", res.response[:city]
+    assert_equal "Poland", res.response[:city_object][:country]
+    puts res.to_yaml
+
+  end
+
+  def _test_metars
+    # basic stats
+    task = TcpTask.factory({:command => :wmc, :params => ['poz']})
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    puts res.to_yaml
+    assert_kind_of Array, res.response[:specials]
+    assert_equal "EPPO", res.response[:city_metar]
+    assert_equal "Poland", res.response[:city_country]
+    assert_equal "Poznań", res.response[:city_name]
+    assert_kind_of Array, res.response[:specials]
 
   end
 
