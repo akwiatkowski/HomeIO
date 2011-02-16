@@ -30,11 +30,11 @@ class ExtractorBasicObject < ExtractorActiveRecord
   def get_cities
     cities = super
     attrs = cities.collect { |c| {
-        :name => c.attributes["name"],
-        :country => c.attributes["country"],
-        :lat => c.attributes["lat"],
-        :lon => c.attributes["lon"],
-        :id => c.attributes["id"],
+      :name => c.attributes["name"],
+      :country => c.attributes["country"],
+      :lat => c.attributes["lat"],
+      :lon => c.attributes["lon"],
+      :id => c.attributes["id"],
     } }
     return attrs
   end
@@ -47,6 +47,12 @@ class ExtractorBasicObject < ExtractorActiveRecord
 
   # City advanced statistics
   def city_adv_info(city)
+    res = super(city)
+    return convert_ar_objects(res)
+  end
+
+  # Last metar data for city
+  def get_last_metar(city)
     res = super(city)
     return convert_ar_objects(res)
   end

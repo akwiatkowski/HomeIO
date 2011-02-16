@@ -23,7 +23,7 @@ require 'rubygems'
 require 'robustthread'
 require 'singleton'
 require 'lib/utils/core_classes'
-Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
+require_files_from_directory("lib/plugins/im/bots/")
 
 # Load and start IM bots
 #
@@ -58,8 +58,6 @@ Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub
 # 
 
 
-
-
 class ImBots
   include Singleton
 
@@ -80,7 +78,7 @@ class ImBots
   RESTART_EVERY = 24*60*60
 
   def initialize
-    @config = ConfigLoader.instance.config( self.class )
+    @config = ConfigLoader.instance.config(self.class)
 
     # commands resolver
     if COMMAND_RESOLVER_DIRECT == COMMAND_RESOLVER
@@ -94,8 +92,8 @@ class ImBots
 
     @bots = [
       #Jabber4rBot.instance, # errors
-      GaduBot.instance,
-      Xmpp4rBot.instance,
+    GaduBot.instance,
+    Xmpp4rBot.instance,
     ]
   end
 

@@ -53,7 +53,7 @@ class HomeIoStandardWorker
       command.set_error!(:processing_error, e.to_s)
       log_error(self, e, "command: #{tcp_task.inspect}")
       show_error(e)
-      return {:error => e.to_s}
+      return { :error => e.to_s }
     end
 
   end
@@ -63,100 +63,100 @@ class HomeIoStandardWorker
   # Commands definition
   def commands
     [
-        {
-            :command => ['help', '?'],
-            :desc => 'this help',
-            :proc => Proc.new { |params| commands },
-            :restricted => false
-        },
-        {
-            :command => ['c', 'cities'],
-            :desc => 'list of all cities',
-            :proc => Proc.new { |params| ExtractorBasicObject.instance.get_cities },
-            :restricted => false
-        },
-        {
-            # 'system' command
-            :command => ['queue'],
-            :desc => 'get queue',
-            :proc => Proc.new { |params| nil },
-            :restricted => false
-        },
-        {
-            :command => ['ci'],
-            :desc => 'city basic statistics (weather and metar counts, first and last)',
-            :params_desc => [
-                'id, metar code, name or name fragment'
-            ],
-            :proc => Proc.new { |params| ExtractorBasicObject.instance.city_basic_info(params[0]) },
-            :restricted => false
-        },
-        {
-            :command => ['cix'],
-            :desc => 'city advanced statistics (weather and metar counts, first and last, min/max/avg temperature and wind)',
-            :params_desc => [
-                '<id, metar code, name or name fragment>'
-            ],
-            :proc => Proc.new { |params| ExtractorBasicObject.instance.city_adv_info(params[0]) },
-            :restricted => false
-        },
-        {
-            :command => ['wmc'],
-            :desc => 'last metar data for city',
-            :usage_desc => [
-                '<id, metar code, name or name fragment>'
-            ],
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_last_metar(params[0]) },
-            :restricted => false
-        },
-        {
-            :command => ['wms'],
-            :desc => 'metar summary of all cities',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.summary_metar_list },
-            #:restricted => false
-        },
-        {
-            :command => ['wma'],
-            :desc => 'get <count> last metars for city',
-            :usage_desc => '<id, metar code, name or name fragment> <count>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_metar(params[1], params[2]) },
-            #:restricted => false
-        },
-        {
-            :command => ['wra'],
-            :desc => 'get <count> last weather (non-metar) data for city',
-            :usage_desc => '<id, metar code, name or name fragment> <count>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_weather(params[1], params[2]) },
-            #:restricted => false
-        },
-        {
-            :command => ['wmsr'],
-            :desc => 'search for metar data for city at specified time',
-            :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar(params) },
-            #:restricted => false
-        },
-        {
-            :command => ['wrsr'],
-            :desc => 'search for weather (non-metar) data for city at specified time',
-            :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_weather(params) },
-            #:restricted => false
-        },
-        {
-            :command => ['wsr'],
-            :desc => 'search for weather (metar or non-metar) data for city at specified time',
-            :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar_or_weather(params) },
-            #:restricted => false
-        },
-        {
-            :command => ['cps'],
-            :desc => 'calculate city periodical stats (metar or non-metar) at specified time interval',
-            :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00> <time ex. 2010-01-02 12:00>',
-            :proc => Proc.new { |params| ExtractorActiveRecord.instance.city_calculate_periodical_stats(params) },
-            #:restricted => false
-        },
+      {
+        :command => ['help', '?'],
+        :desc => 'this help',
+        :proc => Proc.new { |params| commands },
+        :restricted => false
+      },
+      {
+        :command => ['c', 'cities'],
+        :desc => 'list of all cities',
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.get_cities },
+        :restricted => false
+      },
+      {
+        # 'system' command
+        :command => ['queue'],
+        :desc => 'get queue',
+        :proc => Proc.new { |params| nil },
+        :restricted => false
+      },
+      {
+        :command => ['ci'],
+        :desc => 'city basic statistics (weather and metar counts, first and last)',
+        :params_desc => [
+          'id, metar code, name or name fragment'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.city_basic_info(params[0]) },
+        :restricted => false
+      },
+      {
+        :command => ['cix'],
+        :desc => 'city advanced statistics (weather and metar counts, first and last, min/max/avg temperature and wind)',
+        :params_desc => [
+          '<id, metar code, name or name fragment>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.city_adv_info(params[0]) },
+        :restricted => false
+      },
+      {
+        :command => ['wmc'],
+        :desc => 'last metar data for city',
+        :usage_desc => [
+          '<id, metar code, name or name fragment>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.get_last_metar(params[0]) },
+        :restricted => false
+      },
+      {
+        :command => ['wms'],
+        :desc => 'metar summary of all cities',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.summary_metar_list },
+        #:restricted => false
+      },
+      {
+        :command => ['wma'],
+        :desc => 'get <count> last metars for city',
+        :usage_desc => '<id, metar code, name or name fragment> <count>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_metar(params[1], params[2]) },
+        #:restricted => false
+      },
+      {
+        :command => ['wra'],
+        :desc => 'get <count> last weather (non-metar) data for city',
+        :usage_desc => '<id, metar code, name or name fragment> <count>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_weather(params[1], params[2]) },
+        #:restricted => false
+      },
+      {
+        :command => ['wmsr'],
+        :desc => 'search for metar data for city at specified time',
+        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar(params) },
+        #:restricted => false
+      },
+      {
+        :command => ['wrsr'],
+        :desc => 'search for weather (non-metar) data for city at specified time',
+        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_weather(params) },
+        #:restricted => false
+      },
+      {
+        :command => ['wsr'],
+        :desc => 'search for weather (metar or non-metar) data for city at specified time',
+        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar_or_weather(params) },
+        #:restricted => false
+      },
+      {
+        :command => ['cps'],
+        :desc => 'calculate city periodical stats (metar or non-metar) at specified time interval',
+        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00> <time ex. 2010-01-02 12:00>',
+        :proc => Proc.new { |params| ExtractorActiveRecord.instance.city_calculate_periodical_stats(params) },
+        #:restricted => false
+      },
     ]
   end
 

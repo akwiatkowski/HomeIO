@@ -19,12 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-
+require 'lib/utils/core_classes'
 require 'singleton'
 
 # better way to load all files from dir
-#Dir["./lib/metar/metar_ripper/*.rb"].each {|file| require file }
-Dir["./lib/metar/metar_ripper/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
+require_files_from_directory("lib/metar/metar_ripper/")
 
 
 # Rips raw metar from various sites
@@ -36,7 +35,7 @@ class MetarRipper
   USE_ALSO_SLOW_PROVIDERS = false
 
   attr_reader :klasses
-  
+
   def initialize
     @klasses = [
       MetarRipperNoaa, # superfast <0.5s
@@ -50,18 +49,17 @@ class MetarRipper
 
   end
 
-  def fetch( city )
+  def fetch(city)
     codes = Array.new
     @klasses.each do |k|
       #puts k.new.a
-      codes << k.new.fetch( city )
+      codes << k.new.fetch(city)
     end
 
     # return uniq and not blank
-    codes = codes.select{|c| not '' == c.to_s.strip}.uniq
+    codes = codes.select { |c| not '' == c.to_s.strip }.uniq
     return codes
   end
 
-  
 
 end

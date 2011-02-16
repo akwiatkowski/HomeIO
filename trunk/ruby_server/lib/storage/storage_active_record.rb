@@ -19,15 +19,15 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-
+require 'lib/utils/core_classes'
 require 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
 require 'singleton'
 
 # better way to load all models from dir, + migrations
-Dir["lib/storage/active_record/backend_models/*.rb"].each {|file| require file }
-Dir["lib/storage/active_record/*.rb"].each {|file| require file }
+require_files_from_directory("lib/storage/active_record/backend_models/")
+require_files_from_directory("lib/storage/active_record/")
 
 # Storage using custom active record connection
 # Just like the Rails :)
@@ -51,31 +51,34 @@ class StorageActiveRecord < StorageDbAbstract
 
   # Create tables in DB
   def init
-    Dir["lib/storage/active_record/migrations/*.rb"].each {|file| require file }
+    Dir["lib/storage/active_record/migrations/*.rb"].each { |file| require file }
     ActiveRecordInitMigration.up
   end
 
   # Drop tables in DB
   def deinit
-    Dir["lib/storage/active_record/migrations/*.rb"].each {|file| require file }
+    Dir["lib/storage/active_record/migrations/*.rb"].each { |file| require file }
     ActiveRecordInitMigration.down
   end
 
   # Store object
-  def store( obj )
+  def store(obj)
     case obj.class.to_s
-    when 'MetarCode' then store_metar( obj )
-    when 'Weather' then store_weather( obj )
-    else other_store( obj )
+      when 'MetarCode' then
+        store_metar(obj)
+      when 'Weather' then
+        store_weather(obj)
+      else
+        other_store(obj)
     end
 
     check_pool_size
   end
 
   # Add ActiveRecord object to pool without processing it
-  def add_ar_object_to_pool( obj )
+  def add_ar_object_to_pool(obj)
     @pool << obj
-    
+
     check_pool_size
   end
 
@@ -91,7 +94,7 @@ class StorageActiveRecord < StorageDbAbstract
         if res == false
           err_msg = "StorageActiveRecord errors: #{o.errors.inspect}"
           puts err_msg
-          AdvLog.instance.logger( self ).warn( "#{err_msg}   -   #{o.inspect}" )
+          AdvLog.instance.logger(self).warn("#{err_msg}   -   #{o.inspect}")
           # TODO move it outside, more type of error handling
         end
       end
@@ -117,14 +120,14 @@ class StorageActiveRecord < StorageDbAbstract
   def update_logged_flag_old
     cities = CityProxy.instance.cities_array
     cities.each do |ch|
-      wa = WeatherArchive.find(:last, :conditions => {:city_id => ch[:id]})
-      wma = WeatherMetarArchive.find(:last, :conditions => {:city_id => ch[:id]})
-      c = City.find_by_id( ch[:id] )
+      wa = WeatherArchive.find(:last, :conditions => { :city_id => ch[:id] })
+      wma = WeatherMetarArchive.find(:last, :conditions => { :city_id => ch[:id] })
+      c = City.find_by_id(ch[:id])
 
       c.update_attributes!({
-        :logged_metar => !wma.nil?,
-        :logged_weather => !wa.nil?,
-      })
+                             :logged_metar => !wma.nil?,
+                             :logged_weather => !wa.nil?,
+                           })
     end
   end
 
@@ -142,7 +145,7 @@ class StorageActiveRecord < StorageDbAbstract
   #
   # :call-seq:
   #   store_metar( MetarCode )
-  def store_metar( obj )
+  def store_metar(obj)
     # wrong records can be not saved - there are always raw metars in text files
     return unless obj.valid?
     h = {
@@ -157,17 +160,17 @@ class StorageActiveRecord < StorageDbAbstract
       :city_id => obj.city_id,
     }
     # updating metar if stored in DB
-    wma = WeatherMetarArchive.find(:last, :conditions => {:city_id => obj.city_id, :time_from => obj.output[:time], :raw => obj.raw} )
+    wma = WeatherMetarArchive.find(:last, :conditions => { :city_id => obj.city_id, :time_from => obj.output[:time], :raw => obj.raw })
     if wma.nil?
-      wma = WeatherMetarArchive.new( h )
+      wma = WeatherMetarArchive.new(h)
     else
-      wma.update_attributes( h )
+      wma.update_attributes(h)
     end
-    
+
     @pool << wma
   end
 
-  def store_weather( obj )
+  def store_weather(obj)
     # wrong records can be not saved - there are always raw metars in text files
     return unless obj.valid?
     h = {
@@ -190,11 +193,11 @@ class StorageActiveRecord < StorageDbAbstract
         :weather_provider_id => obj.data[:weather_provider_id]
       }
     )
-    
+
     if wa.nil?
-      wa = WeatherArchive.new( h )
+      wa = WeatherArchive.new(h)
     else
-      wa.update_attributes( h )
+      wa.update_attributes(h)
     end
 
     @pool << wa

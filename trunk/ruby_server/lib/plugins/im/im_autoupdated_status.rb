@@ -23,7 +23,9 @@
 require 'singleton'
 require 'lib/plugins/im/im_bots'
 require 'lib/storage/extractors/extractor_active_record'
-Dir["./lib/plugins/im/bots/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
+
+require 'lib/utils/core_classes'
+require_files_from_directory("lib/plugins/im/bots/")
 
 class ImAutoupdatedStatus
   include Singleton

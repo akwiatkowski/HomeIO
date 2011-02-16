@@ -24,7 +24,9 @@ require 'singleton'
 require 'lib/utils/constants'
 
 # better way to load all files from dir
-Dir["./lib/storage/*.rb"].each {|file| require file.gsub(/\.\//,'').gsub(/\.rb/,'') }
+require 'lib/utils/core_classes'
+require_files_from_directory("lib/storage/")
+
 
 # Rips raw metar from various sites
 
@@ -44,7 +46,7 @@ class Storage
     ]
 
     # delete disabled
-    @storages.delete_if{|s| s.enabled == false }
+    @storages.delete_if { |s| s.enabled == false }
 
   end
 
@@ -64,10 +66,10 @@ class Storage
   end
 
   # Store object wherever it is possible
-  def store( obj )
+  def store(obj)
     store_outputs = Array.new
     @storages.each do |s|
-      store_outputs << s.store( obj )
+      store_outputs << s.store(obj)
     end
     return store_outputs
   end

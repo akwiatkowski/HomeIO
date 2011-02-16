@@ -22,9 +22,8 @@
 
 require 'singleton'
 require 'lib/utils/core_classes'
-require 'lib/storage/storage'
 require 'lib/utils/geolocation'
-#require 'lib/utils/dev_info'
+require 'lib/utils/dev_info'
 
 # Abstract class to all storage classes
 class StorageDbAbstract
