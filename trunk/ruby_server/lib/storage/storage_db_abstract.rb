@@ -50,15 +50,15 @@ class StorageDbAbstract
   end
 
   # Store object
-  def store( obj )
-    d = get_definition( obj )
-    
+  def store(obj)
+    d = get_definition(obj)
+
     if d.nil?
       # not standard storage
-      other_store( obj ) 
+      other_store(obj)
     else
       # standarized store
-      standarized_store( obj, d )
+      standarized_store(obj, d)
     end
 
   end
@@ -83,23 +83,23 @@ class StorageDbAbstract
 
   # Load this storage config
   def load_config
-    @config = ConfigLoader.instance.config( self.class.to_s )
+    @config = ConfigLoader.instance.config(self.class.to_s)
   end
 
   # Select definition of proper storage
   # Data like table name
-  def get_definition( obj )
+  def get_definition(obj)
     # definition of storage by class
-    return @config[:classes].select{|c| obj.class.to_s == c[:klass] }.first
+    return @config[:classes].select { |c| obj.class.to_s == c[:klass] }.first
   end
 
   # Store for not standard object
-  def other_store( obj )
+  def other_store(obj)
     raise 'Not implemented'
   end
 
   # Store standard object
-  def standarized_store( obj, d )
+  def standarized_store(obj, d)
     raise 'Not implemented'
   end
 

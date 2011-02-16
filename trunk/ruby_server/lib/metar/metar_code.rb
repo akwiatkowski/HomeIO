@@ -109,6 +109,8 @@ class MetarCode
 
   # Processed data in Hash
   attr_reader :output
+  # Processed data in Hash
+  alias_method :to_hash, :output
 
   # Metar string was not downloaded
   TYPE_ARCHIVED = :archived

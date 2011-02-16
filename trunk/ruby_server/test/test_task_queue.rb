@@ -21,7 +21,7 @@ class TestTaskQueue < Test::Unit::TestCase
   end
 
   def _test_city_list_and_queue
-    task = TcpTask.factory({:command => :c})
+    task = TcpTask.factory({ :command => :c })
     res = TcpCommTaskClient.instance.send_to_server(task)
     assert_not_nil res.result_fetch_id, "Result fetch id unavailable, cannot fetch response"
 
@@ -39,14 +39,14 @@ class TestTaskQueue < Test::Unit::TestCase
 
   def _test_system_commands
     # queue test
-    task = TcpTask.factory({:command => :queue})
+    task = TcpTask.factory({ :command => :queue })
     queue = TcpCommTaskClient.instance.send_to_server(task).response
     assert_kind_of Array, queue
     #assert_equal 0, queue.size
     pre_queue_size = queue.size
 
     # commands list
-    task = TcpTask.factory({:command => :help})
+    task = TcpTask.factory({ :command => :help })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
 
@@ -57,7 +57,7 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_equal 1, res.response.select { |q| (q[:command] & ["queue"]).size > 0 }.size
 
     # check queue new size
-    task = TcpTask.factory({:command => :queue})
+    task = TcpTask.factory({ :command => :queue })
     queue = TcpCommTaskClient.instance.send_to_server(task).response
     assert_kind_of Array, queue
     assert_equal pre_queue_size + 1, queue.size
@@ -66,7 +66,7 @@ class TestTaskQueue < Test::Unit::TestCase
 
   def _test_city_statistics
     # basic stats
-    task = TcpTask.factory({:command => :ci, :params => ['poz']})
+    task = TcpTask.factory({ :command => :ci, :params => ['poz'] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
     assert_kind_of Fixnum, res.response[:metar_count]
@@ -74,7 +74,7 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_equal "Poland", res.response[:city_object][:country]
 
     # adv stats
-    task = TcpTask.factory({:command => :cix, :params => ['poz']})
+    task = TcpTask.factory({ :command => :cix, :params => ['poz'] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
     assert_kind_of Fixnum, res.response[:metar_count]
@@ -86,16 +86,22 @@ class TestTaskQueue < Test::Unit::TestCase
 
   def _test_metars
     # basic stats
-    task = TcpTask.factory({:command => :wmc, :params => ['poz']})
+    task = TcpTask.factory({ :command => :wmc, :params => ['poz'] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
 
-    puts res.to_yaml
-    assert_kind_of Array, res.response[:specials]
-    assert_equal "EPPO", res.response[:city_metar]
-    assert_equal "Poland", res.response[:city_country]
-    assert_equal "Poznań", res.response[:city_name]
-    assert_kind_of Array, res.response[:specials]
+    assert_kind_of Hash, res.response
+    assert_kind_of Hash, res.response[:city]
+    assert_equal "EPPO", res.response[:city][:metar]
+    assert_equal true, res.response[:city][:logged_metar]
+
+    assert_kind_of Hash, res.response[:db]
+    assert_kind_of Hash, res.response[:metar_code]
+    assert_equal MetarCode.process_archived(
+                   res.response[:db][:raw],
+                   res.response[:db][:time_from].year,
+                   res.response[:db][:time_from].month
+                 ).to_hash, res.response[:metar_code]
 
   end
 

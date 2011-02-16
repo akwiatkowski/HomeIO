@@ -51,10 +51,18 @@ class ExtractorBasicObject < ExtractorActiveRecord
     return convert_ar_objects(res)
   end
 
-  # Last metar data for city
+  # Last metar data for city. Return object fetched from DB and processed raw
+  #
+  # :call-seq:
+  #   get_last_metar( String city ) => {:db => Hash from WeatherMetarArchive, :metar_code => Hash from MetarCode
   def get_last_metar(city)
-    res = super(city)
-    return convert_ar_objects(res)
+    res_from_db = super(city)
+    return nil if res_from_db.nil?
+    return {
+      :db => convert_ar_objects(res_from_db),
+      :city => convert_ar_objects(res_from_db.city),
+      :metar_code => res_from_db.process_raw_to_metar_code.to_hash
+    }
   end
 
   private

@@ -23,6 +23,18 @@
 # METAR archives
 
 require 'lib/storage/active_record/rails_models/weather_metar_archive'
+require "lib/metar/metar_code"
 
 class WeatherMetarArchive
+
+  # Process raw string to MetarCode
+  def process_raw_to_metar_code
+    return nil if self.raw.nil?
+    return MetarCode.process_archived(
+      self.raw,
+      self.time_from.year,
+      self.time_from.month
+    )
+  end
+
 end
