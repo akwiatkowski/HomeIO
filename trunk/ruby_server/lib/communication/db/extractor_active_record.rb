@@ -37,6 +37,8 @@ class ExtractorActiveRecord
   def get_cities
     return City.find(:all, :conditions => { }, :order => 'calculated_distance DESC')
   end
+  # Alias for using not overrode method
+  alias_method :_get_cities, :get_cities
 
   # Search city
   #
@@ -66,6 +68,102 @@ class ExtractorActiveRecord
 
     return WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'time_from DESC')
   end
+
+# Basic city information: weather and metar counts, first and last
+  def city_basic_info(city)
+    c = search_city(city)
+    return nil if c.nil?
+
+    # lazy searching, not lazy, but efficient! :]
+    if true == @config[:lazy_search] and false == c.logged_metar
+      metar_count = 0
+      first_metar = nil
+      last_metar = nil
+    else
+      metar_count = WeatherMetarArchive.count(:all, :conditions => { :city_id => c.id })
+      first_metar = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
+      last_metar = WeatherMetarArchive.find(:last, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
+    end
+
+    if true == @config[:lazy_search] and false == c.logged_weather
+      weather_count = 0
+      first_weather = nil
+      last_weather = nil
+    else
+      weather_count = WeatherArchive.count(:all, :conditions => { :city_id => c.id })
+      first_weather = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
+      last_weather = WeatherArchive.find(:last, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
+    end
+
+    return {
+      :city_object => c,
+      :city => c.name,
+      :city_country => c.country,
+      :city_metar => c.metar,
+      :metar_count => metar_count,
+      :weather_count => weather_count,
+      :first_metar => first_metar,
+      :last_metar => last_metar,
+      :first_weather => first_weather,
+      :last_weather => last_weather
+    }
+  end
+
+
+  # Advanced city information. Same as basic city information but also: min/max/avg temperature and wind
+  def city_adv_info(city)
+    data = city_basic_info(city)
+    return nil if data.nil?
+
+    c = data[:city_object]
+
+    #TODO where could be some problem with AR/Hash due to ExtractorBasicObject
+    if true == @config[:lazy_search] and true == c[:logged_metar]
+      data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature DESC')
+      puts "City Adv Info :high_temp_metar #{Time.now}"
+      data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature ASC')
+      puts "City Adv Info :low_temp_metar #{Time.now}"
+      data[:high_wind_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'wind DESC')
+      puts "City Adv Info :high_wind_metar #{Time.now}"
+    end
+
+    if true == @config[:lazy_search] and true == c[:logged_weather]
+      data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature DESC')
+      puts "City Adv Info :high_temp_weather #{Time.now}"
+      data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature ASC')
+      puts "City Adv Info :low_temp_weather #{Time.now}"
+      data[:high_wind_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'wind DESC')
+      puts "City Adv Info :high_wind_weather #{Time.now}"
+    end
+
+    return data
+  end
+
+  # Last metar summary for all cities, only within last 6 hours
+  def summary_metar_list
+    array = Array.new
+
+    # use alias because 'get_cities' could be overrode
+    cities = _get_cities
+    cities.each do |c|
+      wma = WeatherMetarArchive.find(
+        :first,
+        :conditions => [
+          "city_id = ? and time_from >= ?",
+          c.id,
+          Time.now - 6*3600
+        ],
+        :order => 'time_from DESC'
+      )
+      if not wma.nil?
+        array << wma
+      end
+    end
+
+    return array
+  end
+
+  ################
 
 
   # Convert WeatherMetarArchive to MetarCode
@@ -126,34 +224,6 @@ class ExtractorActiveRecord
     return hash
   end
 
-  # Last metar summary
-  def summary_metar_list
-    array = Array.new
-
-    cities = get_cities
-    cities.each do |c|
-      # puts c.inspect
-      #count = WeatherMetarArchive.count(:conditions => {:city_id => c.id})
-      #if count > 0
-      wma = WeatherMetarArchive.find(:first, :conditions => [
-        "city_id = ? and time_from >= ?",
-        c.id,
-        Time.now - 6*3600
-      ],
-                                     :order => 'time_from DESC')
-      if not wma.nil?
-        array << {
-          :city => c.name,
-          :city_country => c.country,
-          :temperature => wma.temperature,
-          :wind => wma.wind,
-          :pressure => wma.pressure
-        }
-      end
-    end
-
-    return array
-  end
 
   # Get array of last metars
   def get_array_of_last_metar(city, last_metars)
@@ -260,74 +330,6 @@ class ExtractorActiveRecord
     }
   end
 
-  # Basic city information: weather and metar counts, first and last
-  def city_basic_info(city)
-    c = search_city(city)
-    return nil if c.nil?
-
-    # lazy searching, not lazy, but efficient! :]
-    if true == @config[:lazy_search] and false == c.logged_metar
-      metar_count = 0
-      first_metar = nil
-      last_metar = nil
-    else
-      metar_count = WeatherMetarArchive.count(:all, :conditions => { :city_id => c.id })
-      first_metar = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
-      last_metar = WeatherMetarArchive.find(:last, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
-    end
-
-    if true == @config[:lazy_search] and false == c.logged_weather
-      weather_count = 0
-      first_weather = nil
-      last_weather = nil
-    else
-      weather_count = WeatherArchive.count(:all, :conditions => { :city_id => c.id })
-      first_weather = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
-      last_weather = WeatherArchive.find(:last, :conditions => { :city_id => c.id }, :order => 'time_from ASC')
-    end
-
-    return {
-      :city_object => c,
-      :city => c.name,
-      :city_country => c.country,
-      :city_metar => c.metar,
-      :metar_count => metar_count,
-      :weather_count => weather_count,
-      :first_metar => first_metar,
-      :last_metar => last_metar,
-      :first_weather => first_weather,
-      :last_weather => last_weather
-    }
-  end
-
-  # Advanced city information. Same as basic city information but also: min/max/avg temperature and wind
-  def city_adv_info(city)
-    data = city_basic_info(city)
-    return nil if data.nil?
-
-    c = data[:city_object]
-
-    #TODO where could be some problem with AR/Hash due to ExtractorBasicObject
-    if true == @config[:lazy_search] and true == c[:logged_metar]
-      data[:high_temp_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature DESC')
-      puts "City Adv Info :high_temp_metar #{Time.now}"
-      data[:low_temp_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature ASC')
-      puts "City Adv Info :low_temp_metar #{Time.now}"
-      data[:high_wind_metar] = WeatherMetarArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'wind DESC')
-      puts "City Adv Info :high_wind_metar #{Time.now}"
-    end
-
-    if true == @config[:lazy_search] and true == c[:logged_weather]
-      data[:high_temp_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature DESC')
-      puts "City Adv Info :high_temp_weather #{Time.now}"
-      data[:low_temp_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'temperature ASC')
-      puts "City Adv Info :low_temp_weather #{Time.now}"
-      data[:high_wind_weather] = WeatherArchive.find(:first, :conditions => { :city_id => c.id }, :order => 'wind DESC')
-      puts "City Adv Info :high_wind_weather #{Time.now}"
-    end
-
-    return data
-  end
 
   # Generate statistics
   #

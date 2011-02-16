@@ -112,8 +112,8 @@ class HomeIoStandardWorker
       {
         :command => ['wms'],
         :desc => 'metar summary of all cities',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.summary_metar_list },
-        #:restricted => false
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.summary_metar_list },
+        :restricted => false
       },
       {
         :command => ['wma'],

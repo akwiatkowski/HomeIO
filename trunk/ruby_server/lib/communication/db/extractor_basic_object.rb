@@ -65,6 +65,13 @@ class ExtractorBasicObject < ExtractorActiveRecord
     }
   end
 
+  # Last metar summary for all cities, only within last 6 hours
+  def summary_metar_list
+    res = super
+    return convert_ar_objects(res)
+  end
+
+
   private
 
   # Convert data structure to not have active record object. Instead of them it return attributes.

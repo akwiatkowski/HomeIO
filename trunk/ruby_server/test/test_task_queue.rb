@@ -85,7 +85,7 @@ class TestTaskQueue < Test::Unit::TestCase
   end
 
   def _test_metars
-    # basic stats
+    # last metar
     task = TcpTask.factory({ :command => :wmc, :params => ['poz'] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
@@ -102,6 +102,20 @@ class TestTaskQueue < Test::Unit::TestCase
                    res.response[:db][:time_from].year,
                    res.response[:db][:time_from].month
                  ).to_hash, res.response[:metar_code]
+
+
+    # summary
+    task = TcpTask.factory({ :command => :wms })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    assert_kind_of Array, res.response
+    assert_kind_of Hash, res.response.first
+    assert_not_nil res.response.first[:raw]
+    assert_not_nil res.response.first[:temperature]
+    assert_not_nil res.response.first[:wind]
+    assert_not_nil res.response.first[:time_from]
+    # puts res.to_yaml
 
   end
 
