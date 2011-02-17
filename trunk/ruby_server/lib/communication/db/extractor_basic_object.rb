@@ -115,6 +115,33 @@ class ExtractorBasicObject < ExtractorActiveRecord
     return convert_ar_objects(res)
   end
 
+  # Search nearest WeatherMetarArchive or WeatherArchive
+  #
+  # :call-seq:
+  #   search_wa( String city, String date, String time) => WeatherArchive or nil
+  #   search_wa( String city, Time) => WeatherArchive or nil
+  def search_metar_or_weather(city, date_string_or_time, time_string = '0:00')
+    if date_string_or_time.kind_of? Time
+      time = date_string_or_time
+    else
+      time = Time.create_time_from_string(date_string_or_time, time_string)
+    end
+    res = super(city, time)
+    return convert_ar_objects(res)
+  end
+
+  # Generate statistics for city within time range
+  #
+  # :call-seq:
+  #   city_calculate_periodical_stats( String city, String date_from, String time_from, String date_to, String time_to ) => Hash
+  def city_calculate_periodical_stats(city, date_from, time_from, date_to, time_to)
+    time_from = Time.create_time_from_string(date_from, time_from)
+    time_to = Time.create_time_from_string(date_to, time_to)
+    # calculate using weather and metar data
+    res = city_periodical_stats_for_city_name(city, time_from, time_to, nil)
+    return convert_ar_objects(res)
+  end
+
   private
 
   # Convert data structure to not have active record object. Instead of them it return attributes.

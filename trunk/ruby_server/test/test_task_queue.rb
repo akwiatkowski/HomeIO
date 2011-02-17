@@ -13,10 +13,11 @@ class TestTaskQueue < Test::Unit::TestCase
     t = TcpCommTaskServer.new
     t.start
 
-    #_test_city_list_and_queue
-    #_test_system_commands
-    #_test_city_statistics
-    #_test_metars
+    _test_city_list_and_queue
+    _test_system_commands
+    _test_city_statistics
+    _test_metars
+    _test_calculate_stats
     _test_new
 
     # servers live they own life
@@ -83,7 +84,7 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_kind_of Fixnum, res.response[:metar_count]
     assert_equal "Poznań", res.response[:city]
     assert_equal "Poland", res.response[:city_object][:country]
-    puts res.to_yaml
+    #puts res.to_yaml
 
   end
 
@@ -112,12 +113,17 @@ class TestTaskQueue < Test::Unit::TestCase
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
 
+    #puts res.response.inspect,"\n\n\n"
     assert_kind_of Array, res.response
-    assert_kind_of Hash, res.response.first
-    assert_not_nil res.response.first[:raw]
-    assert_not_nil res.response.first[:temperature]
-    assert_not_nil res.response.first[:wind]
-    assert_not_nil res.response.first[:time_from]
+    if res.response.size > 0
+      assert_kind_of Hash, res.response.first
+      assert_not_nil res.response.first[:raw]
+      assert_not_nil res.response.first[:temperature]
+      assert_not_nil res.response.first[:wind]
+      assert_not_nil res.response.first[:time_from]
+    else
+      puts "Not enough data in DB"
+    end
     # puts res.to_yaml
 
 
@@ -167,14 +173,14 @@ class TestTaskQueue < Test::Unit::TestCase
     task = TcpTask.factory({ :command => :wmsr, :params => ['poz', last_metar_time] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
-    puts res.response.to_yaml
+    #puts res.response.to_yaml
     assert_equal last_metar_time, res.response[:time_from]
 
     # search for metar, string data
     task = TcpTask.factory({ :command => :wmsr, :params => ['poz', last_metar_time.to_date_human, last_metar_time.to_time_human] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
-    puts res.response.to_yaml
+    #puts res.response.to_yaml
     assert_equal last_metar_time, res.response[:time_from]
 
 
@@ -188,12 +194,36 @@ class TestTaskQueue < Test::Unit::TestCase
     task = TcpTask.factory({ :command => :wrsr, :params => ['poz', last_weather_time] })
     res = TcpCommTaskClient.instance.send_to_server(task)
     res = TcpCommTaskClient.instance.wait_for_task(res)
-
     assert_equal last_weather, res.response
+
+    # search for weather information (metar on non-metar)
+    task = TcpTask.factory({ :command => :wsr, :params => ['poz', last_weather_time] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    assert_kind_of Hash, res.response
+  end
+
+  def _test_calculate_stats
+    task = TcpTask.factory({ :command => :cps, :params => [
+      'poz',
+      (Time.now - 1.month).to_date_human, (Time.now - 1.month).to_time_human,
+      Time.now.to_date_human, Time.now.to_time_human,
+    ] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    output = res.response
+    #puts output.to_yaml
+    #puts .inspect
+
+    assert_kind_of Fixnum, output[:w_wma_count]
+    assert_kind_of Float, output[:t_avg]
+    assert output.keys.size > 5
+    assert_kind_of Hash, output
   end
 
   def _test_new
-
+    # place to write new test
   end
 
 

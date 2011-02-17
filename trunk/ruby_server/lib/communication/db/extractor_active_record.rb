@@ -98,6 +98,7 @@ class ExtractorActiveRecord
 
     return {
       :city_object => c,
+      :city_id => c.id,
       :city => c.name,
       :city_country => c.country,
       :city_metar => c.metar,
@@ -116,7 +117,7 @@ class ExtractorActiveRecord
     data = city_basic_info(city)
     return nil if data.nil?
 
-    c = data[:city_object]
+    c = City.find(data[:city_id])
 
     #TODO where could be some problem with AR/Hash due to ExtractorBasicObject
     if true == @config[:lazy_search] and true == c[:logged_metar]
@@ -248,6 +249,9 @@ class ExtractorActiveRecord
   end
 
   # Search nearest WeatherMetarArchive
+  #
+  # :call-seq:
+  #   search_wma( String city, Time ) => WeatherMetarArchive or nil
   def search_wma(city, time)
     c = search_city(city)
     return nil if c.nil?
@@ -256,11 +260,188 @@ class ExtractorActiveRecord
   end
 
   # Search nearest WeatherArchive
+  #
+  # :call-seq:
+  #   search_wa( String city, Time ) => WeatherArchive or nil
   def search_wa(city, time)
     c = search_city(city)
     return nil if c.nil?
     return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
     return _search_archived_data(WeatherArchive, 'city_id', c.id, 2*24*3600, time)
+  end
+
+  # Search metar or weather. Metar has higher priority due to universal accuracy.
+  #
+  # :call-seq:
+  #   search_wa( String city, Time ) => WeatherMetarArchive, WeatherArchive or nil
+  def search_metar_or_weather(city, time)
+    hm = search_wma(city, time)
+    return hm unless hm.nil?
+
+    hw = search_wa(city, time)
+    return hw
+  end
+
+  # Generate statistics for city within time range
+  #
+  # *city_id* - id of city
+  # *time_from* - Time from
+  # *time_to* - Time to
+  # *metar*:
+  #   - true - only metar
+  #   - false - only weather
+  #   - nil - use both of them
+  def city_periodical_stats_for_city_name(city, time_from, time_to, metar = nil)
+    c = search_city(city)
+    return nil if c.nil?
+
+    return city_periodical_stats(c.id, time_from, time_to, metar)
+  end
+
+  # Generate statistics for city within time range
+  #
+  # *city_id* - id of city
+  # *time_from* - Time from
+  # *time_to* - Time to
+  # *metar*:
+  #   - true - only metar
+  #   - false - only weather
+  #   - nil - use both of them
+  def city_periodical_stats(city_id, time_from, time_to, metar = nil)
+    # conditions
+    # temp
+    t_conditions = [
+      "city_id = ? and time_from >= ? and time_to <= ? and temperature is not null",
+      city_id,
+      time_from,
+      time_to
+    ]
+    # wind
+    w_conditions = [
+      "city_id = ? and time_from >= ? and time_to <= ? and wind is not null",
+      city_id,
+      time_from,
+      time_to
+    ]
+
+    h = Hash.new
+    c = City.find(city_id)
+    h[:city_id] = c.id
+    h[:time_from] = time_from
+    h[:time_to] = time_to
+    h[:metar_switch] = metar
+    h[:lazy_search] = @config[:lazy_search]
+    h[:logged_metar] = c.logged_metar
+    h[:logged_weather] = c.logged_weather
+
+    if false == @config[:lazy_search] or true == c.logged_metar
+      # temperature
+      # avg
+      h[:t_wma_sum] = WeatherMetarArchive.sum(:temperature, :conditions => t_conditions)
+      h[:t_wma_count] = WeatherMetarArchive.count(:conditions => t_conditions)
+      # min/max
+      h[:t_wma_max] = WeatherMetarArchive.find(:first, :conditions => t_conditions, :order => 'temperature DESC')
+      h[:t_wma_min] = WeatherMetarArchive.find(:first, :conditions => t_conditions, :order => 'temperature ASC')
+
+      # wind
+      # avg
+      h[:w_wma_sum] = WeatherMetarArchive.sum(:wind, :conditions => w_conditions)
+      h[:w_wma_count] = WeatherMetarArchive.count(:conditions => w_conditions)
+      # max
+      h[:w_wma_max] = WeatherMetarArchive.find(:first, :conditions => w_conditions, :order => 'wind DESC')
+    else
+      h[:t_wma_sum] = 0.0
+      h[:t_wma_count] = 0
+      h[:t_wma_max] = nil
+      h[:t_wma_min] = nil
+
+      h[:w_wma_sum] = 0.0
+      h[:w_wma_count] = 0
+      h[:w_wma_max] = nil
+    end
+
+    unless false == @config[:lazy_search] or true == c.logged_weather
+      # temperature
+      # avg
+      h[:t_wa_sum] = WeatherArchive.sum(:temperature, :conditions => t_conditions)
+      h[:t_wa_count] = WeatherArchive.count(:conditions => t_conditions)
+      # min/max
+      h[:t_wa_max] = WeatherArchive.find(:first, :conditions => t_conditions, :order => 'temperature DESC')
+      h[:t_wa_min] = WeatherArchive.find(:first, :conditions => t_conditions, :order => 'temperature ASC')
+
+      # wind
+      # avg
+      h[:w_wa_sum] = WeatherArchive.sum(:wind, :conditions => w_conditions)
+      h[:w_wa_count] = WeatherArchive.count(:conditions => w_conditions)
+      # max
+      h[:w_wa_max] = WeatherArchive.find(:first, :conditions => w_conditions, :order => 'wind DESC')
+    else
+      h[:t_wa_sum] = 0.0
+      h[:t_wa_count] = 0
+      h[:t_wa_max] = nil
+      h[:t_wa_min] = nil
+
+      h[:w_wa_sum] = 0.0
+      h[:w_wa_count] = 0
+      h[:w_wa_max] = nil
+    end
+
+    # sum everything
+    if true == metar
+      # only metar
+      h[:t_sum] = h[:t_wma_sum]
+      h[:t_count] = h[:t_wma_count]
+
+      h[:w_sum] = h[:w_wma_sum]
+      h[:w_count] = h[:w_wma_count]
+
+      # min/max
+      h[:t_min] = h[:t_wma_min]
+      h[:t_max] = h[:t_wma_max]
+      h[:w_max] = h[:w_wma_max]
+
+    elsif false == metar
+      # only weather
+      h[:t_sum] = h[:t_wa_sum]
+      h[:t_count] = h[:t_wa_count]
+
+      h[:w_sum] = h[:w_wa_sum]
+      h[:w_count] = h[:w_wa_count]
+
+      # min/max
+      h[:t_min] = h[:t_wa_min]
+      h[:t_max] = h[:t_wa_max]
+      h[:w_max] = h[:w_wa_max]
+
+    else
+      # weather and metar
+      h[:t_sum] = h[:t_wa_sum] + h[:t_wma_sum]
+      h[:t_count] = h[:t_wa_count] + h[:t_wma_count]
+
+      h[:w_sum] = h[:w_wa_sum] + h[:w_wma_sum]
+      h[:w_count] = h[:w_wa_count] + h[:w_wma_count]
+
+      # min/max
+      h[:t_min] = h[:t_wma_min]
+      h[:t_max] = h[:t_wma_max]
+      h[:w_max] = h[:w_wma_max]
+      # min/max weather
+      # weather is not empty and ( min weather was empty or it wasn't empty but was higher )
+      h[:t_min] = h[:t_wa_min] if not h[:t_wa_min].nil? and (h[:t_min].nil? or h[:t_wa_min].temperature < h[:t_min].temperature)
+      h[:t_max] = h[:t_wa_max] if not h[:t_wa_max].nil? and (h[:t_max].nil? or h[:t_wa_min].temperature > h[:t_max].temperature)
+      h[:w_max] = h[:w_wa_max] if not h[:w_wa_max].nil? and (h[:w_max].nil? or h[:t_wa_min].wind > h[:w_max].wind)
+    end
+
+    # calculate average
+    h[:t_avg] = h[:t_sum].to_f / h[:t_count] if h[:t_count] > 0
+    h[:w_avg] = h[:w_sum].to_f / h[:w_count] if h[:w_count] > 0
+
+    # convert min/max values
+    h[:t_min] = { :value => h[:t_min].temperature, :time => h[:t_min].time_from } unless h[:t_min].nil?
+    h[:t_max] = { :value => h[:t_max].temperature, :time => h[:t_max].time_from } unless h[:t_max].nil?
+    h[:w_max] = { :value => h[:w_max].wind, :time => h[:w_max].time_from } unless h[:w_max].nil?
+
+    return h
   end
 
   ################
@@ -358,14 +539,6 @@ class ExtractorActiveRecord
     return wa_to_hash(wa)
   end
 
-  # Search metar or weather
-  def search_metar_or_weather(city, time)
-    hm = search_metar(city, time)
-    return hm unless hm.nil?
-
-    hw = search_weather(city, time)
-    return hw
-  end
 
   # Very basic city information
   def city_very_basic_info(city)
@@ -380,168 +553,6 @@ class ExtractorActiveRecord
     }
   end
 
-
-  # Generate statistics
-  #
-  # *city_id* - id of city
-  # *time_from* - Time from
-  # *time_to* - Time to
-  # *metar*:
-  #   - true - only metar
-  #   - false - only weather
-  #   - nil - use both of them
-  def city_periodical_stats_for_city_name(city, time_from, time_to, metar = nil)
-    c = search_city(city)
-    return nil if c.nil?
-
-    return city_periodical_stats(c.id, time_from, time_to, metar)
-  end
-
-  # Generate statistics
-  #
-  # *city_id* - id of city
-  # *time_from* - Time from
-  # *time_to* - Time to
-  # *metar*:
-  #   - true - only metar
-  #   - false - only weather
-  #   - nil - use both of them
-  def city_periodical_stats(city_id, time_from, time_to, metar = nil)
-    # conditions
-    # temp
-    t_conds = [
-      "city_id = ? and time_from >= ? and time_to <= ? and temperature is not null",
-      city_id,
-      time_from,
-      time_to
-    ]
-    # wind
-    w_conds = [
-      "city_id = ? and time_from >= ? and time_to <= ? and wind is not null",
-      city_id,
-      time_from,
-      time_to
-    ]
-
-    h = Hash.new
-    c = City.find(city_id)
-    h[:city_id] = c.id
-    h[:time_from] = time_from
-    h[:time_to] = time_to
-    h[:metar_switch] = metar
-    h[:lazy_search] = @config[:lazy_search]
-    h[:logged_metar] = c.logged_metar
-    h[:logged_weather] = c.logged_weather
-
-    if false == @config[:lazy_search] or true == c.logged_metar
-      # temperature
-      # avg
-      h[:t_wma_sum] = WeatherMetarArchive.sum(:temperature, :conditions => t_conds)
-      h[:t_wma_count] = WeatherMetarArchive.count(:conditions => t_conds)
-      # min/max
-      h[:t_wma_max] = WeatherMetarArchive.find(:first, :conditions => t_conds, :order => 'temperature DESC')
-      h[:t_wma_min] = WeatherMetarArchive.find(:first, :conditions => t_conds, :order => 'temperature ASC')
-
-      # wind
-      # avg
-      h[:w_wma_sum] = WeatherMetarArchive.sum(:wind, :conditions => w_conds)
-      h[:w_wma_count] = WeatherMetarArchive.count(:conditions => w_conds)
-      # max
-      h[:w_wma_max] = WeatherMetarArchive.find(:first, :conditions => w_conds, :order => 'wind DESC')
-    else
-      h[:t_wma_sum] = 0.0
-      h[:t_wma_count] = 0
-      h[:t_wma_max] = nil
-      h[:t_wma_min] = nil
-
-      h[:w_wma_sum] = 0.0
-      h[:w_wma_count] = 0
-      h[:w_wma_max] = nil
-    end
-
-    unless false == @config[:lazy_search] or true == c.logged_weather
-      # temperature
-      # avg
-      h[:t_wa_sum] = WeatherArchive.sum(:temperature, :conditions => t_conds)
-      h[:t_wa_count] = WeatherArchive.count(:conditions => t_conds)
-      # min/max
-      h[:t_wa_max] = WeatherArchive.find(:first, :conditions => t_conds, :order => 'temperature DESC')
-      h[:t_wa_min] = WeatherArchive.find(:first, :conditions => t_conds, :order => 'temperature ASC')
-
-      # wind
-      # avg
-      h[:w_wa_sum] = WeatherArchive.sum(:wind, :conditions => w_conds)
-      h[:w_wa_count] = WeatherArchive.count(:conditions => w_conds)
-      # max
-      h[:w_wa_max] = WeatherArchive.find(:first, :conditions => w_conds, :order => 'wind DESC')
-    else
-      h[:t_wa_sum] = 0.0
-      h[:t_wa_count] = 0
-      h[:t_wa_max] = nil
-      h[:t_wa_min] = nil
-
-      h[:w_wa_sum] = 0.0
-      h[:w_wa_count] = 0
-      h[:w_wa_max] = nil
-    end
-
-    # sum everything
-    if true == metar
-      # only metar
-      h[:t_sum] = h[:t_wma_sum]
-      h[:t_count] = h[:t_wma_count]
-
-      h[:w_sum] = h[:w_wma_sum]
-      h[:w_count] = h[:w_wma_count]
-
-      # min/max
-      h[:t_min] = h[:t_wma_min]
-      h[:t_max] = h[:t_wma_max]
-      h[:w_max] = h[:w_wma_max]
-
-    elsif false == metar
-      # only weather
-      h[:t_sum] = h[:t_wa_sum]
-      h[:t_count] = h[:t_wa_count]
-
-      h[:w_sum] = h[:w_wa_sum]
-      h[:w_count] = h[:w_wa_count]
-
-      # min/max
-      h[:t_min] = h[:t_wa_min]
-      h[:t_max] = h[:t_wa_max]
-      h[:w_max] = h[:w_wa_max]
-
-    else
-      # weather and metar
-      h[:t_sum] = h[:t_wa_sum] + h[:t_wma_sum]
-      h[:t_count] = h[:t_wa_count] + h[:t_wma_count]
-
-      h[:w_sum] = h[:w_wa_sum] + h[:w_wma_sum]
-      h[:w_count] = h[:w_wa_count] + h[:w_wma_count]
-
-      # min/max
-      h[:t_min] = h[:t_wma_min]
-      h[:t_max] = h[:t_wma_max]
-      h[:w_max] = h[:w_wma_max]
-      # min/max weather
-      # weather is not empty and ( min weather was empty or it wasn't empty but was higher )
-      h[:t_min] = h[:t_wa_min] if not h[:t_wa_min].nil? and (h[:t_min].nil? or h[:t_wa_min].temperature < h[:t_min].temperature)
-      h[:t_max] = h[:t_wa_max] if not h[:t_wa_max].nil? and (h[:t_max].nil? or h[:t_wa_min].temperature > h[:t_max].temperature)
-      h[:w_max] = h[:w_wa_max] if not h[:w_wa_max].nil? and (h[:w_max].nil? or h[:t_wa_min].wind > h[:w_max].wind)
-    end
-
-    # calculate average
-    h[:t_avg] = h[:t_sum].to_f / h[:t_count] if h[:t_count] > 0
-    h[:w_avg] = h[:w_sum].to_f / h[:w_count] if h[:w_count] > 0
-
-    # convert min/max values
-    h[:t_min] = { :value => h[:t_min].temperature, :time => h[:t_min].time_from } unless h[:t_min].nil?
-    h[:t_max] = { :value => h[:t_max].temperature, :time => h[:t_max].time_from } unless h[:t_max].nil?
-    h[:w_max] = { :value => h[:w_max].wind, :time => h[:w_max].time_from } unless h[:w_max].nil?
-
-    return h
-  end
 
   private
 

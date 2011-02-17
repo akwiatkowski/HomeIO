@@ -164,15 +164,25 @@ class HomeIoStandardWorker
           '<date ex. 2010-01-01, or Time object>',
           '<time ex. 12:00, or nothing>'
         ],
-        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_metar_or_weather(params) },
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_metar_or_weather(params[0], params[1], params[2]) },
         :restricted => false
       },
       {
         :command => ['cps'],
         :desc => 'calculate city periodical stats (metar or non-metar) at specified time interval',
-        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00> <time ex. 2010-01-02 12:00>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.city_calculate_periodical_stats(params) },
-        #:restricted => false
+        :usage_desc => [
+          '<id, metar code, name or name fragment>',
+          '<date from ex. 2010-01-01, or Time object>',
+          '<time from ex. 12:00, or nothing>',
+          '<date to ex. 2010-01-01, or Time object>',
+          '<time to ex. 12:00, or nothing>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.city_calculate_periodical_stats(
+          params[0],
+          params[1], params[2],
+          params[3], params[4]
+        ) },
+        :restricted => false
       },
     ]
   end
