@@ -3,6 +3,8 @@ require 'lib/communication/task_server/tcp_comm_task_server'
 require 'lib/communication/task_server/tcp_comm_task_client'
 require "lib/communication/db/extractor_active_record"
 
+# TODO write test using wrong data, check stability
+
 # Test TCP task server features
 
 class TestTaskQueue < Test::Unit::TestCase
@@ -14,7 +16,8 @@ class TestTaskQueue < Test::Unit::TestCase
     #_test_city_list_and_queue
     #_test_system_commands
     #_test_city_statistics
-    _test_metars
+    #_test_metars
+    _test_new
 
     # servers live they own life
     StartThreaded.kill_all_sub_threads
@@ -116,6 +119,44 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_not_nil res.response.first[:wind]
     assert_not_nil res.response.first[:time_from]
     # puts res.to_yaml
+
+
+    # metars array
+    task = TcpTask.factory({ :command => :wma, :params => ['EPPO', 1] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    # last metar
+    task = TcpTask.factory({ :command => :wmc, :params => ['poz'] })
+    last_metar = TcpCommTaskClient.instance.send_to_server(task)
+    last_metar = TcpCommTaskClient.instance.wait_for_task(last_metar)
+
+    #puts res.response.first.to_yaml, "****", last_metar.response.to_yaml
+    assert_kind_of Array, res.response
+    assert_equal 1, res.response.size
+    # check if response from last metar array is equal to last metar
+    assert_equal last_metar.response[:db], res.response.first
+
+
+    # weather array
+    task = TcpTask.factory({ :command => :wra, :params => ['poz', 1] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    assert_kind_of Array, res.response
+    assert_equal 1, res.response.size
+
+    task = TcpTask.factory({ :command => :wra, :params => ['poz', 5] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    assert_kind_of Array, res.response
+    assert_equal 5, res.response.size
+    #puts res.response.to_yaml
+
+  end
+
+  def _test_new
 
   end
 

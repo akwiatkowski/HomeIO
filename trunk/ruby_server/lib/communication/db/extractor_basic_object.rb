@@ -27,6 +27,8 @@ require "lib/communication/db/extractor_active_record"
 class ExtractorBasicObject < ExtractorActiveRecord
 
   # Get all cities
+  LAST_METAR_DEFAULT_COUNT = 20
+
   def get_cities
     cities = super
     attrs = cities.collect { |c| {
@@ -68,6 +70,18 @@ class ExtractorBasicObject < ExtractorActiveRecord
   # Last metar summary for all cities, only within last 6 hours
   def summary_metar_list
     res = super
+    return convert_ar_objects(res)
+  end
+
+  # Get array of last metar data
+  def get_array_of_last_metar(city, last_count = LAST_METAR_DEFAULT_COUNT)
+    res = super(city, last_count)
+    return convert_ar_objects(res)
+  end
+
+  # Get table data of last weather data
+  def get_array_of_last_weather(city, last_count)
+    res = super(city, last_count)
     return convert_ar_objects(res)
   end
 

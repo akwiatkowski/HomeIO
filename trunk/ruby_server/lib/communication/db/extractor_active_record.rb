@@ -37,6 +37,7 @@ class ExtractorActiveRecord
   def get_cities
     return City.find(:all, :conditions => { }, :order => 'calculated_distance DESC')
   end
+
   # Alias for using not overrode method
   alias_method :_get_cities, :get_cities
 
@@ -163,6 +164,99 @@ class ExtractorActiveRecord
     return array
   end
 
+  # Get array of last metars
+  def get_array_of_last_metar(city, last_count)
+    a = Array.new
+    c = search_city(city)
+    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
+    return WeatherMetarArchive.find(
+      :all,
+      :conditions => { :city_id => c.id },
+      :order => 'time_from DESC',
+      :limit => last_count
+    )
+  end
+
+  # Get table data of last weathers
+  def get_array_of_last_weather(city, last_count)
+    a = Array.new
+    c = search_city(city)
+    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
+    return WeatherArchive.find(
+      :all,
+      :conditions => { :city_id => c.id },
+      :order => 'time_from DESC',
+      :limit => last_count,
+      :include => :weather_provider
+    )
+  end
+
+  # Universal searcher, get closest object to +time+ checking within +time_range+
+  # seconds. Table should have column 'time_from'
+  #
+  # DB table need to has column 'time_from'
+  #
+  # +klass+ - AR class
+  # +key_name+ - foreign key column name used for searching
+  # +key_value+ - foreign key value
+  # +time_range+ - second range for searching, default = 24*3600
+  # +time+ - Time for searching 'when'
+  #
+  # :call-seq:
+  #   _search_archived_data(klass, key_name, key_value, time_range, time) => klass instance or nil
+  def _search_archived_data(klass, key_name, key_value, time_range, time)
+    # TODO rewrite to search between time_from and time_to, not only near time_from
+
+    conditions = [
+      "#{key_name} = ? and time_from between ? and ?",
+      key_value,
+      time - time_range,
+      time + 1
+    ]
+    obj_before = klass.find(:first,
+                            :conditions => conditions,
+                            :order => 'time_from DESC')
+
+    conditions = [
+      "#{key_name} = ? and time_from between ? and ?",
+      key_value,
+      time - 1,
+      time + time_range
+    ]
+    #puts conditions.inspect
+    obj_after = klass.find(:first,
+                           :conditions => conditions,
+                           :order => 'time_from ASC')
+
+    # nothing found
+    if obj_before.nil? and obj_after.nil?
+      return nil
+    elsif obj_before.nil?
+      return obj_after
+    elsif obj_after.nil?
+      return obj_before
+    else
+
+      time_before_diff = (obj_before.time_from - time).abs
+      time_after_diff = (obj_after.time_from - time).abs
+
+      if time_before_diff > time_after_diff
+        return obj_after
+      else
+        return obj_before
+      end
+    end
+  end
+
+  # Search nearest WeatherMetarArchive
+  def search_wma(city, time)
+    c = search_city(city)
+    return nil if c.nil?
+    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
+
+    return _search_archived_data(WeatherMetarArchive, 'city_id', c.id, 2*24*3600, time)
+  end
+
   ################
 
 
@@ -225,19 +319,6 @@ class ExtractorActiveRecord
   end
 
 
-  # Get array of last metars
-  def get_array_of_last_metar(city, last_metars)
-    a = Array.new
-    c = search_city(city)
-    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
-
-    wmas = WeatherMetarArchive.find(:all, :conditions => { :city_id => c.id }, :order => 'time_from DESC', :limit => last_metars)
-    wmas.reverse.each do |wma|
-      a << wma_with_metarcode_to_hash(wma)
-    end
-    return { :data => a, :city => c }
-  end
-
   # Convert WeatherArchive to hash
   def wa_to_hash(wa)
     c = City.find(wa.city_id)
@@ -263,27 +344,6 @@ class ExtractorActiveRecord
     }
   end
 
-  # Get table data of last weathers
-  def get_array_of_last_weather(city, last_metars)
-    a = Array.new
-    c = search_city(city)
-    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
-
-    was = WeatherArchive.find(:all, :conditions => { :city_id => c.id }, :order => 'time_from DESC', :limit => last_metars, :include => :weather_provider)
-    was.reverse.each do |wa|
-      a << wa_to_hash(wa)
-    end
-    return { :data => a, :city => c }
-  end
-
-  # Search nearest WeatherMetarArchive
-  def search_wma(city, time)
-    c = search_city(city)
-    return nil if c.nil?
-    return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
-
-    return _search_archived_data(WeatherMetarArchive, 'city_id', c.id, 2*24*3600, time)
-  end
 
   # Search nearest WeatherArchive
   def search_wa(city, time)
@@ -494,61 +554,6 @@ class ExtractorActiveRecord
   end
 
   private
-
-  # Universal searcher, get closest object to *time* checking within *time_range*
-  # seconds
-  # 
-  # DB table need to has column 'time_from'
-  #
-  # *klass* - AR class
-  # *key_name* - foreign key column name used for searching
-  # *key_value* - foreign key value
-  # *time_range* - second range for searching, default = 24*3600
-  # *time* - Time for searching 'when'
-  def _search_archived_data(klass, key_name, key_value, time_range, time)
-    conds = [
-      "#{key_name} = ? and time_from between ? and ?",
-      key_value,
-      time - time_range,
-      time + 1
-    ]
-    #puts conds.inspect
-    obj_before = klass.find(:first,
-                            :conditions => conds,
-                            :order => 'time_from DESC')
-
-    conds = [
-      "#{key_name} = ? and time_from between ? and ?",
-      key_value,
-      time - 1,
-      time + time_range
-    ]
-    #puts conds.inspect
-    obj_after = klass.find(:first,
-                           :conditions => conds,
-                           :order => 'time_from ASC')
-
-    #puts wma_before.inspect, wma_after.inspect
-
-    # nothing found
-    if obj_before.nil? and obj_after.nil?
-      return nil
-    elsif obj_before.nil?
-      return obj_after
-    elsif obj_after.nil?
-      return obj_before
-    else
-
-      time_before_diff = (obj_before.time_from - time).abs
-      time_after_diff = (obj_after.time_from - time).abs
-
-      if time_before_diff > time_after_diff
-        return obj_after
-      else
-        return obj_before
-      end
-    end
-  end
 
 
 end

@@ -103,7 +103,7 @@ class HomeIoStandardWorker
       {
         :command => ['wmc'],
         :desc => 'last metar data for city',
-        :usage_desc => [
+        :params_desc => [
           '<id, metar code, name or name fragment>'
         ],
         :proc => Proc.new { |params| ExtractorBasicObject.instance.get_last_metar(params[0]) },
@@ -118,22 +118,30 @@ class HomeIoStandardWorker
       {
         :command => ['wma'],
         :desc => 'get <count> last metars for city',
-        :usage_desc => '<id, metar code, name or name fragment> <count>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_metar(params[1], params[2]) },
-        #:restricted => false
+        :params_desc => [
+          '<id, metar code, name or name fragment>',
+          '<count>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.get_array_of_last_metar(params[0], params[1]) },
+        :restricted => false
       },
       {
         :command => ['wra'],
         :desc => 'get <count> last weather (non-metar) data for city',
-        :usage_desc => '<id, metar code, name or name fragment> <count>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.get_array_of_last_weather(params[1], params[2]) },
-        #:restricted => false
+        :params_desc => [
+          '<id, metar code, name or name fragment> <count>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.get_array_of_last_weather(params[0], params[1]) },
+        :restricted => false
       },
       {
         :command => ['wmsr'],
         :desc => 'search for metar data for city at specified time',
-        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar(params) },
+        :params_desc => [
+          '<id, metar code, name or name fragment>',
+          '<time ex. 2010-01-01 12:00>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_metar(params) },
         #:restricted => false
       },
       {
