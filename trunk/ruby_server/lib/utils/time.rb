@@ -63,8 +63,8 @@ class Time
   # Create last second of month time
   def utc_end_of_month
     days = Time.days_in_month(self.month)
-    t    = Time.utc(self.year, self.month, days, 0, 0, 0)
-    t    += 24*3600 - 1
+    t = Time.utc(self.year, self.month, days, 0, 0, 0)
+    t += 24*3600 - 1
     return t
   end
 
@@ -75,6 +75,28 @@ class Time
   #   Time.days_in_month( Fixnum month, Fixnum year ) => days in month 
   def self.days_in_month(month, year = Time.now.year)
     return ((Date.new(year, month, 1) >> 1) - 1).day
+  end
+
+
+  # Create Time from YYYY-MM-DD HH:mm string format
+  #
+  # :call-seq:
+  #   Time.create_time_from_string( String date, String time ) => Time
+  def self.create_time_from_string(date, time)
+    date =~ /(\d{4})-(\d{1,2})-(\d{1,2})/
+    y = $1.to_i
+    m = $2.to_i
+    d = $3.to_i
+
+    if time =~ /(\d{1,2}):(\d{1,2})/
+      h = $1.to_i
+      min = $2.to_i
+    else
+      h = 0
+      min = 0
+    end
+
+    return Time.mktime(y, m, d, h, min, 0, 0)
   end
 
 

@@ -199,16 +199,15 @@ class ExtractorActiveRecord
   # +klass+ - AR class
   # +key_name+ - foreign key column name used for searching
   # +key_value+ - foreign key value
-  # +time_range+ - second range for searching, default = 24*3600
-  # +time+ - Time for searching 'when'
+  # +time_range+ - range for searching in seconds, default = 24*3600
+  # +time+ - Time for searching in Time
   #
   # :call-seq:
   #   _search_archived_data(klass, key_name, key_value, time_range, time) => klass instance or nil
   def _search_archived_data(klass, key_name, key_value, time_range, time)
-    # TODO rewrite to search between time_from and time_to, not only near time_from
-
+    # changed here time_from to time_to for searching withing AR object time ranges
     conditions = [
-      "#{key_name} = ? and time_from between ? and ?",
+      "#{key_name} = ? and time_to between ? and ?",
       key_value,
       time - time_range,
       time + 1
@@ -253,7 +252,6 @@ class ExtractorActiveRecord
     c = search_city(city)
     return nil if c.nil?
     return nil if true == @config[:lazy_search] and false == c.logged_metar # lazy search
-
     return _search_archived_data(WeatherMetarArchive, 'city_id', c.id, 2*24*3600, time)
   end
 
@@ -352,13 +350,6 @@ class ExtractorActiveRecord
     return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
 
     return _search_archived_data(WeatherArchive, 'city_id', c.id, 2*24*3600, time)
-  end
-
-  # Search nearest metar, return hash
-  def search_metar(city, time)
-    wma = search_wma(city, time)
-    return nil if wma.nil?
-    return wma_with_metarcode_to_hash(wma)
   end
 
   # Search nearest weather, return hash

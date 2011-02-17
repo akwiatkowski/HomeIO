@@ -139,10 +139,11 @@ class HomeIoStandardWorker
         :desc => 'search for metar data for city at specified time',
         :params_desc => [
           '<id, metar code, name or name fragment>',
-          '<time ex. 2010-01-01 12:00>'
+          '<date ex. 2010-01-01, or Time object>',
+          '<time ex. 12:00, or nothing>'
         ],
-        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_metar(params) },
-        #:restricted => false
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_wma(params[0], params[1], params[2]) },
+        :restricted => false
       },
       {
         :command => ['wrsr'],

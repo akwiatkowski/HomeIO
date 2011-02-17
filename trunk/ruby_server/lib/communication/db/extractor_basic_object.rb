@@ -85,6 +85,22 @@ class ExtractorBasicObject < ExtractorActiveRecord
     return convert_ar_objects(res)
   end
 
+# Search nearest WeatherMetarArchive
+  #
+  # :call-seq:
+  #   search_wma( String city, String date, String time) => WeatherMetarArchive or nil
+  #   search_wma( String city, Time) => WeatherMetarArchive or nil
+  def search_wma(city, date_string_or_time, time_string = '0:00')
+    if date_string_or_time.kind_of? Time
+      time = date_string_or_time
+    else
+      time = Time.create_time_from_string(date_string_or_time, time_string)
+    end
+
+    res = super(city, time)
+    return convert_ar_objects(res)
+  end
+
 
   private
 

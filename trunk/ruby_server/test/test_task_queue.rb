@@ -154,6 +154,28 @@ class TestTaskQueue < Test::Unit::TestCase
     assert_equal 5, res.response.size
     #puts res.response.to_yaml
 
+
+    # searching of metar
+    # time of last metar
+    task = TcpTask.factory({ :command => :wmc, :params => ['poz'] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    last_metar_time = res.response[:db][:time_from]
+
+    # TODO possible time zone offset problems
+    # search for metar
+    task = TcpTask.factory({ :command => :wmsr, :params => ['poz', last_metar_time] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    puts res.response.to_yaml
+    assert_equal last_metar_time, res.response[:time_from]
+
+    # search for metar, string data
+    task = TcpTask.factory({ :command => :wmsr, :params => ['poz', last_metar_time.to_date_human, last_metar_time.to_time_human] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    puts res.response.to_yaml
+    assert_equal last_metar_time, res.response[:time_from]
   end
 
   def _test_new
