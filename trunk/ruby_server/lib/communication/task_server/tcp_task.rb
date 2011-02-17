@@ -46,6 +46,8 @@ class TcpTask
 
   # Result from server
   attr_accessor :response
+  # Result from server
+  alias_method :result, :response
 
   # Result from server
   attr_accessor :now

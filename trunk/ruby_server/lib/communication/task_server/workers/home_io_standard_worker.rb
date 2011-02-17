@@ -148,16 +148,24 @@ class HomeIoStandardWorker
       {
         :command => ['wrsr'],
         :desc => 'search for weather (non-metar) data for city at specified time',
-        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_weather(params) },
-        #:restricted => false
+        :params_desc => [
+          '<id, metar code, name or name fragment>',
+          '<date ex. 2010-01-01, or Time object>',
+          '<time ex. 12:00, or nothing>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_wa(params[0], params[1], params[2]) },
+        :restricted => false
       },
       {
         :command => ['wsr'],
         :desc => 'search for weather (metar or non-metar) data for city at specified time',
-        :usage_desc => '<id, metar code, name or name fragment> <time ex. 2010-01-01 12:00>',
-        :proc => Proc.new { |params| ExtractorActiveRecord.instance.search_metar_or_weather(params) },
-        #:restricted => false
+        :params_desc => [
+          '<id, metar code, name or name fragment>',
+          '<date ex. 2010-01-01, or Time object>',
+          '<time ex. 12:00, or nothing>'
+        ],
+        :proc => Proc.new { |params| ExtractorBasicObject.instance.search_metar_or_weather(params) },
+        :restricted => false
       },
       {
         :command => ['cps'],

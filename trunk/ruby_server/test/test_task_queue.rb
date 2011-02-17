@@ -155,7 +155,7 @@ class TestTaskQueue < Test::Unit::TestCase
     #puts res.response.to_yaml
 
 
-    # searching of metar
+    # searching for metar
     # time of last metar
     task = TcpTask.factory({ :command => :wmc, :params => ['poz'] })
     res = TcpCommTaskClient.instance.send_to_server(task)
@@ -176,6 +176,20 @@ class TestTaskQueue < Test::Unit::TestCase
     res = TcpCommTaskClient.instance.wait_for_task(res)
     puts res.response.to_yaml
     assert_equal last_metar_time, res.response[:time_from]
+
+
+    # search for weather
+    task = TcpTask.factory({ :command => :wra, :params => ['poz', 1] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+    last_weather_time = res.response.first[:time_from]
+    last_weather = res.response.first
+
+    task = TcpTask.factory({ :command => :wrsr, :params => ['poz', last_weather_time] })
+    res = TcpCommTaskClient.instance.send_to_server(task)
+    res = TcpCommTaskClient.instance.wait_for_task(res)
+
+    assert_equal last_weather, res.response
   end
 
   def _test_new

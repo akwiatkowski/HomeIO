@@ -255,6 +255,14 @@ class ExtractorActiveRecord
     return _search_archived_data(WeatherMetarArchive, 'city_id', c.id, 2*24*3600, time)
   end
 
+  # Search nearest WeatherArchive
+  def search_wa(city, time)
+    c = search_city(city)
+    return nil if c.nil?
+    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
+    return _search_archived_data(WeatherArchive, 'city_id', c.id, 2*24*3600, time)
+  end
+
   ################
 
 
@@ -342,15 +350,6 @@ class ExtractorActiveRecord
     }
   end
 
-
-  # Search nearest WeatherArchive
-  def search_wa(city, time)
-    c = search_city(city)
-    return nil if c.nil?
-    return nil if true == @config[:lazy_search] and false == c.logged_weather # lazy search
-
-    return _search_archived_data(WeatherArchive, 'city_id', c.id, 2*24*3600, time)
-  end
 
   # Search nearest weather, return hash
   def search_weather(city, time)
