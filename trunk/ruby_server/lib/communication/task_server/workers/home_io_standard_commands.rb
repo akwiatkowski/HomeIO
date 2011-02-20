@@ -29,7 +29,8 @@ class HomeIoStandardCommands
         :command => ['help', '?'],
         :desc => 'this help',
         :proc => Proc.new { |params| HomeIoStandardWorker.commands },
-        :restricted => false
+        :restricted => false,
+        :now => true # no wait command
       },
       {
         :command => ['c', 'cities'],
@@ -149,5 +150,5 @@ class HomeIoStandardCommands
     ]
   end
 
-  
+
 end

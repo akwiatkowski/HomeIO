@@ -36,8 +36,6 @@ class ImCommandResolver
 
   # Send command via tcp
   def process_command(string_command, from = 'N/A')
-    return string_command
-
     tcp_command = encapsulate_command(string_command, from)
 
     # all commands are queued, all but 'help' and 'queue'
@@ -46,20 +44,21 @@ class ImCommandResolver
       wait = false
     end
 
-    response_task = SupervisorClient.send_to_server_uni(tcp_command, wait)
+    response_task = TcpCommTaskClient.instance.send_to_server_and_wait(tcp_command)
 
-    return response_task.response
+    #return response_task.response
+    return response_task.response.inspect
   end
 
   private
 
   def encapsulate_command(string_command, from)
+    split = string_command.split(" ")
+
     return {
-      :command => SupervisorCommands::IM_COMMAND,
-      :params => {
-        :string => string_command,
-        :from => from.to_s
-      }
+      :command => split.shift,
+      :params => split,
+      :channel => :im
     }
   end
 
