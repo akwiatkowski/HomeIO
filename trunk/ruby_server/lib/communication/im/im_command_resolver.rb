@@ -36,7 +36,9 @@ class ImCommandResolver
 
   # Send command via tcp
   def process_command(string_command, from = 'N/A')
-    tcp_command = encapsulate_command(string_command, from)
+    tcp_command = TcpTask.factory(
+      encapsulate_command(string_command, from)
+    )
 
     # all commands are queued, all but 'help' and 'queue'
     wait = true
@@ -45,9 +47,7 @@ class ImCommandResolver
     end
 
     response_task = TcpCommTaskClient.instance.send_to_server_and_wait(tcp_command)
-
-    #return response_task.response
-    return response_task.response.inspect
+    return response_task.response
   end
 
   private
@@ -58,7 +58,7 @@ class ImCommandResolver
     return {
       :command => split.shift,
       :params => split,
-      :channel => :im
+      :string_response => true
     }
   end
 

@@ -80,6 +80,8 @@ class TcpTask
   # Additional parameter for error
   attr_reader :error_params
 
+  # Response of this command should be in human readable format, String class
+  attr_accessor :string_response
 
   # Create new task
   #
@@ -99,6 +101,10 @@ class TcpTask
 
     @priority = 0
     @priority = h[:priority].to_i unless h[:priority].nil?
+
+    # response of this task should be in String
+    @string_response = false
+    @string_response = true if h[:string_response]
 
     @error = false
     @time_new = Time.now

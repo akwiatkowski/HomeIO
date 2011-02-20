@@ -31,7 +31,6 @@ class HomeIoStandardWorker
   include Singleton
 
   def initialize
-    @commands = commands
   end
 
   # Process command/TCP task
@@ -43,26 +42,37 @@ class HomeIoStandardWorker
     return :wrong_object_type unless tcp_task.kind_of? TcpTask
 
     # select command
-    command = @commands.select { |c| c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0 }
-    return :wrong_command if command.size == 0
+    _commands = HomeIoStandardCommands.commands.select { |c| c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0 }
+    return :wrong_command if _commands.size == 0
 
-    command = command.first
+    command = _commands.first
     begin
-      return command[:proc].call(tcp_task.params)
+      res = command[:proc].call(tcp_task.params)
+      # process result to String when set
+      return process_to_string(command, res) if tcp_task.string_response
     rescue => e
       command = TcpTask.new
       command.set_error!(:processing_error, e.to_s)
       log_error(self, e, "command: #{tcp_task.inspect}")
       show_error(e)
-      return { :error => e.to_s }
+
+      res = { :error => e.to_s }
+      res = "Error: #{e.to_s}" if tcp_task.string_response
+      return res
     end
   end
 
   private
 
-  # Commands definition
-  def commands
-    HomeIoStandardCommands.commands
+  # Process to String when it was set
+  def process_to_string(command, res)
+    if command[:string_proc].nil?
+      # Proc for processing to String was not defined
+      return res.inspect
+    else
+      # use Proc
+      return command[:string_proc].call(res)
+    end
   end
 
 end

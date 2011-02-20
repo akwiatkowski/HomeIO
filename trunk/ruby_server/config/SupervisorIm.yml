@@ -1,6 +1,6 @@
 # IM supervisor configuration
 ---
 # restart bots every X seconds
-:restart_intervals: 10
+:restart_intervals: 7200
 # wait offline before starting again
-:restart_sleep: 1
+:restart_sleep: 5

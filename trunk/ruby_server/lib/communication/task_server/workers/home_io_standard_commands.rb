@@ -22,13 +22,28 @@
 require "lib/communication/db/extractor_basic_object"
 
 class HomeIoStandardCommands
+
   # Command list
   def self.commands
+    # main String of command
+    #:command => ['help', '?']
+    # String description what does it
+    #:desc => 'this help'
+    # Proc execution of command
+    #:proc => Proc.new { |params| HomeIoStandardWorker.commands }
+    # Proc process :proc result to String value
+    #:string_proc => Proc.new { |resp| resp.inspect }
+    # needed some auth., not implemented yet
+    #:restricted => false
+    # run always now, probably not implemented yet
+    #:now => true # no wait command
+
     [
       {
         :command => ['help', '?'],
         :desc => 'this help',
-        :proc => Proc.new { |params| HomeIoStandardWorker.commands },
+        :proc => Proc.new { |params| HomeIoStandardCommands.commands },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
         :restricted => false,
         :now => true # no wait command
       },
@@ -133,7 +148,7 @@ class HomeIoStandardCommands
       {
         :command => ['cps'],
         :desc => 'calculate city periodical stats (metar or non-metar) at specified time interval',
-        :usage_desc => [
+        :params_desc => [
           '<id, metar code, name or name fragment>',
           '<date from ex. 2010-01-01, or Time object>',
           '<time from ex. 12:00, or nothing>',
@@ -148,6 +163,18 @@ class HomeIoStandardCommands
         :restricted => false
       },
     ]
+  end
+
+  # Process command list to String
+  def self.string_commands( res )
+    str = ""
+    res.each do |c|
+      params = ""
+      params = c[:params_desc].join(' ') if c[:params_desc].kind_of? Array
+      line = "#{c[:command].join(", ")} - #{c[:desc]}, usage ex. '#{c[:command].first} #{params}'".strip + "\n"
+      str += line
+    end
+    return str
   end
 
 
