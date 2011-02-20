@@ -67,10 +67,7 @@ class ImBots
 
   def initialize
     @config = ConfigLoader.instance.config(self.class)
-
-    require 'lib/communication/im_command_resolver'
     @processor = ImCommandResolver.instance
-
     @bots = [
       GaduBot.instance,
       Xmpp4rBot.instance,
@@ -83,11 +80,11 @@ class ImBots
       b.processor = @processor
       b.start
     end
-    
-    if true == @config[:run_autoupdater]
-      require './lib/plugins/im/im_autoupdated_status.rb'
-      ImAutoupdatedStatus.instance.run_autoupdater
-    end
+
+#    if true == @config[:run_autoupdater]
+#      require './lib/plugins/im/im_autoupdated_status.rb'
+#      ImAutoupdatedStatus.instance.run_autoupdater
+#    end
   end
 
   # Stop all bots

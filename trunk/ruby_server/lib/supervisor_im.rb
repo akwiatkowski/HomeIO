@@ -28,15 +28,12 @@ class SupervisorIm
   def initialize
     @config = ConfigLoader.instance.config(self)
 
-    puts 1
-    @rt_im = StartThreaded.start_threaded(1, self) do
+    @rt_im = StartThreaded.start_threaded(@config[:restart_sleep], self) do
       ImBots.instance.start
-      sleep( @condif[:restart_intervals])
+      sleep(@config[:restart_intervals])
       ImBots.instance.stop
     end
-    puts @rt_im
 
-    sleep 20
   end
 
 end
