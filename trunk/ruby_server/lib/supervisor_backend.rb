@@ -41,8 +41,8 @@ class SupervisorBackend
       WeatherRipper.instance.start
     end
 
-    @rt_hello = StartThreaded.start_threaded(10, self) do
-      puts "HELLO #{Time.now}"
+    @rt_hello = StartThreaded.start_threaded(300, self) do
+      puts "...alive #{Time.now}"
     end
 
     @rt_cities_flag_update = StartThreaded.start_threaded(@config[:intervals][:update_logged_flag], self) do
