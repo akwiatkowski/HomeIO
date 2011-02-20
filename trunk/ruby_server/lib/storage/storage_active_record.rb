@@ -56,7 +56,7 @@ class StorageActiveRecord < StorageDbAbstract
   end
 
   # Drop tables in DB
-  def deinit
+  def destroy
     Dir["lib/storage/active_record/migrations/*.rb"].each { |file| require file }
     ActiveRecordInitMigration.down
   end

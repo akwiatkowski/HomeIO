@@ -4,3 +4,4 @@
 :intervals:
   :MetarLogger: 1800
   :WeatherRipper: 7200
+  :update_logged_flag: 8000

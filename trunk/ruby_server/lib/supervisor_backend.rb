@@ -30,21 +30,33 @@ class SupervisorBackend
   def initialize
     @config = ConfigLoader.instance.config(self)
 
-    rt_metar = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
-      sleep 10
+    @rt_metar = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
+      sleep 2
       MetarLogger.instance.start
     end
 
-    rt_weather = StartThreaded.start_threaded(@config[:intervals][:WeatherRipper], self) do
-      sleep 5
+    @rt_weather = StartThreaded.start_threaded(@config[:intervals][:WeatherRipper], self) do
+      sleep 3
       WeatherRipper.instance.start
     end
 
-    rt_hello = StartThreaded.start_threaded(10, self) do
+    @rt_hello = StartThreaded.start_threaded(10, self) do
       puts "HELLO #{Time.now}"
     end
+
+    @rt_cities_flag_update = StartThreaded.start_threaded(@config[:intervals][:update_logged_flag], self) do
+      sleep 300
+      update_logged_flag
+    end
+  end
+
+  private
+
+  # Update flags used for not searching through entire table when city has no weather or metar data
+  def update_logged_flag
+    StorageActiveRecord.instance.update_logged_flag
   end
 
 end
 
-a = SupervisorBackend.new
+#a = SupervisorBackend.new

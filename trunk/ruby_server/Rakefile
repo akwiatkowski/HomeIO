@@ -15,7 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 
 require 'rubygems'
 require 'rake'
@@ -66,27 +66,20 @@ namespace :db do
     Storage.instance.init
   end
 
-  desc 'Initialize DBs (some dev fixes)'
-  task :init_tmp do
+#  desc 'Initialize DBs (some dev fixes)'
+#  task :init_tmp do
+#    require './lib/storage/storage.rb'
+#    StorageActiveRecord.instance
+#    ActiveRecordInitMigration2.up
+#  end
+
+  desc 'Destroy DB tables'
+  task :destroy do
     require './lib/storage/storage.rb'
-    StorageActiveRecord.instance
-    ActiveRecordInitMigration2.up
+    Storage.instance.destroy
   end
 
-  desc 'Clean DBs'
-  task :deinit do
-    require './lib/storage/storage.rb'
-    Storage.instance.deinit
-  end
-
-  desc 'Populate cities'
-  task :pop_cities do
-    require './lib/storage/storage.rb'
-    StorageActiveRecord.instance
-    City.create_from_config
-  end
-
-  desc 'Update logged mark'
+  desc 'Update logged mark for faster searching'
   task :update_logged_mark do
     require './lib/storage/storage.rb'
     StorageActiveRecord.instance.update_logged_flag
@@ -114,33 +107,33 @@ namespace :metar do
     desc 'Process all CITY metars logged in raw format'
     task :city do
       require './lib/metar_logger.rb'
-      puts MetarLogger.instance.get_logged_cities.collect{|c| "#{c[:code]} - #{c[:name]} (#{c[:country]})"}.join("\n")
+      puts MetarLogger.instance.get_logged_cities.collect { |c| "#{c[:code]} - #{c[:name]} (#{c[:country]})" }.join("\n")
 
       puts "Choose city:"
       city = STDIN.gets.strip
 
-      if metar_cities.select{|c| c[:code] == city}.size == 1
+      if metar_cities.select { |c| c[:code] == city }.size == 1
         puts "Processing #{city}"
-        MetarMassProcessor.instance.process_all_for_city( city )
+        MetarMassProcessor.instance.process_all_for_city(city)
       end
     end
 
     desc "Create list of all logged cities in '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :redefine do
       require './lib/metar_logger.rb'
-      cities =  MetarLogger.instance.get_logged_cities.collect{|c| c[:code]}
-      File.open( DEFINED_CITIES_TO_PROCESS_FILE, 'w' ) do |out|
-        YAML.dump( cities, out )
+      cities = MetarLogger.instance.get_logged_cities.collect { |c| c[:code] }
+      File.open(DEFINED_CITIES_TO_PROCESS_FILE, 'w') do |out|
+        YAML.dump(cities, out)
       end
     end
 
     desc "Process all cities from '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :predefined do
       require './lib/metar/metar_mass_processor.rb'
-      cities = YAML::load_file( DEFINED_CITIES_TO_PROCESS_FILE )
+      cities = YAML::load_file(DEFINED_CITIES_TO_PROCESS_FILE)
       cities = cities.reverse if REVERSE_CITIES == true
       cities.each do |c|
-        MetarMassProcessor.instance.process_all_for_city( c )
+        MetarMassProcessor.instance.process_all_for_city(c)
       end
     end
   end
@@ -195,24 +188,24 @@ namespace :client do
   desc 'Ping server'
   task :ping do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :ping, :now => true}
-    response = SupervisorClient.send_to_server_non_wait( command )
+    command = { :command => :ping, :now => true }
+    response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
   end
 
   desc 'Test command processor'
   task :test do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :test}
-    response = SupervisorClient.send_to_server_non_wait( command )
+    command = { :command => :test }
+    response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
   end
 
   desc 'Test command processor (wait)'
   task :test_wait do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :test_wait}
-    response = SupervisorClient.send_to_server_and_wait( command )
+    command = { :command => :test_wait }
+    response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
   end
 
@@ -237,8 +230,8 @@ namespace :client do
   desc 'Fetch weather (non wait)'
   task :fetch_weather do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_weather}
-    response = SupervisorClient.send_to_server( command )
+    command = { :command => :fetch_weather }
+    response = SupervisorClient.send_to_server(command)
     puts response.inspect
   end
 
@@ -246,8 +239,8 @@ namespace :client do
   desc 'Fetch weather (wait for end)'
   task :fetch_weather_wait do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_weather}
-    response = SupervisorClient.send_to_server_and_wait( command )
+    command = { :command => :fetch_weather }
+    response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
   end
 
@@ -255,8 +248,8 @@ namespace :client do
   desc 'Fetch weather (now!)'
   task :fetch_weather_now do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_weather}
-    response = SupervisorClient.send_to_server_non_wait( command )
+    command = { :command => :fetch_weather }
+    response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
   end
 
@@ -265,8 +258,8 @@ namespace :client do
   desc 'Fetch METAR (non wait)'
   task :fetch_metar do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_metar}
-    response = SupervisorClient.send_to_server( command )
+    command = { :command => :fetch_metar }
+    response = SupervisorClient.send_to_server(command)
     puts response.inspect
   end
 
@@ -274,8 +267,8 @@ namespace :client do
   desc 'Fetch METAR (wait)'
   task :fetch_metar_wait do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_metar}
-    response = SupervisorClient.send_to_server_and_wait( command )
+    command = { :command => :fetch_metar }
+    response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
   end
 
@@ -283,8 +276,8 @@ namespace :client do
   desc 'Fetch METAR (now!)'
   task :fetch_metar_now do
     require 'lib/supervisor/supervisor_client.rb'
-    command = {:command => :fetch_metar}
-    response = SupervisorClient.send_to_server_non_wait( command )
+    command = { :command => :fetch_metar }
+    response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
   end
 
@@ -327,7 +320,6 @@ namespace :action do
   end
 
 end
-
 
 
 namespace :gems do

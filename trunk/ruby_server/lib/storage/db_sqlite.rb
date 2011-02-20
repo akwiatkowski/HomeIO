@@ -192,7 +192,7 @@ class DbSqlite < StorageDbAbstract
 
 
   # Store standard object
-  def standarized_store( obj, d )
+  def standardized_store( obj, d )
     puts obj.inspect, d.inspect
     raise 'Not implemented'
   end

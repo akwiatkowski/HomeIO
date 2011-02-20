@@ -57,8 +57,8 @@ class StorageDbAbstract
       # not standard storage
       other_store(obj)
     else
-      # standarized store
-      standarized_store(obj, d)
+      # standardized store
+      standardized_store(obj, d)
     end
 
   end
@@ -69,7 +69,7 @@ class StorageDbAbstract
   end
 
   # Destructive rolling back initialization from method *init*
-  def deinit
+  def destroy
     raise 'Not implemented'
   end
 
@@ -99,7 +99,7 @@ class StorageDbAbstract
   end
 
   # Store standard object
-  def standarized_store(obj, d)
+  def standardized_store(obj, d)
     raise 'Not implemented'
   end
 

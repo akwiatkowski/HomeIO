@@ -23,10 +23,9 @@
 require 'singleton'
 require 'lib/utils/constants'
 
-# better way to load all files from dir
-require 'lib/utils/core_classes'
-require_files_from_directory("lib/storage/")
-
+require "lib/storage/metar_storage"
+require "lib/storage/weather_storage"
+require "lib/storage/storage_active_record"
 
 # Rips raw metar from various sites
 
@@ -36,39 +35,39 @@ class Storage
   attr_reader :klasses
 
   def initialize
-    @storages = [
-      MetarStorage.instance,
-      WeatherStorage.instance,
-      DbSqlite.instance,
-      #DbMysql.instance,
-      #DbPostgres.instance
-      StorageActiveRecord.instance
+    @storage = [
+      MetarStorage.instance, # strongly needed
+      WeatherStorage.instance, # recommended
+      #DbSqlite.instance, # is not so fresh
+      #DbMysql.instance, # not implemented
+      #DbPostgres.instance, # not implemented
+      StorageActiveRecord.instance # obligatory
     ]
 
     # delete disabled
-    @storages.delete_if { |s| s.enabled == false }
+    @storage.delete_if { |s| s.enabled == false }
 
   end
 
   # One time initialization
   def init
-    @storages.each do |s|
+    @storage.each do |s|
       s.init
     end
   end
 
   # One time destructive uninitialization
-  def deinit
+  def destroy
     # TODO insert warning or sth
-    @storages.each do |s|
-      s.deinit
+    @storage.each do |s|
+      s.destroy
     end
   end
 
   # Store object wherever it is possible
   def store(obj)
     store_outputs = Array.new
-    @storages.each do |s|
+    @storage.each do |s|
       store_outputs << s.store(obj)
     end
     return store_outputs
@@ -76,7 +75,7 @@ class Storage
 
   # Flush all storage classes
   def flush
-    @storages.each do |s|
+    @storage.each do |s|
       s.flush
     end
   end

@@ -44,7 +44,7 @@ class MetarStorage
     prepare_main_directories
   end
 
-  def deinit
+  def destroy
     # wont be implemented!
   end
 
