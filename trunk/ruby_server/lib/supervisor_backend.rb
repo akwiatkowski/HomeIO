@@ -23,6 +23,7 @@
 require "lib/utils/start_threaded"
 require "lib/metar_logger"
 require "lib/weather_ripper"
+require "lib/communication/task_server/tcp_comm_task_server"
 
 # Backend supervisor
 
@@ -48,6 +49,9 @@ class SupervisorBackend
       sleep 300
       update_logged_flag
     end
+
+    @task_comm_server = TcpCommTaskServer.new
+    @rt_task_comm_server = @task_comm_server.start
   end
 
   private
@@ -59,4 +63,5 @@ class SupervisorBackend
 
 end
 
+# how to use? that way
 #a = SupervisorBackend.new

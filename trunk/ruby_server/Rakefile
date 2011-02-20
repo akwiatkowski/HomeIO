@@ -75,13 +75,13 @@ namespace :db do
 
   desc 'Destroy DB tables'
   task :destroy do
-    require './lib/storage/storage.rb'
+    require 'lib/storage/storage'
     Storage.instance.destroy
   end
 
-  desc 'Update logged mark for faster searching'
+  desc 'Force update logged mark for faster searching'
   task :update_logged_mark do
-    require './lib/storage/storage.rb'
+    require 'lib/storage/storage'
     StorageActiveRecord.instance.update_logged_flag
   end
 
@@ -98,15 +98,13 @@ namespace :metar do
 
     desc 'Process all metars logged in raw format'
     task :all do
-      #require './lib/metar_logger.rb'
-      #MetarLogger.instance.processor.process_all
-      require './lib/metar/metar_mass_processor.rb'
+      require 'lib/metar/metar_mass_processor'
       MetarMassProcessor.instance.process_all
     end
 
     desc 'Process all CITY metars logged in raw format'
     task :city do
-      require './lib/metar_logger.rb'
+      require 'lib/metar_logger'
       puts MetarLogger.instance.get_logged_cities.collect { |c| "#{c[:code]} - #{c[:name]} (#{c[:country]})" }.join("\n")
 
       puts "Choose city:"
@@ -120,7 +118,7 @@ namespace :metar do
 
     desc "Create list of all logged cities in '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :redefine do
-      require './lib/metar_logger.rb'
+      require 'lib/metar_logger'
       cities = MetarLogger.instance.get_logged_cities.collect { |c| c[:code] }
       File.open(DEFINED_CITIES_TO_PROCESS_FILE, 'w') do |out|
         YAML.dump(cities, out)
@@ -129,7 +127,7 @@ namespace :metar do
 
     desc "Process all cities from '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :predefined do
-      require './lib/metar/metar_mass_processor.rb'
+      require 'lib/metar/metar_mass_processor'
       cities = YAML::load_file(DEFINED_CITIES_TO_PROCESS_FILE)
       cities = cities.reverse if REVERSE_CITIES == true
       cities.each do |c|
@@ -142,60 +140,40 @@ end
 # stars server
 namespace :supervisor do
 
-  desc 'Start supervisor server without IM'
-  task :start_no_im do
-    require './lib/supervisor/supervisor.rb'
-    s = Supervisor.instance
-    s.start
+  desc 'Start backend'
+  task :backend do
+    require 'lib/supervisor_backend'
+    SupervisorBackend.new
   end
 
-  desc 'Start supervisor server without IM'
+  desc 'Start IM server'
   task :start do
-    require 'lib/supervisor/supervisor'
-    s = Supervisor.instance
-    s.start
-  end
-
-
-  desc 'Start supervisor server with IM'
-  task :start_with_im do
-    require 'lib/plugins/im/im_bots.rb'
-    im = ImBots.instance
-    im.start
-
-    # TODO crashing, why?
-    sleep(1)
-
-    require 'lib/supervisor/supervisor.rb'
-    s = Supervisor.instance
-    s.start
-  end
-
-  desc 'Start IM bots'
-  task :im do
-    require 'lib/plugins/im/im_bots.rb'
-    im = ImBots.instance
-    puts "IM bots starting at #{Time.now}"
-    im.start_loop
+    require 'lib/im_server'
+    ImServer.new
+#    require 'lib/plugins/im/im_bots'
+#    im = ImBots.instance
+#    puts "IM bots starting at #{Time.now}"
+#    im.start_loop
   end
 
 end
 
-# tcp commands
+# tcp client commands
 
 namespace :client do
 
   desc 'Ping server'
   task :ping do
-    require 'lib/supervisor/supervisor_client.rb'
-    command = { :command => :ping, :now => true }
-    response = SupervisorClient.send_to_server_non_wait(command)
+    require "lib/communication/task_server/tcp_comm_task_client"
+
+    command = TcpTask.factory({ :command => :ping, :now => true })
+    response = TcpCommTaskClient.instance.send_to_server_and_wait(command)
     puts response.inspect
   end
 
   desc 'Test command processor'
   task :test do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :test }
     response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
@@ -203,7 +181,7 @@ namespace :client do
 
   desc 'Test command processor (wait)'
   task :test_wait do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :test_wait }
     response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
@@ -212,14 +190,14 @@ namespace :client do
   desc 'Fetch queue'
   task :queue do
     require 'yaml'
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     puts SupervisorClient.get_queue.to_yaml
   end
 
   #  # TODO write interface, need priorities and threads
   #  desc 'Process METAR for city'
   #  task :process_metar_city do
-  #    require 'lib/supervisor/supervisor_client.rb'
+  #    require 'lib/supervisor/supervisor_client'
   #    #command = {:command => :process_metar_city, :city => 'EPPO', :now => true}
   #    command = {:command => :process_metar_city, :city => 'EPPO'}
   #    response = SupervisorClient.new.send_to_server( command )
@@ -229,7 +207,7 @@ namespace :client do
   # Send task to queue
   desc 'Fetch weather (non wait)'
   task :fetch_weather do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_weather }
     response = SupervisorClient.send_to_server(command)
     puts response.inspect
@@ -238,7 +216,7 @@ namespace :client do
   # Send task and wait for answer
   desc 'Fetch weather (wait for end)'
   task :fetch_weather_wait do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_weather }
     response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
@@ -247,7 +225,7 @@ namespace :client do
   # Send task and do it now
   desc 'Fetch weather (now!)'
   task :fetch_weather_now do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_weather }
     response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
@@ -257,7 +235,7 @@ namespace :client do
   # Send task to queue
   desc 'Fetch METAR (non wait)'
   task :fetch_metar do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_metar }
     response = SupervisorClient.send_to_server(command)
     puts response.inspect
@@ -266,7 +244,7 @@ namespace :client do
   # Send task and wait for answer
   desc 'Fetch METAR (wait)'
   task :fetch_metar_wait do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_metar }
     response = SupervisorClient.send_to_server_and_wait(command)
     puts response.inspect
@@ -275,7 +253,7 @@ namespace :client do
   # Send task and do it now
   desc 'Fetch METAR (now!)'
   task :fetch_metar_now do
-    require 'lib/supervisor/supervisor_client.rb'
+    require 'lib/supervisor/supervisor_client'
     command = { :command => :fetch_metar }
     response = SupervisorClient.send_to_server_non_wait(command)
     puts response.inspect
@@ -289,7 +267,7 @@ namespace :action do
   desc 'Fetch weather (supervisor not needed)'
   task :fetch_weather do
     t = Time.now
-    require 'lib/weather_ripper.rb'
+    require 'lib/weather_ripper'
     w = WeatherRipper.instance
     w.fetch
     puts "Time: #{Time.now.to_f - t.to_f}"
@@ -298,11 +276,11 @@ namespace :action do
   desc 'Fetch weather and then metar (supervisor not needed)'
   task :fetch_weather_metar do
     t = Time.now
-    require 'lib/weather_ripper.rb'
+    require 'lib/weather_ripper'
     w = WeatherRipper.instance
     w.fetch
 
-    require 'lib/metar_logger.rb'
+    require 'lib/metar_logger'
     Thread.abort_on_exception = true
     m = MetarLogger.instance
     output = m.fetch_and_store
@@ -312,7 +290,7 @@ namespace :action do
   desc 'Fetch METAR (supervisor not needed)'
   task :fetch_metar do
     t = Time.now
-    require 'lib/metar_logger.rb'
+    require 'lib/metar_logger'
     Thread.abort_on_exception = true
     m = MetarLogger.instance
     output = m.fetch_and_store
