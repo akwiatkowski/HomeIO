@@ -19,32 +19,26 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require "lib/communication/task_server/task_worker"
-require "lib/communication/task_server/workers/home_io_standard_worker"
+require "lib/utils/config_loader"
+require "lib/utils/start_threaded"
+require "lib/communication/im/im_bots"
 
-# Worker for HomeIO, process command in queue
-#
-# If command is :test when always return :od
+class SupervisorIm
 
-class HomeIoTaskWorker < TaskWorker
+  def initialize
+    @config = ConfigLoader.instance.config(self)
 
-  private
-
-  # Process one task
-  #
-  # :call-seq:
-  #   _process_task( TcpTask )
-  def _process_task(q)
-    # standard test command
-    if q.command == :test
-      q.response = :ok
-      return q
+    puts 1
+    @rt_im = StartThreaded.start_threaded(1, self) do
+      ImBots.instance.start
+      sleep( @condif[:restart_intervals])
+      ImBots.instance.stop
     end
+    puts @rt_im
 
-    # process command using standardized worker
-    q.response = HomeIoStandardWorker.instance.process(q)
-    return q
-
+    sleep 20
   end
 
 end
+
+i = SupervisorIm.new

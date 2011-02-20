@@ -1,0 +1,3 @@
+# IM supervisor configuration
+---
+:restart_intervals: 10

@@ -1,0 +1,26 @@
+:gems:
+  - :name: hpricot
+    #:version: '0.4'
+    # this tells us to load not just install
+    :load: true
+
+  - :name: postgres
+    :load: true
+
+  - :name: geokit
+    :load: true
+
+  #- :name: mysql
+  #  :load: true
+
+  #- :name: serialport
+  #  :load: true
+
+  #- :name: rmagick
+  #  :load: true
+
+  - :name: robustthread
+    :load: true
+
+  #- :name: postgres
+  #  :load: true

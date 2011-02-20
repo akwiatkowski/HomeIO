@@ -54,6 +54,8 @@ class TcpCommTaskClient < TcpCommProtocol
   #   send_to_server( TcpTask command ) => send to localhost
   #   send_to_server( TcpTask command, String server ip/host ) => send to server
   def send_to_server(comm, _server = server)
+    # create TcpTask from hash if needed
+    comm = TcpTask.factory(comm)
     self.class.send_to_server(comm, port, _server)
   end
 
@@ -63,6 +65,8 @@ class TcpCommTaskClient < TcpCommProtocol
   #   send_to_server_and_wait( TcpTask command ) => send to localhost and wait
   #   send_to_server_and_wait( TcpTask command, String server ip/host ) => send to server and wait
   def send_to_server_and_wait(comm, _server = server)
+    # create TcpTask from hash if needed
+    comm = TcpTask.factory(comm)
     res = send_to_server(comm, _server)
     return wait_for_task(res, _server)
   end

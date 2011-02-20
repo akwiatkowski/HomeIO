@@ -23,9 +23,14 @@ require 'rubygems'
 require 'robustthread'
 require 'singleton'
 require 'lib/utils/core_classes'
-require_files_from_directory("lib/plugins/im/bots/")
+
+require "lib/communication/im/bots/xmpp4r_bot"
+require "lib/communication/im/bots/gadu_bot"
 
 # Load and start IM bots
+
+# XXXXXXXXXXXXXXXXXXXX DELETE DOC XXXXXXXXXXXXXXXXX
+
 #
 # reformat it http://rdoc.sourceforge.net/doc/index.html
 #
@@ -54,46 +59,21 @@ require_files_from_directory("lib/plugins/im/bots/")
 #     resolve it. Just like it was not any TCP communication.
 #
 #     
-#
-# 
-
 
 class ImBots
   include Singleton
 
   attr_reader :bots
 
-  # there are 2 resolvers
-  # direct loads many classes and execute commands now
-  COMMAND_RESOLVER_DIRECT = :direct
-  # via tcp uses HomeIO task based tcp protocol for all queries
-  COMMAND_RESOLVER_VIA_TCP = :via_tcp
-
-  #COMMAND_RESOLVER = COMMAND_RESOLVER_DIRECT
-  COMMAND_RESOLVER = COMMAND_RESOLVER_VIA_TCP
-
-  # Restart IM bots every ... seconds
-  #RESTART_EVERY = 60*60
-  # XXX to test nightly craches
-  RESTART_EVERY = 24*60*60
-
   def initialize
     @config = ConfigLoader.instance.config(self.class)
 
-    # commands resolver
-    if COMMAND_RESOLVER_DIRECT == COMMAND_RESOLVER
-      require './lib/communication/im_command_resolver.rb'
-      @processor = ImCommandResolver.instance
-    end
-    if COMMAND_RESOLVER_VIA_TCP == COMMAND_RESOLVER
-      require './lib/communication/tcp_command_resolver.rb'
-      @processor = TcpCommandResolver.instance
-    end
+    require 'lib/communication/im_command_resolver'
+    @processor = ImCommandResolver.instance
 
     @bots = [
-      #Jabber4rBot.instance, # errors
-    GaduBot.instance,
-    Xmpp4rBot.instance,
+      GaduBot.instance,
+      Xmpp4rBot.instance,
     ]
   end
 
@@ -103,7 +83,7 @@ class ImBots
       b.processor = @processor
       b.start
     end
-
+    
     if true == @config[:run_autoupdater]
       require './lib/plugins/im/im_autoupdated_status.rb'
       ImAutoupdatedStatus.instance.run_autoupdater
@@ -124,17 +104,4 @@ class ImBots
     end
   end
 
-  # Start IM bots loop
-  def start_loop
-    @loop_thread = RobustThread.new(:label => "start bots") do
-      puts "Starting IM bots in loop"
-
-      loop do
-        start
-        sleep RESTART_EVERY
-        stop
-      end
-
-    end
-  end
 end
