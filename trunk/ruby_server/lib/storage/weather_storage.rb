@@ -65,12 +65,15 @@ class WeatherStorage
     return :invalid unless obj.valid?
 
     prepare_directories( obj )
-    return :was_logged unless not_logged?( obj )
+    # TODO performance issue!
+    #return :was_logged unless not_logged?( obj )
     return :ok if append_weather( obj )
     return :failed
   end
 
   # Check if weather wasn't already logged
+  # Warning: performance is hellish.
+  # TODO: rewrite this to use many files
   def not_logged?( obj )
     fp = filepath( obj )
     text_line = obj.text_weather_store_string
@@ -87,7 +90,6 @@ class WeatherStorage
       end
       f.close
     end
-    
     # file doesn't exist so not logged
     return true
   end

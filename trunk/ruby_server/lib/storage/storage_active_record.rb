@@ -156,7 +156,7 @@ class StorageActiveRecord < StorageDbAbstract
       :wind => obj.wind,
       :snow_metar => obj.snow_metar,
       :rain_metar => obj.rain_metar,
-      :raw => obj.raw,
+      :raw => obj.raw.to_s_fix_utf,
       :city_id => obj.city_id,
     }
     # updating metar if stored in DB

@@ -28,10 +28,10 @@ class Object
   #
   # :call-seq:
   #   to_s2( proper string length ) => String
-  def to_s2( places )
+  def to_s2(places)
     tmp = self.to_s
 
-    while( tmp.size < places )
+    while (tmp.size < places)
       tmp = "0" + tmp
     end
 
@@ -42,14 +42,20 @@ class Object
   #
   # :call-seq:
   #   to_s_round( number precision ) => String
-  def to_s_round( places = 1 )
+  def to_s_round(places = 1)
     if self.nil?
       return nil
     end
 
-    tmp = ( self * (10 ** places ) ).round.to_f
-    tmp /= (10.0 ** places )
+    tmp = (self * (10 ** places)).round.to_f
+    tmp /= (10.0 ** places)
     return tmp
+  end
+
+  # Fix wrong chars in text objects
+  def to_s_fix_utf
+    #self.to_s.unpack('C*').pack('U*')
+    self.to_s.gsub(/[\x80-\xff]/, ' ')
   end
 
 end

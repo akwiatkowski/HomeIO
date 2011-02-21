@@ -105,7 +105,8 @@ namespace :metar do
     desc 'Process all CITY metars logged in raw format'
     task :city do
       require 'lib/metar_logger'
-      puts MetarLogger.instance.get_logged_cities.collect { |c| "#{c[:code]} - #{c[:name]} (#{c[:country]})" }.join("\n")
+      metar_cities = MetarLogger.instance.get_logged_cities
+      puts metar_cities.collect { |c| "#{c[:code]} - #{c[:city]} (#{c[:country]})" }.join("\n")
 
       puts "Choose city:"
       city = STDIN.gets.strip

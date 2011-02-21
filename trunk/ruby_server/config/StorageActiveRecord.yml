@@ -47,3 +47,4 @@
   password: homeio
   #host: /var/run/postgresql
   host: localhost
+  pool: 10

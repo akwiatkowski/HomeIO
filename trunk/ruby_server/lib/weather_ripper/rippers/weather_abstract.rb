@@ -38,7 +38,7 @@ class WeatherAbstract
   # Load configuration
   def initialize
     @config = ConfigLoader.instance.config(self.class)
-    @defs   = @config[:defs]
+    @defs = @config[:defs]
   end
 
   # Safer accessor for ripper configuration
@@ -110,9 +110,9 @@ class WeatherAbstract
   # :call-seq:
   #   check_online( definition hash )
   def check_online(definition)
-    body      = fetch(definition)
+    body = fetch(definition)
     processed = process(body)
-    weathers  = Weather.create_from(processed, definition)
+    weathers = Weather.create_from(processed, definition)
 
     #puts weathers.inspect
     weathers.each do |w|
@@ -140,7 +140,7 @@ class WeatherAbstract
 
     prov_name = self.class.provider_name
 
-    wp        = WeatherProvider.find_or_create_by_name(prov_name)
+    wp = WeatherProvider.find_or_create_by_name(prov_name)
     wp.save!
     @id = wp.id
     return @id
