@@ -29,6 +29,8 @@ class WeatherMetarArchive < ActiveRecord::Base
   validates_uniqueness_of :city_id, :scope => :time_from
   validates_presence_of :raw, :time_from, :city_id
 
+  validates_length_of :raw, :maximum => 200
+
   # will paginate
   cattr_reader :per_page
   @@per_page = 20

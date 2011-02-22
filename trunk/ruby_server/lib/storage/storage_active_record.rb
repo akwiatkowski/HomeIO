@@ -148,7 +148,7 @@ class StorageActiveRecord < StorageDbAbstract
   def store_metar(obj)
     # wrong records can be not saved - there are always raw metars in text files
     return unless obj.valid?
-    shortened_raw = obj.raw.shorten_in_whitespace
+    shortened_raw = obj.raw.shorten_in_whitespace(200)
     h = {
       :time_from => obj.time_from,
       :time_to => obj.time_to,
@@ -161,7 +161,14 @@ class StorageActiveRecord < StorageDbAbstract
       :city_id => obj.city_id,
     }
     # updating metar if stored in DB
-    wma = WeatherMetarArchive.find(:last, :conditions => { :city_id => obj.city_id, :time_from => obj.output[:time], :raw => shortened_raw })
+    wma = WeatherMetarArchive.find(
+      :last,
+      :conditions => {
+        :city_id => obj.city_id,
+        :time_from => obj.time_from,
+        #:raw => shortened_raw # it shouldn't be modified but let assume it can (shortening, wrong char removal)
+     }
+    )
     if wma.nil?
       wma = WeatherMetarArchive.new(h)
     else
