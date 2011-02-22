@@ -35,7 +35,7 @@ class MetarCode
 
   # Raw metar string
   def raw
-    @metar_string
+    @metar_string.to_s_fix_utf
   end
 
   # Raw metar string

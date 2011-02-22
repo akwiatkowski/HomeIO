@@ -22,4 +22,12 @@
 # String class additions
 
 class String
+
+  # Shorten String to has less than +length+, and cut it in whitespace
+  def shorten_in_whitespace(length = 100)
+    reg = /^(.{0,#{length}}\s).*$/
+    self.to_s =~ reg
+    return $1.to_s.strip
+  end
+
 end
