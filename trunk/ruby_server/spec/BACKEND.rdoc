@@ -1,8 +1,10 @@
 == HomeIO - backend specification
 
-= Most important TODOs
+= Storage
 
 * AR storage is obligatory
+* All system classes should consider store data in AR, data like events, modification of settings
+
 * At the start, on initialization of MetarLogger and WeatherRipper it should use special class to get ids fo all cities
 * There would be opportunity to run withour AR but id of all cities has to be defined in configuration file before start
 * This special class doesn't have name yet, it will be changed from WeatherCityProxy and it do:

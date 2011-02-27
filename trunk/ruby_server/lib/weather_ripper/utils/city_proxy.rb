@@ -30,9 +30,6 @@ require 'lib/storage/active_record/backend_models/city'
 class CityProxy
   include Singleton
 
-  # When all cities was processed it is set to true
-  attr_reader :fixed
-
   # Verbose mode
   attr_accessor :verbose
 
@@ -42,15 +39,18 @@ class CityProxy
   # Deadlock safe initialization
   def initialize
     @verbose = true
-    @fixed = false
+    @fixed = nil
     @cities = Array.new
+    @mutex = Mutex.new
   end
 
   # Run fix after initialization
   def post_init
-    if not true == @fixed
-      id_fix
-      @fixed = true
+    @mutex.synchronize do
+      unless @fixed
+        id_fix
+        @fixed = true
+      end
     end
   end
 
