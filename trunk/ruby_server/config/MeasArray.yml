@@ -1,0 +1,27 @@
+# Definitions of measurements
+---
+  # codename of measurement
+- :type: batt_u
+  :locale:
+    :en: "Batteries voltage"
+    :pl: "Napięcie na akumulatorach"
+  # store in memory X last measurements
+  :cache: 100
+  :unit: V
+  :log_conditions:
+    # log no frequent than every X seconds
+    :min: 0.2
+    # log at least every X seconds
+    :max: 300
+    # significant change of value which enforce logging
+    :sig_change: 2
+# command sent to uC
+  :command:
+    # interval how often fetch from uC
+    # 1 is about 100ms
+    # 50 is about 5s
+    :frequency: 1
+    # command array, array of String chars or Fixnum bytes
+    :array:
+      - '0'
+    #  - 48
