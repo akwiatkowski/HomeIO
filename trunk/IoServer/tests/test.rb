@@ -4,12 +4,13 @@
 
 require 'socket'
 
+hostname = '192.168.0.104'
 hostname = 'localhost'
 port = 2002
 
 # 't' test
 t = Time.now
-300_000.times do
+1_000.times do
   s = TCPSocket.open(hostname, port)
 
   # <count of command bytes> <count of response bytes> <command bytes>
@@ -25,7 +26,7 @@ puts Time.now.to_f - t.to_f
 
 # 's' test
 t = Time.now
-300_000.times do
+1_000.times do
   s = TCPSocket.open(hostname, port)
 
   # <count of command bytes> <count of response bytes> <command bytes>
