@@ -5,6 +5,7 @@ require 'test/unit'
 class TestMeasFetcher < Test::Unit::TestCase
 
   def test_start_basic
+    mf = MeasFetcher.instance
     res = IoProtocol.instance.fetch([0],2)
     puts res.inspect
   end

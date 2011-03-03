@@ -21,6 +21,7 @@
 
 require 'singleton'
 require 'lib/utils/config_loader'
+require 'lib/measurements/measurement_array'
 
 # Singleton for fetching and storing measurements
 class MeasFetcher
@@ -31,8 +32,8 @@ class MeasFetcher
 
   # Get cities list for fetching
   def initialize
-    @cities = ConfigLoader.instance.config(self.class.to_s)[:cities]
-    puts "#{self.class.to_s} init - #{@cities.size} cities"
+    @config = ConfigLoader.instance.config(self.class.to_s)
+    @meas_array = MeasurementArray.instance
   end
 
 end

@@ -25,8 +25,15 @@ require 'rubygems'
 require 'active_record'
 require 'singleton'
 
-# better way to load all models from dir, + migrations
-require_files_from_directory("lib/storage/active_record/backend_models/")
+# it is better for code completion
+require "lib/storage/active_record/backend_models/city"
+require "lib/storage/active_record/backend_models/meas_archive"
+require "lib/storage/active_record/backend_models/meas_type"
+require "lib/storage/active_record/backend_models/weather_archive"
+require "lib/storage/active_record/backend_models/weather_metar_archive"
+require "lib/storage/active_record/backend_models/weather_provider"
+
+
 require_files_from_directory("lib/storage/active_record/")
 
 # Storage using custom active record connection
@@ -39,14 +46,19 @@ class StorageActiveRecord < StorageDbAbstract
 
   def initialize
     super
-    # always enabled
-    @config[:enabled] = true
+    # I don't know if it is needed, concurency fix
+    if not true == @ready
+      @ready = true
 
-    ActiveRecord::Base.establish_connection(
-      @config[:connection]
-    )
+      # always enabled
+      @config[:enabled] = true
 
-    @pool = Array.new
+      ActiveRecord::Base.establish_connection(
+        @config[:connection]
+      )
+
+      @pool = Array.new
+    end
   end
 
   # Create tables in DB
@@ -167,7 +179,7 @@ class StorageActiveRecord < StorageDbAbstract
         :city_id => obj.city_id,
         :time_from => obj.time_from,
         #:raw => shortened_raw # it shouldn't be modified but let assume it can (shortening, wrong char removal)
-     }
+      }
     )
     if wma.nil?
       wma = WeatherMetarArchive.new(h)

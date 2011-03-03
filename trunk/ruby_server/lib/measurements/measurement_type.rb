@@ -19,6 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-class Measurement
+class MeasurementType
   # To change this template use File | Settings | File Templates.
 end

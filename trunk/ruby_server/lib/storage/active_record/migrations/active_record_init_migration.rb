@@ -47,10 +47,10 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       end
 
       create_table :meas_archives do |t|
-        t.column :time_from, :datetime, :null => false
-        t.column :time_to, :datetime, :null => false
-        t.column :time_from_us, :float, :null => false, :default => 0.0
-        t.column :time_to_us, :float, :null => false, :default => 0.0
+        t.column :_time_from, :datetime, :null => false
+        t.column :_time_to, :datetime, :null => false
+        t.column :_time_from_us, :float, :null => false, :default => 0.0
+        t.column :_time_to_us, :float, :null => false, :default => 0.0
         t.column :value, :float, :null => false
 
         t.references :meas_type

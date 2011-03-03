@@ -19,6 +19,34 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-class Measurement
-  # To change this template use File | Settings | File Templates.
+require 'singleton'
+require "lib/utils/config_loader"
+require "lib/storage/storage_active_record"
+
+# Store all type of measurements
+
+class MeasurementArray
+  include Singleton
+
+  # Load configuration and initialize
+  def initialize
+    @config = ConfigLoader.instance.config(self)
+    StorageActiveRecord.instance
+    initialize_type
+  end
+
+  def config_array
+    @config[:array]
+  end
+
+  private
+
+  # Create AR objects and MeasurementType instances
+  def initialize_type
+    @config[:array].each do |m_def|
+      mt = MeasType.find_or_create_by_type(m_def[:type])
+      m_def[:db_id] = mt.id
+    end
+  end
+
 end

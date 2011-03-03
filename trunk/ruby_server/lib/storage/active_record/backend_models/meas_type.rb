@@ -19,6 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-class Measurement
-  # To change this template use File | Settings | File Templates.
+
+# Measurement types
+
+require 'lib/storage/active_record/rails_models/meas_type'
+
+class MeasType
 end
