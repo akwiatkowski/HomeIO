@@ -64,8 +64,8 @@ class StartThreaded
           sleep(1)
 
         rescue => e
-          # something went wrong - show and log error as parrent
-          log_error(parent, e)
+          # something went wrong - show and log error as parent
+          log_error(t_parent, e)
           show_error(e)
         end
       end

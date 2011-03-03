@@ -19,6 +19,41 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
+require "lib/utils/start_threaded"
+
+# One type o measurement. Start threaded fetching measurement data from IoServer.
+
 class MeasurementType
-  # To change this template use File | Settings | File Templates.
+
+  # Create new MeasurementType using Hash from
+  def initialize(config_hash)
+    @config = config_hash
+  end
+
+  # Stop measurement fetching loop
+  def stop
+    return if @rt.nil?
+    @rt.thread.kill
+    @rt = nil
+  end
+
+  # Start (or allow_restart) measurement fetching loop
+  def start(allow_restart = false)
+    # force restart
+    if not @rt.nil? and true == allow_restart
+      stop
+    end
+    # start when thread is not started
+    start_threaded if @rt.nil?
+  end
+
+  private
+
+  def start_threaded
+    @rt = StartThreaded.start_threaded(1, self) do
+      puts self.inspect
+    end
+  end
+
+
 end

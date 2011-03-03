@@ -22,6 +22,7 @@
 require 'singleton'
 require "lib/utils/config_loader"
 require "lib/storage/storage_active_record"
+require 'lib/measurements/measurement_type'
 
 # Store all type of measurements
 
@@ -30,13 +31,34 @@ class MeasurementArray
 
   # Load configuration and initialize
   def initialize
+    # types
+    @types = Array.new
+
     @config = ConfigLoader.instance.config(self)
     StorageActiveRecord.instance
     initialize_type
   end
 
+  # Configuration array
   def config_array
     @config[:array]
+  end
+
+  # Array of MeasurementType
+  def types_array
+    @types
+  end
+
+  def start
+    types_array.each do |mt|
+      mt.start
+    end
+  end
+
+  def stop
+    types_array.each do |mt|
+      mt.stop
+    end
   end
 
   private
@@ -44,8 +66,12 @@ class MeasurementArray
   # Create AR objects and MeasurementType instances
   def initialize_type
     @config[:array].each do |m_def|
+      # initialize AR object
       mt = MeasType.find_or_create_by_type(m_def[:type])
       m_def[:db_id] = mt.id
+
+      # initialize MeasurementType object
+      @types << MeasurementType.new(m_def)
     end
   end
 
