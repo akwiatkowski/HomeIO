@@ -1,5 +1,4 @@
 # configuration of tcp protocol used for getting measurements
 ---
-#:hostname: '192.168.0.104'
 :hostname: 'localhost'
-:port: 20002
+:port: 2002

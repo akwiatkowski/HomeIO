@@ -43,13 +43,34 @@ class IoProtocol
   end
 
   def fetch(command_array, response_size)
-    s = TCPSocket.open(hostname, port)
+    begin
+      fetch_wo_rescue(command_array, response_size)
+    rescue Errno::ECONNREFUSED => e
+      log_error(self, e, "host #{hostname}, port #{port}, command_array #{command_array.inspect}, response_size #{response_size}")
+      show_error(e)
+    end
+  end
+
+  def fetch_wo_rescue(command_array, response_size)
+    # convert command array to string
     # <count of command bytes> <count of response bytes> <command bytes>
-    str = command_array.size.chr + response_size.size.chr + command_array.collect{|c| c.chr}.join('')
+    str = command_array.size.chr + response_size.chr + command_array.collect { |c|
+      if c.kind_of? Fixnum
+        c.chr
+      else
+        c.to_s
+      end
+    }.join('')
+
+    puts str.inspect
+
+    s = TCPSocket.open(hostname, port)
     s.puts(str)
+    data = s.gets
     data = s.gets
     s.close # Close the socket when done
 
     return data
   end
+
 end

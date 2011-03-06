@@ -20,6 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require "lib/utils/start_threaded"
+require 'lib/communication/io_comm/io_protocol'
 
 # One type o measurement. Start threaded fetching measurement data from IoServer.
 
@@ -52,6 +53,14 @@ class MeasurementType
     @rt = nil
   end
 
+  def command_array
+    @config[:command][:array]
+  end
+
+  def response_size
+    @config[:command][:response_size]
+  end
+
   # Start (or allow_restart) measurement fetching loop
   def start(allow_restart = false)
     # force restart
@@ -67,7 +76,10 @@ class MeasurementType
   # Start threaded loop
   def start_threaded
     @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
-      puts self.inspect
+      #puts self.inspect
+      puts Time.now
+      res = IoProtocol.instance.fetch(command_array, response_size)
+      puts res.inspect
     end
   end
 

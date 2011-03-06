@@ -26,3 +26,5 @@
       :array:
         - '0'
       #  - 48
+      # number of bytes of response
+      :response_size: 2
