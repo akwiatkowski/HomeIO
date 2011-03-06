@@ -97,7 +97,7 @@ class WeatherReimporter
         @bad += 1
       else
         @good += 1
-        @storage.add_ar_object_to_pool( wa ) unless wa.nil?
+        @storage.store_ar_object( wa ) unless wa.nil?
       end
 
       

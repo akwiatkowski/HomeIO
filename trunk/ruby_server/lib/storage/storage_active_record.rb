@@ -88,9 +88,8 @@ class StorageActiveRecord < StorageDbAbstract
   end
 
   # Add ActiveRecord object to pool without processing it
-  def add_ar_object_to_pool(obj)
+  def store_ar_object(obj)
     @pool << obj
-
     check_pool_size
   end
 

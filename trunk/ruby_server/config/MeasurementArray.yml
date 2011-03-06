@@ -15,7 +15,8 @@
       # log at least every X seconds
       :max: 300
       # significant change of value which enforce logging
-      :sig_change: 2
+      #:sig_change: 2
+      :sig_change: 0.2
   # command sent to uC
     :command:
       # interval how often fetch from uC

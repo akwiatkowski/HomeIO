@@ -68,7 +68,7 @@ class MeasurementArray
     @config[:array].each do |m_def|
       # initialize AR object
       mt = MeasType.find_or_create_by_type(m_def[:type])
-      m_def[:db_id] = mt.id
+      m_def[:meas_type_id] = mt.id
 
       # initialize MeasurementType object
       @types << MeasurementType.new(m_def)

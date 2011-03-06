@@ -38,7 +38,7 @@ class CustomOldImport
     f.each do |line|
       # parse do AR object
       obj = parse_old_format_csv( line, @city.id )
-      @storage.add_ar_object_to_pool( obj ) unless obj.nil?
+      @storage.store_ar_object( obj ) unless obj.nil?
     end
     f.close
   end

@@ -21,6 +21,7 @@
 
 require "lib/utils/start_threaded"
 require 'lib/communication/io_comm/io_protocol'
+require 'lib/storage/storage_active_record'
 
 # One type o measurement. Start threaded fetching measurement data from IoServer.
 
@@ -33,6 +34,11 @@ class MeasurementType
   def initialize(config_hash)
     @config = config_hash
     @measurements = Array.new
+    # count of stored measurement of this type
+    @stored_count = 0
+
+    # initialize AR connection
+    StorageActiveRecord.instance
   end
 
   # Interval every measurement in interval units. Can not be lower than 1.
@@ -72,6 +78,33 @@ class MeasurementType
     @config[:command][:coefficient_offset]
   end
 
+  # Foreign key for storing in DB using AR
+  def meas_type_id
+    @config[:meas_type_id]
+  end
+
+  # Value of last measurement
+  def value
+    @measurements.last[:value]
+  end
+
+  # Value used for storing
+  def value_to_store
+    @last_stored[:value]
+  end
+
+  def time_to
+    @measurements.last[:time]
+  end
+
+  def time_from
+    @last_stored[:time]
+  end
+
+  def time_interval
+    time_to - time_from
+  end
+
   # Start (or allow_restart) measurement fetching loop
   def start(allow_restart = false)
     # force restart
@@ -86,33 +119,119 @@ class MeasurementType
 
   # Start threaded loop
   def start_threaded
+    # initial measurement fetch, without actual storing
     fetch_measurement
+    mark_current_measurement_as_stored
+
     @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
       fetch_measurement
+      # store when conditions are met
+      if check_storage_conditions
+        store_measurement_in_db
+      end
+
+      puts @last_stored.inspect
+      puts @measurements.last.inspect
+      puts @measurements.size
+      puts @stored_count
+      puts ""
     end
   end
 
-  # Fetch measurement using IoProtocol (tcp protocol to IoServer)
+  # Fetch measurement using IoProtocol (tcp protocol to IoServer) and add to cache
   def fetch_measurement
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw = IoProtocol.array_to_number(io_result)
     value = process_raw_to_real(raw)
-    add_measurement_to_internal_array(raw, value)
+    add_measurement_to_cache(raw, value)
   end
 
-  def add_measurement_to_internal_array(raw, value)
+  # Add one measurement to cache
+  def add_measurement_to_cache(raw, value)
     h = {
       :time => Time.now,
       :value => value,
       :raw => raw
     }
     @measurements << h
-    puts h.inspect
+
+    # shift first elements from array to maintain max cache size
+    while @measurements.size > max_cache_size
+      @measurements.shift
+    end
   end
 
-  # Process
+  # Process raw to real value
   def process_raw_to_real(raw)
     raw * coefficient_linear + coefficient_offset
+  end
+
+  # Max size of cache array
+  def max_cache_size
+    @config[:cache]
+  end
+
+  # Check storage conditions. When true current measurement should be stored
+  def check_storage_conditions
+    # do not store if measurement is fresh
+    return false if true == check_minimal_time_interval
+
+    # force store if measurement is a little old now
+    return true if true == check_maximum_time_interval
+
+    # not it depends only on value
+    return check_significant_change
+  end
+
+  def minimal_time_interval
+    @config[:log_conditions][:min].to_f
+  end
+
+  # Return true if current measurement is freshly after stored one
+  def check_minimal_time_interval
+    return true if time_interval < minimal_time_interval
+  end
+
+  def maximum_time_interval
+    @config[:log_conditions][:max].to_f
+  end
+
+  # Return true if current measurement is a little old one
+  def check_maximum_time_interval
+    return true if time_interval > maximum_time_interval
+  end
+
+  # Amount of value which enforce storage
+  def significant_change
+    @config[:log_conditions][:sig_change].to_f
+  end
+
+  # Return true if current value is a little old one
+  def check_significant_change
+    return true if (value - value_to_store).abs >= significant_change
+  end
+
+
+  def store_measurement_in_db
+    ma = MeasArchive.new(
+      {
+        :meas_type_id => meas_type_id,
+        :value => value_to_store,
+        :time_from_w_us => time_from,
+        :time_to_w_us => time_to
+      }
+    )
+    puts ma.inspect
+
+    @stored_count += 1
+    StorageActiveRecord.instance.store_ar_object(ma)
+
+    mark_current_measurement_as_stored
+  end
+
+  # Mark current measurement that was last stored
+  def mark_current_measurement_as_stored
+    @last_stored = @measurements.last
   end
 
 
