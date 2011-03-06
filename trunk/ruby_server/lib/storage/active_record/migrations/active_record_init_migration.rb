@@ -49,8 +49,8 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       create_table :meas_archives do |t|
         t.column :time_from, :datetime, :null => false
         t.column :time_to, :datetime, :null => false
-        t.column :_time_from_us, :float, :null => false, :default => 0.0
-        t.column :_time_to_us, :float, :null => false, :default => 0.0
+        t.column :_time_from_ms, :decimal, :null => false, :default => 0, :precision => 3
+        t.column :_time_to_ms, :decimal, :null => false, :default => 0, :precision => 3
         t.column :value, :float, :null => false
         # raw value from uC
         t.column :raw, :integer, :null => true
@@ -97,7 +97,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       add_index :cities, [:lat, :lon], :unique => true
       add_index :cities, [:name, :country], :unique => true
       # meas
-      add_index :meas_archives, [:meas_type_id, :time_from, :_time_from_us], :unique => true, :name => 'meas_archive_meat_type_time_index'
+      add_index :meas_archives, [:meas_type_id, :time_from, :_time_from_ms], :unique => true, :name => 'meas_archive_meat_type_time_index'
       # weather
       add_index :weather_archives, [:weather_provider_id, :city_id, :time_from, :time_to], :unique => true, :name => 'weather_archives_index'
       # weather providers

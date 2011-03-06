@@ -16,7 +16,10 @@
       :max: 300
       # significant change of value which enforce logging
       #:sig_change: 2
-      :sig_change: 0.2
+      :sig_change: 1
+      # if offline is true measurements are added to pool and stored when pool is full
+      # when not set true or set something else measurements are stored instant
+      #:offline: true
   # command sent to uC
     :command:
       # interval how often fetch from uC

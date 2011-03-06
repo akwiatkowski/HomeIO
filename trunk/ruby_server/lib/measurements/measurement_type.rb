@@ -34,8 +34,11 @@ class MeasurementType
   def initialize(config_hash)
     @config = config_hash
     @measurements = Array.new
+
     # count of stored measurement of this type
     @stored_count = 0
+    # Are measurements added to pool and stored when the pool is full. If not they are stored now.
+    @use_storage_pool = (true == @config[:log_conditions][:offline])
 
     # initialize AR connection
     StorageActiveRecord.instance
@@ -90,7 +93,12 @@ class MeasurementType
 
   # Value used for storing
   def value_to_store
-    @last_stored[:value]
+    @measurement_after_last_store[:value]
+  end
+
+  # Raw value used for storing
+  def raw_to_store
+    @measurement_after_last_store[:raw]
   end
 
   def time_to
@@ -98,7 +106,7 @@ class MeasurementType
   end
 
   def time_from
-    @last_stored[:time]
+    @measurement_after_last_store[:time]
   end
 
   def time_interval
@@ -130,7 +138,7 @@ class MeasurementType
         store_measurement_in_db
       end
 
-      puts @last_stored.inspect
+      puts @measurement_after_last_store.inspect
       puts @measurements.last.inspect
       puts @measurements.size
       puts @stored_count
@@ -180,7 +188,7 @@ class MeasurementType
     return true if true == check_maximum_time_interval
 
     # not it depends only on value
-    return check_significant_change
+    check_significant_change
   end
 
   def minimal_time_interval
@@ -189,7 +197,7 @@ class MeasurementType
 
   # Return true if current measurement is freshly after stored one
   def check_minimal_time_interval
-    return true if time_interval < minimal_time_interval
+    time_interval < minimal_time_interval
   end
 
   def maximum_time_interval
@@ -198,7 +206,7 @@ class MeasurementType
 
   # Return true if current measurement is a little old one
   def check_maximum_time_interval
-    return true if time_interval > maximum_time_interval
+    time_interval > maximum_time_interval
   end
 
   # Amount of value which enforce storage
@@ -208,30 +216,40 @@ class MeasurementType
 
   # Return true if current value is a little old one
   def check_significant_change
-    return true if (value - value_to_store).abs >= significant_change
+    (value - value_to_store).abs >= significant_change
   end
 
+  # Are measurements added to pool and stored when the pool is full. If not they are stored now.
+  def use_storage_pool
+    @use_storage_pool
+  end
 
+  # TODO clean it a little, add writing meas. to csv file
   def store_measurement_in_db
     ma = MeasArchive.new(
       {
         :meas_type_id => meas_type_id,
+        :raw => raw_to_store,
         :value => value_to_store,
-        :time_from_w_us => time_from,
-        :time_to_w_us => time_to
+        :time_from_w_ms => time_from,
+        :time_to_w_ms => time_to
       }
     )
-    puts ma.inspect
 
     @stored_count += 1
-    StorageActiveRecord.instance.store_ar_object(ma)
+
+    if use_storage_pool
+      StorageActiveRecord.instance.store_ar_object(ma)
+    else
+      ma.save!
+    end
 
     mark_current_measurement_as_stored
   end
 
   # Mark current measurement that was last stored
   def mark_current_measurement_as_stored
-    @last_stored = @measurements.last
+    @measurement_after_last_store = @measurements.last
   end
 
 

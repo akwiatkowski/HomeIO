@@ -25,25 +25,25 @@
 class MeasArchive < ActiveRecord::Base
 
   # Measurement time range begin. Fix for storing microseconds
-  def time_from
-    return Time.at( self._time_from.to_i + self._time_from_us.to_i )
+  def time_from_w_ms
+    return Time.at( self.time_from.to_i.to_f + self._time_from_ms.to_f / 1000.0 )
   end
 
   # Measurement time range end. Fix for storing microseconds
-  def time_to
-    return Time.at( self._time_to.to_i + self._time_to_us.to_i )
+  def time_to_w_ms
+    return Time.at( self.time_to.to_i.to_f + self._time_to_ms.to_f / 1000.0 )
   end
 
   # Measurement time range begin. Fix for storing microseconds
-  def time_from=(t)
-    self._time_from = t
-    self._time_from_us = t.usec
+  def time_from_w_ms=(t)
+    self.time_from = t
+    self._time_from_ms = t.usec / 1000
   end
 
   # Measurement time range end. Fix for storing microseconds
-  def time_to=(t)
-    self._time_to = t
-    self._time_to_us = t.usec
+  def time_to_w_ms=(t)
+    self.time_to = t
+    self._time_to_ms = t.usec / 1000
   end
 
 end
