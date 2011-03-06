@@ -52,6 +52,8 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.column :_time_from_us, :float, :null => false, :default => 0.0
         t.column :_time_to_us, :float, :null => false, :default => 0.0
         t.column :value, :float, :null => false
+        # raw value from uC
+        t.column :raw, :integer, :null => true
 
         t.references :meas_type
       end

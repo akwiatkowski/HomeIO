@@ -32,6 +32,7 @@ class MeasurementType
   # Create new MeasurementType using Hash from
   def initialize(config_hash)
     @config = config_hash
+    @measurements = Array.new
   end
 
   # Interval every measurement in interval units. Can not be lower than 1.
@@ -53,12 +54,22 @@ class MeasurementType
     @rt = nil
   end
 
+  # Array sent to uC
   def command_array
     @config[:command][:array]
   end
 
+  # Number of bytes of uC response
   def response_size
     @config[:command][:response_size]
+  end
+
+  def coefficient_linear
+    @config[:command][:coefficient_linear]
+  end
+
+  def coefficient_offset
+    @config[:command][:coefficient_offset]
   end
 
   # Start (or allow_restart) measurement fetching loop
@@ -75,6 +86,7 @@ class MeasurementType
 
   # Start threaded loop
   def start_threaded
+    fetch_measurement
     @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
       fetch_measurement
     end
@@ -82,8 +94,25 @@ class MeasurementType
 
   # Fetch measurement using IoProtocol (tcp protocol to IoServer)
   def fetch_measurement
-    res = IoProtocol.instance.fetch(command_array, response_size)
-    # TODO, processing, adding
+    io_result = IoProtocol.instance.fetch(command_array, response_size)
+    raw = IoProtocol.array_to_number(io_result)
+    value = process_raw_to_real(raw)
+    add_measurement_to_internal_array(raw, value)
+  end
+
+  def add_measurement_to_internal_array(raw, value)
+    h = {
+      :time => Time.now,
+      :value => value,
+      :raw => raw
+    }
+    @measurements << h
+    puts h.inspect
+  end
+
+  # Process
+  def process_raw_to_real(raw)
+    raw * coefficient_linear + coefficient_offset
   end
 
 

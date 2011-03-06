@@ -98,4 +98,14 @@ class IoProtocol
     end
   end
 
+  # Convert array response to single number
+  def self.array_to_number(io_result)
+    raw_joined = 0
+    io_result.each_byte do |b|
+      raw_joined *= 256
+      raw_joined += b
+    end
+    return raw_joined
+  end
+
 end

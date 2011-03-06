@@ -28,3 +28,6 @@
       #  - 48
       # number of bytes of response
       :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.0777126099706744868
+      :coefficient_offset: 0
