@@ -76,11 +76,14 @@ class MeasurementType
   # Start threaded loop
   def start_threaded
     @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
-      #puts self.inspect
-      puts Time.now
-      res = IoProtocol.instance.fetch(command_array, response_size)
-      puts res.inspect
+      fetch_measurement
     end
+  end
+
+  # Fetch measurement using IoProtocol (tcp protocol to IoServer)
+  def fetch_measurement
+    res = IoProtocol.instance.fetch(command_array, response_size)
+    # TODO, processing, adding
   end
 
 

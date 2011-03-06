@@ -32,6 +32,7 @@ class IoProtocol
 
   def initialize
     @config = ConfigLoader.instance.config(self.class.to_s)
+    wait_for_communication_tested
   end
 
   def port
@@ -42,15 +43,24 @@ class IoProtocol
     @config[:hostname]
   end
 
+  # Execute command and fetch response from uC. Connection errors are rescued.
+  #
+  # :call-seq:
+  #   fetch( Array command ex. ['0'], Fixnum response array size in bytes ex. 2 )
   def fetch(command_array, response_size)
     begin
       fetch_wo_rescue(command_array, response_size)
     rescue Errno::ECONNREFUSED => e
       log_error(self, e, "host #{hostname}, port #{port}, command_array #{command_array.inspect}, response_size #{response_size}")
       show_error(e)
+      return []
     end
   end
 
+  # Execute command and fetch response from uC
+  #
+  # :call-seq:
+  #   fetch( Array command ex. ['0'], Fixnum response array size in bytes ex. 2 )
   def fetch_wo_rescue(command_array, response_size)
     # convert command array to string
     # <count of command bytes> <count of response bytes> <command bytes>
@@ -62,15 +72,30 @@ class IoProtocol
       end
     }.join('')
 
-    puts str.inspect
-
     s = TCPSocket.open(hostname, port)
     s.puts(str)
-    data = s.gets
     data = s.gets
     s.close # Close the socket when done
 
     return data
+  end
+
+  # Wait
+  def wait_for_communication_tested
+    loop do
+      res_t = fetch(['t'], 2)
+      res_s = fetch(['s'], 1)
+      # hardware rs testing
+      if res_s[0] == 0 and (res_t[0] * 256 + res_t[1]) == 12345
+        puts "IoServer protocol ready"
+        return true
+      else
+        puts "IoServer protocol Error"
+        puts res_t.inspect
+        puts res_s.inspect
+      end
+      sleep(0.5)
+    end
   end
 
 end
