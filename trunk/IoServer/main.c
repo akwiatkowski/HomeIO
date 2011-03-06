@@ -41,7 +41,12 @@ int main(int argc, char** argv) {
     unsigned char count_response = 0;
 
     // file descriptor to RS
+    if ( ! argv[1] ) {
+        printf("Error: no serial port specified\n");
+        exit(1);
+    }
     int tty_fd = openRS(argv[1]);
+
 
     // crate TCP server
     char buffer[MAX_LINE]; // character buffer
