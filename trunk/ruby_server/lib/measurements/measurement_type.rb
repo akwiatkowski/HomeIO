@@ -63,6 +63,14 @@ class MeasurementType
     @rt = nil
   end
 
+  def type
+    @config[:type]
+  end
+
+  def unit
+    @config[:unit]
+  end
+
   # Array sent to uC
   def command_array
     @config[:command][:array]
@@ -138,11 +146,12 @@ class MeasurementType
         store_measurement_in_db
       end
 
-      puts @measurement_after_last_store.inspect
-      puts @measurements.last.inspect
-      puts @measurements.size
-      puts @stored_count
-      puts ""
+      puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored"
+      #puts @measurement_after_last_store.inspect
+      #puts @measurements.last.inspect
+      #puts @measurements.size
+      #puts @stored_count
+      #puts ""
     end
   end
 
