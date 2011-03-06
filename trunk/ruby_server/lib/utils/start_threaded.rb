@@ -29,15 +29,23 @@ require 'lib/utils/dev_info'
 
 class StartThreaded
 
-  # Wrap code block to be started in loop with begin-rescue-end
+  # Wrap code block to be started in loop with begin-rescue-end. There is 1 second sleep every finished task.
   #
   # :call-seq:
   #   StartThreaded.start_threaded( Numeric interval, parent instance) {code block} => RobustThread handle
   def self.start_threaded(interval, parent, &block)
+    self.start_threaded_precised(interval, 1.0, parent, &block)
+  end
+
+  # Wrap code block to be started in loop with begin-rescue-end.
+  #
+  # :call-seq:
+  #   StartThreaded.start_threaded( Numeric interval, Numeric sleep after execution, parent instance) {code block} => RobustThread handle
+  def self.start_threaded_precised(interval, sleep_time, parent, &block)
 
     # create new thread
     label = AdvLog.instance.class_name(parent)
-    rt = RobustThread.new(:label => label, :args => [interval, parent, block]) do |t_interval, t_parent, t_block|
+    rt = RobustThread.new(:label => label, :args => [interval, parent, sleep_time, block]) do |t_interval, t_parent, t_sleep_time, t_block|
 
       # loop in thread
       time_ok = nil
@@ -50,7 +58,7 @@ class StartThreaded
             time_started = Time.now
 
             # execute
-            # in case of exception it will be started again 
+            # in case of exception it will be started again
             t_block.call
 
             # when execution is done without errors set this variable
@@ -61,7 +69,7 @@ class StartThreaded
           end
 
           # wait a little
-          sleep(1)
+          sleep(t_sleep_time)
 
         rescue => e
           # something went wrong - show and log error as parent

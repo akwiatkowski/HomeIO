@@ -25,9 +25,24 @@ require "lib/utils/start_threaded"
 
 class MeasurementType
 
+  # Measurement can be fetched every product of this seconds
+  BASIC_INTERVAL = 0.1
+
   # Create new MeasurementType using Hash from
   def initialize(config_hash)
     @config = config_hash
+  end
+
+  # Interval every measurement in interval units. Can not be lower than 1.
+  def interval
+    i = @config[:command][:frequency].to_i
+    return i if i < 1
+    return i
+  end
+
+  # Interval every measurement in interval seconds
+  def interval_seconds
+    self.interval.to_f * BASIC_INTERVAL
   end
 
   # Stop measurement fetching loop
@@ -49,8 +64,9 @@ class MeasurementType
 
   private
 
+  # Start threaded loop
   def start_threaded
-    @rt = StartThreaded.start_threaded(1, self) do
+    @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
       puts self.inspect
     end
   end
