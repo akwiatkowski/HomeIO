@@ -21,51 +21,30 @@
 
 require 'singleton'
 require 'lib/utils/config_loader'
-require 'lib/measurements/measurement_array'
+require "lib/storage/storage_active_record"
 
-# Singleton for fetching and storing measurements
-class MeasurementFetcher
+class ActionManager
   include Singleton
 
   # Cities definition array
-  attr_reader :meas_array
+  attr_reader :action_array
 
   # Get cities list for fetching
   def initialize
     @config = ConfigLoader.instance.config(self.class.to_s)
-    @meas_array = MeasurementArray.instance
-
-    @meas_array.start
   end
 
-  # Get last measurements in array format. Usable by bots and
-  # TODO create hash in MT object
-  def get_last
-    @meas_array.types_array.collect { |m|
-      {
-        :type => m.type,
-        :value => m.value,
-        :time => m.time_to,
-        :time_to => m.time_to,
-        :raw => m.raw,
-        :locale => m.locale
-      }
-    }
-  end
+  # Create AR objects and ActionType instances
+  def initialize_type
+    @config[:array].each do |m_def|
+      # initialize AR object
+      mt = ActionType.find_or_create_by_type(m_def[:type])
+      m_def[:action_type_id] = mt.id
 
-  def get_value(type)
-    @meas_array.types_array.each do |m|
-      if m.type == type
-        return {
-          :type => m.type,
-          :value => m.value,
-          :time => m.time_to,
-          :time_to => m.time_to,
-          :raw => m.raw,
-          :locale => m.locale
-        }
-      end
+      # initialize MeasurementType object
+      #@types << MeasurementType.new(m_def)
     end
   end
+
 
 end

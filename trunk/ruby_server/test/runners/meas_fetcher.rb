@@ -7,6 +7,7 @@ class TestMeasFetcher < Test::Unit::TestCase
   def test_start_basic
     mf = MeasurementFetcher.instance
     sleep 2
+    puts mf.get_last_meas.inspect
 
     #res = IoProtocol.instance.fetch([0],2)
     #puts res.inspect

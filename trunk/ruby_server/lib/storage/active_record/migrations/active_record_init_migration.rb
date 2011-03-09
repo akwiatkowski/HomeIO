@@ -41,6 +41,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.column :logged_weather, :bool, :null => false, :default => false
       end
 
+      # MEASUREMENTS
       create_table :meas_types do |t|
         t.column :type, :string, :limit => 16, :null => false
         t.timestamps
@@ -58,6 +59,31 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.references :meas_type
       end
 
+
+      # ACTIONS
+      create_table :action_types do |t|
+        t.column :type, :string, :limit => 16, :null => false
+        t.column :type, :string, :limit => 16, :null => false, :default =>
+        t.timestamps
+      end
+
+      create_table :action_events do |t|
+        t.column :time, :datetime, :null => false
+        t.column :other_info, :text, :null => true
+        t.timestamps
+
+        t.references :action_type
+        # when rails application add table 'users' and user execute actions
+        t.references :user
+      end
+
+      # actions which can be executed by user
+      create_table :action_types_users do |t|
+        t.references :action_type
+        t.references :user
+      end
+
+      # WEATHER
       create_table :weather_providers do |t|
         t.column :name, :string, :null => false
         t.timestamps
@@ -98,6 +124,9 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       add_index :cities, [:name, :country], :unique => true
       # meas
       add_index :meas_archives, [:meas_type_id, :time_from, :_time_from_ms], :unique => true, :name => 'meas_archive_meat_type_time_index'
+      # actions
+      add_index :action_types, [:type], :unique => true
+      add_index :action_types_users, [:action_type_id, :user_id], :unique => true
       # weather
       add_index :weather_archives, [:weather_provider_id, :city_id, :time_from, :time_to], :unique => true, :name => 'weather_archives_index'
       # weather providers
@@ -108,6 +137,8 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
 
       # foreign key
       add_foreign_key :meas_archives, :meas_types, :dependent => :restrict
+      add_foreign_key :action_events, :action_types, :dependent => :restrict
+
       add_foreign_key :weather_archives, :cities, :dependent => :restrict
       add_foreign_key :weather_archives, :weather_providers, :dependent => :restrict
       add_foreign_key :weather_metar_archives, :cities, :dependent => :restrict

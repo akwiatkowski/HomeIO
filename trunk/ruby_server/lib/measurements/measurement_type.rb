@@ -56,6 +56,11 @@ class MeasurementType
     self.interval.to_f * BASIC_INTERVAL
   end
 
+  # Count of stored measurements
+  def stored_count
+    @stored_count
+  end
+
   # Stop measurement fetching loop
   def stop
     return if @rt.nil?
@@ -104,6 +109,15 @@ class MeasurementType
     @measurement_after_last_store[:value]
   end
 
+  # Raw of last measurement
+  def raw
+    @measurements.last[:raw]
+  end
+
+  def locale
+    @config[:locale]
+  end
+
   # Raw value used for storing
   def raw_to_store
     @measurement_after_last_store[:raw]
@@ -146,7 +160,7 @@ class MeasurementType
         store_measurement_in_db
       end
 
-      puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored"
+      puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored #{self.raw_to_store.to_s.ljust(20)}"
       #puts @measurement_after_last_store.inspect
       #puts @measurements.last.inspect
       #puts @measurements.size

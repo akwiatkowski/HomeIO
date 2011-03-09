@@ -1,0 +1,29 @@
+# Possible hardware actions
+---
+:array:
+  # codename of measurement
+  - :type: start_total_brake
+    :locale:
+      :en: "Start braking procedure"
+      :pl: "Rozpoczyna procedurę hamowania"
+  # command sent to uC
+    :command:
+      :array:
+        - 'w'
+      #  - 119
+      # number of bytes of response
+      :response_correct: []
+
+  # codename of measurement
+  - :type: test_zero
+    :locale:
+      :en: "Connection test (zero)"
+      :pl: "Test połączenia  (zero)"
+  # command sent to uC
+    :command:
+      :array:
+        - 's'
+      #  - 119
+      # number of bytes of response
+      :response_correct:
+        - 0
