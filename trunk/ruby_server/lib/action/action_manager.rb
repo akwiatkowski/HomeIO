@@ -22,6 +22,9 @@
 require 'singleton'
 require 'lib/utils/config_loader'
 require "lib/storage/storage_active_record"
+require 'lib/action/action'
+
+# ActionManager create action object and allow execution of them
 
 class ActionManager
   include Singleton
@@ -31,8 +34,15 @@ class ActionManager
 
   # Get cities list for fetching
   def initialize
+    StorageActiveRecord.instance
+
     @config = ConfigLoader.instance.config(self.class.to_s)
+    @action_array = Array.new
+
+    initialize_type
   end
+
+  private
 
   # Create AR objects and ActionType instances
   def initialize_type
@@ -41,8 +51,8 @@ class ActionManager
       mt = ActionType.find_or_create_by_type(m_def[:type])
       m_def[:action_type_id] = mt.id
 
-      # initialize MeasurementType object
-      #@types << MeasurementType.new(m_def)
+      # initialize Action object
+      @action_array << Action.new(m_def)
     end
   end
 

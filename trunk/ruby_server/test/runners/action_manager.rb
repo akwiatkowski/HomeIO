@@ -6,6 +6,7 @@ class TestActionManager < Test::Unit::TestCase
 
   def test_start_basic
     mf = ActionManager.instance
+    puts mf.action_array.first.execute
   end
 
 end

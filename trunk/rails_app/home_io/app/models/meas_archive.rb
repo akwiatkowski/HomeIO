@@ -23,6 +23,14 @@
 # Measurements
 
 class MeasArchive < ActiveRecord::Base
+  belongs_to :meas_type
+
+  validates_presence_of :value, :time_from, :time_to, :meas_type
+
+  # will paginate
+  cattr_reader :per_page
+  @@per_page = 20
+
 
   # Measurement time range begin. Fix for storing microseconds
   def time_from_w_ms

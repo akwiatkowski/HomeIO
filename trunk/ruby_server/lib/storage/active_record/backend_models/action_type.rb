@@ -19,39 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'singleton'
-require 'lib/utils/config_loader'
-require 'lib/measurements/measurement_array'
 
-# Singleton for fetching and storing measurements
-class MeasurementFetcher
-  include Singleton
+# Action types
 
-  # Cities definition array
-  attr_reader :meas_array
+require 'lib/storage/active_record/rails_models/action_type'
 
-  # Get cities list for fetching
-  def initialize
-    @config = ConfigLoader.instance.config(self.class.to_s)
-    @meas_array = MeasurementArray.instance
-
-    @meas_array.start
-  end
-
-  # Get last measurements in array format. Usable by bots and
-  # TODO create hash in MT object
-  def get_last
-    @meas_array.types_array.collect { |m|
-      m.to_hash
-    }
-  end
-
-  def get_value(type)
-    @meas_array.types_array.each do |m|
-      if m.type == type
-        return m.to_hash
-      end
-    end
-  end
-
+class ActionType
 end

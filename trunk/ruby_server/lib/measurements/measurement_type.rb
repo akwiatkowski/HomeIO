@@ -44,6 +44,19 @@ class MeasurementType
     StorageActiveRecord.instance
   end
 
+  # Create Hash with all important parameters of that object, with last value
+  def to_hash
+    h = {
+      :type => type,
+      :value => value,
+      :time => time_to,
+      :time_to => time_to,
+      :raw => raw,
+      :locale => locale
+    }
+    h
+  end
+
   # Interval every measurement in interval units. Can not be lower than 1.
   def interval
     i = @config[:command][:frequency].to_i
@@ -172,7 +185,7 @@ class MeasurementType
   # Fetch measurement using IoProtocol (tcp protocol to IoServer) and add to cache
   def fetch_measurement
     io_result = IoProtocol.instance.fetch(command_array, response_size)
-    raw = IoProtocol.array_to_number(io_result)
+    raw = IoProtocol.string_to_number(io_result)
     value = process_raw_to_real(raw)
     add_measurement_to_cache(raw, value)
   end

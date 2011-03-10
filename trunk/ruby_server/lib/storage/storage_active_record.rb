@@ -29,6 +29,8 @@ require 'singleton'
 require "lib/storage/active_record/backend_models/city"
 require "lib/storage/active_record/backend_models/meas_archive"
 require "lib/storage/active_record/backend_models/meas_type"
+require "lib/storage/active_record/backend_models/action_event"
+require "lib/storage/active_record/backend_models/action_type"
 require "lib/storage/active_record/backend_models/weather_archive"
 require "lib/storage/active_record/backend_models/weather_metar_archive"
 require "lib/storage/active_record/backend_models/weather_provider"
