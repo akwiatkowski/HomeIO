@@ -42,6 +42,14 @@ class ActionManager
     initialize_type
   end
 
+  def get_action_by_type( type )
+    action_array.each do |a|
+      if a.type == type
+        return a
+      end
+    end
+  end
+
   private
 
   # Create AR objects and ActionType instances

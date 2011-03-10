@@ -36,10 +36,16 @@ class Action
     @config[:command][:array]
   end
 
+  def type
+    @config[:type]
+  end
+
   def execute(user_id = nil)
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw_array = IoProtocol.string_to_array(io_result)
-    status = (response_size == raw_array)
+    status = (response_correct == raw_array)
+
+    puts raw_array.inspect, response_correct.inspect
 
     post_execute(status, user_id)
 

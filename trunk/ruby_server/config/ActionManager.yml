@@ -12,7 +12,8 @@
         - 'w'
       #  - 119
       # number of bytes of response
-      :response_correct: []
+      :response_correct:
+        - 21
 
   # codename of measurement
   - :type: test_zero
@@ -27,3 +28,18 @@
       # number of bytes of response
       :response_correct:
         - 0
+
+  # codename of measurement
+  - :type: test_numbers
+    :locale:
+      :en: "Connection test (12345)"
+      :pl: "Test połączenia  (12345)"
+  # command sent to uC
+    :command:
+      :array:
+        - 't'
+      #  - 116
+      # number of bytes of response
+      :response_correct:
+        - 48
+        - 57
