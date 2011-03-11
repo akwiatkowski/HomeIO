@@ -75,7 +75,8 @@ class IoProtocol
     s = TCPSocket.open(hostname, port)
     s.puts(str)
     data = s.gets
-    s.close # Close the socket when done
+    # TODO use ensure for this
+    s.close
 
     return data
   end
@@ -91,8 +92,8 @@ class IoProtocol
         return true
       else
         puts "IoServer protocol Error"
-        puts res_t.inspect
-        puts res_s.inspect
+        puts "should be 0     was #{res_s[0]} (#{res_s.inspect})"
+        puts "should be 12345 was #{res_t[0]} #{res_t[1]}, #{res_t[0] * 256 + res_t[1]} (#{res_t.inspect})"
       end
       sleep(0.5)
     end

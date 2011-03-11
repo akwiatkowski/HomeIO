@@ -48,18 +48,31 @@ class StorageActiveRecord < StorageDbAbstract
 
   def initialize
     super
-    # I don't know if it is needed, concurency fix
-    if not true == @ready
-      @ready = true
+    # I don't know if it is needed, concurrency fix
+    @mutex = Mutex.new if @mutex.nil?
+    sleep 0.05
 
-      # always enabled
-      @config[:enabled] = true
+    # mutex
+    @mutex.synchronize do
+      # only execute when nil
+      if @ready.nil?
+        @ready = false
 
-      ActiveRecord::Base.establish_connection(
-        @config[:connection]
-      )
+        # always enabled
+        @config[:enabled] = true
 
-      @pool = Array.new
+        ActiveRecord::Base.establish_connection(
+          @config[:connection]
+        )
+
+        @pool = Array.new
+        @ready = true
+      end
+
+      # if other tries to execute - wait for it
+      while not @ready == true
+        sleep 0.1
+      end
     end
   end
 

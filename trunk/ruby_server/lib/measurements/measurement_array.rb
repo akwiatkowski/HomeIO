@@ -31,11 +31,12 @@ class MeasurementArray
 
   # Load configuration and initialize
   def initialize
+    StorageActiveRecord.instance
+
     # types
     @types = Array.new
 
     @config = ConfigLoader.instance.config(self)
-    StorageActiveRecord.instance
     initialize_type
   end
 
