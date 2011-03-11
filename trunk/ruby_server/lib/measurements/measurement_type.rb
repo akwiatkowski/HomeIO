@@ -176,7 +176,7 @@ class MeasurementType
     fetch_measurement
     mark_current_measurement_as_stored
 
-    @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.001, self) do
+    @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.1, self) do
       fetch_measurement
       # store when conditions are met
       if check_storage_conditions
