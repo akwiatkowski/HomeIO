@@ -33,6 +33,9 @@ class CityProxy
   # Verbose mode
   attr_accessor :verbose
 
+  # Is ids for cities fixed
+  attr_reader :fixed
+
   # location within this distance is threaten like the same city [km]
   CITY_DISTANCE_TOLERANCE = 15
 
@@ -51,6 +54,9 @@ class CityProxy
         id_fix
         @fixed = true
       end
+    end
+    while not true == @fixed
+      sleep 0.05
     end
   end
 
