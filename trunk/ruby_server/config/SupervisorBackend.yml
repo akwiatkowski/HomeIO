@@ -5,3 +5,4 @@
   :MetarLogger: 1800
   :WeatherRipper: 7200
   :update_logged_flag: 8000
+  :simple_http: 10

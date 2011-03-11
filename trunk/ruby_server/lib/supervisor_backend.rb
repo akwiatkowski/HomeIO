@@ -25,6 +25,7 @@ require "lib/metar_logger"
 require "lib/weather_ripper"
 require "lib/measurement_fetcher"
 require "lib/communication/task_server/tcp_comm_task_server"
+require "lib/communication/simple_http/simple_http"
 
 # Backend supervisor
 
@@ -62,6 +63,11 @@ class SupervisorBackend
     # measurements
     @measurement_fetcher = MeasurementFetcher.instance
 
+    # simple http server
+    @rt_simple_http = StartThreaded.start_threaded(@config[:intervals][:simple_http], self) do
+      sleep @config[:intervals][:simple_http]
+      SimpleHttp.new
+    end
   end
 
   private
