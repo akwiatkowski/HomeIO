@@ -70,6 +70,9 @@ class StorageActiveRecord < StorageDbAbstract
 
         @pool = Array.new
         @ready = true
+
+        # wait for AR initialization on slow pc
+        sleep @config[:init_time].to_f
       end
 
       # if other tries to execute - wait for it

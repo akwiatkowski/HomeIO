@@ -7,6 +7,8 @@
 #:enabled: true
 #:pool_size: 100
 :pool_size: 500
+# usable on slow pc, time to fully initialize AR
+:init_time: 4
 
 :connection_sqlite:
   adapter: 'sqlite3'
