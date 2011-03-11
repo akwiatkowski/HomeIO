@@ -29,6 +29,8 @@ class MeasurementType
 
   # Measurement can be fetched every product of this seconds
   BASIC_INTERVAL = 0.1
+  # TODO comment
+  DEFAULT_VERBOSE_INTERVAL = 10
 
   # Create new MeasurementType using Hash from
   def initialize(config_hash)
@@ -37,6 +39,8 @@ class MeasurementType
 
     # count of stored measurement of this type
     @stored_count = 0
+    # count of stored measurement of this type
+    @count = 0
     # Are measurements added to pool and stored when the pool is full. If not they are stored now.
     @use_storage_pool = (true == @config[:log_conditions][:offline])
 
@@ -62,6 +66,12 @@ class MeasurementType
     i = @config[:command][:frequency].to_i
     return i if i < 1
     return i
+  end
+
+  # How often show measurement, every
+  def verbose_interval
+    return @config[:verbose_interval] unless @config[:verbose_interval].nil?
+    DEFAULT_VERBOSE_INTERVAL
   end
 
   # Interval every measurement in interval seconds
@@ -173,12 +183,9 @@ class MeasurementType
         store_measurement_in_db
       end
 
-      puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored #{self.raw_to_store.to_s.ljust(20)}"
-      #puts @measurement_after_last_store.inspect
-      #puts @measurements.last.inspect
-      #puts @measurements.size
-      #puts @stored_count
-      #puts ""
+      if @count % verbose_interval == 0
+        puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored #{self.raw_to_store.to_s.ljust(20)}"
+      end
     end
   end
 
@@ -188,6 +195,8 @@ class MeasurementType
     raw = IoProtocol.string_to_number(io_result)
     value = process_raw_to_real(raw)
     add_measurement_to_cache(raw, value)
+
+    @count += 1
   end
 
   # Add one measurement to cache

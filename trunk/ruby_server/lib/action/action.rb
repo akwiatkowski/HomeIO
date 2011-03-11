@@ -40,19 +40,33 @@ class Action
     @config[:type]
   end
 
+  # Execute action for user
   def execute(user_id = nil)
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw_array = IoProtocol.string_to_array(io_result)
+    # TODO create method for checking array response and when treat -1 just like wildcard
     status = (response_correct == raw_array)
 
     puts raw_array.inspect, response_correct.inspect
 
     post_execute(status, user_id)
 
-    return status
+    return raw_array
   end
 
-  # Add event to base and other things which should be done after executing events
+  # Number of bytes of uC response
+  def response_size
+    @config[:command][:response_correct].size
+  end
+
+  # Number of bytes of uC response
+  def response_correct
+    @config[:command][:response_correct]
+  end
+
+  private
+
+  # Add event to base and other things which should be done after executing actions
   def post_execute(status, user_id)
     ActionEvent.create!(
       {
@@ -64,16 +78,6 @@ class Action
     )
 
     @execution_count += 1
-  end
-
-  # Number of bytes of uC response
-  def response_size
-    @config[:command][:response_correct].size
-  end
-
-  # Number of bytes of uC response
-  def response_correct
-    @config[:command][:response_correct]
   end
 
 end

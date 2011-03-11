@@ -38,6 +38,8 @@ class MetarLogger
 
   # Get cities list for fetching
   def initialize
+    # TODO add 'enabled' from config
+
     @cities = ConfigLoader.instance.config(self.class.to_s)[:cities]
     puts "#{self.class.to_s} init - #{@cities.size} cities"
   end

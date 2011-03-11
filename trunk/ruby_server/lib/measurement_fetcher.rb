@@ -33,8 +33,10 @@ class MeasurementFetcher
   # Get cities list for fetching
   def initialize
     @config = ConfigLoader.instance.config(self.class.to_s)
-    @meas_array = MeasurementArray.instance
+    # return if enabled = false
+    return unless @config[:enabled]
 
+    @meas_array = MeasurementArray.instance
     @meas_array.start
   end
 

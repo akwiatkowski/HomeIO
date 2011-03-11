@@ -46,6 +46,8 @@ class WeatherRipper
 
     @@config = ConfigLoader.instance.config( self.class )
 
+    # TODO add 'enabled' from config
+
     @providers = [
       WeatherOnetPl.new, # detailed
       WeatherWpPl.new,

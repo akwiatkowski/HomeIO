@@ -23,6 +23,7 @@
 require "lib/utils/start_threaded"
 require "lib/metar_logger"
 require "lib/weather_ripper"
+require "lib/measurement_fetcher"
 require "lib/communication/task_server/tcp_comm_task_server"
 
 # Backend supervisor
@@ -31,27 +32,36 @@ class SupervisorBackend
   def initialize
     @config = ConfigLoader.instance.config(self)
 
+    # metar
     @rt_metar = StartThreaded.start_threaded(@config[:intervals][:MetarLogger], self) do
       sleep 2
       MetarLogger.instance.start
     end
 
+    # weather
     @rt_weather = StartThreaded.start_threaded(@config[:intervals][:WeatherRipper], self) do
       sleep 3
       WeatherRipper.instance.start
     end
 
+    # 'hello' sample thread
     @rt_hello = StartThreaded.start_threaded(300, self) do
       puts "...alive #{Time.now}"
     end
 
+    # updates city flags
     @rt_cities_flag_update = StartThreaded.start_threaded(@config[:intervals][:update_logged_flag], self) do
       sleep 300
       update_logged_flag
     end
 
+    # communication server
     @task_comm_server = TcpCommTaskServer.new
     @rt_task_comm_server = @task_comm_server.start
+
+    # measurements
+    @measurement_fetcher = MeasurementFetcher.instance
+
   end
 
   private

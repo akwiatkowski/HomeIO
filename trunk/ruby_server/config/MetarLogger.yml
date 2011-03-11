@@ -3,6 +3,7 @@
 #
 # cities which will be logged
 # http://weather.gladstonefamily.net/site/<code>
+:enabled: true
 :cities:
 - :code: "EPPO"
   #:id: 1
@@ -565,37 +566,6 @@
   :coord:
     :lat: 19.2821
     :lon: 166.6364
-#- :code: ""
-#  :city: ""
-#  :coord:
-#    :lat: 
-#    :lon: 
-
-#- :code: ""
-#  :city: ""
-#  :coord:
-#    :lat: 
-#    :lon: 
-
-#- :code: ""
-#  :city: ""
-#  :coord:
-#    :lat: 
-#    :lon: 
-
-#- :code: ""
-#  :city: ""
-#  :coord:
-#    :lat: 
-#    :lon: 
-
-
-
-
-
-
-
-
 
 #- :code: ""
 #  :city: ""
