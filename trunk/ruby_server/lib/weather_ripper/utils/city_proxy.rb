@@ -51,6 +51,8 @@ class CityProxy
   def post_init
     @mutex.synchronize do
       unless @fixed
+        StorageActiveRecord.instnace
+
         id_fix
         @fixed = true
       end

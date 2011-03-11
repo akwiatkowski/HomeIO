@@ -46,6 +46,9 @@ require_files_from_directory("lib/storage/active_record/")
 class StorageActiveRecord < StorageDbAbstract
   include Singleton
 
+  # Connection is ready
+  attr_reader :ready
+
   def initialize
     super
     # I don't know if it is needed, concurrency fix
