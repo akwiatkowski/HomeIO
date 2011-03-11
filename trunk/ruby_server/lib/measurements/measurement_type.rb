@@ -216,7 +216,7 @@ class MeasurementType
 
   # Process raw to real value
   def process_raw_to_real(raw)
-    raw * coefficient_linear + coefficient_offset
+    (raw + coefficient_offset)* coefficient_linear
   end
 
   # Max size of cache array
