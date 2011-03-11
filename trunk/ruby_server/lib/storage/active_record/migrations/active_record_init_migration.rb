@@ -153,8 +153,12 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
     remove_foreign_key :weather_archives, :weather_providers
 
     drop_table :meas_archives
+    drop_table :action_events
     drop_table :weather_archives
     drop_table :weather_metar_archives
+
+    drop_table :action_types
+    drop_table :action_types_users
 
     drop_table :cities
     drop_table :meas_types
