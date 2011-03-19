@@ -29,7 +29,7 @@ class MeasurementType
 
   # Measurement can be fetched every product of this seconds
   BASIC_INTERVAL = 0.1
-  # TODO comment
+  # Show verbose every this number of fetched measurements
   DEFAULT_VERBOSE_INTERVAL = 10
 
   # Create new MeasurementType using Hash from
@@ -42,6 +42,8 @@ class MeasurementType
     # count of stored measurement of this type
     @count = 0
     # Are measurements added to pool and stored when the pool is full. If not they are stored now.
+    # There is a new, specialized pool which saves measurements every (5-20) seconds
+    # And this pool should be used by default.
     @use_storage_pool = (true == @config[:log_conditions][:offline])
 
     # initialize AR connection
@@ -55,6 +57,7 @@ class MeasurementType
       :value => value,
       :time => time_to,
       :time_to => time_to,
+      :time_from => time_from,
       :raw => raw,
       :locale => locale
     }
@@ -91,15 +94,17 @@ class MeasurementType
     @rt = nil
   end
 
+  # Type of measurement
   def type
     @config[:type]
   end
 
+  # Unit name, ex. 'V' or 'A'
   def unit
     @config[:unit]
   end
 
-  # Array sent to uC
+  # Byte array sent to uC for getting measurement
   def command_array
     @config[:command][:array]
   end
@@ -109,10 +114,12 @@ class MeasurementType
     @config[:command][:response_size]
   end
 
+  # Used for calculation real value real = (raw + offset) * linear
   def coefficient_linear
     @config[:command][:coefficient_linear]
   end
 
+  # Used for calculation real value real = (raw + offset) * linear
   def coefficient_offset
     @config[:command][:coefficient_offset]
   end
@@ -137,23 +144,27 @@ class MeasurementType
     @measurements.last[:raw]
   end
 
+  # Description of type, i18n
   def locale
     @config[:locale]
   end
 
-  # Raw value used for storing
+  # Raw value used for storing in DB
   def raw_to_store
     @measurement_after_last_store[:raw]
   end
 
+  # Time of last value, "to"
   def time_to
     @measurements.last[:time]
   end
 
+  # Time of last value, "from
   def time_from
     @measurement_after_last_store[:time]
   end
 
+  # Interval of last measurement in seconds
   def time_interval
     time_to - time_from
   end
@@ -253,6 +264,7 @@ class MeasurementType
     check_significant_change
   end
 
+  # Can't store measurements when interval of last stored is less than
   def minimal_time_interval
     @config[:log_conditions][:min].to_f
   end
@@ -262,6 +274,7 @@ class MeasurementType
     time_interval < minimal_time_interval
   end
 
+  # Force store measurements when interval of last stored is higher than
   def maximum_time_interval
     @config[:log_conditions][:max].to_f
   end
@@ -301,7 +314,10 @@ class MeasurementType
     @stored_count += 1
 
     if use_storage_pool
-      StorageActiveRecord.instance.store_ar_object(ma)
+      # slow, used for weather and metars
+      #StorageActiveRecord.instance.store_ar_object(ma)
+      # faster
+      StorageActiveRecord.instance.store(ma)
     else
       ma.save!
     end

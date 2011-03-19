@@ -24,6 +24,7 @@ require 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
 require 'singleton'
+require 'lib/utils/start_threaded'
 
 # it is better for code completion
 require "lib/storage/active_record/backend_models/city"
@@ -34,7 +35,6 @@ require "lib/storage/active_record/backend_models/action_type"
 require "lib/storage/active_record/backend_models/weather_archive"
 require "lib/storage/active_record/backend_models/weather_metar_archive"
 require "lib/storage/active_record/backend_models/weather_provider"
-
 
 require_files_from_directory("lib/storage/active_record/")
 
@@ -83,6 +83,16 @@ class StorageActiveRecord < StorageDbAbstract
     end
   end
 
+  # Start measurement pool and special thread for saving objects
+  def measurement_initialize(measurement_save_interval)
+    if @measurement_pool.nil?
+      @measurement_pool = Array.new
+      @measurement_rt = StartThreaded.start_threaded(measurement_save_interval, self) do
+        measurement_pool_flush
+      end
+    end
+  end
+
   # Create tables in DB
   def init
     Dir["lib/storage/active_record/migrations/*.rb"].each { |file| require file }
@@ -102,6 +112,9 @@ class StorageActiveRecord < StorageDbAbstract
         store_metar(obj)
       when 'Weather' then
         store_weather(obj)
+      when 'MeasArchive'
+        # MeasArchive is AR object, store in special pool which is saved every small amount of time (5-20 seconds)
+        store_measurement(obj)
       else
         other_store(obj)
     end
@@ -242,6 +255,28 @@ class StorageActiveRecord < StorageDbAbstract
     end
 
     @pool << wa
+  end
+
+  # Add to special pool for measurements
+  def store_measurement(ma)
+    @measurement_pool << ma
+  end
+
+  # Flush measurement pool, executed by internal thread
+  def measurement_pool_flush
+    pool_size = @measurement_pool.size
+    @measurement_pool.each do |o|
+      res = o.save
+      if res == false
+        measurement_save_object_when_db_failed(o)
+      end
+    end
+    @measurement_pool = Array.new
+    puts "Measurement pool flushed, count #{pool_size}"
+  end
+
+  def measurement_save_object_when_db_failed(ma)
+    # TODO
   end
 
 end

@@ -5,6 +5,8 @@
 :one_thread: false
 # Interval per type are ignored, there is only one for all measurements
 :one_thread_interval: 0.4
+# Save all measurements from special pool every this number of seconds
+:measurement_pool_flush_interval: 10
 
 :array:
   # codename of measurement
@@ -23,9 +25,10 @@
       # significant change of value which enforce logging
       #:sig_change: 2
       :sig_change: 1
-      # if offline is true measurements are added to pool and stored when pool is full
-      # when not set true or set something else measurements are stored instant
-      #:offline: true
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
   # command sent to uC
     :command:
       # interval how often fetch from uC

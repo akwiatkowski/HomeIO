@@ -43,6 +43,10 @@ class MeasurementArray
     # types
     @types = Array.new
     @config = ConfigLoader.instance.config(self)
+
+    # prepare measurement pool in StorageActiveRecord
+    StorageActiveRecord.instance.measurement_initialize( @config[:measurement_pool_flush_interval] )
+
     initialize_type
   end
 
