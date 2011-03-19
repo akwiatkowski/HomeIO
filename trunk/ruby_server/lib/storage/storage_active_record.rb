@@ -171,10 +171,12 @@ class StorageActiveRecord < StorageDbAbstract
       wma = WeatherMetarArchive.find(:last, :conditions => { :city_id => ch[:id] })
       c = City.find_by_id(ch[:id])
 
-      c.update_attributes!({
-                             :logged_metar => !wma.nil?,
-                             :logged_weather => !wa.nil?,
-                           })
+      c.update_attributes!(
+        {
+          :logged_metar => !wma.nil?,
+          :logged_weather => !wa.nil?,
+        }
+      )
     end
   end
 
@@ -266,18 +268,20 @@ class StorageActiveRecord < StorageDbAbstract
   # Flush measurement pool, executed by internal thread
   def measurement_pool_flush
     pool_size = @measurement_pool.size
-    @measurement_pool.each do |o|
-      res = o.save
-      # measurements will be stored in Measurements.json when 'something went wrong'
-      if res == false
-        measurement_save_object_when_db_failed(o)
+    ActiveRecord::Base.transaction do
+      @measurement_pool.each do |o|
+        res = o.save
+        # measurements will be stored in Measurements.json when 'something went wrong'
+        if res == false
+          measurement_save_object_when_db_failed(o)
+        end
       end
     end
     @measurement_pool = Array.new
     puts "Measurement pool flushed, count #{pool_size}"
   end
 
-  # Store in json
+  # Emergency store in json
   def measurement_save_object_when_db_failed(ma)
     MeasurementStorage.instance.store(ma)
   end
