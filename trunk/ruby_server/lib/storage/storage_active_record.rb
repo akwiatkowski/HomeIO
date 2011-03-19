@@ -25,6 +25,7 @@ require 'rubygems'
 require 'active_record'
 require 'singleton'
 require 'lib/utils/start_threaded'
+require 'lib/storage/measurement_storage'
 
 # it is better for code completion
 require "lib/storage/active_record/backend_models/city"
@@ -267,6 +268,7 @@ class StorageActiveRecord < StorageDbAbstract
     pool_size = @measurement_pool.size
     @measurement_pool.each do |o|
       res = o.save
+      # measurements will be stored in Measurements.json when 'something went wrong'
       if res == false
         measurement_save_object_when_db_failed(o)
       end
@@ -275,8 +277,9 @@ class StorageActiveRecord < StorageDbAbstract
     puts "Measurement pool flushed, count #{pool_size}"
   end
 
+  # Store in json
   def measurement_save_object_when_db_failed(ma)
-    # TODO
+    MeasurementStorage.instance.store(ma)
   end
 
 end
