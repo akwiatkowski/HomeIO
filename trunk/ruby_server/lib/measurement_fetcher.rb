@@ -23,14 +23,15 @@ require 'singleton'
 require 'lib/utils/config_loader'
 require 'lib/measurements/measurement_array'
 
-# Singleton for fetching and storing measurements
+# Singleton for fetching and storing measurements. One of main feature of HomeIO.
+
 class MeasurementFetcher
   include Singleton
 
-  # Cities definition array
+  # measurements
   attr_reader :meas_array
 
-  # Get cities list for fetching
+  # Load config and start threads if enabled
   def initialize
     @config = ConfigLoader.instance.config(self.class.to_s)
     # return if enabled = false
@@ -40,20 +41,26 @@ class MeasurementFetcher
     @meas_array.start
   end
 
-  # Get last measurements in array format. Usable by bots and
-  # TODO create hash in MT object
+  # Get last measurements in array of hashes format. Usable for bots.
   def get_last
     @meas_array.types_array.collect { |m|
       m.to_hash
     }
   end
 
-  def get_value(type)
+  # Get last measurements in hash format. Usable for bots.
+  def get_by_type(type)
     @meas_array.types_array.each do |m|
       if m.type == type
         return m.to_hash
       end
     end
+  end
+
+  # Get last measured value (only value, without time, and other parameters) for type
+  def get_value(type)
+    hash = get_by_type(type)
+    return hash[:value] unless hash.nil?
   end
 
 end

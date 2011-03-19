@@ -1,5 +1,11 @@
 # Definitions of measurements
 ---
+# In normal situation all measurements has it's own thread and fetch measurements every
+# some interval. Using 'one thread' all measurements are fetched in one thread.
+:one_thread: false
+# Interval per type are ignored, there is only one for all measurements
+:one_thread_interval: 0.4
+
 :array:
   # codename of measurement
   - :type: batt_u

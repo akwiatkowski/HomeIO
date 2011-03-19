@@ -168,6 +168,12 @@ class MeasurementType
     start_threaded if @rt.nil?
   end
 
+  # Enforce fetching measurement
+  def single_fetch
+    fetch_one_measurement_and_check_store_conditions
+    show_info_every_verbose_interval
+  end
+
   private
 
   # Start threaded loop
@@ -177,15 +183,26 @@ class MeasurementType
     mark_current_measurement_as_stored
 
     @rt = StartThreaded.start_threaded_precised(interval_seconds, 0.1, self) do
-      fetch_measurement
-      # store when conditions are met
-      if check_storage_conditions
-        store_measurement_in_db
-      end
+      fetch_one_measurement_and_check_store_conditions
+      show_info_every_verbose_interval
+    end
+  end
 
-      if @count % verbose_interval == 0
-        puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored #{self.raw_to_store.to_s.ljust(20)}"
-      end
+  # Fetch one measurement and store if needed
+  def fetch_one_measurement_and_check_store_conditions
+    fetch_measurement
+    # because something should be as "stored"
+    mark_current_measurement_as_stored if @measurement_after_last_store.nil?
+    # store when conditions are met
+    if check_storage_conditions
+      store_measurement_in_db
+    end
+  end
+
+  # Show measurement every some count of fetches
+  def show_info_every_verbose_interval
+    if @count % verbose_interval == 0
+      puts "meas  #{self.type.to_s.ljust(20)} #{self.value_to_store.to_s.ljust(20)} #{self.unit.to_s.ljust(20)} #{@stored_count.to_s.rjust(20)} stored #{self.raw_to_store.to_s.ljust(20)}"
     end
   end
 

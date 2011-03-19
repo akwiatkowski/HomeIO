@@ -49,6 +49,7 @@ class StorageActiveRecord < StorageDbAbstract
   # Connection is ready
   attr_reader :ready
 
+  # TODO fix sleeps
   def initialize
     super
     # I don't know if it is needed, concurrency fix
