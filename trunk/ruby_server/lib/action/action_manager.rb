@@ -29,10 +29,10 @@ require 'lib/action/action'
 class ActionManager
   include Singleton
 
-  # Cities definition array
+  # Action definition array
   attr_reader :action_array
 
-  # Get cities list for fetching
+  # Create actions
   def initialize
     StorageActiveRecord.instance
 
@@ -42,7 +42,8 @@ class ActionManager
     initialize_type
   end
 
-  def get_action_by_type( type )
+  # Get action by type
+  def get_action_by_type(type)
     action_array.each do |a|
       if a.type == type
         return a

@@ -94,6 +94,9 @@ class IoProtocol
         puts "IoServer protocol Error"
         puts "should be 0     was #{res_s[0]} (#{res_s.inspect})"
         puts "should be 12345 was #{res_t[0]} #{res_t[1]}, #{res_t[0] * 256 + res_t[1]} (#{res_t.inspect})"
+
+        # TODO another sync try
+
       end
       sleep(0.5)
     end
@@ -118,6 +121,20 @@ class IoProtocol
       raw_array << b
     end
     return raw_array
+  end
+
+  # Check arrays if response is correct
+  def self.assert_response(should_be, was)
+    # size should be equal
+    return false unless should_be.size == was.size
+
+    (0..(was.size)).each do |i|
+      # when should_be is not < 0 ('< 0' is wildcard) and not equal
+      return false unless should_be[i] < 0 or was[i] == should_be[i]
+    end
+
+    # everything was ok
+    return true
   end
 
 end

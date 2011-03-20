@@ -22,7 +22,7 @@
 require "lib/storage/storage_active_record"
 require 'lib/communication/io_comm/io_protocol'
 
-# Action (type)
+# Action (type) which can be executed
 
 class Action
 
@@ -44,9 +44,10 @@ class Action
   def execute(user_id = nil)
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw_array = IoProtocol.string_to_array(io_result)
-    # TODO create method for checking array response and when treat -1 just like wildcard
-    status = (response_correct == raw_array)
+    #status = (response_correct == raw_array) # without wildcards
+    status = IoProtocol.assert_response(response_correct, raw_array)
 
+    # TODO log errors
     puts raw_array.inspect, response_correct.inspect
 
     post_execute(status, user_id)
