@@ -1,4 +1,4 @@
-require 'lib/measurement_fetcher'
+require 'lib/measurements/measurement_fetcher'
 require "lib/communication/io_comm/io_protocol"
 require 'test/unit'
 

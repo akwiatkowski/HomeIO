@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/metar_logger'
+require 'lib/metar/metar_logger'
 require 'lib/utils/geolocation'
 require 'lib/storage/storage_active_record'
 require 'lib/storage/active_record/backend_models/city'

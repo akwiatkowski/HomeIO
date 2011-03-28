@@ -26,7 +26,7 @@ require 'lib/storage/storage'
 require 'lib/storage/storage_interface'
 require 'lib/utils/adv_log'
 require 'lib/weather_ripper/utils/city_proxy'
-require 'lib/weather_ripper'
+require 'lib/weather_ripper/weather_ripper'
 
 # Metar code model and processor
 

@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/metar_logger'
+require 'lib/metar/metar_logger'
 require 'lib/storage/metar_storage'
 
 # Load raw metar logs and process it

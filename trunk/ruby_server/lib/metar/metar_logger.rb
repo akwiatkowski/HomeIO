@@ -28,7 +28,7 @@ require 'lib/metar/metar_code'
 require 'lib/metar/metar_mass_processor'
 require 'lib/weather_ripper/utils/city_proxy'
 
-# Singleton for fetching and storing metar to other classes
+# Main class for metars. Singleton for fetching and storing metar to other classes
 
 class MetarLogger
   include Singleton
