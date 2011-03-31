@@ -49,6 +49,12 @@ class ActionManager
         return a
       end
     end
+    return nil
+  end
+
+  # Get action by type
+  def get_by_type(type)
+    get_action_by_type(type)
   end
 
   private
