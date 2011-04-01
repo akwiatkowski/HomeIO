@@ -1,10 +1,16 @@
 HomeIo::Application.routes.draw do
 
-  resources :meas_archives
+  #resources :meas_types, :collection => {:current => :get} do |meas_types|
+  resources :meas_types do
+    resources :meas_archives
+    get :current, :on => :collection
+  end
 
-  resources :cities do
-    resources :weather_metar_archives
-    resources :weather_archives
+
+
+  resources :cities do |c|
+    #c.resources :weather_metar_archives
+    #c.resources :weather_archives
   end
 
   resource :user_session

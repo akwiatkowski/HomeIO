@@ -1,0 +1,2 @@
+module MeasTypesHelper
+end

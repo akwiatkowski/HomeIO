@@ -1,0 +1,29 @@
+<%= form_for(@meas_archive) do |f| %>
+  <% if @meas_archive.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@meas_archive.errors.count, "error") %> prohibited this meas_archive from being saved:</h2>
+
+      <ul>
+      <% @meas_archive.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :time_from %><br />
+    <%= f.text_field :time_from %>
+  </div>
+  <div class="field">
+    <%= f.label :time_to %><br />
+    <%= f.text_field :time_to %>
+  </div>
+  <div class="field">
+    <%= f.label :value %><br />
+    <%= f.text_field :value %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

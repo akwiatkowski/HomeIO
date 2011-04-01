@@ -25,4 +25,8 @@ class User < ActiveRecord::Base
     #c.my_config_option = my_value 
   end # block optional
 
+  # will paginate
+  cattr_reader :per_page
+  @@per_page = 20
+
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110206215251) do
+ActiveRecord::Schema.define(:version => 20110207170038) do
 
   create_table "cities", :force => true do |t|
     t.string  "name",                                   :null => false
@@ -27,13 +27,16 @@ ActiveRecord::Schema.define(:version => 20110206215251) do
   add_index "cities", ["name", "country"], :name => "index_cities_on_name_and_country", :unique => true
 
   create_table "meas_archives", :force => true do |t|
-    t.datetime "time_from",    :null => false
-    t.datetime "time_to",      :null => false
-    t.float    "value",        :null => false
+    t.datetime "time_from",                                                  :null => false
+    t.datetime "time_to",                                                    :null => false
+    t.decimal  "_time_from_ms", :precision => 3, :scale => 0, :default => 0, :null => false
+    t.decimal  "_time_to_ms",   :precision => 3, :scale => 0, :default => 0, :null => false
+    t.float    "value",                                                      :null => false
+    t.integer  "raw"
     t.integer  "meas_type_id"
   end
 
-  add_index "meas_archives", ["meas_type_id", "time_from"], :name => "index_meas_archives_on_meas_type_id_and_time_from", :unique => true
+  add_index "meas_archives", ["meas_type_id", "time_from", "_time_from_ms"], :name => "meas_archive_meat_type_time_index", :unique => true
 
   create_table "meas_types", :force => true do |t|
     t.string   "type",       :limit => 16, :null => false
@@ -100,5 +103,12 @@ ActiveRecord::Schema.define(:version => 20110206215251) do
   end
 
   add_index "weather_providers", ["name"], :name => "index_weather_providers_on_name", :unique => true
+
+  add_foreign_key "meas_archives", "meas_types", :name => "meas_archives_meas_type_id_fk", :dependent => :restrict
+
+  add_foreign_key "weather_archives", "cities", :name => "weather_archives_city_id_fk", :dependent => :restrict
+  add_foreign_key "weather_archives", "weather_providers", :name => "weather_archives_weather_provider_id_fk", :dependent => :restrict
+
+  add_foreign_key "weather_metar_archives", "cities", :name => "weather_metar_archives_city_id_fk", :dependent => :restrict
 
 end

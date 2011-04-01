@@ -1,0 +1,21 @@
+<%= form_for(@meas_type) do |f| %>
+  <% if @meas_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@meas_type.errors.count, "error") %> prohibited this meas_type from being saved:</h2>
+
+      <ul>
+      <% @meas_type.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -29,4 +29,8 @@ class WeatherProvider < ActiveRecord::Base
   validates_uniqueness_of :name
   validates_presence_of :name
 
+  # will paginate
+  cattr_reader :per_page
+  @@per_page = 20
+
 end
