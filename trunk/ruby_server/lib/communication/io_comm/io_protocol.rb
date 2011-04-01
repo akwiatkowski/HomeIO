@@ -32,7 +32,7 @@ class IoProtocol
 
   def initialize
     @config = ConfigLoader.instance.config(self.class.to_s)
-    wait_for_communication_tested
+    wait_for_communication_tested if @config[:test_connection]
   end
 
   def port

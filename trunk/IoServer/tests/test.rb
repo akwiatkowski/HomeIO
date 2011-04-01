@@ -6,7 +6,7 @@ require 'socket'
 
 hostname = '192.168.0.104'
 hostname = 'localhost'
-hostname = '5.62.110.45'
+#hostname = '5.62.110.45'
 port = 2002
 
 # 't' test

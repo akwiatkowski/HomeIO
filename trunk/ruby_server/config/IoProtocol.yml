@@ -2,3 +2,5 @@
 ---
 :hostname: 'localhost'
 :port: 2002
+# when starting it should check communication from ruby server, via io server to uC
+:test_connection: true
