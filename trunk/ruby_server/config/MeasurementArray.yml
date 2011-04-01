@@ -29,6 +29,9 @@
       # this parameters is set in :measurement_pool_flush_interval
       :offline: true
       #:offline: false
+    # parameters used only for simulator
+    :simulator:
+      :default_value: 48.0
   # command sent to uC
     :command:
       # interval how often fetch from uC

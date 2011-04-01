@@ -29,6 +29,7 @@
 
 require 'lib/communication/io_comm/io_protocol'
 require 'lib/utils/start_threaded'
+require 'lib/measurements/measurement_array'
 
 # Simulate connected hardware
 
@@ -49,8 +50,6 @@ class IoServerSimulator
   def start
     start_server
   end
-
-  private
 
   # Start TCP server, accept connection, process commands and send reply
   def start_server
@@ -76,8 +75,51 @@ class IoServerSimulator
     end
   end
 
+  def start_measurements
+    @meas_config = ConfigLoader.instance.config('MeasurementArray')
+    @meas_types = Array.new
+
+    @meas_config[:array].each do |mc|
+      mt = MeasurementType.new(mc)
+      mt.add_foreign_real_measurement(mc[:simulator][:default_value])
+      @meas_types << mt
+    end
+
+    #@ma = MeasurementArray.instance
+    #@meas_types = @ma.types_array
+
+    puts @meas_types.inspect
+  end
+
+  # Start simple user interface
+  def start_ui
+    puts "ui"
+    Thread.abort_on_exception=true
+    @meas_types.each do |m|
+      puts "#{m.type.to_s.ljust(20)} #{m.raw.to_s.ljust(20)} #{m.value.to_s.ljust(20)} #{m.unit.to_s.ljust(5)}"
+    end
+  end
+
+  def start_key
+    loop do
+      begin
+        # this part only works after enter
+        c = STDIN.read_nonblock(1)
+        puts "I found a #{c}"
+        return true if c == 'Q'
+      rescue Errno::EAGAIN
+        sleep(0.2)
+      rescue EOFError
+        return
+      end
+    end
+  end
+
 end
 
 port = IoProtocol.instance.port
 s = IoServerSimulator.new(port)
-s.start
+#s.start
+#s.start_key
+s.start_measurements
+s.start_ui

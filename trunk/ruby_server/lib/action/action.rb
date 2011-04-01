@@ -24,6 +24,9 @@ require 'lib/communication/io_comm/io_protocol'
 
 # Action (type) which can be executed
 
+# TODO action can has parameters to send to uC
+# Create ByteArray class for uC
+
 class Action
 
   def initialize(config_hash)

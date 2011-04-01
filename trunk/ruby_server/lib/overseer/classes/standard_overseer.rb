@@ -143,9 +143,9 @@ class StandardOverseer
 
   private
 
-  # Method
+  # Execute action if conditions are met
   def loop_method
-
+    execute_action if check
   end
 
   def check

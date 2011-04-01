@@ -242,10 +242,29 @@ class MeasurementType
     end
   end
 
+  public
+
   # Process raw to real value
   def process_raw_to_real(raw)
     (raw + coefficient_offset)* coefficient_linear
   end
+
+  # Process raw to real value
+  def process_real_to_raw(real)
+    ((real / coefficient_linear) - coefficient_offset).to_f.round
+  end
+
+  # Add measurement in raw value to internal measurement cache
+  def add_foreign_raw_measurement(raw)
+    add_measurement_to_cache(raw, process_raw_to_real(raw))
+  end
+
+  # Add measurement in real value to internal measurement cache
+  def add_foreign_real_measurement(real)
+    add_measurement_to_cache(process_real_to_raw(real), real)
+  end
+
+  private
 
   # Max size of cache array
   def max_cache_size
