@@ -1,8 +1,11 @@
-%table{:border => 1}
-  %tr
-    %th= "Name"
-    %th= "Value"
-    %th= "Time"
+%table.data_table
+  %thead
+    %tr
+      %th= "Measurement"
+      %th= "Value"
+      %th= "Date"
+      %th= "Time from"
+      %th= "Time to"
   = render :partial => 'meas_archives/meas_archive', :collection => meas_archive_array
 %hr
 %p= will_paginate meas_archive_array

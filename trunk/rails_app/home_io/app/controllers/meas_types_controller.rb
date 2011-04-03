@@ -18,6 +18,7 @@ class MeasTypesController < ApplicationController
     @meas_types.each do |mt|
       @meas_archives << mt.meas_archives.last
     end
+    @meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.haml

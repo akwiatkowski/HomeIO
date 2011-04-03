@@ -2,7 +2,9 @@ class MeasArchivesController < ApplicationController
   # GET /meas_archives
   # GET /meas_archives.xml
   def index
-    @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.paginate(:page => params[:page])
+    @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.recent.paginate(:page => params[:page], :per_page => 20)
+    # not working
+    #@meas_archives = MeasType.recent_measurements(params[:meas_type_id]).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

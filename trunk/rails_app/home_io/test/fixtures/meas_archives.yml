@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  time_from: 
+  time_to: 
+  value: 1.5
+
+two:
+  time_from: 
+  time_to: 
+  value: 1.5

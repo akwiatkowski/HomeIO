@@ -1,0 +1,52 @@
+%ul.details
+  %li
+    = "Name"
+    = " - "
+    %span.parameter= meas_archive_detail.meas_type.name_human
+  %li
+    = "Value"
+    = " - "
+    %span.parameter= meas_archive_detail.value
+    = " "
+    = meas_archive_detail.meas_type.unit
+
+  %li
+    = "Time interval"
+    = " - "
+    %span.parameter= meas_archive_detail.time_to_w_ms - meas_archive_detail.time_from_w_ms
+    = " s"
+
+  - date_from = l meas_archive_detail.time_from_w_ms, :format => :date
+  - date_to = l meas_archive_detail.time_to_w_ms, :format => :date
+  %li
+    -# if dates are equal show only 'date'
+    - if not date_from == date_to
+      = "Date from"
+    - else
+      = "Date"
+    = " - "
+    %span.parameter= date_from
+
+  %li
+    = "Time from"
+    = " - "
+    %span.parameter= l meas_archive_detail.time_from_w_ms, :format => :pro_time
+
+  -# show only when there is another day
+  - if not date_from == date_to
+    %li
+      = "Date to"
+      = " - "
+      %span.parameter= l meas_archive_detail.time_to_w_ms, :format => :date
+
+
+  %li
+    = "Time to"
+    = " - "
+    %span.parameter= l meas_archive_detail.time_to_w_ms, :format => :pro_time
+
+
+  %li
+    = "Id"
+    = " - "
+    %span.parameter= meas_archive_detail.id

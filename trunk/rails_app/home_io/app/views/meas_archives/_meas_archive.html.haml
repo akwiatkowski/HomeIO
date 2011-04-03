@@ -1,4 +1,11 @@
-%tr
+%tr{:class => cycle("even", "odd")}
   %td= meas_archive.meas_type.name_human
-  %td= meas_archive.value
-  %td= meas_archive.time_to
+  %td{:title => "value #{meas_archive.value}, raw #{meas_archive.raw}"}
+    %span= meas_value(meas_archive)
+    %span= meas_archive.meas_type.unit
+  %td= l meas_archive.time_from_w_ms, :format => :date
+  %td{:title => "unix #{meas_archive.time_from_w_ms.to_f}"}
+    %span= l meas_archive.time_from_w_ms, :format => :pro_time
+  %td{:title => "unix #{meas_archive.time_to_w_ms.to_f}"}
+    %span= l meas_archive.time_to_w_ms, :format => :pro_time
+  %td= link_to "Details", meas_type_meas_archive_path(meas_archive.meas_type, meas_archive)

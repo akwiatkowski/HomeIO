@@ -28,11 +28,12 @@ class MeasArchive < ActiveRecord::Base
   validates_presence_of :value, :time_from, :time_to, :meas_type
 
   # will paginate
-  cattr_reader :per_page
-  @@per_page = 20
+  attr_reader :per_page
+  @per_page = 20
 
-  # Get data from meas_type at start
-  default_scope :include => :meas_type
+  # recent measurements
+  scope :recent, :order => "time_from DESC", :include => :meas_type
+
 
 
   # Measurement time range begin. Fix for storing microseconds

@@ -17,3 +17,23 @@
   border: 1px dotted #00F;
   top: 30px;
   left: 220px; }
+
+/* universal table with data, measurements, stats, .. */
+table.data_table {
+  margin: 5px 5px 5px 5px; }
+
+table.data_table tr td {
+  padding: 2px 10px 2px 10px; }
+
+table.data_table thead tr {
+  background-color: #CCC; }
+
+table.data_table tr.odd {
+  background-color: #CCC; }
+
+table.data_table tr.even {
+  background-color: #FFF; }
+
+/* standard detail list*/
+ul.details li span.parameter {
+  font-weight: bolder; }

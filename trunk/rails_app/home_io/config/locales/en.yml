@@ -3,3 +3,22 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    models:
+      user: "User"
+      meas_archive: "Archived measurement"
+      meas_type: "Measurement type"
+    attributes:
+      user:
+        login: "Login"
+
+  time:
+    formats:
+      date: "%Y.%m.%d"
+      pro_time: "%k:%M:%S"
+      pro: "%Y.%m.%d %k:%M:%S"
+      #default: "%Y/%m/%d"
+      #short: "%b %d"
+      #long: "%B %d, %Y"
+

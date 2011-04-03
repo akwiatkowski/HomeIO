@@ -3,7 +3,9 @@
   %head
     %title= "HomeIO"
     = stylesheet_link_tag :all
-    = javascript_include_tag :defaults
+    = javascript_include_tag 'jquery-1.5.2.min'
+    = javascript_include_tag 'jquery.qtip-1.0.0-rc3.min'
+    = javascript_include_tag 'rails'
     = csrf_meta_tag
   %body
     #top_navcontainer
@@ -12,3 +14,5 @@
       = render_navigation :expand_all => true
     #content_container
       = yield
+    -# change 'titles' in spans to qtips
+    = javascript_tag( "$('[title]').qtip({ style: { name: 'light', tip: true, padding: 5, border: { width: 2, radius: 2 }, }, position: { corner: { target: 'topMiddlet', tooltip: 'bottomLeft' } } })" )
