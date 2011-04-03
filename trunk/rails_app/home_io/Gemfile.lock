@@ -54,6 +54,8 @@ GEM
     haml (3.0.25)
     i18n (0.5.0)
     jrails (0.6.0)
+    lazy_high_charts (1.1.1)
+      bundler (~> 1.0)
     linecache (0.43)
     mail (2.2.15)
       activesupport (>= 2.3.6)
@@ -115,6 +117,7 @@ DEPENDENCIES
   geokit
   haml
   jrails
+  lazy_high_charts
   mini_magick
   mysql2
   pg

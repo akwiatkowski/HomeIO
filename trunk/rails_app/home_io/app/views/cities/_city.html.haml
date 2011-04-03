@@ -1,0 +1,7 @@
+%tr{:class => cycle("even", "odd")}
+  %td= city.name
+  %td= city.country
+  %td{:title => "Distance #{np(city.calculated_distance)} km"}= city.lat
+  %td{:title => "Distance #{np(city.calculated_distance)} km"}= city.lon
+  %td= city.metar
+  %td= link_to "Details", city_path(city)

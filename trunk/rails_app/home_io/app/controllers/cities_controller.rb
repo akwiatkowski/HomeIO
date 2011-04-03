@@ -11,6 +11,20 @@ class CitiesController < ApplicationController
     end
   end
 
+# GET /meas_archives
+  def chart
+    @weather = City.get_all_weather
+
+    # http://www.highcharts.com/ref/#series--data
+    @h = LazyHighCharts::HighChart.new('graph') do |f|
+      #f.series(:name => "Cities", :data => @weather.collect{|w| [w[:city].calculated_distance.to_i, w[:weather]]})
+      f.series(:name => "Cities", :data => @weather.collect{|w| w[:weather]})
+      puts f.chart[:legend][:style][:left] = '10px'
+    end
+
+  end
+
+
   # GET /cities/1
   # GET /cities/1.xml
   def show

@@ -59,4 +59,24 @@ class City < ActiveRecord::Base
     end
   end
 
+  def self.get_all_weather
+    #cities = self.order(:calculated_distance).limit(10).all
+    cities = self.order(:calculated_distance).all
+    weather = Array.new
+
+    cities.each do |c|
+      if c.logged_metar
+        # use metar
+        weather << {:city => c, :weather => c.weather_metar_archives.order('time_from DESC').first.temperature}
+      elsif c.logged_weather
+        # use weather
+        weather << {:city => c, :weather => c.weather_archives.order('time_from DESC').first.temperature}
+      else
+        # nothing
+      end
+    end
+
+    return weather
+  end
+
 end

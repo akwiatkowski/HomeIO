@@ -2,13 +2,19 @@ HomeIo::Application.routes.draw do
 
   #resources :meas_types, :collection => {:current => :get} do |meas_types|
   resources :meas_types do
-    resources :meas_archives
     get :current, :on => :collection
+
+    resources :meas_archives do
+      get :chart, :on => :collection
+    end
+    
   end
 
 
 
   resources :cities do |c|
+    get :chart, :on => :collection
+    
     #c.resources :weather_metar_archives
     #c.resources :weather_archives
   end

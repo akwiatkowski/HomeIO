@@ -1,0 +1,13 @@
+%table.data_table
+  %thead
+    %tr
+      %th= "Name"
+      %th= "Country"
+      %th= "Lat"
+      %th= "Lon"
+      %th= "Metar"
+  = render :partial => 'cities/city', :collection => city_array
+%hr
+%p= will_paginate city_array
+%p= page_entries_info city_array
+

@@ -12,6 +12,20 @@ class MeasArchivesController < ApplicationController
     end
   end
 
+  # GET /meas_archives
+  def chart
+    @meas_type = MeasType.find(params[:meas_type_id])
+    @meas_archives = @meas_type.meas_archives.recent.limit(20)
+
+    # http://www.highcharts.com/ref/#series--data
+    @h = LazyHighCharts::HighChart.new('graph') do |f|
+      #f.series(:name => @meas_type.name_human, :data => @meas_archives.collect{|m| m.value})
+      f.series(:name => @meas_type.name_human, :data => @meas_archives.collect{|m| [m.time_to.to_f, m.value]})
+      puts f.chart[:legend][:style][:left] = '10px'
+    end
+
+  end
+
   # GET /meas_archives/1
   # GET /meas_archives/1.xml
   def show

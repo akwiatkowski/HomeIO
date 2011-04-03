@@ -58,6 +58,9 @@ gem 'mini_magick'
 
 gem 'geokit'
 
+# js charts
+gem 'lazy_high_charts'
+
 # ...
 # http://ruby-toolbox.com/
 
