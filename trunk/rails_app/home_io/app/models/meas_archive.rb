@@ -31,6 +31,9 @@ class MeasArchive < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
 
+  # Get data from meas_type at start
+  default_scope :include => :meas_type
+
 
   # Measurement time range begin. Fix for storing microseconds
   def time_from_w_ms

@@ -1,0 +1,28 @@
+$top_height: 30px;
+$left_menu_width: 220px;
+
+/* top nav bar */
+#top_navcontainer {
+    position: absolute;
+    border: 1px dotted #F00;
+    top: 0px;
+    height: $top_height;
+}
+
+/* left nav bard */
+#left_navcontainer {
+    position: absolute;
+    border: 1px dotted #0F0;
+    top: $top_height;
+    width: $left_menu_width;
+
+}
+
+#content_container {
+    position: absolute;
+    border: 1px dotted #00F;
+    top: $top_height;
+    left: $left_menu_width;
+
+
+}

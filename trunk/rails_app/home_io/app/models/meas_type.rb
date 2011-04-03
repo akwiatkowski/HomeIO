@@ -25,8 +25,8 @@
 class MeasType < ActiveRecord::Base
   has_many :meas_archives
 
-  validates_presence_of :type
-  validates_uniqueness_of :type
+  validates_presence_of :name
+  validates_uniqueness_of :name
 
   # will paginate
   cattr_reader :per_page
@@ -34,4 +34,8 @@ class MeasType < ActiveRecord::Base
 
   set_inheritance_column :sti_type
 
+  # Use I18n
+  def name_human
+    self.name.humanize
+  end
 end

@@ -49,17 +49,17 @@ class MeasurementFetcher
   end
 
   # Get last measurements in hash format. Usable for bots.
-  def get_by_type(type)
+  def get_by_name(name)
     @meas_array.types_array.each do |m|
-      if m.type == type
+      if m.name == name
         return m.to_hash
       end
     end
   end
 
   # Get last measured value (only value, without time, and other parameters) for type
-  def get_value(type)
-    hash = get_by_type(type)
+  def get_value(name)
+    hash = get_by_name(name)
     return hash[:value] unless hash.nil?
   end
 

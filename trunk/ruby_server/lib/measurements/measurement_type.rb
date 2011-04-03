@@ -53,7 +53,7 @@ class MeasurementType
   # Create Hash with all important parameters of that object, with last value
   def to_hash
     h = {
-      :type => type,
+      :name => name,
       :value => value,
       :time => time_to,
       :time_to => time_to,
@@ -94,7 +94,13 @@ class MeasurementType
     @rt = nil
   end
 
-  # Type of measurement
+  # Type/name of measurement
+  def name
+    @config[:type]
+  end
+
+  # Deprecated. Type/name of measurement
+  # TODO delete it
   def type
     @config[:type]
   end

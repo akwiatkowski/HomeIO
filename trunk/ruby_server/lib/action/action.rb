@@ -39,8 +39,8 @@ class Action
     @config[:command][:array]
   end
 
-  def type
-    @config[:type]
+  def name
+    @config[:name]
   end
 
   # Execute action for user

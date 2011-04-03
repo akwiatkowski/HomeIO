@@ -126,7 +126,7 @@ class MeasurementArray
   def initialize_type
     @config[:array].each do |m_def|
       # initialize AR object
-      mt = MeasType.find_or_create_by_type(m_def[:type])
+      mt = MeasType.find_or_create_by_name(m_def[:name])
       m_def[:meas_type_id] = mt.id
 
       # initialize MeasurementType object

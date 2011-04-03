@@ -10,7 +10,7 @@
 
 :array:
   # codename of measurement
-  - :type: batt_u
+  - :name: batt_u
     :locale:
       :en: "Batteries voltage"
       :pl: "Napięcie na akumulatorach"

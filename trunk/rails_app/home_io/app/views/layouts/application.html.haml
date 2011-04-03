@@ -6,8 +6,9 @@
     = javascript_include_tag :defaults
     = csrf_meta_tag
   %body
-    = render_navigation :renderer => :breadcrumbs, :join_with => " &gt; "
-    %hr
-    = render_navigation :expand_all => true
-    %hr
-    = yield
+    #top_navcontainer
+      = render_navigation :renderer => :breadcrumbs, :join_with => " &gt; "
+    #left_navcontainer
+      = render_navigation :expand_all => true
+    #content_container
+      = yield

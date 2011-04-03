@@ -1,0 +1,10 @@
+%table{:border => 1}
+  %tr
+    %th= "Name"
+    %th= "Value"
+    %th= "Time"
+  = render :partial => 'meas_archives/meas_archive', :collection => meas_archive_array
+%hr
+%p= will_paginate meas_archive_array
+%p= page_entries_info meas_archive_array
+

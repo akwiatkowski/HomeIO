@@ -1,0 +1,20 @@
+/* one meas archive */
+ul.meas_archive {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li.meas_archive {
+    background-image: url(/images/measurement1.png);
+    background-repeat: no-repeat;
+    /*
+    background-position: 0 .4em;
+    padding-left: .6em;
+    */
+    padding-left: 20px;
+}
+
+body {
+    position: relative;
+}

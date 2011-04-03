@@ -25,8 +25,8 @@
 class ActionType < ActiveRecord::Base
   has_many :action_events
 
-  validates_presence_of :type
-  validates_uniqueness_of :type
+  validates_presence_of :name
+  validates_uniqueness_of :name
 
   # will paginate
   cattr_reader :per_page

@@ -44,7 +44,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sec.item :meas_current, 'Current values', current_meas_types_path
       sec.item :meas_current, 'Detailed by type', meas_types_path do |ter|
         MeasType.all.each do |t|
-          ter.item "meas_types_#{t.id}".to_sym, t.type, meas_type_meas_archives_path(t.id)
+          ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)
         end
       end
 

@@ -10,8 +10,19 @@ class MeasTypesController < ApplicationController
     end
   end
 
+  # GET /meas_types/current
+  # GET /meas_types/current.xml
   def current
-    
+    @meas_types = MeasType.all
+    @meas_archives = Array.new
+    @meas_types.each do |mt|
+      @meas_archives << mt.meas_archives.last
+    end
+
+    respond_to do |format|
+      format.html # index.html.haml
+      format.xml  { render :xml => @meas_archives }
+    end
   end
 
   # GET /meas_types/1

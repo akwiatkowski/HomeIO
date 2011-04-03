@@ -1,0 +1,19 @@
+/* top nav bar */
+#top_navcontainer {
+  position: absolute;
+  border: 1px dotted #F00;
+  top: 0px;
+  height: 30px; }
+
+/* left nav bard */
+#left_navcontainer {
+  position: absolute;
+  border: 1px dotted #0F0;
+  top: 30px;
+  width: 220px; }
+
+#content_container {
+  position: absolute;
+  border: 1px dotted #00F;
+  top: 30px;
+  left: 220px; }
