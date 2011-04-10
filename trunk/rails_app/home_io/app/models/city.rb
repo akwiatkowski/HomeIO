@@ -38,13 +38,13 @@ class City < ActiveRecord::Base
   # Update flags used for not searching entire table for data which is not available
   def update_search_flags
     puts "Updating search flag for city ID #{self.id} - #{self.name}"
-    if WeatherArchive.find(:all, :conditions => {:city_id => self.id}, :limit => 1).size > 0
+    if WeatherArchive.find(:all, :conditions => { :city_id => self.id }, :limit => 1).size > 0
       update_attribute(:logged_weather, true)
     else
       update_attribute(:logged_weather, false)
     end
 
-    if WeatherMetarArchive.find(:all, :conditions => {:city_id => self.id}, :limit => 1).size > 0
+    if WeatherMetarArchive.find(:all, :conditions => { :city_id => self.id }, :limit => 1).size > 0
       update_attribute(:logged_metar, true)
     else
       update_attribute(:logged_metar, false)
@@ -65,18 +65,24 @@ class City < ActiveRecord::Base
     weather = Array.new
 
     cities.each do |c|
-      if c.logged_metar
-        # use metar
-        weather << {:city => c, :weather => c.weather_metar_archives.order('time_from DESC').first.temperature}
-      elsif c.logged_weather
-        # use weather
-        weather << {:city => c, :weather => c.weather_archives.order('time_from DESC').first.temperature}
-      else
-        # nothing
-      end
+      weather += c.last_weather(1)
     end
 
     return weather
+  end
+
+  # Get last weather records
+  def last_weather(count = 1)
+    if self.logged_metar
+      # use metar
+      return self.weather_metar_archives.order('time_from DESC').limit(count).all
+    elsif self.logged_weather
+      # use weather
+      return self.weather_archives.order('time_from DESC').limit(count).all
+    else
+      # nothing
+      return []
+    end
   end
 
 end

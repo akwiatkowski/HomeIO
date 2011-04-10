@@ -1,0 +1,26 @@
+-# uniq id used when where is more graphs on one page
+- graph_div_html_id = 'graph_partial' + Digest::MD5.hexdigest( params.inspect + Time.now.to_s).to_s
+-# url for fetching data to
+- json_url = url_for( _params.clone.merge({:format => 'json_graph'}) )
+%div{:id => graph_div_html_id }
+:javascript
+  alert('graph partial');
+  var r = Raphael('#{graph_div_html_id}');
+
+  $.get('#{json_url}', function(data) {
+
+
+    var x = [];
+    var y = [];
+    var i = 0;
+
+    for (i=0; i<data.length; i=i+1) {
+      x[i] = data[i]["x"];
+      y[i] = data[i]["y"];
+    }
+
+    var lines = r.g.linechart(10, 10, 800, 600, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: true});
+
+  });
+  
+  alert('graph partial2');

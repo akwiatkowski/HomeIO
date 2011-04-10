@@ -58,8 +58,17 @@ gem 'mini_magick'
 
 gem 'geokit'
 
-# js charts
-gem 'lazy_high_charts'
+# coffee
+gem 'json'
+gem 'coffee-script', '~> 2.1.1'
+gem 'coffee-haml-filter'
+gem 'rack-coffee'
+#gem 'bistro_car'
+gem 'barista'
+
+# charts
+# TODO not used
+gem 'seer'
 
 # ...
 # http://ruby-toolbox.com/

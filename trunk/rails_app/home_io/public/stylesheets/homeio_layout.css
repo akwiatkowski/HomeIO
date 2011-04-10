@@ -37,3 +37,11 @@ table.data_table tr.even {
 /* standard detail list*/
 ul.details li span.parameter {
   font-weight: bolder; }
+
+#graph_holder {
+  width: 800px;
+  height: 600px; }
+
+#chart {
+  width: 800px;
+  height: 600px; }

@@ -5,8 +5,15 @@
     = stylesheet_link_tag :all
     = javascript_include_tag 'jquery-1.5.2.min'
     = javascript_include_tag 'jquery.qtip-1.0.0-rc3.min'
-    = javascript_include_tag 'rails'
-    = javascript_include_tag 'highcharts'
+    =# javascript_include_tag 'rails'
+
+    = javascript_include_tag 'raphael-min'
+    = javascript_include_tag 'g.raphael-min'
+    =# javascript_include_tag 'g.line-min'
+    = javascript_include_tag 'g.line'
+
+    =# coffee_script_bundle :mode => :inline
+
     = csrf_meta_tag
   %body
     #top_navcontainer

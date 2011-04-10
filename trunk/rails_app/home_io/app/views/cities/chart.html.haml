@@ -1,1 +1,40 @@
-= high_chart("my_id", @h)
+#graph_holder
+:javascript
+  var r = Raphael('graph_holder');
+  // var lines = r.g.linechart(0, 0, 300, 220, [1, 2, 3, 4, 5, 6, 7], [12, 32, 23, 15, 17, 27, 22], {nostroke: false, axis: "0 0 1 1", symbol: "o", smooth: true});
+
+  $.get('/cities/chart.json', function(data) {
+    //alert(data);
+
+    var x = [];
+    var y = [];
+    var i = 0;
+
+    for (i=0; i<data.length; i=i+1) {
+      x[i] = data[i]["distance"];
+      y[i] = data[i]["temperature"];
+    }
+
+    var lines = r.g.linechart(10, 10, 800, 600, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: true});
+    //var lines = r.g.linechart(0, 0, 300, 220, [1, 2, 3, 4, 5, 6, 7], [12, 32, 23, 15, 17, 27, 22], {nostroke: false, axis: "0 0 1 1", symbol: "o", smooth: true});
+
+    /*
+    lines.hoverColumn(function () {
+                    this.tags = r.set();
+                    for (var i = 0, ii = this.y.length; i < ii; i++) {
+                        this.tags.push(r.g.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{fill: "#fff"}, {fill: this.symbols[i].attr("fill")}]));
+                    }
+                }, function () {
+                    this.tags && this.tags.remove();
+                });
+                */
+
+
+
+  });
+
+
+
+//r.g.linechart(0, 0, 320, 240, [1, 2, 3, 5], [10, 20, -10, 10]);
+//var lines = r.g.linechart(0, 0, 300, 220, [[1, 2, 3, 4, 5, 6, 7],[3.5, 4.5, 5.5, 6.5, 7, 8]], [[12, 32, 23, 15, 17, 27, 22], [10, 20, 30, 25, 15, 28]], {nostroke: false, axis: "0 0 1 1", symbol: "o", smooth: true});
+// var lines = r.g.linechart(0, 0, 300, 220, [1, 2, 3, 4, 5, 6, 7], [12, 32, 23, 15, 17, 27, 22], {nostroke: false, axis: "0 0 1 1", symbol: "o", smooth: true});

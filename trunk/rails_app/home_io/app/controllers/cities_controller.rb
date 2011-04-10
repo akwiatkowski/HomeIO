@@ -15,13 +15,26 @@ class CitiesController < ApplicationController
   def chart
     @weather = City.get_all_weather
 
-    # http://www.highcharts.com/ref/#series--data
-    @h = LazyHighCharts::HighChart.new('graph') do |f|
-      #f.series(:name => "Cities", :data => @weather.collect{|w| [w[:city].calculated_distance.to_i, w[:weather]]})
-      f.series(:name => "Cities", :data => @weather.collect{|w| w[:weather]})
-      puts f.chart[:legend][:style][:left] = '10px'
-    end
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @weather }
+      format.json  { render :json => @weather.collect{|w|
+        {
+          :id => w.id,
+          :distance => w.city.calculated_distance,
+          :temperature => w.temperature
+        }}
+      }
 
+      #format.html_graph { render :partial => 'graphs/graph', :mime => :html}
+      format.json_graph  { render :json => @weather.collect{|w|
+        {
+          :id => w.id,
+          :x => w.city.calculated_distance,
+          :y => w.temperature
+        }}
+      }
+    end
   end
 
 
@@ -29,10 +42,14 @@ class CitiesController < ApplicationController
   # GET /cities/1.xml
   def show
     @city = City.find(params[:id])
+    @weathers = @city.last_weather(200)
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @city }
+      format.xml  { render :xml => @weathers }
+      format.json  { render :json => @weathers.collect{|w|
+        {:time => w.time_from.to_i, :temperature => w.temperature}
+      } }
     end
   end
 
