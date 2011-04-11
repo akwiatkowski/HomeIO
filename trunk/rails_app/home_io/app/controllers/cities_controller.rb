@@ -42,7 +42,7 @@ class CitiesController < ApplicationController
   # GET /cities/1.xml
   def show
     @city = City.find(params[:id])
-    @weathers = @city.last_weather(200)
+    @weathers = @city.last_weather(50)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -50,6 +50,23 @@ class CitiesController < ApplicationController
       format.json  { render :json => @weathers.collect{|w|
         {:time => w.time_from.to_i, :temperature => w.temperature}
       } }
+      format.json_graph  {
+
+        type = params[:type]
+        type = "temperature" if type.nil?
+
+        times = @weathers.collect{|w| (w.time_to - Time.now)/3600 }
+        #temperatures = @weathers.collect{|w| w.temperature }
+        #winds = @weathers.collect{|w| w.wind }
+        #pressures = @weathers.collect{|w| w.pressure }
+        values = @weathers.collect{|w| w.attributes[type] }
+
+        render :json => {
+          :x => times,
+          #:y => [temperatures, winds]
+          :y => values
+        }
+      }
     end
   end
 

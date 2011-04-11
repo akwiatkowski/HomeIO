@@ -8,11 +8,16 @@
 #info
   = link_to( @city.lat.to_s + "," + @city.lon.to_s, "http://maps.google.pl/maps?q=#{@city.lat},#{@city.lon}")
 
-#chart
+%h2= "Temperature [C]"
+= render :partial => "graphs/graph", :locals => {:_params => params.clone.merge({:type => :temperature}), :smooth => false, :width => 800}
+
+%h2= "Wind [m/s]"
+= render :partial => "graphs/graph", :locals => {:_params => params.clone.merge({:type => :wind}), :smooth => false, :width => 800}
+
 
 :javascript
+  /*
   $.get('/cities/#{@city.id}.json', {}, function(data) {
-    alert(1);
     var r = Raphael('chart');
 
     var x = [];
@@ -24,11 +29,10 @@
       y[i] = data[i]["temperature"];
     }
 
-
-
     //var lines = r.g.linechart(10, 10, 800, 600, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: true});
     var lines = r.g.linechart(10, 10, 800, 600, x, y, {nostroke: false, axis: "0 0 1 1", smooth: false});
 
   });
+  */
 
-%h2= 'a'
+

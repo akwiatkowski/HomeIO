@@ -1,15 +1,24 @@
 -# uniq id used when where is more graphs on one page
-- graph_div_html_id = 'graph_partial' + Digest::MD5.hexdigest( params.inspect + Time.now.to_s).to_s
+- graph_div_html_id = 'graph_partial' + Digest::MD5.hexdigest( _params.inspect + Time.now.to_s).to_s
 -# url for fetching data to
 - json_url = url_for( _params.clone.merge({:format => 'json_graph'}) )
-%div{:id => graph_div_html_id }
+
+-# size of graph
+- width = 400 unless defined? width and not width.nil?
+- height = 300 unless defined? height and not height.nil?
+-# extra size
+- padding = 20 unless defined? padding and not padding.nil?
+
+-# smooth graph
+- smooth = false unless defined? smooth and not smooth.nil?
+
+%div{:id => graph_div_html_id, :style => "width: #{width + padding}px; height: #{height + padding}px;"}
 :javascript
-  alert('graph partial');
-  var r = Raphael('#{graph_div_html_id}');
+  var r#{graph_div_html_id} = Raphael('#{graph_div_html_id}');
 
   $.get('#{json_url}', function(data) {
 
-
+    /*
     var x = [];
     var y = [];
     var i = 0;
@@ -18,9 +27,12 @@
       x[i] = data[i]["x"];
       y[i] = data[i]["y"];
     }
+    */
 
-    var lines = r.g.linechart(10, 10, 800, 600, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: true});
+    var x = data["x"];
+    var y = data["y"];
+
+    var lines = r#{graph_div_html_id}.g.linechart(#{padding}, 0, #{width}, #{height}, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: #{smooth} });
 
   });
-  
-  alert('graph partial2');
+

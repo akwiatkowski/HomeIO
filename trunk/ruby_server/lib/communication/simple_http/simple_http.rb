@@ -24,7 +24,7 @@ require 'json'
 require 'socket'
 
 require "lib/communication/db/extractor_basic_object"
-require "lib/measurement_fetcher"
+require "lib/measurements/measurement_fetcher"
 
 class SimpleHttp
 

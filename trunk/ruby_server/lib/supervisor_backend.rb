@@ -21,9 +21,9 @@
 
 
 require "lib/utils/start_threaded"
-require "lib/metar_logger"
-require "lib/weather_ripper"
-require "lib/measurement_fetcher"
+require "lib/metar/metar_logger"
+require "lib/weather_ripper/weather_ripper"
+require "lib/measurements/measurement_fetcher"
 require "lib/communication/task_server/tcp_comm_task_server"
 require "lib/communication/simple_http/simple_http"
 

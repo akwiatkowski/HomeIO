@@ -104,7 +104,7 @@ namespace :metar do
 
     desc 'Process all CITY metars logged in raw format'
     task :city do
-      require 'lib/metar_logger'
+      require 'lib/metar/metar_logger'
       metar_cities = MetarLogger.instance.get_logged_cities
       puts metar_cities.collect { |c| "#{c[:code]} - #{c[:city]} (#{c[:country]})" }.join("\n")
 
@@ -119,7 +119,7 @@ namespace :metar do
 
     desc "Create list of all logged cities in '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :redefine do
-      require 'lib/metar_logger'
+      require 'lib/metar/metar_logger'
       cities = MetarLogger.instance.get_logged_cities.collect { |c| c[:code] }
       File.open(DEFINED_CITIES_TO_PROCESS_FILE, 'w') do |out|
         YAML.dump(cities, out)
