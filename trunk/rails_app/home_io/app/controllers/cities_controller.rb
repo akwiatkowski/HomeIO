@@ -11,28 +11,27 @@ class CitiesController < ApplicationController
     end
   end
 
-# GET /meas_archives
+  # GET /cities/chart
   def chart
-    @weather = City.get_all_weather
+    @weathers = City.get_all_weather
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @weather }
-      format.json  { render :json => @weather.collect{|w|
-        {
-          :id => w.id,
-          :distance => w.city.calculated_distance,
-          :temperature => w.temperature
-        }}
-      }
+      format.xml  { render :xml => @weathers.to_xml }
+      format.json  { render :json => @weathers }
+      format.json_graph  {
 
-      #format.html_graph { render :partial => 'graphs/graph', :mime => :html}
-      format.json_graph  { render :json => @weather.collect{|w|
-        {
-          :id => w.id,
-          :x => w.city.calculated_distance,
-          :y => w.temperature
-        }}
+        @weathers = @weathers.sort{|a,b| a.city.lat <=> b.city.lat}
+
+        #times = @weathers.collect{|w| (w.time_to - Time.now)/3600 }
+        lat = @weathers.collect{|w| w.city.lat }
+        temperatures = @weathers.collect{|w| w.temperature }
+        winds = @weathers.collect{|w| w.wind }
+
+        render :json => {
+          :x => lat,
+          :y => [temperatures, winds]
+        }
       }
     end
   end
@@ -51,55 +50,23 @@ class CitiesController < ApplicationController
         {:time => w.time_from.to_i, :temperature => w.temperature}
       } }
       format.json_graph  {
-
         type = params[:type]
         type = "temperature" if type.nil?
 
         times = @weathers.collect{|w| (w.time_to - Time.now)/3600 }
-        #temperatures = @weathers.collect{|w| w.temperature }
-        #winds = @weathers.collect{|w| w.wind }
-        #pressures = @weathers.collect{|w| w.pressure }
         values = @weathers.collect{|w| w.attributes[type] }
 
         render :json => {
           :x => times,
-          #:y => [temperatures, winds]
           :y => values
         }
       }
     end
   end
 
-  # GET /cities/new
-  # GET /cities/new.xml
-  def new
-    @city = City.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @city }
-    end
-  end
-
   # GET /cities/1/edit
   def edit
     @city = City.find(params[:id])
-  end
-
-  # POST /cities
-  # POST /cities.xml
-  def create
-    @city = City.new(params[:city])
-
-    respond_to do |format|
-      if @city.save
-        format.html { redirect_to(@city, :notice => 'City was successfully created.') }
-        format.xml  { render :xml => @city, :status => :created, :location => @city }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @city.errors, :status => :unprocessable_entity }
-      end
-    end
   end
 
   # PUT /cities/1
@@ -118,15 +85,4 @@ class CitiesController < ApplicationController
     end
   end
 
-  # DELETE /cities/1
-  # DELETE /cities/1.xml
-  def destroy
-    @city = City.find(params[:id])
-    @city.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(cities_url) }
-      format.xml  { head :ok }
-    end
-  end
 end
