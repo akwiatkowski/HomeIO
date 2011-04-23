@@ -123,9 +123,10 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
       add_index :cities, [:lat, :lon], :unique => true
       add_index :cities, [:name, :country], :unique => true
       # meas
+      add_index :meas_types, [:name], :unique => true
       add_index :meas_archives, [:meas_type_id, :time_from, :_time_from_ms], :unique => true, :name => 'meas_archive_meat_type_time_index'
       # actions
-      add_index :action_types, [:type], :unique => true
+      add_index :action_types, [:name], :unique => true
       add_index :action_types_users, [:action_type_id, :user_id], :unique => true
       # weather
       add_index :weather_archives, [:weather_provider_id, :city_id, :time_from, :time_to], :unique => true, :name => 'weather_archives_index'
