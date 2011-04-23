@@ -43,7 +43,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
 
       # MEASUREMENTS
       create_table :meas_types do |t|
-        t.column :type, :string, :limit => 64, :null => false
+        t.column :name, :string, :limit => 64, :null => false
         t.timestamps
       end
 
@@ -62,7 +62,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
 
       # ACTIONS
       create_table :action_types do |t|
-        t.column :type, :string, :limit => 64, :null => false
+        t.column :name, :string, :limit => 64, :null => false
         t.timestamps
       end
 
