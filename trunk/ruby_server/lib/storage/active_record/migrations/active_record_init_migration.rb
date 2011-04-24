@@ -26,7 +26,7 @@ require 'foreigner'
 
 class ActiveRecordInitMigration < ActiveRecord::Migration
   def self.up
-    ActiveRecord::Base. transaction do
+    ActiveRecord::Base.transaction do
       create_table :cities do |t|
         t.column :name, :string, :null => false
         t.column :country, :string, :null => false
@@ -98,7 +98,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
         t.column :pressure, :float, :null => true
         t.column :rain, :float, :null => true
         t.column :snow, :float, :null => true
-      
+
         t.timestamps
         t.references :city
         t.references :weather_provider
@@ -148,22 +148,24 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
   end
 
   def self.down
-    remove_foreign_key :weather_archives, :cities
-    remove_foreign_key :weather_metar_archives, :cities
-    remove_foreign_key :meas_archives, :meas_types
-    remove_foreign_key :action_events, :action_types
-    remove_foreign_key :weather_archives, :weather_providers
+    ActiveRecord::Base.transaction do
+      remove_foreign_key :weather_archives, :cities
+      remove_foreign_key :weather_metar_archives, :cities
+      remove_foreign_key :meas_archives, :meas_types
+      remove_foreign_key :action_events, :action_types
+      remove_foreign_key :weather_archives, :weather_providers
 
-    drop_table :meas_archives
-    drop_table :action_events
-    drop_table :weather_archives
-    drop_table :weather_metar_archives
+      drop_table :meas_archives
+      drop_table :action_events
+      drop_table :weather_archives
+      drop_table :weather_metar_archives
 
-    drop_table :action_types
-    drop_table :action_types_users
+      drop_table :action_types
+      drop_table :action_types_users
 
-    drop_table :cities
-    drop_table :meas_types
-    drop_table :weather_providers
+      drop_table :cities
+      drop_table :meas_types
+      drop_table :weather_providers
+    end
   end
 end

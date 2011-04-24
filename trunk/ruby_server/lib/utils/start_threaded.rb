@@ -29,6 +29,8 @@ require 'lib/utils/dev_info'
 
 class StartThreaded
 
+  DEFAULT_INTERVAL_WHEN_NIL_IS_USED = 1
+
   # Wrap code block to be started in loop with begin-rescue-end. There is 1 second sleep every finished task.
   #
   # :call-seq:
@@ -42,6 +44,10 @@ class StartThreaded
   # :call-seq:
   #   StartThreaded.start_threaded( Numeric interval, Numeric sleep after execution, parent instance) {code block} => RobustThread handle
   def self.start_threaded_precised(interval, sleep_time, parent, &block)
+    if interval.nil?
+      AdvLog.logger(self).warning("Interval not set, setting to #{DEFAULT_INTERVAL_WHEN_NIL_IS_USED}")
+      interval = DEFAULT_INTERVAL_WHEN_NIL_IS_USED
+    end
 
     # create new thread
     label = AdvLog.instance.class_name(parent)

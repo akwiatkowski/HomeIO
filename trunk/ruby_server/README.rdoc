@@ -1,6 +1,15 @@
 = HomeIO backend
 
-This file explain directory structure of backend server
+This file explain simple usage and directory structure of backend server.
+
+== Simple usage
+
+1. Use git clone to get latest version.
+2. Create ./lib/config_local. Configuration templates are stored there and used when local configuration is not available.
+3. Create DB with full rights.
+4. Copy ./lib/config/StorageActiveRecord.yml to ./lib/config_local/StorageActiveRecord.yml and modify to use DB createf before.
+5. Run rake db:init to create tables used for backend.
+6. Start rake supervisor:backend.
 
 == Structure
 
