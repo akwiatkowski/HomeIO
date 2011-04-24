@@ -42,24 +42,37 @@ class MeasurementFetcher
   end
 
   # Get last measurements in array of hashes format. Usable for bots.
-  def get_last
+  def get_last_hash
     @meas_array.types_array.collect { |m|
       m.to_hash
     }
   end
 
   # Get last measurements in hash format. Usable for bots.
-  def get_by_name(name)
+  def get_hash_by_name(name)
     @meas_array.types_array.each do |m|
       if m.name == name
         return m.to_hash
       end
     end
+    # when not found return nil
+    nil
+  end
+
+  # Get last measurements
+  def get_meas_type_by_name(name)
+    @meas_array.types_array.each do |m|
+      if m.name == name
+        return m
+      end
+    end
+    # when not found return nil
+    nil
   end
 
   # Get last measured value (only value, without time, and other parameters) for type
-  def get_value(name)
-    hash = get_by_name(name)
+  def get_value_by_name(name)
+    hash = get_hash_by_name(name)
     return hash[:value] unless hash.nil?
   end
 

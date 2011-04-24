@@ -43,7 +43,7 @@ class Action
     @config[:name]
   end
 
-  # Execute action for user
+  # Execute action for user. Return true if execution was successful.
   def execute(user_id = nil)
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw_array = IoProtocol.string_to_array(io_result)
@@ -51,11 +51,15 @@ class Action
     status = IoProtocol.assert_response(response_correct, raw_array)
 
     # TODO log errors
-    puts raw_array.inspect, response_correct.inspect
+    # puts raw_array.inspect, response_correct.inspect
+    if status == false
+      puts "Action execution error, response #{raw_array.inspect}, should be #{response_correct.inspect}"
+    end
 
     post_execute(status, user_id)
 
-    return raw_array
+    #return raw_array # where was it used?
+    return status
   end
 
   # Number of bytes of uC response

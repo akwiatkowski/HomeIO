@@ -42,19 +42,19 @@ class ActionManager
     initialize_type
   end
 
-  # Get action by type
-  def get_action_by_type(type)
+  # Get action by name
+  def get_action_by_name(name)
     action_array.each do |a|
-      if a.type == type
+      if a.name == name
         return a
       end
     end
     return nil
   end
 
-  # Get action by type
-  def get_by_type(type)
-    get_action_by_type(type)
+  # Get action by name
+  def get_by_name(name)
+    get_action_by_name(name)
   end
 
   private
@@ -63,7 +63,7 @@ class ActionManager
   def initialize_type
     @config[:array].each do |m_def|
       # initialize AR object
-      mt = ActionType.find_or_create_by_type(m_def[:type])
+      mt = ActionType.find_or_create_by_name(m_def[:name])
       m_def[:action_type_id] = mt.id
 
       # initialize Action object

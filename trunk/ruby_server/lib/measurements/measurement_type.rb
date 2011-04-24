@@ -96,13 +96,12 @@ class MeasurementType
 
   # Type/name of measurement
   def name
-    @config[:type]
+    @config[:name]
   end
 
   # Deprecated. Type/name of measurement
-  # TODO delete it
   def type
-    @config[:type]
+    name
   end
 
   # Unit name, ex. 'V' or 'A'
@@ -163,6 +162,19 @@ class MeasurementType
   # Time of last value, "to"
   def time_to
     @measurements.last[:time]
+  end
+
+  # Return average of last measurements. If measurement stored in cache is not enough return nil.
+  def average_value(last_measurements = 1)
+    if @measurements.size < last_measurements
+      # cache has not enough measurements
+      return nil
+    else
+      # calculate average
+      meases = @measurements.last(last_measurements)
+      sum = meases.collect{|m| m[:value]}.numeric_sum.to_f
+      return sum / last_measurements.to_f
+    end
   end
 
   # Time of last value, "from

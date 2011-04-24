@@ -68,6 +68,24 @@ class SupervisorBackend
       sleep @config[:intervals][:simple_http]
       SimpleHttp.new
     end
+
+    # custom wind turbine overseer
+    # ugly, but needed for easter deployment
+    #@rt_wind_overseer = StartThreaded.start_threaded(4, self) do
+    #  sleep 2
+    #  restart warning, when in loop create new threads every loop
+    require "lib/overseer/classes/custom/wind_turbine_overseer"
+    wo = WindTurbineOverseer.new
+    wo.start
+    #end
+
+#    require 'lib/action/action_manager'
+#    a = ActionManager.instance.get_action_by_name("output_4_off")
+#    puts "\n" * 10
+#    puts a.execute
+#    puts a.to_yaml
+#    puts "\n" * 10
+
   end
 
   private

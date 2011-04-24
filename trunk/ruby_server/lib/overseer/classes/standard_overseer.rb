@@ -29,11 +29,19 @@ require 'lib/utils/start_threaded'
 
 class StandardOverseer
 
+  # show some information
+  VERBOSE = true
+
+  # Was conditions met last time. State is set when action was successfully executed.
+  attr_reader :state
+
   # needed parameters
-  #  :measurement_type - type of measurement which is checked
+  #  :measurement_name - name/type of measurement which is checked
   #  :greater - true/false, true - check if value is greater
   #  :threshold_value - value which is compared to
-  #  :action_type - action type to execute if check is true
+  #  :action_name - action name/type to execute if check is true
+  #  :interval - interval of checking condition
+  #  :re_execute - default false - execute action only when conditions are met
 
   # Create StandardOverseer
   def initialize(params)
@@ -46,7 +54,11 @@ class StandardOverseer
     @params = params
     raise 'Params for overseer must be a Hash object' unless @params.kind_of?(Hash)
 
+    # previous state
+    @state = false
+
     # TODO create migration for overseers, list of overseers and parameters (like hash) for them
+    # TODO actions with reexecution
   end
 
   # Start Overseer thread
@@ -56,6 +68,7 @@ class StandardOverseer
       return false
     end
 
+    puts "#{self.class} started - #{@params.inspect}" if VERBOSE
     @rt = StartThreaded.start_threaded(interval, self) do
       # check and execute action if needed
       loop_method
@@ -72,29 +85,43 @@ class StandardOverseer
 
   # Some useful accessors
 
-  # Type of measurement used for this Overseer (String)
-  def measurement_type
-    @params[:measurement_type]
+  # Name of measurement used for this Overseer (String)
+  def measurement_name
+    @params[:measurement_name]
   end
 
   # Type of measurement used for this Overseer (MeasurementType)
   def measurement
-    @measurement_fetcher.get_by_type(measurement_type)
+    @measurement_fetcher.get_meas_type_by_name(measurement_name)
   end
 
-  # Type of action used for this Overseer (String)
-  def action_type
-    @params[:action_type]
+  # Name of action used for this Overseer (String)
+  def action_name
+    @params[:action_name]
   end
 
   # Type of action used for this Overseer (Action)
   def action
-    @action_manager.get_by_type(action_type)
+    @action_manager.get_by_name(action_name)
+  end
+
+  # Type of action used for this Overseer (Action)
+  def action_type
+    action
   end
 
   # Threshold value
   def threshold_value
     @params[:threshold_value]
+  end
+
+  # If false execute actions only when conditions are met for the first time
+  def re_execute
+    if @params[:re_execute]
+      true
+    else
+      false
+    end
   end
 
   # Type of checks, check if current value is greater if this is true
@@ -145,15 +172,54 @@ class StandardOverseer
 
   # Execute action if conditions are met
   def loop_method
-    execute_action if check
+    # condition check status
+    check_status = check
+
+    if re_execute == false
+      # execute only when status was false and conditions were met
+      execute_action if state == false and check_status == true
+
+      # when conditions are not met set state = false
+      @state = false if check_status == false
+
+      # when state == false and check_status == true - do nothing
+
+    else
+      # execute when conditions are met
+      execute_action if check_status
+
+    end
+
   end
 
+  # Check if conditions are met
   def check
+    puts "#{self.class} check condition - #{measurement.value} <> #{threshold_value}, gr = #{greater}" if VERBOSE
 
+    if greater
+      # has to be greater
+      if measurement.value > threshold_value
+        # condition met
+        return true
+      end
+
+    else
+      # has to be smaller
+      if measurement.value < threshold_value
+        # condition met
+        return true
+      end
+
+    end
+
+    false
   end
 
+  # Execute action when condition is met, and change state.
   def execute_action
-
+    puts "#{self.class} execute action - #{@params.inspect}, action #{action_name}" if VERBOSE
+    @state = action.execute
+    puts "#{self.class} state after #{state}"
   end
 
 
