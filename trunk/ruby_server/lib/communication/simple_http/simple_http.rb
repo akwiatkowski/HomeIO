@@ -48,7 +48,7 @@ class SimpleHttp
   # TODO add new comments, document
   def execute_request(req_array)
     if req_array[0] == "meas"
-      return MeasurementFetcher.instance.get_last
+      return MeasurementFetcher.instance.get_last_hash
     end
 
     if req_array[0] == "metar"
