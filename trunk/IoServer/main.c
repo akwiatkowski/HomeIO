@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 
 // RS configuration
 #include "tcp_server.c"
@@ -53,6 +54,8 @@ int main(int argc, char** argv) {
     int conn_s; // connection socket
     int list_s = createTcpServer();
 
+    time_t t = time(0);
+
     // infinite server loop
     while (1) {
         // Wait for a connection, then accept() it
@@ -63,7 +66,8 @@ int main(int argc, char** argv) {
 
         // Retrieve command
         readLine(conn_s, buffer, MAX_LINE - 1);
-        printf("Command received: %s\n", buffer);
+
+        printf("%s - rcv '%s' ", ctime(&t), buffer);
 
         // command and response char count
         count_command = buffer[0];
@@ -86,7 +90,7 @@ int main(int argc, char** argv) {
             tmp += (unsigned long int) tmp_char;
         }
         buffer[count_response] = 0;
-        printf(" result %d\n", tmp);
+        printf(" res '%s' raw %d\n", buffer, tmp);
 
         /*
          * // OLD CODE

@@ -11,6 +11,12 @@ This file explain simple usage and directory structure of backend server.
 5. Run rake db:init to create tables used for backend.
 6. Start rake supervisor:backend.
 
+== Useful sqls
+
+1. select * from meas_archives where time_to > localtimestamp - interval '1 minute' order by time_to;
+   Measurements during last minute.
+
+
 == Structure
 
 
