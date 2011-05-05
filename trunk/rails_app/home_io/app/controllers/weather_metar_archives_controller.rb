@@ -40,6 +40,8 @@ class WeatherMetarArchivesController < ApplicationController
   # POST /weather_metar_archives
   # POST /weather_metar_archives.xml
   def create
+    return # TODO fix it later
+
     @weather_metar_archive = WeatherMetarArchive.new(params[:weather_metar_archive])
 
     respond_to do |format|
@@ -56,6 +58,8 @@ class WeatherMetarArchivesController < ApplicationController
   # PUT /weather_metar_archives/1
   # PUT /weather_metar_archives/1.xml
   def update
+    return # TODO fix it later
+
     @weather_metar_archive = WeatherMetarArchive.find(params[:id])
 
     respond_to do |format|
@@ -72,6 +76,8 @@ class WeatherMetarArchivesController < ApplicationController
   # DELETE /weather_metar_archives/1
   # DELETE /weather_metar_archives/1.xml
   def destroy
+    return # TODO fix it later
+
     @weather_metar_archive = WeatherMetarArchive.find(params[:id])
     @weather_metar_archive.destroy
 

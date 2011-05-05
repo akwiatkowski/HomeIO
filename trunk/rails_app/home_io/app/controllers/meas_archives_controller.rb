@@ -56,6 +56,8 @@ class MeasArchivesController < ApplicationController
   # POST /meas_archives
   # POST /meas_archives.xml
   def create
+    return # TODO fix it later
+
     @meas_archive = MeasArchive.new(params[:meas_archive])
 
     respond_to do |format|
@@ -72,6 +74,8 @@ class MeasArchivesController < ApplicationController
   # PUT /meas_archives/1
   # PUT /meas_archives/1.xml
   def update
+    return # TODO fix it later
+
     @meas_archive = MeasArchive.find(params[:id])
 
     respond_to do |format|
@@ -88,6 +92,8 @@ class MeasArchivesController < ApplicationController
   # DELETE /meas_archives/1
   # DELETE /meas_archives/1.xml
   def destroy
+    return # TODO fix it later
+
     @meas_archive = MeasArchive.find(params[:id])
     @meas_archive.destroy
 

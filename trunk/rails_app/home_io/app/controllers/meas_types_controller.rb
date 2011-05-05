@@ -56,6 +56,8 @@ class MeasTypesController < ApplicationController
   # POST /meas_types
   # POST /meas_types.xml
   def create
+    return # TODO fix it later
+
     @meas_type = MeasType.new(params[:meas_type])
 
     respond_to do |format|
@@ -72,6 +74,8 @@ class MeasTypesController < ApplicationController
   # PUT /meas_types/1
   # PUT /meas_types/1.xml
   def update
+    return # TODO fix it later
+
     @meas_type = MeasType.find(params[:id])
 
     respond_to do |format|
@@ -88,6 +92,8 @@ class MeasTypesController < ApplicationController
   # DELETE /meas_types/1
   # DELETE /meas_types/1.xml
   def destroy
+    return # TODO fix it later
+
     @meas_type = MeasType.find(params[:id])
     @meas_type.destroy
 
