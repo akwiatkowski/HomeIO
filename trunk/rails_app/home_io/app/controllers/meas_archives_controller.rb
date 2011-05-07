@@ -3,12 +3,20 @@ class MeasArchivesController < ApplicationController
   # GET /meas_archives.xml
   def index
     @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.recent.paginate(:page => params[:page], :per_page => 20)
-    # not working
-    #@meas_archives = MeasType.recent_measurements(params[:meas_type_id]).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @meas_archives }
+      format.json_graph  {
+        # use time between 'time_from' and 'time_to'
+        times = @meas_archives.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 60 ) }
+        values = @meas_archives.collect{|w| w.value }
+
+        render :json => {
+          :x => times,
+          :y => values
+        }
+      }
     end
   end
 

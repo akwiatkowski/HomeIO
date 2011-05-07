@@ -53,7 +53,8 @@ class CitiesController < ApplicationController
         type = params[:type]
         type = "temperature" if type.nil?
 
-        times = @weathers.collect{|w| (w.time_to - Time.now)/3600 }
+        # use time between 'time_from' and 'time_to'
+        times = @weathers.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 3600 ) }
         values = @weathers.collect{|w| w.attributes[type] }
 
         render :json => {
