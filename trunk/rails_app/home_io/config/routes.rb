@@ -3,6 +3,7 @@ HomeIo::Application.routes.draw do
   #resources :meas_types, :collection => {:current => :get} do |meas_types|
   resources :meas_types do
     get :current, :on => :collection
+    get :auto_refresh, :on => :collection
 
     resources :meas_archives do
       get :chart, :on => :collection

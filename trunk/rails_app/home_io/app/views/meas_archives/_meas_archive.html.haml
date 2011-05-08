@@ -1,11 +1,28 @@
 %tr{:class => cycle("even", "odd")}
-  %td= meas_archive.meas_type.name_human
-  %td{:title => "value #{meas_archive.value}, raw #{meas_archive.raw}"}
-    %span= meas_value(meas_archive)
-    %span= meas_archive.meas_type.unit
-  %td= l meas_archive.time_from_w_ms, :format => :date
-  %td{:title => "unix #{meas_archive.time_from_w_ms.to_f}"}
-    %span= l meas_archive.time_from_w_ms, :format => :pro_time
-  %td{:title => "unix #{meas_archive.time_to_w_ms.to_f}"}
-    %span= l meas_archive.time_to_w_ms, :format => :pro_time
-  %td= link_to "Details", meas_type_meas_archive_path(meas_archive.meas_type, meas_archive)
+  - unless meas_archive.nil?
+    - # id used for auto refresh
+    - value_td_id = "meas_value_#{meas_archive.id}_type_#{meas_archive.meas_type_id}"
+
+    %td= meas_archive.meas_type.name_human
+
+    %td{:title => "value #{meas_archive.value}, raw #{meas_archive.raw}", :id => value_td_id}
+      %span= meas_value(meas_archive)
+      %span= meas_archive.meas_type.unit
+
+    %td= l meas_archive.time_from_w_ms, :format => :date
+    - # without id - current
+    - unless meas_archive.id.nil?
+      %td{:title => "unix #{meas_archive.time_from_w_ms.to_f}"}
+        %span= l meas_archive.time_from_w_ms, :format => :pro_time
+      %td{:title => "unix #{meas_archive.time_to_w_ms.to_f}"}
+        %span= l meas_archive.time_to_w_ms, :format => :pro_time
+      %td= link_to "Details", meas_type_meas_archive_path(meas_archive.meas_type, meas_archive)
+
+    - else
+      %td{:colspan => 2, :title => "unix #{meas_archive.time_from_w_ms.to_f}"}
+        %span= l meas_archive.time_from_w_ms, :format => :pro_time
+        %span.small_info= " (current)"
+
+  - else
+    %td{:colspan => 6}
+      = "Measurement not available"

@@ -1,0 +1,18 @@
+source 'http://rubygems.org'
+
+gem 'rails', '3.0.7'
+
+# DBs
+#gem 'mysql2'
+gem 'pg'
+
+# foreign keys
+gem 'foreigner'
+
+# others
+gem 'geokit'
+gem 'json'
+
+gem 'robustthread'
+# probably not used anywhere
+gem 'hpricot'

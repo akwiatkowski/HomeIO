@@ -1,0 +1,4 @@
+---
+# simple universal http server
+# user can not execute actions - security issue
+:blocked_actions: true

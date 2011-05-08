@@ -23,15 +23,18 @@ require 'rubygems'
 require 'json'
 require 'socket'
 
+require 'lib/utils/config_loader'
 require "lib/communication/db/extractor_basic_object"
 require "lib/measurements/measurement_fetcher"
 
 class SimpleHttp
 
   def initialize
+    @config = ConfigLoader.instance.config(self)
+    
     @server = TCPServer.new('0.0.0.0', 8080)
     while (session = @server.accept)
-      session.print "HTTP/1.1 200/OK\r\nContent-type:text/html\r\n\r\n"
+      session.print "HTTP/1.1 200/OK\r\nContent-type:application/json\r\n\r\n"
       request = session.gets
       req_filtered = request.gsub(/GET\ \//, '').gsub(/\ HTTP.*/, '').gsub(/\n/, '')
       req_array = req_filtered.split('/')

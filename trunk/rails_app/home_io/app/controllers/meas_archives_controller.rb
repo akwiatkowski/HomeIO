@@ -8,9 +8,21 @@ class MeasArchivesController < ApplicationController
       format.html # index.html.erb
       format.xml { render :xml => @meas_archives }
       format.json_graph  {
-        # use time between 'time_from' and 'time_to'
-        times = @meas_archives.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 60 ) }
-        values = @meas_archives.collect{|w| w.value }
+        times = Array.new
+        values = Array.new
+
+        #times = @meas_archives.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 60 ) }
+        #values = @meas_archives.collect{|w| w.value }
+
+        @meas_archives.sort{|m,n| m.time_from <=> n.time_from}.each do |ma|
+          # measurements will be drawn as horizontal line as time range
+          times << (ma.time_from - Time.now) / 60
+          times << (ma.time_to - Time.now) / 60
+
+
+          values << ma.value
+          values << ma.value
+        end
 
         render :json => {
           :x => times,
