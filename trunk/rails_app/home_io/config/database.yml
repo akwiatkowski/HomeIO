@@ -38,11 +38,8 @@ test:
   socket: /var/run/mysqld/mysqld.sock
 
 production:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
   database: homeio
-  pool: 5
   username: homeio
   password: homeio
-  socket: /var/run/mysqld/mysqld.sock
+  host: localhost
+  pool: 40
