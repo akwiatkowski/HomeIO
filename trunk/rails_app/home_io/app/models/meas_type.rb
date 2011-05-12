@@ -43,8 +43,4 @@ class MeasType < ActiveRecord::Base
     self.name.humanize
   end
 
-  # TODO add new column
-  def unit
-    return 'V'
-  end
 end

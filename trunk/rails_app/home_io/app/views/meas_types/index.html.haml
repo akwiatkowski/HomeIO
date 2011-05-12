@@ -1,0 +1,15 @@
+%h2= "Measurement types"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Measurement"
+      %th{:colspan => 2}= "Actions"
+
+  - @meas_types.each do |meas_type|
+    %tr{:class => cycle("even", "odd")}
+      %td= meas_type.name
+      %td= link_to 'Show', meas_type
+      %td= link_to 'Edit', edit_meas_type_path(meas_type)
+
+= link_to 'New Meas type', new_meas_type_path

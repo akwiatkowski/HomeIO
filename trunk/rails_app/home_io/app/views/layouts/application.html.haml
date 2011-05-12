@@ -26,6 +26,7 @@
           - types = [:error, :warning, :notice].each do |t|
             - unless flash[ t ].blank?
               %span{:class => t}= flash[t]
+              - flash[ t ] = nil
       = yield
     -# change 'titles' in spans to qtips
     = javascript_tag( "$('[title]').qtip({ style: { name: 'light', tip: true, padding: 5, border: { width: 2, radius: 2 }, }, position: { corner: { target: 'topMiddlet', tooltip: 'bottomLeft' } } })" )
