@@ -38,6 +38,7 @@ test:
   socket: /var/run/mysqld/mysqld.sock
 
 production:
+  adapter: postgresql
   database: homeio
   username: homeio
   password: homeio
