@@ -4,6 +4,7 @@ class CitiesController < ApplicationController
   def index
     #@cities = City.all
     @cities = City.paginate( :page => params[:page] )
+    authorize! :read, City
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +15,7 @@ class CitiesController < ApplicationController
   # GET /cities/chart
   def chart
     @weathers = City.get_all_weather
+    authorize! :read, City
 
     respond_to do |format|
       format.html # show.html.erb

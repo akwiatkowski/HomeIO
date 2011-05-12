@@ -3,6 +3,7 @@ class MeasTypesController < ApplicationController
   # GET /meas_types.xml
   def index
     @meas_types = MeasType.all
+    authorize! :read, MeasType
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,6 +14,7 @@ class MeasTypesController < ApplicationController
   # GET /meas_types/current
   # GET /meas_types/current.xml
   def current
+    authorize! :read, MeasArchive
     begin
       # TODO add exception type above
       
@@ -57,13 +59,13 @@ class MeasTypesController < ApplicationController
   end
 
   def auto_refresh
-    
   end
 
   # GET /meas_types/1
   # GET /meas_types/1.xml
   def show
     @meas_type = MeasType.find(params[:id])
+    authorize! :read, MeasType
 
     respond_to do |format|
       format.html # show.html.erb
@@ -75,6 +77,7 @@ class MeasTypesController < ApplicationController
   # GET /meas_types/new.xml
   def new
     @meas_type = MeasType.new
+    authorize! :read, MeasType
 
     respond_to do |format|
       format.html # new.html.erb
@@ -85,6 +88,7 @@ class MeasTypesController < ApplicationController
   # GET /meas_types/1/edit
   def edit
     @meas_type = MeasType.find(params[:id])
+    authorize! :read, MeasType
   end
 
   # POST /meas_types
@@ -93,6 +97,7 @@ class MeasTypesController < ApplicationController
     return # TODO fix it later
 
     @meas_type = MeasType.new(params[:meas_type])
+    authorize! :manage, MeasType
 
     respond_to do |format|
       if @meas_type.save
@@ -111,6 +116,7 @@ class MeasTypesController < ApplicationController
     return # TODO fix it later
 
     @meas_type = MeasType.find(params[:id])
+    authorize! :manage, MeasType
 
     respond_to do |format|
       if @meas_type.update_attributes(params[:meas_type])
@@ -129,6 +135,7 @@ class MeasTypesController < ApplicationController
     return # TODO fix it later
 
     @meas_type = MeasType.find(params[:id])
+    authorize! :manage, MeasType
     @meas_type.destroy
 
     respond_to do |format|

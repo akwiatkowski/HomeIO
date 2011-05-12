@@ -64,6 +64,18 @@ class MeasurementType
     h
   end
 
+  # Detailed Hash with more data than #to_hash
+  def to_hash_detailed
+    h = self.to_hash
+    h[:cache] = cache
+    h
+  end
+
+  # Stored cache of measurements
+  def cache
+    @measurements.clone
+  end
+
   # Interval every measurement in interval units. Can not be lower than 1.
   def interval
     i = @config[:command][:frequency].to_i

@@ -3,6 +3,12 @@ class Ability
 
   def initialize(user)
 
+    # this type of data cannot be destroyed
+    cannot :destroy, MeasType
+    cannot :destroy, MeasArchive
+    cannot :destroy, ActionEvent
+    cannot :destroy, ActionType
+
     # not logged user
     if user.nil?
       # can nothing nearly
@@ -17,7 +23,10 @@ class Ability
 
     else
       # ordinary user
-      can :read, :all
+      can :read, [MeasType, MeasArchive, :city]
+      # can
+      #can :manage, [Memo], :user_id => user.id
+      can :manage, [Memo]
 
     end
 

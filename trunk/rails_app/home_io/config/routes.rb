@@ -1,5 +1,7 @@
 HomeIo::Application.routes.draw do
 
+  resources :memos
+
   # measurement types
   resources :meas_types do
     get :current, :on => :collection

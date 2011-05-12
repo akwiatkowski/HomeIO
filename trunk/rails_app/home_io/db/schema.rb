@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512200755) do
+ActiveRecord::Schema.define(:version => 20110512221003) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -71,6 +71,14 @@ ActiveRecord::Schema.define(:version => 20110512200755) do
   end
 
   add_index "meas_types", ["name"], :name => "index_meas_types_on_name", :unique => true
+
+  create_table "memos", :force => true do |t|
+    t.string   "title"
+    t.text     "text"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login",                                  :null => false

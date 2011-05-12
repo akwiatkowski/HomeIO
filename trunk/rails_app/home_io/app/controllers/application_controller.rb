@@ -41,4 +41,11 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
+  # when user has no proper rights
+  rescue_from CanCan::AccessDenied do |exception|
+    #redirect_to root_url, :alert => exception.message
+    flash[:error] = "You are not authorized"
+    redirect_to root_url, :alert => exception.message
+  end
 end
