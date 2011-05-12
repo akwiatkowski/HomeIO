@@ -21,6 +21,11 @@
     #left_navcontainer
       = render_navigation :expand_all => true
     #content_container
+      - unless flash.blank?
+        #flash
+          - types = [:error, :warning, :notice].each do |t|
+            - unless flash[ t ].blank?
+              %span{:class => t}= flash[t]
       = yield
     -# change 'titles' in spans to qtips
     = javascript_tag( "$('[title]').qtip({ style: { name: 'light', tip: true, padding: 5, border: { width: 2, radius: 2 }, }, position: { corner: { target: 'topMiddlet', tooltip: 'bottomLeft' } } })" )

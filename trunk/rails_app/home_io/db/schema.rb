@@ -10,7 +10,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110207170038) do
+ActiveRecord::Schema.define(:version => 20110401223814) do
+
+  create_table "action_events", :force => true do |t|
+    t.datetime "time",                              :null => false
+    t.text     "other_info"
+    t.boolean  "error_status",   :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "action_type_id"
+    t.integer  "user_id"
+  end
+
+  create_table "action_types", :force => true do |t|
+    t.string   "name",       :limit => 64, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "action_types", ["name"], :name => "index_action_types_on_name", :unique => true
+
+  create_table "action_types_users", :force => true do |t|
+    t.integer "action_type_id"
+    t.integer "user_id"
+  end
+
+  add_index "action_types_users", ["action_type_id", "user_id"], :name => "index_action_types_users_on_action_type_id_and_user_id", :unique => true
 
   create_table "cities", :force => true do |t|
     t.string  "name",                                   :null => false
@@ -39,10 +64,12 @@ ActiveRecord::Schema.define(:version => 20110207170038) do
   add_index "meas_archives", ["meas_type_id", "time_from", "_time_from_ms"], :name => "meas_archive_meat_type_time_index", :unique => true
 
   create_table "meas_types", :force => true do |t|
-    t.string   "type",       :limit => 16, :null => false
+    t.string   "name",       :limit => 64, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "meas_types", ["name"], :name => "index_meas_types_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "login",                              :null => false
@@ -103,6 +130,8 @@ ActiveRecord::Schema.define(:version => 20110207170038) do
   end
 
   add_index "weather_providers", ["name"], :name => "index_weather_providers_on_name", :unique => true
+
+  add_foreign_key "action_events", "action_types", :name => "action_events_action_type_id_fk", :dependent => :restrict
 
   add_foreign_key "meas_archives", "meas_types", :name => "meas_archives_meas_type_id_fk", :dependent => :restrict
 

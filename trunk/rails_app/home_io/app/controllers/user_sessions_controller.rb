@@ -20,6 +20,11 @@ class UserSessionsController < ApplicationController
     
   end
 
+  def logout
+    # problems with delete method
+    destroy
+  end
+
   def destroy
     current_user_session.destroy
     flash[:notice] = "Logout successful!"

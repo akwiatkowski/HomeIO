@@ -40,12 +40,12 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            when the item should be highlighted, you can set a regexp which is matched
     #                            against the current URI.
     #
-    primary.item :meas, 'Measurements', meas_types_path do |sec|
+    primary.item :meas, 'Measurements', meas_types_path, :if => Proc.new { current_user } do |sec|
       sec.item :meas_current, 'Current values', current_meas_types_path
       sec.item :meas_current, 'Auto refresh', auto_refresh_meas_types_path
       sec.item :meas_current, 'Detailed by type', meas_types_path do |ter|
         MeasType.all.each do |t|
-          ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)
+          ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t), :if => Proc.new { current_user }
         end
       end
 
@@ -54,9 +54,9 @@ SimpleNavigation::Configuration.run do |navigation|
       ##sec.item :meas_stats, 'Statistics', meas_archives_path
     end
 
-    primary.item :cities, 'Cities', cities_path do |sec|
-      sec.item :cities_a, 'Weather', cities_path
-      sec.item :cities_b, 'METAR', cities_path
+    primary.item :cities, 'Cities', cities_path, :if => Proc.new { current_user } do |sec|
+      #sec.item :cities_a, 'Weather', cities_path
+      #sec.item :cities_b, 'METAR', cities_path
     end
 
     # Add an item which has a sub navigation (same params, but with block)
@@ -69,10 +69,11 @@ SimpleNavigation::Configuration.run do |navigation|
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
     #primary.item :key_3, 'Admin', user_session_path, :class => 'special' #, :if => Proc.new { current_user.admin? }
-    primary.item :account, 'Sign in', user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
+    primary.item :account, 'Sign in', new_user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
     primary.item :account, 'Register', new_user_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
     primary.item :account, 'Account', user_session_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
-      sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
+      #sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
+      sec.item :account_logout, 'Logout', logout_user_session_path, :if => Proc.new { current_user }
     end
 
     # you can also specify a css id or class to attach to this particular level

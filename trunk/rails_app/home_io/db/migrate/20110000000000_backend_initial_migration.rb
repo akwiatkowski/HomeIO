@@ -19,22 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'rubygems'
-require 'foreigner'
 
-# Create standard DB scheme
+# Create standard DB scheme. Moved from backend.
 
-class ActiveRecordInitMigration < ActiveRecord::Migration
+class BackendInitialMigration < ActiveRecord::Migration
+
   def self.up
-    Raise 'migration moved to rails'
-  end
-
-  def self.down
-    Raise 'migration moved to rails'
-  end
-
-  # Moved to rails, not used
-  def self.rails_up
     ActiveRecord::Base.transaction do
       create_table :cities do |t|
         t.column :name, :string, :null => false
@@ -156,8 +146,7 @@ class ActiveRecordInitMigration < ActiveRecord::Migration
     end
   end
 
-  # Moved to rails, not used
-  def self.rails_down
+  def self.down
     ActiveRecord::Base.transaction do
       remove_foreign_key :weather_archives, :cities
       remove_foreign_key :weather_metar_archives, :cities

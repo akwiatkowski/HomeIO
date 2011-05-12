@@ -34,16 +34,19 @@ class MeasTypesController < ApplicationController
         @meas_archives << ma
       end
 
-    rescue
+    rescue Errno::ECONNREFUSED => e
       @meas_types = MeasType.all
       @meas_archives = Array.new
       @meas_types.each do |mt|
         @meas_archives << mt.meas_archives.last
       end
+
+      # no active connection to backend
+      @offline = true
+      flash[:warning] = "No active backend connection. Measurements can be not fresh."
     end
 
     @meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)
-    #puts @meas_archives.to_yaml
 
     respond_to do |format|
       format.html # index.html.haml

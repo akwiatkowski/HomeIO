@@ -1,6 +1,6 @@
 HomeIo::Application.routes.draw do
 
-  #resources :meas_types, :collection => {:current => :get} do |meas_types|
+  # measurement types
   resources :meas_types do
     get :current, :on => :collection
     get :auto_refresh, :on => :collection
@@ -20,8 +20,10 @@ HomeIo::Application.routes.draw do
     #c.resources :weather_archives
   end
 
-  resource :user_session
-  # optional, this just sets the root route
+  resource :user_session do
+    # some problems with delete method
+    get :logout
+  end
 
   resource :account, :controller => "users"
   resources :users
