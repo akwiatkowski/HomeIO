@@ -1,5 +1,14 @@
 HomeIo::Application.routes.draw do
 
+  # actions
+  resources :action_types do
+    resources :action_events do
+    end
+  end
+
+  
+  get "meas_cache/index"
+
   resources :memos
 
   # measurement types
@@ -10,6 +19,8 @@ HomeIo::Application.routes.draw do
     resources :meas_archives do
       get :chart, :on => :collection
     end
+
+    resource :meas_cache
     
   end
 

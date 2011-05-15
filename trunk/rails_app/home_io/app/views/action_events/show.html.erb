@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Time:</b>
+  <%= @action_event.time %>
+</p>
+
+<p>
+  <b>Error status:</b>
+  <%= @action_event.error_status %>
+</p>
+
+
+<%= link_to 'Edit', edit_action_event_path(@action_event) %> |
+<%= link_to 'Back', action_events_path %>

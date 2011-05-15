@@ -35,15 +35,14 @@ class MeasArchive < ActiveRecord::Base
   scope :recent, :order => "time_from DESC", :include => :meas_type
 
 
-
   # Measurement time range begin. Fix for storing microseconds
   def time_from_w_ms
-    return Time.at( self.time_from.to_i.to_f + self._time_from_ms.to_f / 1000.0 )
+    return Time.at(self.time_from.to_i.to_f + self._time_from_ms.to_f / 1000.0)
   end
 
   # Measurement time range end. Fix for storing microseconds
   def time_to_w_ms
-    return Time.at( self.time_to.to_i.to_f + self._time_to_ms.to_f / 1000.0 )
+    return Time.at(self.time_to.to_i.to_f + self._time_to_ms.to_f / 1000.0)
   end
 
   # Measurement time range begin. Fix for storing microseconds
@@ -56,6 +55,31 @@ class MeasArchive < ActiveRecord::Base
   def time_to_w_ms=(t)
     self.time_to = t
     self._time_to_ms = t.usec / 1000
+  end
+
+  # Create json data used for creating charts for MeasArchive instances
+  # TODO move it elsewhere
+  def self.to_json_graph(array)
+    times = Array.new
+    values = Array.new
+
+    #times = @meas_archives.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 60 ) }
+    #values = @meas_archives.collect{|w| w.value }
+
+    array.sort { |m, n| m.time_from <=> n.time_from }.each do |ma|
+      # measurements will be drawn as horizontal line as time range
+      times << (ma.time_from - Time.now) / 60
+      times << (ma.time_to - Time.now) / 60
+
+
+      values << ma.value
+      values << ma.value
+    end
+
+    return {
+      :x => times,
+      :y => values
+    }
   end
 
 end
