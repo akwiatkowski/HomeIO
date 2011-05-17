@@ -20,7 +20,6 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require "lib/communication/db/extractor_basic_object"
-require "lib/measurements/measurement_fetcher"
 
 class HomeIoStandardCommands
 
@@ -40,17 +39,6 @@ class HomeIoStandardCommands
     #:now => true # no wait command
 
     [
-      {
-        :command => ['meas', 'm'],
-        :desc => 'measurements',
-        :proc => Proc.new { |params| MeasurementFetcher.instance.get_last_hash },
-        :string_proc => Proc.new { |resp| string_commands(resp) },
-        :restricted => false,
-        :now => true # no wait command
-      },
-
-        
-      # TODO old command, update to current HomeIO
       {
         :command => ['help', '?'],
         :desc => 'this help',

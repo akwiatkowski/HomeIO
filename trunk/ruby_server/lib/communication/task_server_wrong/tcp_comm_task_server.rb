@@ -20,17 +20,44 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'lib/communication/tcp/tcp_comm_server'
-require 'lib/communication/task_server/workers/home_io_standard_worker'
+require 'lib/communication/task_server/tcp_task_queue'
 require 'lib/utils/config_loader'
 
-# Server used for processing TcpTask. Lite and working edition.
+# Server used for processing TcpTask
+#
+# How to use:
+# 1. Create server. Port is configured in TcpCommTaskServer.yml.
+#
+#   t = TcpCommTaskServer.new
+#   t.start
+#
+# 2. Send TcpTask object to server.
+#
+#   task = TcpTask.factory({:command => :test})
+#   res = TcpCommProtocol.send_to_server(task, t.port)
+#
+#   Note: Normal tasks has +command+ and is added to queue. There are also other type of command which will be
+#         described later.
+#
+# 3. Wait for response
+
+# Special commands:
+# * queue
+# * fetch        - return task by id. When task is added server return it with generated id. Fetching response get this
+#                  task, of course when it is not ready it does not have result.
+#
+#                  Sample command: {:command => :fetch, :params => {:id => 1243}}
 
 class TcpCommTaskServer < TcpCommServer
 
   # Initialize TCP server on port defined in config file
   def initialize
     @config = ConfigLoader.instance.config(self)
-    @worker = HomeIoStandardWorker.instance
+
+    puts "#{self.class.to_s} Creating queue"
+    @queue = TcpTaskQueue.new
+    @queue.start
+
     super(port)
   end
 
@@ -40,9 +67,8 @@ class TcpCommTaskServer < TcpCommServer
     special_command_result = process_special_command(command)
     return special_command_result unless special_command_result.nil?
 
-    # instant process
-    @worker.process(command)
-
+    command.generate_fetch_id!
+    @queue.push(command)
     return command
   end
 

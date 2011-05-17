@@ -37,23 +37,29 @@ class HomeIoStandardWorker
   def process(tcp_task)
     #puts tcp_task.class.to_s
     #puts tcp_task.inspect
+    i = 0
 
     # process only TcpTask
     return :wrong_object_type unless tcp_task.kind_of? TcpTask
 
+    puts i += 1
     # select command
     _commands = HomeIoStandardCommands.commands.select { |c| c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0 }
     return :wrong_command if _commands.size == 0
 
+    puts i += 1
     command = _commands.first
     begin
-      res = command[:proc].call(tcp_task.params)
+      puts i += 1
+      puts tcp_task.inspect
+      res = ExtractorBasicObject.instance.get_cities
+      puts res.inspect
+      #res = command[:proc].call(tcp_task.params)
       # process result to String when set
-      tcp_task.response = res
-
-      return res
-      # return process_to_string(command, res) if tcp_task.string_response
+      puts i += 1
+      return process_to_string(command, res) if tcp_task.string_response
     rescue => e
+      puts i += 1
       command = TcpTask.new
       command.set_error!(:processing_error, e.to_s)
       log_error(self, e, "command: #{tcp_task.inspect}")

@@ -21,12 +21,16 @@
 
 require 'singleton'
 require 'lib/communication/tcp/tcp_comm_server'
+require 'lib/communication/task_server/tcp_task_queue'
 require 'lib/utils/config_loader'
 
 # Client abstract for creating clients to task server
 
 class TcpCommTaskClient < TcpCommProtocol
   include Singleton
+
+  # When waiting for result loop is checking every this seconds
+  CHECK_EXEC_END_INTERVAL = 0.2
 
   # Initialize TCP server on port defined in config file
   def initialize
@@ -54,5 +58,42 @@ class TcpCommTaskClient < TcpCommProtocol
     comm = TcpTask.factory(comm)
     self.class.send_to_server(comm, port, _server)
   end
+
+  # Send command to server, receive status reply, wait for finished processing
+  #
+  # :call-seq:
+  #   send_to_server_and_wait( TcpTask command ) => send to localhost and wait
+  #   send_to_server_and_wait( TcpTask command, String server ip/host ) => send to server and wait
+  def send_to_server_and_wait(comm, _server = server)
+    # create TcpTask from hash if needed
+    comm = TcpTask.factory(comm)
+    res = send_to_server(comm, _server)
+    return wait_for_task(res, _server)
+  end
+
+  # After adding command to queue this method will wait until task is finished and return finished result
+  #
+  # :call-seq:
+  #   wait_for_task( TcpTask from server ) => TcpTask with response
+  #   wait_for_task( TcpTask from server, String server ip/host ) => TcpTask with response
+  def wait_for_task(task, _server = server)
+    command = TcpTask.factory(
+      {
+        :command => :fetch,
+        :params => {
+          :id => task.result_fetch_id
+        }
+      }
+    )
+
+    while true
+      res = send_to_server(command, _server)
+      if res.fetch_is_ready?
+        return res
+      end
+      sleep(CHECK_EXEC_END_INTERVAL)
+    end
+  end
+
 
 end

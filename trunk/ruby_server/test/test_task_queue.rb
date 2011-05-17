@@ -7,7 +7,7 @@ require "lib/communication/db/extractor_active_record"
 
 # Test TCP task server features
 
-class TestTaskQueue < Test::Unit::TestCase
+class TestTaskServer < Test::Unit::TestCase
 
   def test_all
     t = TcpCommTaskServer.new
