@@ -4,8 +4,8 @@ class MemosController < ApplicationController
   # GET /memos
   # GET /memos.xml
   def index
-    @memos = Memo.all
     authorize! :read, Memo
+    @memos = Memo.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,8 +16,8 @@ class MemosController < ApplicationController
   # GET /memos/1
   # GET /memos/1.xml
   def show
-    @memo = Memo.find(params[:id])
     authorize! :read, Memo
+    @memo = Memo.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -28,6 +28,7 @@ class MemosController < ApplicationController
   # GET /memos/new
   # GET /memos/new.xml
   def new
+    authorize! :create, Memo
     @memo = Memo.new
 
     respond_to do |format|
@@ -38,12 +39,14 @@ class MemosController < ApplicationController
 
   # GET /memos/1/edit
   def edit
-    #@memo = Memo.find(params[:id])
+    @memo = Memo.find(params[:id])
+    authorize! :manage, @memo
   end
 
   # POST /memos
   # POST /memos.xml
   def create
+    authorize! :create, Memo
     @memo = Memo.new(params[:memo])
     @memo.user_id = current_user.id
 
@@ -62,6 +65,7 @@ class MemosController < ApplicationController
   # PUT /memos/1.xml
   def update
     @memo = Memo.find(params[:id])
+    authorize! :manage, @memo
     @memo.user_id = current_user.id
 
     respond_to do |format|
@@ -79,6 +83,7 @@ class MemosController < ApplicationController
   # DELETE /memos/1.xml
   def destroy
     @memo = Memo.find(params[:id])
+    authorize! :manage, @memo
     @memo.destroy
 
     respond_to do |format|

@@ -1,0 +1,40 @@
+%h2= "Memos"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Title"
+      %th= "User"
+      %th= "Created"
+      %th= "Updated"
+      %th{:colspan => 3}= "Actions"
+
+  - @memos.each do |memo|
+    %tr{:class => cycle("even", "odd")}
+      %td= memo.title
+
+      - unless memo.user.nil?
+        %td= memo.user.login
+      -else
+        %td
+
+      %td= memo.created_at
+      %td= memo.updated_at
+
+      %td= link_to 'Show', memo
+
+      - if can?(:manage, memo)
+        %td= link_to 'Edit', edit_memo_path(memo)
+      - else
+        %td
+
+      - if can?(:manage, memo)
+        %td= link_to 'Destroy', memo, :confirm => 'Are you sure?', :method => :delete
+      - else
+        %td
+
+= link_to "New memo", new_memo_path
+
+%hr
+%p= will_paginate @memos
+%p= page_entries_info @memos

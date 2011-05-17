@@ -39,4 +39,6 @@ class User < ActiveRecord::Base
   has_many :action_types_users
   has_many :action_types, :through => :action_types_users
 
+  has_many :memos
+
 end

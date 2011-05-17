@@ -23,9 +23,11 @@ class Ability
 
     else
       # ordinary user
-      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser]
-      #can :manage, [Memo], :user_id => user.id
-      can :manage, [Memo]
+      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo]
+      # only edit self memos
+      can :manage, user.memos
+      # can create new memos
+      can :create, Memo
       can :execute, user.action_types
 
     end

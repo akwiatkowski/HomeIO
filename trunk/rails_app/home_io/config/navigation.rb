@@ -62,7 +62,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) }
 
-    primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:manage, Memo) }
+    primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:read, Memo) }
 
     primary.item :cities, 'Cities', cities_path, :if => Proc.new { current_user } do |sec|
       #sec.item :cities_a, 'Weather', cities_path

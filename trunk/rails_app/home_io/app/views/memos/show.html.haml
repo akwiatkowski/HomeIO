@@ -1,0 +1,27 @@
+%h2
+  = "Memo: "
+  = @memo.title
+
+%p
+  %b= "Content"
+  = @memo.text
+
+
+%hr
+
+%p
+  = "Content"
+  = @memo.text
+
+%p
+  = "Created at "
+  = @memo.created_at
+
+%p
+  = "Updated at "
+  = @memo.updated_at
+
+%hr
+
+= link_to 'Edit', edit_memo_path(@memo)
+= link_to 'Back', memos_path
