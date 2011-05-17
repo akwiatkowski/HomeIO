@@ -22,11 +22,19 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = @current_user
+    if can?(:manage, User)
+      @user = User.find( params[:id] )
+    else
+      @user = @current_user
+    end
   end
 
   def edit
-    @user = @current_user
+    if can?(:manage, User)
+      @user = User.find( params[:id] )
+    else
+      @user = @current_user
+    end
   end
 
   def update
