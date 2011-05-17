@@ -60,7 +60,7 @@ SimpleNavigation::Configuration.run do |navigation|
       ##sec.item :meas_stats, 'Statistics', meas_archives_path
     end
 
-    primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:manage, ActionType) }
+    primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) }
 
     primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:manage, Memo) }
 

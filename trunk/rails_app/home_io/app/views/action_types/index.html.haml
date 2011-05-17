@@ -4,12 +4,21 @@
   %thead
     %tr
       %th= "Name"
-      %th{:colspan => 2}= "Actions"
+      %th{:colspan => 3}= "Actions"
 
   - @action_types.each do |action_type|
     %tr{:class => cycle("even", "odd")}
       %td= action_type.name
-      %td= link_to 'Execute', execute_action_type_path(action_type), :method => :post
-      %td= link_to 'Show', action_type
-      %td= link_to 'Edit', edit_action_type_path(action_type)
+
+      - if can?(:execute, action_type)
+        %td= link_to 'Execute', execute_action_type_path(action_type), :method => :post
+      - else
+        %td
+
+      %td= link_to 'Events', action_type_action_events_path(action_type)
+
+      - if can?(:manage, ActionType)
+        %td= link_to 'Edit', edit_action_type_path(action_type)
+      - else
+        %td
 

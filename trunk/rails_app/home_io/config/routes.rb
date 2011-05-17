@@ -26,7 +26,6 @@ HomeIo::Application.routes.draw do
   end
 
 
-
   resources :cities do |c|
     get :chart, :on => :collection
     

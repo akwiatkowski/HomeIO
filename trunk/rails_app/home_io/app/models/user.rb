@@ -29,6 +29,14 @@ class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
 
-  has_many :action_events
+  has_many :executed_action,
+           :class_name => "ActionEvent",
+           :foreign_key => :user_id,
+           :readonly => true,
+           :order => "time DESC"
+
+  # custom names, maybe later
+  has_many :action_types_users
+  has_many :action_types, :through => :action_types_users
 
 end
