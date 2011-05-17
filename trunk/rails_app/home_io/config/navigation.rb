@@ -75,13 +75,18 @@ SimpleNavigation::Configuration.run do |navigation|
     #sub_nav.item :key_2_1, 'name', url, options
     #end
 
+    primary.item :memos, 'Users', users_path, :if => Proc.new { can?(:manage, User) }
+
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
     #primary.item :key_3, 'Admin', user_session_path, :class => 'special' #, :if => Proc.new { current_user.admin? }
     primary.item :account, 'Sign in', new_user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
     primary.item :account, 'Register', new_user_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
-    primary.item :account, 'Account', user_session_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
+
+    login = ""
+    login = current_user.login unless current_user.nil?
+    primary.item :account, "Account (#{login})", user_session_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
       #sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
       sec.item :account_logout, 'Logout', logout_user_session_path, :if => Proc.new { current_user }
     end

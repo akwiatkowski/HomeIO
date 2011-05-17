@@ -1,0 +1,22 @@
+%h2= "Users"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Login"
+      %th= "Login count"
+      %th= "Last request"
+      %th= "Last login"
+      %th= "User"
+
+  - @users.each do |user|
+    %tr{:class => cycle("even", "odd")}
+      %td= user.login
+      %td= user.login_count
+      %td= user.last_request_at
+      %td= user.last_login_at
+      %td= link_to "Details", user
+
+%hr
+%p= will_paginate @users
+%p= page_entries_info @users
