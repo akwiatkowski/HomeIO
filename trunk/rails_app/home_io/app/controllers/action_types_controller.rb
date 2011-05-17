@@ -3,7 +3,7 @@ class ActionTypesController < ApplicationController
   # GET /action_types.xml
   def index
     authorize! :read, ActionType
-    @action_types = ActionType.all
+    @action_types = ActionType.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

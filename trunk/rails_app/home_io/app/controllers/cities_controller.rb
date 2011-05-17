@@ -3,12 +3,12 @@ class CitiesController < ApplicationController
   # GET /cities.xml
   def index
     #@cities = City.all
-    @cities = City.paginate( :page => params[:page] )
+    @cities = City.paginate(:page => params[:page])
     authorize! :read, City
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @cities }
+      format.xml { render :xml => @cities }
     end
   end
 
@@ -19,16 +19,16 @@ class CitiesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @weathers.to_xml }
-      format.json  { render :json => @weathers }
-      format.json_graph  {
+      format.xml { render :xml => @weathers.to_xml }
+      format.json { render :json => @weathers }
+      format.json_graph {
 
-        @weathers = @weathers.sort{|a,b| a.city.lat <=> b.city.lat}
+        @weathers = @weathers.sort { |a, b| a.city.lat <=> b.city.lat }
 
         #times = @weathers.collect{|w| (w.time_to - Time.now)/3600 }
-        lat = @weathers.collect{|w| w.city.lat }
-        temperatures = @weathers.collect{|w| w.temperature }
-        winds = @weathers.collect{|w| w.wind }
+        lat = @weathers.collect { |w| w.city.lat }
+        temperatures = @weathers.collect { |w| w.temperature }
+        winds = @weathers.collect { |w| w.wind }
 
         render :json => {
           :x => lat,
@@ -47,17 +47,17 @@ class CitiesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @weathers }
-      format.json  { render :json => @weathers.collect{|w|
-        {:time => w.time_from.to_i, :temperature => w.temperature}
+      format.xml { render :xml => @weathers }
+      format.json { render :json => @weathers.collect { |w|
+        { :time => w.time_from.to_i, :temperature => w.temperature }
       } }
-      format.json_graph  {
+      format.json_graph {
         type = params[:type]
         type = "temperature" if type.nil?
 
         # use time between 'time_from' and 'time_to'
-        times = @weathers.collect{|w| ( (w.time_from - Time.now) + (w.time_from - Time.now) ) / ( 2 * 3600 ) }
-        values = @weathers.collect{|w| w.attributes[type] }
+        times = @weathers.collect { |w| ((w.time_from - Time.now) + (w.time_from - Time.now)) / (2 * 3600) }
+        values = @weathers.collect { |w| w.attributes[type] }
 
         render :json => {
           :x => times,
@@ -80,10 +80,10 @@ class CitiesController < ApplicationController
     respond_to do |format|
       if @city.update_attributes(params[:city])
         format.html { redirect_to(@city, :notice => 'City was successfully updated.') }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @city.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @city.errors, :status => :unprocessable_entity }
       end
     end
   end

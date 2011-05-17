@@ -14,7 +14,19 @@
       %td= action_event.action_type.name
       %td= action_event.time
       %td= action_event.other_info
-      %td= action_event.error_status
+
+      - if action_event.error_status
+        %td{:style => "color: red;"}= action_event.error_status
+      - else
+        %td= action_event.error_status
+
       - unless action_event.executed_by_user.nil?
         %td= action_event.executed_by_user.login
+      - else
+        %td
+          %span.small_info= "backend"
+
+%hr
+%p= will_paginate @action_events
+%p= page_entries_info @action_events
 

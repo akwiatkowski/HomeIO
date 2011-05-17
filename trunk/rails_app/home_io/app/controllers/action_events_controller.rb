@@ -2,7 +2,8 @@ class ActionEventsController < ApplicationController
   # GET /action_events
   # GET /action_events.xml
   def index
-    @action_events = ActionType.find(params[:action_type_id]).action_events.order("time DESC")
+    authorize! :read, ActionEvent
+    @action_events = ActionType.find(params[:action_type_id]).action_events.order("time DESC").paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,6 +14,7 @@ class ActionEventsController < ApplicationController
   # GET /action_events/1
   # GET /action_events/1.xml
   def show
+    authorize! :read, ActionEvent
     @action_event = ActionEvent.find(params[:id])
 
     respond_to do |format|
@@ -20,6 +22,10 @@ class ActionEventsController < ApplicationController
       format.xml  { render :xml => @action_event }
     end
   end
+
+  private
+
+  # must not be modified
 
   # GET /action_events/new
   # GET /action_events/new.xml
