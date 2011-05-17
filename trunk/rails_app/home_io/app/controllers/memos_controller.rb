@@ -45,6 +45,7 @@ class MemosController < ApplicationController
   # POST /memos.xml
   def create
     @memo = Memo.new(params[:memo])
+    @memo.user_id = current_user.id
 
     respond_to do |format|
       if @memo.save
@@ -61,6 +62,7 @@ class MemosController < ApplicationController
   # PUT /memos/1.xml
   def update
     @memo = Memo.find(params[:id])
+    @memo.user_id = current_user.id
 
     respond_to do |format|
       if @memo.update_attributes(params[:memo])

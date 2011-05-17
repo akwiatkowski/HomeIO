@@ -21,6 +21,7 @@
 
 require "lib/communication/db/extractor_basic_object"
 require "lib/measurements/measurement_fetcher"
+require "lib/action/action_manager"
 
 class HomeIoStandardCommands
 
@@ -40,12 +41,29 @@ class HomeIoStandardCommands
     #:now => true # no wait command
 
     [
+      # new backend-frontend communication
       {
         :command => ['meas', 'm'],
         :desc => 'measurements',
         :proc => Proc.new { |params| MeasurementFetcher.instance.get_last_hash },
         :string_proc => Proc.new { |resp| string_commands(resp) },
         :restricted => false,
+        :now => true # no wait command
+      },
+      {
+        :command => ['meas_by_type', 'mt'],
+        :desc => 'measurements of type',
+        :proc => Proc.new { |params| MeasurementFetcher.instance.get_hash_by_name( params ) },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
+        :restricted => false,
+        :now => true # no wait command
+      },
+      {
+        :command => ['action_execute'],
+        :desc => 'measurements of type',
+        :proc => Proc.new { |params| ActionManager.instance.get_action_by_name( params[0] ).execute( params[1] ) },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
+        :restricted => true, # TODO
         :now => true # no wait command
       },
 

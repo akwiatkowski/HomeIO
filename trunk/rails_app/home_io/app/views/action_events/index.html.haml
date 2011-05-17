@@ -1,0 +1,20 @@
+%h2= "Action events"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Action name"
+      %th= "Time"
+      %th= "Other info"
+      %th= "Error"
+      %th= "User"
+
+  - @action_events.each do |action_event|
+    %tr{:class => cycle("even", "odd")}
+      %td= action_event.action_type.name
+      %td= action_event.time
+      %td= action_event.other_info
+      %td= action_event.error_status
+      - unless action_event.user.nil?
+        %td= action_event.user.login
+

@@ -9,17 +9,19 @@
     <th></th>
   </tr>
 
-<% @action_events.each do |action_event| %>
-  <tr>
-    <td><%= action_event.time %></td>
-    <td><%= action_event.error_status %></td>
-    <td><%= link_to 'Show', action_event %></td>
-    <td><%= link_to 'Edit', edit_action_event_path(action_event) %></td>
-    <td><%= link_to 'Destroy', action_event, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <% if false %>
+      <% @action_events.each do |action_event| %>
+          <tr>
+            <td><%= action_event.time %></td>
+            <td><%= action_event.error_status %></td>
+            <td><%= link_to 'Show', action_event %></td>
+            <td><%= link_to 'Edit', edit_action_event_path(action_event) %></td>
+            <td><%= link_to 'Destroy', action_event, :confirm => 'Are you sure?', :method => :delete %></td>
+          </tr>
+      <% end %>
+  <% end %>
 </table>
 
-<br />
+<br/>
 
-<%= link_to 'New Action event', new_action_event_path %>
+

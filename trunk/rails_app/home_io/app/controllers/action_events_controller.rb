@@ -2,7 +2,7 @@ class ActionEventsController < ApplicationController
   # GET /action_events
   # GET /action_events.xml
   def index
-    @action_events = ActionEvent.all
+    @action_events = ActionType.find(params[:action_type_id]).action_events.order("time DESC")
 
     respond_to do |format|
       format.html # index.html.erb

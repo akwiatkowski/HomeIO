@@ -41,17 +41,15 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            against the current URI.
     #
     primary.item :meas, 'Measurements', current_meas_types_path, :if => Proc.new { can?(:read, MeasType) } do |sec|
-      sec.item :meas_current, 'Current values', current_meas_types_path
+      sec.item :meas_current, 'Current values', current_meas_types_path do |ter|
+        MeasType.all.each do |t|
+          ter.item "meas_types_#{t.id}_cache".to_sym, t.name_human, meas_type_meas_cache_path(t)
+        end
+      end
       sec.item :meas_auto_refresh, 'Auto refresh', auto_refresh_meas_types_path
       sec.item :meas_by_type, 'Archived by type', current_meas_types_path do |ter|
         MeasType.all.each do |t|
           ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)
-        end
-      end
-
-      sec.item :meas_by_type_cache, 'Current by type', current_meas_types_path do |ter|
-        MeasType.all.each do |t|
-          ter.item "meas_types_#{t.id}_cache".to_sym, t.name_human, meas_type_meas_cache_path(t)
         end
       end
 
@@ -61,6 +59,8 @@ SimpleNavigation::Configuration.run do |navigation|
       ##sec.item :meas_archived, 'Archived', meas_archives_path
       ##sec.item :meas_stats, 'Statistics', meas_archives_path
     end
+
+    primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:manage, ActionType) }
 
     primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:manage, Memo) }
 

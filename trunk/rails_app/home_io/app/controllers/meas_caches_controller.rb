@@ -3,30 +3,15 @@ class MeasCachesController < ApplicationController
     @meas_type = MeasType.find(params[:meas_type_id])
 
     begin
-      meas_json = JSON.parse(Net::HTTP.get(URI.parse("http://localhost:8080/meas_cache/#{@meas_type.name}")))
-
-      @meas_archives = Array.new
-
-      puts meas_json.to_yaml
-
-      meas_json.each do |m|
-        ma = MeasArchive.new
-        ma.time_from = m["time"]
-        ma.time_to = m["time"]
-        ma.raw = m["raw"]
-        ma.value = m["value"]
-        #ma.time_from = m[:time"]
-        ma.meas_type = @meas_type
-        ma.readonly!
-
-        @meas_archives << ma
-      end
+      @meas_archives = BackendProtocol.meas_by_name(@meas_type.name)
     rescue Errno::ECONNREFUSED => e
+      # no active connection to backend
       @meas_archives = Array.new
-      @offline = true
-      flash[:warning] = "No active backend connection. Cache not available."
+      no_direct_connection_to_backend
     end
 
+    # reverse sort
+    @meas_archives = @meas_archives.sort{|m,n| n.time_from <=> m.time_from}
     @meas_archives = @meas_archives.paginate(:page => 1, :per_page => @meas_archives.size)
 
     respond_to do |format|

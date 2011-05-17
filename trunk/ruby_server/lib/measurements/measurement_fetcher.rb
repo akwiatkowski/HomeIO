@@ -48,11 +48,11 @@ class MeasurementFetcher
     }
   end
 
-  # Get last measurements in hash format. Usable for bots.
+  # Get last measurements in hash format with addition of cached measurements. Usable for bots.
   def get_hash_by_name(name)
     @meas_array.types_array.each do |m|
       if m.name == name
-        return m.to_hash
+        return m.to_hash_detailed
       end
     end
     # when not found return nil

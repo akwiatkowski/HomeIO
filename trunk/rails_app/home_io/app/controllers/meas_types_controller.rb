@@ -16,36 +16,12 @@ class MeasTypesController < ApplicationController
   def current
     authorize! :read, MeasArchive
     begin
-      # TODO add exception type above
-      
-      # try load measurements from backend
-      meas_json = JSON.parse(Net::HTTP.get(URI.parse("http://localhost:8080/meas")))
-
-      @meas_archives = Array.new
-
-      meas_json.each do |m|
-        ma = MeasArchive.new
-        ma.time_from = m["time"]
-        ma.time_to = m["time_to"]
-        ma.raw = m["raw"]
-        ma.value = m["value"]
-        #ma.time_from = m[:time"]
-        ma.meas_type = MeasType.find_by_name( m["name"] )
-        ma.readonly!
-        
-        @meas_archives << ma
-      end
-
+      # using direct connection to background
+      @meas_archives = BackendProtocol.current_meas
     rescue Errno::ECONNREFUSED => e
-      @meas_types = MeasType.all
-      @meas_archives = Array.new
-      @meas_types.each do |mt|
-        @meas_archives << mt.meas_archives.last
-      end
-
       # no active connection to backend
-      @offline = true
-      flash[:warning] = "No active backend connection. Measurements can be not fresh."
+      @meas_archives = MeasArchive.all_types_last_measurements
+      no_direct_connection_to_backend
     end
 
     @meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)

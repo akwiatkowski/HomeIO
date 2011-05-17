@@ -26,5 +26,3 @@ BACKEND_PROTOCOL_PORT = 12366
 
 require 'lib/backend_protocol/tcp_comm_protocol'
 require 'lib/backend_protocol/tcp_task'
-require 'lib/backend_protocol/tcp_comm_client_waiting_module'
-

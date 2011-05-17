@@ -24,6 +24,7 @@
 
 class ActionEvent < ActiveRecord::Base
   belongs_to :action_type
+  belongs_to :user
 
   validates_presence_of :time
 

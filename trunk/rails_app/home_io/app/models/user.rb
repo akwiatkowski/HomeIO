@@ -29,4 +29,6 @@ class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
 
+  has_many :action_events
+
 end

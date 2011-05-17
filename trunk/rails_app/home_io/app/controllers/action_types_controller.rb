@@ -37,6 +37,13 @@ class ActionTypesController < ApplicationController
     @action_type = ActionType.find(params[:id])
   end
 
+  def execute
+    @action_type = ActionType.find(params[:id])
+    BackendProtocol.execute_action(@action_type.name, current_user.id)
+
+    redirect_to action_type_action_events_path(@action_type)
+  end
+
   # POST /action_types
   # POST /action_types.xml
   def create

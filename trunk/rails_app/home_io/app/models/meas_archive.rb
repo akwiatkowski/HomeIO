@@ -57,6 +57,15 @@ class MeasArchive < ActiveRecord::Base
     self._time_to_ms = t.usec / 1000
   end
 
+  # Get last measurements of all types if direct connection to backend is not available
+  def self.all_types_last_measurements
+    @meas_types = MeasType.all
+    @meas_archives = Array.new
+    @meas_types.each do |mt|
+      @meas_archives << mt.meas_archives.last
+    end
+  end
+
   # Create json data used for creating charts for MeasArchive instances
   # TODO move it elsewhere
   def self.to_json_graph(array)

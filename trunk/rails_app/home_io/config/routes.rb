@@ -4,6 +4,7 @@ HomeIo::Application.routes.draw do
   resources :action_types do
     resources :action_events do
     end
+    get :execute , :on => :member
   end
 
   

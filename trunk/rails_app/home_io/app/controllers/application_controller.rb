@@ -42,6 +42,12 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
+  # When there is no direct connection to backend when it is preferred
+  def no_direct_connection_to_backend
+    @offline = true
+    flash[:warning] = "No active backend connection. Measurements can be not fresh."
+  end
+
   # when user has no proper rights
   rescue_from CanCan::AccessDenied do |exception|
     #redirect_to root_url, :alert => exception.message
