@@ -97,7 +97,10 @@ class WindTurbineOverseer
 
   def first_inverter_on?
     begin
-      (MeasurementFetcher.instance.get_value_by_name("outputs").to_i & 2) > 0
+      outputs = MeasurementFetcher.instance.get_value_by_name("outputs").to_i
+      check_outputs = (outputs & 2) > 0
+      puts "First inverter outputs #{outputs}, check_outputs #{check_outputs}"
+      return check_outputs
     rescue
       puts "First inverter status can not be read"
       false
@@ -106,7 +109,10 @@ class WindTurbineOverseer
 
   def second_inverter_on?
     begin
-      (MeasurementFetcher.instance.get_value_by_name("outputs").to_i & 4) > 0
+      outputs = MeasurementFetcher.instance.get_value_by_name("outputs").to_i
+      check_outputs = (outputs & 4) > 0
+      puts "Second inverter outputs #{outputs}, check_outputs #{check_outputs}"
+      return check_outputs
     rescue
       puts "Second inverter status can not be read"
       false
