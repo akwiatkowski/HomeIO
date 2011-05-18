@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if can?(:manage, User)
+    if can?(:manage, User) and not params[:id].nil?
       @user = User.find( params[:id] )
     else
       @user = @current_user
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if can?(:manage, User)
+    if can?(:manage, User) and not params[:id].nil?
       @user = User.find( params[:id] )
     else
       @user = @current_user

@@ -3,7 +3,14 @@ class ActionEventsController < ApplicationController
   # GET /action_events.xml
   def index
     authorize! :read, ActionEvent
-    @action_events = ActionType.find(params[:action_type_id]).action_events.order("time DESC").paginate(:page => params[:page])
+    if params[:action_type_id].to_i == 0
+      # show events for all action types
+      @action_events = ActionEvent.order("time DESC").paginate(:page => params[:page])
+    else
+      # show only event for proper type
+      @action_events = ActionType.find(params[:action_type_id]).action_events.order("time DESC").paginate(:page => params[:page])
+    end
+
 
     respond_to do |format|
       format.html # index.html.erb

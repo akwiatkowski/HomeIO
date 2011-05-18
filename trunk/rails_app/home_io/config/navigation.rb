@@ -60,7 +60,15 @@ SimpleNavigation::Configuration.run do |navigation|
       ##sec.item :meas_stats, 'Statistics', meas_archives_path
     end
 
-    primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) }
+    primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) } do |sec|
+      sec.item :last_action_events, 'Last action events', action_type_action_events_path(0)
+
+      sec.item :action_events_by_type, 'Action events by type', action_types_path do |ter|
+        ActionType.all.each do |t|
+          ter.item "action_type_#{t.id}".to_sym, t.name.humanize, action_type_action_events_path(t)
+        end
+      end
+    end
 
     primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:read, Memo) }
 
