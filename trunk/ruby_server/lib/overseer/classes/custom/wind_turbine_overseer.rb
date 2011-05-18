@@ -21,6 +21,8 @@
 
 require 'lib/overseer/classes/standard_overseer'
 require 'lib/overseer/classes/average_overseer'
+require 'lib/overseer/classes/average_proc_overseer'
+require 'lib/measurements/measurement_fetcher'
 
 # Custom wind turbine overseer. Written for easter deploy.
 
@@ -28,8 +30,11 @@ class WindTurbineOverseer
 
   INTERVAL = 10
 
+  # SUB_OVERSEERS_CLASS = AverageOverseer # working, without proc
+  SUB_OVERSEERS_CLASS = AverageProcOverseer
+
   def initialize
-    @inv_a_on_overseer = AverageOverseer.new(
+    @inv_a_on_overseer = SUB_OVERSEERS_CLASS.new(
       {
         :measurement_name => "batt_u", #- type of measurement which is checked
         :greater => true, #true/false, true - check if value is greater
@@ -37,11 +42,12 @@ class WindTurbineOverseer
         :action_name => "output_2_on", #- action type to execute if check is true
         :average_count => 20,
         :interval => INTERVAL,
-        :re_execute => false
+        :re_execute => false,
+        :proc => Proc.new { not first_inverter_on? }
       }
     )
 
-    @inv_a_off_overseer = AverageOverseer.new(
+    @inv_a_off_overseer = SUB_OVERSEERS_CLASS.new(
       {
         :measurement_name => "batt_u", #- type of measurement which is checked
         :greater => false, #true/false, true - check if value is greater
@@ -49,11 +55,12 @@ class WindTurbineOverseer
         :action_name => "output_2_off", #- action type to execute if check is true
         :average_count => 20,
         :interval => INTERVAL,
-        :re_execute => false
+        :re_execute => false,
+        :proc => Proc.new { first_inverter_on? }
       }
     )
 
-    @inv_b_on_overseer = AverageOverseer.new(
+    @inv_b_on_overseer = SUB_OVERSEERS_CLASS.new(
       {
         :measurement_name => "batt_u", #- type of measurement which is checked
         :greater => true, #true/false, true - check if value is greater
@@ -61,12 +68,13 @@ class WindTurbineOverseer
         :action_name => "output_3_on", #- action type to execute if check is true
         :average_count => 40,
         :interval => INTERVAL,
-        :re_execute => false
+        :re_execute => false,
+        :proc => Proc.new { not second_inverter_on? }
 
       }
     )
 
-    @inv_b_off_overseer = AverageOverseer.new(
+    @inv_b_off_overseer = SUB_OVERSEERS_CLASS.new(
       {
         :measurement_name => "batt_u", #- type of measurement which is checked
         :greater => false, #true/false, true - check if value is greater
@@ -74,7 +82,8 @@ class WindTurbineOverseer
         :action_name => "output_3_off", #- action type to execute if check is true
         :average_count => 30,
         :interval => INTERVAL,
-        :re_execute => false
+        :re_execute => false,
+        :proc => Proc.new { not second_inverter_on? }
       }
     )
   end
@@ -84,6 +93,24 @@ class WindTurbineOverseer
     @inv_a_off_overseer.start
     @inv_b_on_overseer.start
     @inv_b_off_overseer.start
+  end
+
+  def first_inverter_on?
+    begin
+      (MeasurementFetcher.instance.get_value_by_name("outputs") & 2) > 0
+    rescue
+      puts "First inverter status can not be read"
+      false
+    end
+  end
+
+  def second_inverter_on?
+    begin
+      (MeasurementFetcher.instance.get_value_by_name("outputs") & 4) > 0
+    rescue
+      puts "Second inverter status can not be read"
+      false
+    end
   end
 
 
