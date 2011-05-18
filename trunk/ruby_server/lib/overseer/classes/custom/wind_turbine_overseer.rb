@@ -83,7 +83,7 @@ class WindTurbineOverseer
         :average_count => 30,
         :interval => INTERVAL,
         :re_execute => false,
-        :proc => Proc.new { not second_inverter_on? }
+        :proc => Proc.new { second_inverter_on? }
       }
     )
   end
