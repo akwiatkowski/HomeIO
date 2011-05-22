@@ -1,0 +1,81 @@
+- name = online_overseer_status[:name]
+- mt = MeasType.find_by_name( name )
+- if not mt.nil?
+  - unit = mt.unit
+- else
+  - unit = nil
+
+
+%div
+  %span{:style => "font-size: 16px"}
+    %span
+      = "Name: "
+    %span{:style => "font-weight: bold;"}
+      = name
+  %br
+
+  %span{:style => "font-weight: bold;"}
+    = online_overseer_status[:measurement_name]
+  = "must be"
+  %span
+    - if online_overseer_status[:greater] == true
+      = "more"
+    - else
+      = "less"
+    = "than"
+  %span{:style => "font-weight: bold;"}
+    = online_overseer_status[:threshold_value]
+  - unless unit.nil?
+    %span= unit
+    
+  - if online_overseer_status[:average_count].to_i > 1
+    %span
+      = "for"
+    %span{:style => "font-weight: bold;"}
+      = online_overseer_status[:average_count]
+    %span
+      = "measurements"
+
+  %br
+
+  %span
+    = "checking every"
+  %span{:style => "font-weight: bold;"}
+    = online_overseer_status[:interval]
+  %span
+    = "seconds"
+
+  %br
+
+  - if not online_overseer_status[:stats].nil? and not online_overseer_status[:stats][:last_checked_value].nil?
+    %span
+    = "current is"
+    %span{:style => "font-weight: bold;"}
+      = online_overseer_status[:stats][:last_checked_value]
+    - unless unit.nil?
+      %span= unit
+    %br
+
+  - if not online_overseer_status[:stats].nil? and not online_overseer_status[:stats][:state].nil?
+    %span
+    = "current state is"
+    %span{:style => "font-weight: bold;"}
+      - if online_overseer_status[:stats][:state]
+        = "on"
+      - else
+        = "off"
+    %br
+
+  - if not online_overseer_status[:stats].nil? and not online_overseer_status[:stats][:proc_result].nil?
+    %span
+    = "additional condition is"
+    %span{:style => "font-weight: bold;"}
+      - if online_overseer_status[:stats][:proc_result]
+        = "met"
+      - else
+        = "not met"
+    %br
+
+
+
+%hr

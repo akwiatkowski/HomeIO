@@ -13,9 +13,7 @@ class OverseersController < ApplicationController
 
   def status
     authorize! :read, Overseer
-    #render :yaml => BackendProtocol.overseers_list.to_yaml
-    render :xml => BackendProtocol.overseers_list
-    return
+    @overseer_statuses = BackendProtocol.overseers_list
   end
 
   # GET /overseers/1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110522184920) do
+ActiveRecord::Schema.define(:version => 20110522190311) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110522184920) do
     t.datetime "updated_at"
     t.integer  "action_type_id"
     t.integer  "user_id"
+    t.integer  "overseer_id"
   end
 
   create_table "action_types", :force => true do |t|

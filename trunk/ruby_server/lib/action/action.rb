@@ -43,8 +43,8 @@ class Action
     @config[:name]
   end
 
-  # Execute action for user. Return true if execution was successful.
-  def execute(user_id = nil)
+  # Execute action for user/overseer. Return true if execution was successful.
+  def execute(user_id = nil, overseer_id = nil)
     io_result = IoProtocol.instance.fetch(command_array, response_size)
     raw_array = IoProtocol.string_to_array(io_result)
     #status = (response_correct == raw_array) # without wildcards
@@ -56,7 +56,7 @@ class Action
       puts "Action execution error, response #{raw_array.inspect}, should be #{response_correct.inspect}"
     end
 
-    post_execute(status, user_id)
+    post_execute(status, user_id, overseer_id)
 
     #return raw_array # where was it used?
     return status
@@ -75,13 +75,14 @@ class Action
   private
 
   # Add event to base and other things which should be done after executing actions
-  def post_execute(status, user_id)
+  def post_execute(status, user_id, overseer_id = nil)
     ActionEvent.create!(
       {
         :time => Time.now,
         :action_type_id => @config[:action_type_id],
         :error_status => (not status),
-        :user_id => user_id
+        :user_id => user_id,
+        :overseer_id => overseer_id
       }
     )
 
