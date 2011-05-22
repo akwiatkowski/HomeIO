@@ -2,7 +2,10 @@ HomeIo::Application.routes.draw do
 
   # overseers
   resources :overseers do
-#    resources :overseer_parameters
+    #resources :overseer_parameters
+    #resources :action_events
+
+    get :status , :on => :collection
   end
 
   # actions

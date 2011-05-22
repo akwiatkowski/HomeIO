@@ -2,9 +2,7 @@ class OverseersController < ApplicationController
   # GET /overseers
   # GET /overseers.xml
   def index
-    render :text => BackendProtocol.overseers_list.inspect
-    return
-
+    authorize! :read, Overseer
     @overseers = Overseer.all
 
     respond_to do |format|
@@ -13,9 +11,17 @@ class OverseersController < ApplicationController
     end
   end
 
+  def status
+    authorize! :read, Overseer
+    #render :yaml => BackendProtocol.overseers_list.to_yaml
+    render :xml => BackendProtocol.overseers_list
+    return
+  end
+
   # GET /overseers/1
   # GET /overseers/1.xml
   def show
+    authorize! :read, Overseer
     @overseer = Overseer.find(params[:id])
 
     respond_to do |format|
@@ -27,6 +33,7 @@ class OverseersController < ApplicationController
   # GET /overseers/new
   # GET /overseers/new.xml
   def new
+    authorize! :create, Overseer
     @overseer = Overseer.new
 
     respond_to do |format|
@@ -38,11 +45,13 @@ class OverseersController < ApplicationController
   # GET /overseers/1/edit
   def edit
     @overseer = Overseer.find(params[:id])
+    authorize! :manage, @overseer
   end
 
   # POST /overseers
   # POST /overseers.xml
   def create
+    authorize! :create, Overseer
     @overseer = Overseer.new(params[:overseer])
 
     respond_to do |format|
@@ -60,6 +69,7 @@ class OverseersController < ApplicationController
   # PUT /overseers/1.xml
   def update
     @overseer = Overseer.find(params[:id])
+    authorize! :manage, @overseer
 
     respond_to do |format|
       if @overseer.update_attributes(params[:overseer])
@@ -76,6 +86,7 @@ class OverseersController < ApplicationController
   # DELETE /overseers/1.xml
   def destroy
     @overseer = Overseer.find(params[:id])
+    authorize! :manage, @overseer
     @overseer.destroy
 
     respond_to do |format|

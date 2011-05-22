@@ -65,12 +65,16 @@ class AverageProcOverseer < AverageOverseer
   def check
     res = super
 
+    # proc result
+    pr = proc_result
+    @stats[:proc_result] = pr
+
     # proc call result must return true if 
-    if res == true and proc_result == true
-      puts "#{self.class} check with proc condition - TRUE, proc result #{proc_result}" if VERBOSE
+    if res == true and pr == true
+      puts "#{self.class} check with proc condition - TRUE, proc result #{pr}" if VERBOSE
       return true
     else
-      puts "#{self.class} check with proc condition - false, proc result #{proc_result}" if VERBOSE
+      puts "#{self.class} check with proc condition - false, proc result #{pr}" if VERBOSE
       return false
     end
 

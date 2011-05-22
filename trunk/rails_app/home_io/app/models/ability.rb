@@ -23,13 +23,19 @@ class Ability
 
     else
       # ordinary user
-      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo]
+      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer]
+
       # only edit self memos
       can :manage, user.memos
       # can create new memos
       can :create, Memo
+
       can :execute, user.action_types
 
+      # only edit self overseers
+      can :manage, user.overseers
+      # can create new overseers
+      can :create, Overseer
     end
 
     # Define abilities for the passed in user here. For example:

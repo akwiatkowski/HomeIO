@@ -69,14 +69,20 @@ class SupervisorBackend
       SimpleHttp.new
     end
 
+    # overseer manager
+    @overseer_manager = OverseerManager.instance
+    @overseer_manager.start_all
+
     # custom wind turbine overseer
     # ugly, but needed for easter deployment
     #@rt_wind_overseer = StartThreaded.start_threaded(4, self) do
     #  sleep 2
     #  restart warning, when in loop create new threads every loop
-    require "lib/overseer/classes/custom/wind_turbine_overseer"
-    wo = WindTurbineOverseer.new
-    wo.start
+
+    #require "lib/overseer/classes/custom/wind_turbine_overseer"
+    #wo = WindTurbineOverseer.new
+    #wo.start
+
     #end
 
 #    require 'lib/action/action_manager'

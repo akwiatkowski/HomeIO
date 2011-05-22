@@ -17,9 +17,18 @@
   :wind_turbine:
     :enabled: true
     :params:
-      # sample params
-      :measurement_name: batt_u
-      :greater: true
+      :battery_voltage_measurement_name: batt_u
+      # check every X seconds
+      :interval: 10.0
+      # how many measurements use to calculate average
+      :inv_a_count_to_average: 20
+      :inv_b_count_to_average: 40
+      # thresholds
+      :threshold_inv_a_on: 38.0
+      :threshold_inv_a_off: 34.0
+      :threshold_inv_b_on: 40.0
+      :threshold_inv_b_off: 36.0
+      
       :threshold_value: 42.0
       :action_name: start_total_brake
       #interval of checking condition

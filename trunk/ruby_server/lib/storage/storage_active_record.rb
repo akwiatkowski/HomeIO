@@ -36,6 +36,8 @@ require "lib/storage/active_record/backend_models/action_type"
 require "lib/storage/active_record/backend_models/weather_archive"
 require "lib/storage/active_record/backend_models/weather_metar_archive"
 require "lib/storage/active_record/backend_models/weather_provider"
+require "lib/storage/active_record/backend_models/overseer"
+require "lib/storage/active_record/backend_models/overseer_parameter"
 
 require_files_from_directory("lib/storage/active_record/")
 

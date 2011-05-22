@@ -66,8 +66,13 @@ class AverageOverseer < StandardOverseer
   def check
     puts "#{self.class} check condition - #{average_value.inspect} <> #{threshold_value}, gr = #{greater}" if VERBOSE
 
+    av = average_value
+
+    # last checked value
+    @stats[:last_checked_value] = av
+
     # when not enough measurements
-    if average_value.nil?
+    if av.nil?
       return false
     end
 

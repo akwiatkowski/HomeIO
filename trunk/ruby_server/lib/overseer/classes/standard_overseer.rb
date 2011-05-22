@@ -58,6 +58,10 @@ class StandardOverseer
     # previous state
     @state = false
 
+    # statistics
+    @stats = Hash.new
+    @stats[:state] = @state
+
     # register in OverseerManager
     OverseerManager.instance.register_overseer(self)
 
@@ -88,11 +92,29 @@ class StandardOverseer
 
   # Some useful accessors
 
-  # Parameters
+  # Parameters and statistics output
+  def to_hash
+    p = @params.clone
+    p[:stats] = @stats
+    p
+  end
+
+  # Parameters and statistics output
   def params
     @params.clone
   end
-  alias_method :to_hash, :params
+
+  def name
+    @params[:name] || "Unknown #{self.object_id}"
+  end
+  alias_method :overseer_name, :name
+
+  # Is overseer active
+  def active
+    # TODO add active flag
+    #@params[:active]
+    true
+  end
 
   # Name of measurement used for this Overseer (String)
   def measurement_name
@@ -205,6 +227,9 @@ class StandardOverseer
   def check
     puts "#{self.class} check condition - #{measurement.value} <> #{threshold_value}, gr = #{greater}" if VERBOSE
 
+    # last checked value
+    @stats[:last_checked_value] = measurement.value
+
     if greater
       # has to be greater
       if measurement.value > threshold_value
@@ -226,6 +251,11 @@ class StandardOverseer
 
   # Execute action when condition is met, and change state.
   def execute_action
+    # statistics
+    @stats[:last_hit] = Time.now
+    @stats[:hit_count] = @stats[:hit_count].to_i + 1
+    @stats[:state] = @state
+
     puts "#{self.class} execute action - #{@params.inspect}, action #{action_name}" if VERBOSE
     @state = action.execute
     puts "#{self.class} state after #{state}"

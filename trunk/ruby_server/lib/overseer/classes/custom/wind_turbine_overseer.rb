@@ -32,15 +32,37 @@ class WindTurbineOverseer
 
   SUB_OVERSEERS_CLASS = AverageProcOverseer
 
-  def initialize
+  def initialize(params)
+    @params = params
+
+    # settable parameters
+    measurement_name = @params[:battery_voltage_measurement_name]
+    wrong_params if measurement_name.nil?
+
+    interval = @params[:interval]
+    interval = INTERVAL if interval.nil?
+
+    inv_a_count_to_average = @params[:inv_a_count_to_average]
+    wrong_params if inv_a_count_to_average.nil?
+
+    inv_b_count_to_average = @params[:inv_b_count_to_average]
+    wrong_params if inv_b_count_to_average.nil?
+
+    threshold_inv_a_on = @params[:threshold_inv_a_on]
+    threshold_inv_a_off = @params[:threshold_inv_a_off]
+    threshold_inv_b_on = @params[:threshold_inv_b_on]
+    threshold_inv_b_off = @params[:threshold_inv_b_off]
+
+
     @inv_a_on_overseer = SUB_OVERSEERS_CLASS.new(
       {
-        :measurement_name => "batt_u", #- type of measurement which is checked
+        :name => "inverter A on",
+        :measurement_name => measurement_name, #- type of measurement which is checked
         :greater => true, #true/false, true - check if value is greater
-        :threshold_value => 38.0, #- value which is compared to
+        :threshold_value => threshold_inv_a_on, #- value which is compared to
         :action_name => "output_2_on", #- action type to execute if check is true
-        :average_count => 20,
-        :interval => INTERVAL,
+        :average_count => inv_a_count_to_average,
+        :interval => interval,
         :re_execute => false,
         :proc => Proc.new { not first_inverter_on? }
       }
@@ -48,12 +70,13 @@ class WindTurbineOverseer
 
     @inv_a_off_overseer = SUB_OVERSEERS_CLASS.new(
       {
-        :measurement_name => "batt_u", #- type of measurement which is checked
+        :name => "inverter A off",
+        :measurement_name => measurement_name, #- type of measurement which is checked
         :greater => false, #true/false, true - check if value is greater
-        :threshold_value => 34.0, #- value which is compared to
+        :threshold_value => threshold_inv_a_off, #- value which is compared to
         :action_name => "output_2_off", #- action type to execute if check is true
-        :average_count => 20,
-        :interval => INTERVAL,
+        :average_count => inv_a_count_to_average,
+        :interval => interval,
         :re_execute => false,
         :proc => Proc.new { first_inverter_on? }
       }
@@ -61,12 +84,13 @@ class WindTurbineOverseer
 
     @inv_b_on_overseer = SUB_OVERSEERS_CLASS.new(
       {
-        :measurement_name => "batt_u", #- type of measurement which is checked
+        :name => "inverter B on",
+        :measurement_name => measurement_name, #- type of measurement which is checked
         :greater => true, #true/false, true - check if value is greater
-        :threshold_value => 40.0, #- value which is compared to
+        :threshold_value => threshold_inv_b_on, #- value which is compared to
         :action_name => "output_3_on", #- action type to execute if check is true
-        :average_count => 40,
-        :interval => INTERVAL,
+        :average_count => inv_b_count_to_average,
+        :interval => interval,
         :re_execute => false,
         :proc => Proc.new { not second_inverter_on? }
 
@@ -75,19 +99,23 @@ class WindTurbineOverseer
 
     @inv_b_off_overseer = SUB_OVERSEERS_CLASS.new(
       {
-        :measurement_name => "batt_u", #- type of measurement which is checked
+        :name => "inverter B off",
+        :measurement_name => measurement_name, #- type of measurement which is checked
         :greater => false, #true/false, true - check if value is greater
-        :threshold_value => 36.0, #- value which is compared to
+        :threshold_value => threshold_inv_b_off, #- value which is compared to
         :action_name => "output_3_off", #- action type to execute if check is true
-        :average_count => 30,
-        :interval => INTERVAL,
+        :average_count => inv_b_count_to_average,
+        :interval => interval,
         :re_execute => false,
         :proc => Proc.new { second_inverter_on? }
       }
     )
   end
 
-  
+  def wrong_params
+    puts @params.inspect
+    raise 'Not enough parameters'
+  end
 
   def start
     @inv_a_on_overseer.start

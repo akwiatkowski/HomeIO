@@ -41,4 +41,6 @@ class User < ActiveRecord::Base
 
   has_many :memos
 
+  has_many :overseers
+
 end

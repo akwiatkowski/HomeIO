@@ -46,27 +46,79 @@ class OverseerManager
   # Add overseer objects (not threads) for fetching information about current status
   # This method is run in overseer. Custom overseers can add many primitive overseers.
   def register_overseer(overseer)
+    # add to array
     @overseers_array << overseer
+
+    # check and populate DB
+    o = Overseer.find_by_name(overseer.name)
+    if o.nil?
+      # create Overseer with OverseerParameters
+      Overseer.transaction do
+        o = Overseer.create!(
+          {
+            :name => overseer.name,
+            :klass => overseer.class.to_s,
+            :active => overseer.active
+          }
+        )
+
+        # add parameters
+        p = overseer.params
+        op = Array.new
+        p.keys.each do |k|
+          # fix for proc objects
+          value = p[k]
+          value = nil if value.kind_of? Proc
+
+          op << OverseerParameter.new(
+            {
+              :key => k,
+              :value => value
+            }
+          )
+          o.overseer_parameters = op
+          o.save!
+        end
+
+
+      end
+    end
+
   end
 
   # List of registered overseers
   def overseers
-    @overseers_array.collect{|o| o.to_hash}
+    @overseers_array.collect { |o| o.to_hash }
   end
 
   # Load all overseer configuration from DB and yaml. Match all "yaml" to DB, if not present create it.
   # When there is overseer in DB, but no in yaml, mark it as disabled (o.active = false)
   # After DB is synchronized
   def start_all
-
+    start_primitive_overseers
+    start_custom_overseers
   end
 
-  
+
   def stop_all
-    
+
   end
 
   private
+
+  def start_primitive_overseers
+    # TODO use factory class
+  end
+
+  def start_custom_overseers
+    # no custom overseers configuration available
+    return if @config[:custom].nil?
+
+    # custom overseer for wind turbine
+    if not @config[:custom][:wind_turbine].nil? and @config[:custom][:wind_turbine][:enabled] == true
+      WindTurbineOverseer.new(@config[:custom][:wind_turbine][:params]).start
+    end
+  end
 
   # Create AR objects and Overseer instances
   def initialize_overseers
