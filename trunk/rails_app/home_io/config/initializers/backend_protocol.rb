@@ -24,5 +24,6 @@
 # set same as in TcpCommTaskServer.yml
 BACKEND_PROTOCOL_PORT = 12366
 
+require 'lib/backend_protocol/proc'
 require 'lib/backend_protocol/tcp_comm_protocol'
 require 'lib/backend_protocol/tcp_task'

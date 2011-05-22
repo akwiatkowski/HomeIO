@@ -1,5 +1,10 @@
 HomeIo::Application.routes.draw do
 
+  # overseers
+  resources :overseers do
+#    resources :overseer_parameters
+  end
+
   # actions
   resources :action_types do
     resources :action_events do
@@ -8,8 +13,9 @@ HomeIo::Application.routes.draw do
   end
 
   
-  get "meas_cache/index"
+  #get "meas_cache/index"
 
+  # memos created by users, readable by all
   resources :memos
 
   # measurement types

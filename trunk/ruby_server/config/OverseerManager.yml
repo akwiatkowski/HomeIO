@@ -1,0 +1,27 @@
+# Overseers configuration
+---
+# primitive overseers
+:array:
+  - :klass: StandardOverseer
+    :params:
+      :measurement_name: batt_u
+      :greater: true
+      :threshold_value: 42.0
+      :action_name: start_total_brake
+      #interval of checking condition
+      :interval: 2.0
+      :re_execute: true
+
+# custom overseers
+:custom:
+  :wind_turbine:
+    :enabled: true
+    :params:
+      # sample params
+      :measurement_name: batt_u
+      :greater: true
+      :threshold_value: 42.0
+      :action_name: start_total_brake
+      #interval of checking condition
+      :interval: 2.0
+      :re_execute: true

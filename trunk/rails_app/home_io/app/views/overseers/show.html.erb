@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @overseer.name %>
+</p>
+
+<p>
+  <b>Klass:</b>
+  <%= @overseer.klass %>
+</p>
+
+
+<%= link_to 'Edit', edit_overseer_path(@overseer) %> |
+<%= link_to 'Back', overseers_path %>

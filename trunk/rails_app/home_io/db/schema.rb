@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512221003) do
+ActiveRecord::Schema.define(:version => 20110522093007) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -80,6 +80,27 @@ ActiveRecord::Schema.define(:version => 20110512221003) do
     t.datetime "updated_at"
   end
 
+  create_table "overseer_parameters", :force => true do |t|
+    t.integer  "overseer_id"
+    t.string   "key",         :null => false
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "overseers", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.string   "klass",                         :null => false
+    t.boolean  "active",     :default => false, :null => false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "hit_count",  :default => 0,     :null => false
+    t.datetime "last_hit"
+  end
+
+  add_index "overseers", ["name"], :name => "index_overseers_on_name", :unique => true
+
   create_table "users", :force => true do |t|
     t.string   "login",                                  :null => false
     t.string   "email",                                  :null => false
@@ -144,6 +165,8 @@ ActiveRecord::Schema.define(:version => 20110512221003) do
   add_foreign_key "action_events", "action_types", :name => "action_events_action_type_id_fk", :dependent => :restrict
 
   add_foreign_key "meas_archives", "meas_types", :name => "meas_archives_meas_type_id_fk", :dependent => :restrict
+
+  add_foreign_key "overseer_parameters", "overseers", :name => "overseer_parameters_overseer_id_fk"
 
   add_foreign_key "weather_archives", "cities", :name => "weather_archives_city_id_fk", :dependent => :restrict
   add_foreign_key "weather_archives", "weather_providers", :name => "weather_archives_weather_provider_id_fk", :dependent => :restrict

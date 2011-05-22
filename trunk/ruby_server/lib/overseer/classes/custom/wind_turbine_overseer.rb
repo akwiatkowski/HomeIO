@@ -30,7 +30,6 @@ class WindTurbineOverseer
 
   INTERVAL = 10
 
-  # SUB_OVERSEERS_CLASS = AverageOverseer # working, without proc
   SUB_OVERSEERS_CLASS = AverageProcOverseer
 
   def initialize
@@ -87,6 +86,8 @@ class WindTurbineOverseer
       }
     )
   end
+
+  
 
   def start
     @inv_a_on_overseer.start

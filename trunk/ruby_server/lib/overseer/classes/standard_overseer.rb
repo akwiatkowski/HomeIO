@@ -21,6 +21,7 @@
 
 require 'lib/communication/db/extractor_active_record'
 require 'lib/measurements/measurement_fetcher'
+require 'lib/overseer/overseer_manager'
 require 'lib/action/action_manager'
 require 'lib/utils/start_threaded'
 
@@ -57,7 +58,9 @@ class StandardOverseer
     # previous state
     @state = false
 
-    # TODO create migration for overseers, list of overseers and parameters (like hash) for them
+    # register in OverseerManager
+    OverseerManager.instance.register_overseer(self)
+
     # TODO actions with reexecution
   end
 
@@ -84,6 +87,12 @@ class StandardOverseer
   end
 
   # Some useful accessors
+
+  # Parameters
+  def params
+    @params.clone
+  end
+  alias_method :to_hash, :params
 
   # Name of measurement used for this Overseer (String)
   def measurement_name

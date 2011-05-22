@@ -1,0 +1,25 @@
+<h1>Listing overseers</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Klass</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @overseers.each do |overseer| %>
+  <tr>
+    <td><%= overseer.name %></td>
+    <td><%= overseer.klass %></td>
+    <td><%= link_to 'Show', overseer %></td>
+    <td><%= link_to 'Edit', edit_overseer_path(overseer) %></td>
+    <td><%= link_to 'Destroy', overseer, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Overseer', new_overseer_path %>

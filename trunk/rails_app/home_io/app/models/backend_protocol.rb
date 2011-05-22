@@ -86,6 +86,11 @@ class BackendProtocol < TcpCommProtocol
     self.send_to_backend(:action_execute, [name, user_id] )
   end
 
+  # Overseers list
+  def self.overseers_list
+    self.send_to_backend(:overseers, nil )
+  end
+
   private
 
   # Send command (with params) to backend and return response

@@ -1,0 +1,86 @@
+class OverseersController < ApplicationController
+  # GET /overseers
+  # GET /overseers.xml
+  def index
+    render :text => BackendProtocol.overseers_list.inspect
+    return
+
+    @overseers = Overseer.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @overseers }
+    end
+  end
+
+  # GET /overseers/1
+  # GET /overseers/1.xml
+  def show
+    @overseer = Overseer.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @overseer }
+    end
+  end
+
+  # GET /overseers/new
+  # GET /overseers/new.xml
+  def new
+    @overseer = Overseer.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @overseer }
+    end
+  end
+
+  # GET /overseers/1/edit
+  def edit
+    @overseer = Overseer.find(params[:id])
+  end
+
+  # POST /overseers
+  # POST /overseers.xml
+  def create
+    @overseer = Overseer.new(params[:overseer])
+
+    respond_to do |format|
+      if @overseer.save
+        format.html { redirect_to(@overseer, :notice => 'Overseer was successfully created.') }
+        format.xml  { render :xml => @overseer, :status => :created, :location => @overseer }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @overseer.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /overseers/1
+  # PUT /overseers/1.xml
+  def update
+    @overseer = Overseer.find(params[:id])
+
+    respond_to do |format|
+      if @overseer.update_attributes(params[:overseer])
+        format.html { redirect_to(@overseer, :notice => 'Overseer was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @overseer.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /overseers/1
+  # DELETE /overseers/1.xml
+  def destroy
+    @overseer = Overseer.find(params[:id])
+    @overseer.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(overseers_url) }
+      format.xml  { head :ok }
+    end
+  end
+end

@@ -35,9 +35,9 @@ class AverageOverseer < StandardOverseer
   #  :average_count - number of measurements used to calculate average
 
   # Create StandardOverseer
-  def initialize(params)
-    super(params)
-  end
+  #def initialize(params)
+  #  super(params)
+  #end
 
   # How many measurements needed for average value
   def average_count

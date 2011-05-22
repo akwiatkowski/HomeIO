@@ -22,6 +22,7 @@
 require "lib/communication/db/extractor_basic_object"
 require "lib/measurements/measurement_fetcher"
 require "lib/action/action_manager"
+require "lib/overseer/overseer_manager"
 
 class HomeIoStandardCommands
 
@@ -62,6 +63,14 @@ class HomeIoStandardCommands
         :command => ['action_execute'],
         :desc => 'measurements of type',
         :proc => Proc.new { |params| ActionManager.instance.get_action_by_name( params[0] ).execute( params[1] ) },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
+        :restricted => true, # TODO
+        :now => true # no wait command
+      },
+      {
+        :command => ['overseers'],
+        :desc => 'list of backend overseers',
+        :proc => Proc.new { |params| OverseerManager.instance.overseers },
         :string_proc => Proc.new { |resp| string_commands(resp) },
         :restricted => true, # TODO
         :now => true # no wait command
