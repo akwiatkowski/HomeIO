@@ -66,6 +66,19 @@
         = "off"
     %br
 
+  - if not online_overseer_status[:threshold_value].nil? and not online_overseer_status[:greater].nil? and not online_overseer_status[:stats][:last_checked_value].nil?
+    %span
+    = "main condition is"
+    %span{:style => "font-weight: bold;"}
+      - greater = online_overseer_status[:greater]
+      - real_value_is = online_overseer_status[:stats][:last_checked_value] <=> online_overseer_status[:threshold_value]
+
+      - if real_value_is == 0 or (greater and 1 == real_value_is) or (not greater and -1 == real_value_is)
+        = "met"
+      - else
+        = "not met"
+    %br
+
   - if not online_overseer_status[:stats].nil? and not online_overseer_status[:stats][:proc_result].nil?
     %span
     = "additional condition is"

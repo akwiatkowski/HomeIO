@@ -8,6 +8,7 @@
       %th= "Other info"
       %th= "Error"
       %th= "User"
+      %th= "Overseer"
 
   - @action_events.each do |action_event|
     %tr{:class => cycle("even", "odd")}
@@ -25,6 +26,12 @@
       - else
         %td
           %span.small_info= "backend"
+
+      - unless action_event.executed_by_overseer.nil?
+        %td= action_event.executed_by_overseer.name
+      - else
+        %td
+          
 
 %hr
 %p= will_paginate @action_events

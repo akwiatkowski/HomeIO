@@ -26,6 +26,8 @@ class ActionEvent < ActiveRecord::Base
   belongs_to :action_type
   #belongs_to :user
   belongs_to :executed_by_user, :class_name => "User", :foreign_key => :user_id
+  #belongs_to :overseer
+  belongs_to :executed_by_overseer, :class_name => "Overseer", :foreign_key => :overseer_id
 
   validates_presence_of :time
 
