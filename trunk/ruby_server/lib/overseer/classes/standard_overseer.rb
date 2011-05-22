@@ -90,6 +90,16 @@ class StandardOverseer
     return true
   end
 
+  # Set id using Overseer (ActiveRecord)
+  def set_overseer_id(ar_overseer)
+    # TODO try to find_by_name if not set
+    if ar_overseer.kind_of? Overseer
+      @overseer_id = ar_overseer.id
+    else
+      raise "Tried to set id of Overseer using wrong object"
+    end
+  end
+
   # Some useful accessors
 
   # Parameters and statistics output
@@ -107,6 +117,7 @@ class StandardOverseer
   def name
     @params[:name] || "Unknown #{self.object_id}"
   end
+
   alias_method :overseer_name, :name
 
   # Is overseer active
@@ -257,7 +268,11 @@ class StandardOverseer
     @stats[:state] = @state
 
     puts "#{self.class} execute action - #{@params.inspect}, action #{action_name}" if VERBOSE
-    @state = action.execute
+    # old, not storing overseer id
+    #@state = action.execute
+    # new, using overseer id
+    @state = action.execute(nil, @overseer_id)
+
     puts "#{self.class} state after #{state}"
   end
 

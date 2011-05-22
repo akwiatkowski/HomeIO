@@ -80,9 +80,12 @@ class OverseerManager
           o.save!
         end
 
-
       end
     end
+
+    # set overseer id used when executing actions
+    # TODO try something else using models
+    overseer.set_overseer_id(o)
 
   end
 
