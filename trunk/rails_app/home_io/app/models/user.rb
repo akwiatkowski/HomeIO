@@ -43,4 +43,6 @@ class User < ActiveRecord::Base
 
   has_many :overseers
 
+  default_scope :order => 'created_at ASC'
+
 end

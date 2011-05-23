@@ -40,6 +40,9 @@ gem 'default_value_for'
 # has error 'can't convert nil into Array'
 gem 'will_paginate', " >= 3.0.pre2"
 
+# comments
+gem 'acts_as_commentable'
+
 # https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
 gem 'simple-navigation'
 

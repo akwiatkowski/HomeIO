@@ -1,5 +1,7 @@
 HomeIo::Application.routes.draw do
 
+  resources :comments
+
   # overseers
   resources :overseers do
     #resources :overseer_parameters
@@ -11,6 +13,7 @@ HomeIo::Application.routes.draw do
   # actions
   resources :action_types do
     resources :action_events do
+      resources :comments
     end
     get :execute , :on => :member
   end

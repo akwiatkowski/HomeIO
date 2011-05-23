@@ -36,6 +36,7 @@ GEM
       activemodel (= 3.0.7)
       activesupport (= 3.0.7)
     activesupport (3.0.7)
+    acts_as_commentable (3.0.1)
     arel (2.0.9)
     barista (1.0.0)
       coffee-script (~> 2.1.1)
@@ -121,6 +122,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_commentable
   authlogic!
   barista
   cancan

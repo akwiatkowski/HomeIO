@@ -24,6 +24,7 @@ require 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
 require 'singleton'
+require 'acts_as_commentable'
 require 'lib/utils/start_threaded'
 require 'lib/storage/measurement_storage'
 

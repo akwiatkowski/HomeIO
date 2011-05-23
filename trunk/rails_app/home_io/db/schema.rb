@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110522190311) do
+ActiveRecord::Schema.define(:version => 20110523203553) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -51,6 +51,20 @@ ActiveRecord::Schema.define(:version => 20110522190311) do
 
   add_index "cities", ["lat", "lon"], :name => "index_cities_on_lat_and_lon", :unique => true
   add_index "cities", ["name", "country"], :name => "index_cities_on_name_and_country", :unique => true
+
+  create_table "comments", :force => true do |t|
+    t.string   "title",            :limit => 50, :default => ""
+    t.text     "comment"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
+  add_index "comments", ["commentable_type"], :name => "index_comments_on_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "meas_archives", :force => true do |t|
     t.datetime "time_from",                                                  :null => false

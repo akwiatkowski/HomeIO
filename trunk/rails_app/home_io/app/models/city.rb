@@ -31,7 +31,7 @@ class City < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => [:country]
   validates_uniqueness_of :metar, :allow_nil => true
 
-  default_scope :order => :calculated_distance
+  default_scope :order => "calculated_distance ASC"
 
   # will paginate
   cattr_reader :per_page
