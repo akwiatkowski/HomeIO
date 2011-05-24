@@ -24,6 +24,13 @@
     - tooltip += "Check every of #{overseer_status[:interval]} seconds<br \>"
     - if overseer_status[:average_count] > 1
       - tooltip += "Average for #{overseer_status[:average_count]} measurements<br \>"
+    - if not overseer_status[:stats].nil? and not overseer_status[:stats][:last_hit].nil?
+      - tooltip += "Last hit at #{overseer_status[:stats][:last_hit]}<br \>"
+    - if not overseer_status[:stats].nil? and not overseer_status[:stats][:hit_count].nil?
+      - tooltip += "Hit count - #{overseer_status[:stats][:hit_count]} times<br \>"
+    - if not overseer_status[:stats].nil? and not overseer_status[:stats][:start_time].nil?
+      - tooltip += "Started at #{overseer_status[:stats][:start_time]}<br \>"
+
 
 
     %tr{:class => cycle("even", "odd"), :title => tooltip}

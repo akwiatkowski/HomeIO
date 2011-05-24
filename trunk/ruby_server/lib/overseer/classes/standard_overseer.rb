@@ -78,6 +78,9 @@ class StandardOverseer
       return false
     end
 
+    # when was started
+    @stats[:start_time] = Time.now
+
     puts "#{self.class} started - #{@params.inspect}" if VERBOSE
     @rt = StartThreaded.start_threaded(interval, self) do
       # check and execute action if needed
