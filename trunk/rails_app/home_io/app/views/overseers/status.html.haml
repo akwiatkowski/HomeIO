@@ -21,8 +21,9 @@
 
     - # addition information used in tooltip
     - tooltip = ""
-    - if overseer_status[:interval] > 1
-      - tooltip += "Average of #{overseer_status[:interval]}<br \>"
+    - tooltip += "Check every of #{overseer_status[:interval]} seconds<br \>"
+    - if overseer_status[:average_count] > 1
+      - tooltip += "Average for #{overseer_status[:average_count]} measurements<br \>"
 
 
     %tr{:class => cycle("even", "odd"), :title => tooltip}
