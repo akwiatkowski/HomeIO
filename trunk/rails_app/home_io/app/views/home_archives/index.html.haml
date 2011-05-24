@@ -1,0 +1,41 @@
+%h2= "Home archives"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Id"
+      %th= "Type"
+      %th= "Date"
+      %th= "Value"
+      %th= "User"
+
+      %th{:colspan => 3}= "Actions"
+
+  - @home_archives.each do |home_archive|
+    %tr{:class => cycle("even", "odd")}
+      %td= home_archive.id
+      %td= home_archive.home_archive_type.name
+      %td= home_archive.time
+      %td= home_archive.value
+      %td
+        - if not home_archive.user.nil?
+          = home_archive.user.login
+
+      %td= link_to 'Show', home_archive, :method => :post
+
+      - if can?(:manage, home_archive)
+        %td= link_to 'Edit', edit_home_archive_path(home_archive)
+      - else
+        %td
+
+      - if can?(:manage, home_archive)
+        %td= link_to 'Destroy', home_archive, :confirm => 'Are you sure?', :method => :delete
+      - else
+        %td
+
+%hr
+%p= will_paginate @home_archives
+%p= page_entries_info @home_archives
+
+%hr
+= link_to "New", new_home_archive_path

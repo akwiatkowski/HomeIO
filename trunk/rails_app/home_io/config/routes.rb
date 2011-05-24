@@ -1,5 +1,7 @@
 HomeIo::Application.routes.draw do
 
+  resources :home_archives
+
   resources :comments
 
   # overseers

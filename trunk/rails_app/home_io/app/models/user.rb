@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
 
   has_many :overseers
 
+  has_many :home_archives
+
   default_scope :order => 'created_at ASC'
 
 end

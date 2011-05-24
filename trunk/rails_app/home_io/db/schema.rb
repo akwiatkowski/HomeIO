@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110523203553) do
+ActiveRecord::Schema.define(:version => 20110524212323) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -65,6 +65,21 @@ ActiveRecord::Schema.define(:version => 20110523203553) do
   add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
   add_index "comments", ["commentable_type"], :name => "index_comments_on_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "home_archive_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "home_archives", :force => true do |t|
+    t.datetime "time"
+    t.float    "value"
+    t.integer  "user_id"
+    t.integer  "home_archive_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "meas_archives", :force => true do |t|
     t.datetime "time_from",                                                  :null => false
@@ -178,6 +193,9 @@ ActiveRecord::Schema.define(:version => 20110523203553) do
   add_index "weather_providers", ["name"], :name => "index_weather_providers_on_name", :unique => true
 
   add_foreign_key "action_events", "action_types", :name => "action_events_action_type_id_fk", :dependent => :restrict
+
+  add_foreign_key "home_archives", "home_archive_types", :name => "home_archives_home_archive_type_id_fk", :dependent => :restrict
+  add_foreign_key "home_archives", "users", :name => "home_archives_user_id_fk", :dependent => :restrict
 
   add_foreign_key "meas_archives", "meas_types", :name => "meas_archives_meas_type_id_fk", :dependent => :restrict
 

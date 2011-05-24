@@ -23,7 +23,7 @@ class Ability
 
     else
       # ordinary user
-      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer]
+      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer, HomeArchive]
 
       # only edit self memos
       can :manage, user.memos
@@ -36,6 +36,10 @@ class Ability
       can :manage, user.overseers
       # can create new overseers
       can :create, Overseer
+
+      # can create and update owned
+      can :create, HomeArchive
+      can :manage, user.home_archives
     end
 
     # Define abilities for the passed in user here. For example:

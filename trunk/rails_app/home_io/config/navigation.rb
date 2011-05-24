@@ -74,6 +74,8 @@ SimpleNavigation::Configuration.run do |navigation|
       sec.item :overseers_status, 'Status', status_overseers_path
     end
 
+    primary.item :home_archive, "Home archives", home_archives_path, :if => Proc.new { can?(:read, HomeArchive) }
+
     primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:read, Memo) }
 
     primary.item :cities, 'Cities', cities_path, :if => Proc.new { current_user } do |sec|
