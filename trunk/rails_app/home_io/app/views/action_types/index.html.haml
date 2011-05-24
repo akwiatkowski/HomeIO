@@ -17,10 +17,12 @@
 
       %td= link_to 'Events', action_type_action_events_path(action_type)
 
-      - if can?(:manage, ActionType)
-        %td= link_to 'Edit', edit_action_type_path(action_type)
-      - else
-        %td
+      - if false
+        - # disabled
+        - if can?(:manage, ActionType)
+          %td= link_to 'Edit', edit_action_type_path(action_type)
+        - else
+          %td
 
 %hr
 %p= will_paginate @action_types

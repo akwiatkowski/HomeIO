@@ -11,7 +11,7 @@ HomeIo::Application.routes.draw do
   end
 
   # actions
-  resources :action_types do
+  resources :action_types, :except => [:new, :create, :edit, :update, :delete] do
     resources :action_events do
       resources :comments
     end
@@ -31,6 +31,7 @@ HomeIo::Application.routes.draw do
 
     resources :meas_archives do
       get :chart, :on => :collection
+      resources :comments
     end
 
     resource :meas_cache

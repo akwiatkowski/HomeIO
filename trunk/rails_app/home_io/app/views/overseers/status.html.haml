@@ -1,4 +1,58 @@
-%h2= "Overseer status"
+%h2= "Overseers current status"
 
-= render :partial => "online_overseer_status", :collection => @overseer_statuses
+%table.data_table
+  %thead
+    %tr
+      %th= "Id"
+      %th= "Overseer name"
+      %th= "Measurement type"
+      %th= "Condition"
+      %th= "Current value"
+      %th= "Condition state"
+      %th= "Additional condition state"
+      %th= "Active"
+
+  - @overseer_statuses.each do |overseer_status|
+    - mt = MeasType.find_by_name( overseer_status[:measurement_name].strip )
+    - if not mt.nil?
+      - unit = mt.unit
+    - else
+      - unit = nil
+
+    - # addition information used in tooltip
+    - tooltip = ""
+    - if overseer_status[:interval] > 1
+      - tooltip += "Average of #{overseer_status[:interval]}<br \>"
+
+
+    %tr{:class => cycle("even", "odd"), :title => tooltip}
+      %td= overseer_status[:overseer_id]
+      %td= overseer_status[:name]
+      %td= overseer_status[:measurement_name]
+      %td
+        - if overseer_status[:greater] == true
+          = ">="
+        - else
+          = "<="
+        = np( overseer_status[:threshold_value] )
+        = unit
+
+      %td
+        - if not overseer_status[:stats][:last_checked_value].nil?
+          = np( overseer_status[:stats][:last_checked_value] )
+          = unit
+
+      %td
+        - if not overseer_status[:stats].nil? and not overseer_status[:stats][:state].nil?
+          = overseer_status[:stats][:state].to_s.humanize
+
+      %td
+        - if not overseer_status[:stats].nil? and not overseer_status[:stats][:proc_result].nil?
+          = overseer_status[:stats][:proc_result].to_s.humanize
+
+      %td= overseer_status[:active].to_s.humanize
+
+%hr
+%p= will_paginate @overseer_statuses
+%p= page_entries_info @overseer_statuses, :entry_name => 'Overseer status'
 

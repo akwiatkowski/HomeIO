@@ -31,7 +31,9 @@
         %td= action_event.executed_by_overseer.name
       - else
         %td
-          
+
+      %td
+        = link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event )
 
 %hr
 %p= will_paginate @action_events

@@ -13,7 +13,7 @@ class OverseersController < ApplicationController
 
   def status
     authorize! :read, Overseer
-    @overseer_statuses = BackendProtocol.overseers_list
+    @overseer_statuses = BackendProtocol.overseers_list.paginate(:page => params[:page], :per_page => 20)
   end
 
   # GET /overseers/1

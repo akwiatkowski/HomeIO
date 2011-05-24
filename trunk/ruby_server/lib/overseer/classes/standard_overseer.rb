@@ -62,6 +62,9 @@ class StandardOverseer
     @stats = Hash.new
     @stats[:state] = @state
 
+    # active by default
+    @params[:active] = true if @params[:active].nil?
+
     # register in OverseerManager
     OverseerManager.instance.register_overseer(self)
 
@@ -106,6 +109,7 @@ class StandardOverseer
   def to_hash
     p = @params.clone
     p[:stats] = @stats
+    p[:overseer_id] = @overseer_id
     p
   end
 
