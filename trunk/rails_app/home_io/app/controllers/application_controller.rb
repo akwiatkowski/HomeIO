@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   helper :all
   helper_method :current_user_session, :current_user
 
+  include AncestorHandling
+
   private
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
@@ -15,6 +17,7 @@ class ApplicationController < ActionController::Base
     @current_user = current_user_session && current_user_session.user
   end
 
+  # TODO try to use cancan instead of that
   def require_user
     unless current_user
       store_location

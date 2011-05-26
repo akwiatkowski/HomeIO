@@ -1,0 +1,21 @@
+%h2= "Comments"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Id"
+      %th= "Title"
+      %th= "Comment"
+
+  - @comments.each do |comment|
+    %tr{:class => cycle("even", "odd")}
+      %td= comment.id
+      %td= comment.title
+      %td= comment.comment
+
+%hr
+%p= will_paginate @comments
+%p= page_entries_info @comments
+
+= link_to "Add comment", new_ancestor_comment_path
+=# params.clone #.merge({:action => :new})

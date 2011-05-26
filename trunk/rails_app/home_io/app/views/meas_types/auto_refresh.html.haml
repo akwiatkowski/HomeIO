@@ -1,29 +1,3 @@
 %h2= "Auto refreshing measurements"
 
-%table.data_table
-  %thead
-    %tr
-      %th= "Measurement"
-      %th= "Value"
-  %tbody
-
-:javascript
-
-  function updateMeasurements() {
-
-    $.ajax("#{current_meas_types_url(:format => :json)}", {
-      timeoutNumber: 400,
-      dataType: 'json',
-      success: function(data){
-        // empty table
-        $("tbody").empty();
-
-        $.each(data, function(index, value) {
-          // add measurement name and value
-          $("tbody").append("<tr><td>" + value["meas_archive"]["meas_type"]["name"] + "</td><td>" + value["meas_archive"]["value"] + "</td></tr>");
-        });
-      }
-    });
-  }
-
-  var holdTheInterval = setInterval(updateMeasurements, 1000);
+= render :partial => 'meas_types/auto_refresh'

@@ -1,5 +1,23 @@
 %h2= "Action events"
 
+= # http://docs.jquery.com/UI/Dialog
+
+:javascript
+  function addComment(id) {
+    $("#dialog").dialog('open')
+  }
+
+  $(document).ready(function() {
+    $("#dialog").dialog({ autoOpen: false });
+  });
+
+#dialog{:title => "Add comment"}
+  - comment = Comment.new
+  = form_for comment, :remote => true do |f|
+    = render :partial => 'comments/form_internal', :locals => {:f => f, :comment => comment}
+    - f.submit "Add"
+
+
 %table.data_table
   %thead
     %tr
@@ -33,7 +51,12 @@
         %td
 
       %td
-        = link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event )
+        = link_to "Comments", action_event_comments_path( action_event )
+        - # http://www.sohtanaka.com/web-design/inline-modal-window-w-css-and-jquery
+        =# link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event ), :html => {:rel => "popup_name", :class => "poplight"}
+
+      %td
+        = link_to "Comment", "javascript:addComment(#{@action_events.id});"
 
 %hr
 %p= will_paginate @action_events

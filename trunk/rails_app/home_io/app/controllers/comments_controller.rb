@@ -1,12 +1,10 @@
 class CommentsController < ApplicationController
+  before_filter :load_and_authorize_ancestor_object
+
   # GET /comments
   # GET /comments.xml
   def index
-    # http://localhost:3000/action_types/1/action_events/1/comments
-    render :text => params.inspect
-    return
-
-    @comments = Comment.all
+    @comments = @ancestor.comments.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -84,4 +82,5 @@ class CommentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
 end
