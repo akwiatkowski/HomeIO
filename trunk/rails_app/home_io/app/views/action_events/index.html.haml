@@ -3,19 +3,47 @@
 = # http://docs.jquery.com/UI/Dialog
 
 :javascript
+  $(document).ready(function() {
+    // prepare dialog
+    $("#dialog").dialog({ autoOpen: false });
+
+    // use dialog window
+    $(".comments").click( function() {
+      $.ajax({
+        url: this.href,
+        success: function(html){
+          $("#dialog").empty();
+          $("#dialog").append(html);
+          $("#dialog").dialog('open');
+         }
+
+      });
+      return false;
+    })
+  });
+
+- # loading comments via ajax
+
+#dialog{:title => "Comments"}
+
+:javascript
+  function openAddCommentDialog(id) {
+    $.ajax({
+      url:"/action_events/" + id + "/comments/new",
+      context: document.body.content_container,
+      success: function(data) {
+        $('#dialog').html(data);
+        alert('Load was performed.');
+      }
+    });
+  }
+  /*
   function addComment(id) {
     $("#dialog").dialog('open')
   }
 
-  $(document).ready(function() {
-    $("#dialog").dialog({ autoOpen: false });
-  });
 
-#dialog{:title => "Add comment"}
-  - comment = Comment.new
-  = form_for comment, :remote => true do |f|
-    = render :partial => 'comments/form_internal', :locals => {:f => f, :comment => comment}
-    - f.submit "Add"
+  */
 
 
 %table.data_table
@@ -50,13 +78,18 @@
       - else
         %td
 
-      %td
-        = link_to "Comments", action_event_comments_path( action_event )
-        - # http://www.sohtanaka.com/web-design/inline-modal-window-w-css-and-jquery
-        =# link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event ), :html => {:rel => "popup_name", :class => "poplight"}
+      - if true
+        %td
+          = link_to "Comments", new_action_event_comment_path( action_event ), :class => "comments"
+          - # http://www.sohtanaka.com/web-design/inline-modal-window-w-css-and-jquery
+          =# link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event ), :html => {:rel => "popup_name", :class => "poplight"}
 
       %td
-        = link_to "Comment", "javascript:addComment(#{@action_events.id});"
+        - if action_event.comments.size == 0
+          = link_to "Add comment", "javascript:openAddCommentDialog(#{action_event.id});"
+        - else
+          = link_to "Comments", "javascript:openAddCommentDialog(#{action_event.id});"
+
 
 %hr
 %p= will_paginate @action_events

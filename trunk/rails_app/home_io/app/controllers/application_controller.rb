@@ -51,6 +51,18 @@ class ApplicationController < ActionController::Base
     flash[:warning] = "No active backend connection. Measurements can be not fresh."
   end
 
+  # Turn off layout on xhr requests
+  layout :get_layout
+
+  def get_layout
+    if request.xhr?
+      nil
+    else
+      'application'
+    end
+  end
+
+
   # when user has no proper rights
   rescue_from CanCan::AccessDenied do |exception|
     #redirect_to root_url, :alert => exception.message

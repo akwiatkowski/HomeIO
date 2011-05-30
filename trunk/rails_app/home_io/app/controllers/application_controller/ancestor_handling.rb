@@ -6,6 +6,8 @@ module ApplicationController::AncestorHandling
   # Usable ex. for comments
   def ancestor_object
     object_key = params.keys.select { |k| k.to_s =~ /_id/ }.first
+    # no ancestor in path
+    return nil if object_key.nil?
     object_type = object_key.gsub(/_id/, '').camelize
     return object_type.constantize.find(params[object_key])
   end

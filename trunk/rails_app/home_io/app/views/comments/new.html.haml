@@ -1,0 +1,15 @@
+:javascript
+  $(document).ready(function() {
+    $("#new_comment").submit( function() {
+      $.post($(this).attr("action"), $(this).serialize(), null, "script" );
+      $(this).empty();
+      return false;
+    })
+  });
+
+- form_obj = @comment
+- form_obj = [@ancestor, @comment] unless @ancestor.nil?
+
+= form_for form_obj do |f|
+  = render :partial => 'comments/form_internal', :locals => {:f => f, :comment => @comment}
+  = f.submit "Add"
