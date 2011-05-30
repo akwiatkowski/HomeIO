@@ -1,0 +1,17 @@
+<%= form_for(@day_statistic) do |f| %>
+  <% if @day_statistic.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@day_statistic.errors.count, "error") %> prohibited this day_statistic from being saved:</h2>
+
+      <ul>
+      <% @day_statistic.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<h1>Listing day_statistics</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @day_statistics.each do |day_statistic| %>
+  <tr>
+    <td><%= link_to 'Show', day_statistic %></td>
+    <td><%= link_to 'Edit', edit_day_statistic_path(day_statistic) %></td>
+    <td><%= link_to 'Destroy', day_statistic, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Day statistic', new_day_statistic_path %>
