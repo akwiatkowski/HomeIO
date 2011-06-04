@@ -1,4 +1,4 @@
-!!! Strict
+!!! 5
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= "HomeIO"
@@ -15,6 +15,12 @@
     = javascript_include_tag 'g.line'
 
     = javascript_include_tag 'jquery-ui.min'
+
+    = javascript_include_tag 'json2'
+    = javascript_include_tag 'underscore'
+    = javascript_include_tag 'backbone'
+
+    = javascript_include_tag 'dashboard'
 
     =# coffee_script_bundle :mode => :inline
 

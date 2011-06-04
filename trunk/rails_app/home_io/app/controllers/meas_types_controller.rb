@@ -8,6 +8,7 @@ class MeasTypesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @meas_types }
+      format.json { render :json => @meas_types }
     end
   end
 
@@ -48,6 +49,7 @@ class MeasTypesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml { render :xml => @meas_type }
+      format.json { render :json => @meas_type }
     end
   end
 

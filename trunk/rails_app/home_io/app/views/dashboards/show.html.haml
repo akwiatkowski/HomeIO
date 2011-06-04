@@ -1,7 +1,20 @@
 %h2= "Dashboard"
 
-#auto_refresh
-= render :partial => 'meas_types/auto_refresh'
+%h1
+  = link_to "CloudEdit", "#"
 
-#auto_actions
-- # auto refreshing action events
+#notice
+#app
+
+:javascript
+  $(function() {
+      App.init();
+      alert(1);
+  });
+
+- if false
+  #auto_refresh
+  = render :partial => 'meas_types/auto_refresh'
+
+  #auto_actions
+  - # auto refreshing action events

@@ -54,7 +54,10 @@ gem 'cancan'
 # https://github.com/binarylogic/authlogic/blob/master/README.rdoc
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 
-gem 'jrails'
+#gem 'jrails'
+gem 'jquery-rails'
+#gem "backbone-rails", "~> 0.3.3.1"
+#gem 'backbone_rails'
 
 # https://github.com/probablycorey/mini_magick/blob/master/README.rdoc
 gem 'mini_magick'
