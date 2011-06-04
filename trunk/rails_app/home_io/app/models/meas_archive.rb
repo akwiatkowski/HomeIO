@@ -64,6 +64,7 @@ class MeasArchive < ActiveRecord::Base
     @meas_types.each do |mt|
       @meas_archives << mt.meas_archives.last
     end
+    return @meas_archives
   end
 
   # Create json data used for creating charts for MeasArchive instances
