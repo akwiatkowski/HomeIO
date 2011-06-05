@@ -1,7 +1,7 @@
 App.Controllers.MeasType = Backbone.Controller.extend({
   routes: {
-    "meas_types/:id":           "show",
-    "":                         "index",
+    "#meas_types/:id":           "show",
+    "/":                         "index",
     "meas_types_current":       "current"
   },
 
