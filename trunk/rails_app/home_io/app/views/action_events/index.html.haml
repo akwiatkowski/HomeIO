@@ -8,7 +8,7 @@
     $("#dialog").dialog({ autoOpen: false });
 
     // use dialog window
-    $(".comments").click( function() {
+    $(".popup_link").click( function() {
       $.ajax({
         url: this.href,
         success: function(html){
@@ -26,26 +26,6 @@
 
 #dialog{:title => "Comments"}
 
-:javascript
-  function openAddCommentDialog(id) {
-    $.ajax({
-      url:"/action_events/" + id + "/comments/new",
-      context: document.body.content_container,
-      success: function(data) {
-        $('#dialog').html(data);
-        alert('Load was performed.');
-      }
-    });
-  }
-  /*
-  function addComment(id) {
-    $("#dialog").dialog('open')
-  }
-
-
-  */
-
-
 %table.data_table
   %thead
     %tr
@@ -55,6 +35,7 @@
       %th= "Error"
       %th= "User"
       %th= "Overseer"
+      %th{:colspan => 2}= "Comments"
 
   - @action_events.each do |action_event|
     %tr{:class => cycle("even", "odd")}
@@ -65,7 +46,9 @@
       - if action_event.error_status
         %td{:style => "color: red;"}= action_event.error_status
       - else
-        %td= action_event.error_status
+        %td
+          - #= action_event.error_status
+          = "---"
 
       - unless action_event.executed_by_user.nil?
         %td= action_event.executed_by_user.login
@@ -78,17 +61,13 @@
       - else
         %td
 
-      - if true
-        %td
-          = link_to "Comments", new_action_event_comment_path( action_event ), :class => "comments"
-          - # http://www.sohtanaka.com/web-design/inline-modal-window-w-css-and-jquery
-          =# link_to "Comments", action_type_action_event_comments_path( action_event.action_type_id, action_event ), :html => {:rel => "popup_name", :class => "poplight"}
+      %td
+        = link_to "Add", new_action_event_comment_path( action_event ), :class => "popup_link"
 
       %td
-        - if action_event.comments.size == 0
-          = link_to "Add comment", "javascript:openAddCommentDialog(#{action_event.id});"
-        - else
-          = link_to "Comments", "javascript:openAddCommentDialog(#{action_event.id});"
+        - if action_event.comments.size > 0
+          = link_to "#{pluralize(action_event.comments.size, "comments")}", action_event_comments_path( action_event ), :class => "popup_link"
+
 
 
 %hr
