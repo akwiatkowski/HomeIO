@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(:version => 20110524212323) do
   create_table "memos", :force => true do |t|
     t.string   "title"
     t.text     "text"
-    t.integer  "user_id",    :null => false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
