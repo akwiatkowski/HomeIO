@@ -32,7 +32,10 @@ class WeatherWorldWeatherOnline
   
   def initialize
     @api = ConfigLoader.instance.config('WorldWeatherOnlineApiKey')[:api_key]
+    @enabled = ConfigLoader.instance.config('WorldWeatherOnlineApiKey')[:enabled]
+
     StorageActiveRecord.instance
+    sleep(0.5)
 
     # prepare provider id
     wp = WeatherProvider.find_or_create_by_name(provider_name)
@@ -49,13 +52,14 @@ class WeatherWorldWeatherOnline
   end
 
   def fetch
+    return unless @enabled == true
     @cities.each do |c|
       load_city(c)
     end
   end
 
   def load_city(city)
-    url = "http://free.worldweatheronline.com/feed/weather.ashx?key=#{@api}&q=#{city.lat},#{city.lon}&num_of_days=5&format=json"
+    url = "http://free.worldweatheronline.com/feed/weather.ashx?key=#{@api}&q=#{city.lat},#{city.lon}&num_of_days=2&format=json"
     body = Net::HTTP.get(URI.parse(url))
     result = JSON.parse(body)
 

@@ -31,7 +31,7 @@ class ExtractorWeatherThreadProxy
   attr_reader :wind_prediction, :temperature_prediction
 
   def initialize
-    StartThreaded.start_threaded(30.minutes, self) do
+    @rt = StartThreaded.start_threaded(30.minutes, self) do
       refresh
     end
   end
