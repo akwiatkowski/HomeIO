@@ -35,13 +35,17 @@ class WeatherWorldWeatherOnline
     StorageActiveRecord.instance
 
     # prepare provider id
-    wp = WeatherProvider.find_or_create_by_name(self.class.to_s)
+    wp = WeatherProvider.find_or_create_by_name(provider_name)
     wp.save!
     @id = wp.id
 
     # get all cities
     @cities = City.all
     load_city(@cities.first)
+  end
+
+  def provider_name
+    "WorldWeatherOnline"
   end
 
   def fetch
