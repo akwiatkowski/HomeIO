@@ -23,6 +23,7 @@ require 'lib/overseer/classes/standard_overseer'
 require 'lib/overseer/classes/average_overseer'
 require 'lib/overseer/classes/average_proc_overseer'
 require 'lib/measurements/measurement_fetcher'
+require 'lib/communication/db/extractor_weather_thread_proxy'
 
 # Custom wind turbine overseer. Written for easter deploy.
 
@@ -129,7 +130,7 @@ class WindTurbineOverseer
 
   # Batteries voltage offset using weather prediction
   def batteries_weather_offset
-    wind_speed_prediction = City.future_prediction( :wind, 1.day )
+    wind_speed_prediction = ExtractorWeatherThreadProxy.instance.temperature_prediction
 
     # no weather prediction, no offset
     return 0.0 if wind_speed_prediction.nil?

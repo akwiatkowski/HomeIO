@@ -25,6 +25,7 @@ require 'lib/utils/config_loader'
 require 'lib/weather_ripper/rippers/weather_onet_pl'
 require 'lib/weather_ripper/rippers/weather_wp_pl'
 require 'lib/weather_ripper/rippers/weather_interia_pl'
+require 'lib/weather_ripper/rippers/weather_world_weather_online'
 
 # Fetch weather information from various web pages
 
@@ -53,6 +54,7 @@ class WeatherRipper
       WeatherWpPl.new,
       WeatherInteriaPl.new
     ]
+    @world_weather_provider = WeatherWorldWeatherOnline.instance
 
     puts "#{self.class.to_s} init - #{@providers.size} providers"
   end
@@ -65,6 +67,10 @@ class WeatherRipper
     @providers.each do |p|
       p.check_all
     end
+
+    # special providers
+    @world_weather_provider.fetch
+
     return {:status => :ok}
   end
 

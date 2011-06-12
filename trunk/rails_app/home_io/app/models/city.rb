@@ -36,7 +36,8 @@ class City < ActiveRecord::Base
   # cities located within this radius are local
   LOCAL_CITY_LIMIT = 40
 
-  scope :local, lambda { |calculated_distance| where("calculated_distance < ?", LOCAL_CITY_LIMIT) }
+  scope :local, lambda { where("calculated_distance < ?", LOCAL_CITY_LIMIT) }
+  scope :within_range, lambda { |d| where("calculated_distance <= ?", d) }
 
   # will paginate
   cattr_reader :per_page
