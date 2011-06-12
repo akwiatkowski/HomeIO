@@ -40,6 +40,7 @@ class StandardOverseer
   #  :measurement_name - name/type of measurement which is checked
   #  :greater - true/false, true - check if value is greater
   #  :threshold_value - value which is compared to
+  #  :threshold_proc - proc modifying threshold value, should be nil or return Float, used without parameters
   #  :action_name - action name/type to execute if check is true
   #  :interval - interval of checking condition
   #  :re_execute - default false - execute action only when conditions are met
@@ -112,6 +113,7 @@ class StandardOverseer
   def to_hash
     p = @params.clone
     p[:stats] = @stats
+    p[:stats][:current_threshold_value] = self.threshold_value
     p[:overseer_id] = @overseer_id
     p
   end
@@ -159,9 +161,11 @@ class StandardOverseer
     action
   end
 
-  # Threshold value
+  # Threshold value with modification
   def threshold_value
-    @params[:threshold_value]
+    tv = @params[:threshold_value]
+    tv += @params[:threshold_proc].call unless @params[:threshold_proc].nil?
+    tv
   end
 
   # If false execute actions only when conditions are met for the first time

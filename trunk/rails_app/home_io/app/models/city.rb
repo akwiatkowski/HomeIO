@@ -33,6 +33,11 @@ class City < ActiveRecord::Base
 
   default_scope :order => "calculated_distance ASC"
 
+  # cities located within this radius are local
+  LOCAL_CITY_LIMIT = 40
+
+  scope :local, lambda { |calculated_distance| where("calculated_distance < ?", LOCAL_CITY_LIMIT) }
+
   # will paginate
   cattr_reader :per_page
   @@per_page = 20
@@ -85,6 +90,44 @@ class City < ActiveRecord::Base
       # nothing
       return []
     end
+  end
+
+  # Calculate waged average for future prediction
+  def self.future_prediction(parameter_key, how_long, cities_array = City.local, from = Time.now)
+    weather_array = Array.new
+
+    # collect weather data
+    cities_array.each do |c|
+      a = c.weather_archives.where("time_to >= ? and time_from <= ?", from, from + how_long)
+      weather_array += a.collect { |w|
+        puts w.attributes.inspect
+        {
+          :distance => c.calculated_distance,
+          :value => w.attributes[parameter_key.to_s]
+        }
+      }
+    end
+
+    # remove bad elements
+    weather_array.delete_if{ |w| w[:value].nil? }
+
+    # fix for zero division
+    return nil if weather_array.size == 0
+
+    # debug info
+    puts weather_array.to_yaml
+    #return weather_array
+
+    # calculate waged average
+    sum_value = 0.0
+    sum_inv_distance = 0.0
+
+    weather_array.each do |w|
+      sum_value += w[:value].to_f / w[:distance]
+      sum_inv_distance += 1.0 / w[:distance]
+    end
+
+    return sum_value
   end
 
 end

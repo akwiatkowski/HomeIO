@@ -42,7 +42,10 @@
           = ">="
         - else
           = "<="
-        = np( overseer_status[:threshold_value] )
+        - if not overseer_status[:stats].nil? and not overseer_status[:stats][:current_threshold_value].nil?
+          = np( overseer_status[:stats][:current_threshold_value] )
+        - else
+          = np( overseer_status[:threshold_value] )
         = unit
 
       %td

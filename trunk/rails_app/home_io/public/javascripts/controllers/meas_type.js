@@ -1,15 +1,15 @@
 App.Controllers.MeasType = Backbone.Controller.extend({
   routes: {
-    "#meas_types/:id":           "show",
+    "meas_types/:id":           "show",
     "":                         "index",
     "meas_types_current":       "current"
   },
 
   show: function(id) {
-    var doc = new MeasType({ id: id });
-    doc.fetch({
+    var meas_type = new MeasType({ id: id });
+    meas_type.fetch({
       success: function(model, resp) {
-        new App.Views.Show({ model: doc });
+        new App.Views.MeasTypeShow({ meas_type: meas_type });
       },
       error: function() {
         new Error({ message: 'Could not find that meas type.' });
@@ -24,7 +24,7 @@ App.Controllers.MeasType = Backbone.Controller.extend({
         var meas_types = _(data).map(function(i) {
           return new MeasType(i);
         });
-        new App.Views.Index({ meas_types: meas_types });
+        new App.Views.MeasTypeIndex({ meas_types: meas_types });
       } else {
         new Error({ message: "Error loading meas types." });
       }
@@ -35,7 +35,7 @@ App.Controllers.MeasType = Backbone.Controller.extend({
     $.getJSON('/meas_types/current.json', function(data) {
       if (data) {
         var meas_types = _(data).map(function(i) {
-          return new MeasType(i);
+          return new MeasArchive(i);
         });
         new App.Views.Index({ meas_types: meas_types });
       } else {

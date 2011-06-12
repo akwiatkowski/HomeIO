@@ -64,7 +64,8 @@ class WindTurbineOverseer
         :average_count => inv_a_count_to_average,
         :interval => interval,
         :re_execute => false,
-        :proc => Proc.new { not first_inverter_on? }
+        :proc => Proc.new { not first_inverter_on? },
+        :threshold_proc => Proc.new { self.batteries_weather_offset }
       }
     )
 
@@ -78,7 +79,8 @@ class WindTurbineOverseer
         :average_count => inv_a_count_to_average,
         :interval => interval,
         :re_execute => false,
-        :proc => Proc.new { first_inverter_on? }
+        :proc => Proc.new { first_inverter_on? },
+        :threshold_proc => Proc.new { self.batteries_weather_offset }
       }
     )
 
@@ -92,8 +94,8 @@ class WindTurbineOverseer
         :average_count => inv_b_count_to_average,
         :interval => interval,
         :re_execute => false,
-        :proc => Proc.new { not second_inverter_on? }
-
+        :proc => Proc.new { not second_inverter_on? },
+        :threshold_proc => Proc.new { self.batteries_weather_offset }
       }
     )
 
@@ -107,7 +109,8 @@ class WindTurbineOverseer
         :average_count => inv_b_count_to_average,
         :interval => interval,
         :re_execute => false,
-        :proc => Proc.new { second_inverter_on? }
+        :proc => Proc.new { second_inverter_on? },
+        :threshold_proc => Proc.new { self.batteries_weather_offset }
       }
     )
   end
@@ -122,6 +125,20 @@ class WindTurbineOverseer
     @inv_a_off_overseer.start
     @inv_b_on_overseer.start
     @inv_b_off_overseer.start
+  end
+
+  # Batteries voltage offset using weather prediction
+  def batteries_weather_offset
+    wind_speed_prediction = City.future_prediction( :wind, 1.day )
+
+    # no weather prediction, no offset
+    return 0.0 if wind_speed_prediction.nil?
+
+    # 2.6V within delta 8m/s of wind speed
+    offset = 1.2 - wind_speed_prediction * ( 2.6 / 8.0)
+    offset = 1.5 if offset > 1.5 # safety, wind should be always > 0
+    offset = -2.6 if offset < -2.6 # safety
+    return offset
   end
 
   def first_inverter_on?
