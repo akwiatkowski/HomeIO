@@ -66,6 +66,9 @@ class WeatherWorldWeatherOnline
     # weather archives as processing output
     weather_archives = Array.new
 
+    # fix for empty response
+    return if result.nil? or result["data"].nil? or result["data"]["current_condition"].nil?
+
     # current conditions
     current = result["data"]["current_condition"].first
     current_time = Time.create_time_from_string_12_utc(nil, current["observation_time"])
