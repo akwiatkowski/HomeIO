@@ -69,7 +69,7 @@ class WeatherRipper
     end
 
     # special providers
-    @world_weather_provider.fetch
+    @world_weather_provider.check_all
 
     return {:status => :ok}
   end

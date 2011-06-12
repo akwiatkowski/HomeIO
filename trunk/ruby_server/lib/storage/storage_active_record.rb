@@ -142,7 +142,7 @@ class StorageActiveRecord < StorageDbAbstract
         res = o.save
 
         if res == false
-          err_msg = "StorageActiveRecord errors: #{o.errors.inspect}"
+          err_msg = "StorageActiveRecord errors: #{o.errors.inspect} (#{o.inspect})"
           puts err_msg
           AdvLog.instance.logger(self).warn("#{err_msg}   -   #{o.inspect}")
           # TODO move it outside, more type of error handling

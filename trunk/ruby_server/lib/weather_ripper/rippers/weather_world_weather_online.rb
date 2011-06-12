@@ -51,7 +51,7 @@ class WeatherWorldWeatherOnline
     "WorldWeatherOnline"
   end
 
-  def fetch
+  def check_all
     return unless @enabled == true
     @cities.each do |c|
       load_city(c)

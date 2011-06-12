@@ -6,7 +6,7 @@
 # always enabled
 #:enabled: true
 #:pool_size: 100
-:pool_size: 500
+:pool_size: 1000
 # usable on slow pc, time to fully initialize AR
 :init_time: 4
 
