@@ -136,7 +136,7 @@ class WindTurbineOverseer
     return 0.0 if wind_speed_prediction.nil?
 
     # 2.6V within delta 8m/s of wind speed
-    offset = 1.2 - wind_speed_prediction * ( 2.6 / 10.0)
+    offset = 1.4 - wind_speed_prediction * ( 2.6 / 8.0)
     offset = 1.5 if offset > 1.5 # safety, wind should be always > 0
     offset = -2.0 if offset < -2.6 # safety
     return offset
