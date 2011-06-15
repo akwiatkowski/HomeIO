@@ -21,6 +21,7 @@
 
 require "singleton"
 require "lib/utils/start_threaded"
+require 'lib/utils/adv_log'
 require "lib/communication/db/extractor_active_record"
 
 # Run thread and refresh weather prediction near site.
@@ -32,7 +33,9 @@ class ExtractorWeatherThreadProxy
 
   def initialize
     @rt = StartThreaded.start_threaded(30.minutes, self) do
+      AdvLog.instance.logger(self).debug("Calculating weather #{Time.now}")
       refresh
+      AdvLog.instance.logger(self).debug("Calculating weather finished #{Time.now}")
     end
   end
 
@@ -41,7 +44,9 @@ class ExtractorWeatherThreadProxy
   # Refresh weather prediction
   def refresh
     @wind_prediction = City.future_prediction( :wind, 1.day )
+    AdvLog.instance.logger(self).debug("Wind: #{@wind_prediction}")
     @temperature_prediction = City.future_prediction( :temperature, 1.day )
+    AdvLog.instance.logger(self).debug("Temperature: #{@temperature_prediction}")
   end
 
 end
