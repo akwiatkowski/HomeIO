@@ -130,7 +130,7 @@ class WindTurbineOverseer
 
   # Batteries voltage offset using weather prediction
   def batteries_weather_offset
-    wind_speed_prediction = ExtractorWeatherThreadProxy.instance.temperature_prediction
+    wind_speed_prediction = ExtractorWeatherThreadProxy.instance.wind_prediction
 
     # no weather prediction, no offset
     return 0.0 if wind_speed_prediction.nil?
