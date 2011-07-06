@@ -11,6 +11,16 @@ This file explain simple usage and directory structure of backend server.
 5. Run rake db:init to create tables used for backend.
 6. Start rake supervisor:backend.
 
+== RVM, Debian and Openssl issue
+
+Comment 3 lines in /usr/local/rvm/src/ruby-1.8.7-p334/ext/openssl/ossl_ssl.c
+
+// OSSL_SSL_METHOD_ENTRY(SSLv2),
+// OSSL_SSL_METHOD_ENTRY(SSLv2_server),
+// OSSL_SSL_METHOD_ENTRY(SSLv2_client),
+
+Ugly as hell, but let compile ruby. Compile without using openssl rvm package.
+
 == Useful sqls
 
 1. select * from meas_archives where time_to > localtimestamp - interval '1 minute' order by time_to;

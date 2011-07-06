@@ -17,20 +17,21 @@
 
     = javascript_include_tag 'jquery-ui.min'
 
-    = javascript_include_tag 'json2'
-    = javascript_include_tag 'underscore'
-    = javascript_include_tag 'backbone'
+    - if false
+      - # ajax dashborad/backbone
+      = javascript_include_tag 'json2'
+      = javascript_include_tag 'underscore'
+      = javascript_include_tag 'backbone'
 
-    = javascript_include_tag 'dashboard'
+      = javascript_include_tag 'dashboard'
 
-    = javascript_include_tag 'models/meas_type'
-    = javascript_include_tag 'models/meas_archive'
+      = javascript_include_tag 'models/meas_type'
+      = javascript_include_tag 'models/meas_archive'
 
-    = javascript_include_tag 'controllers/meas_type'
-    = javascript_include_tag 'controllers/meas_archive'
+      = javascript_include_tag 'controllers/meas_type'
+      = javascript_include_tag 'controllers/meas_archive'
 
-    = javascript_include_tag 'views/meas_type'
-
+      = javascript_include_tag 'views/meas_type'
 
 
     =# coffee_script_bundle :mode => :inline

@@ -87,7 +87,13 @@ class TcpTask
   #
   # :call-seq:
   #   TcpTask.new({:command => Symbol, :now => Boolean, :priority => Integer}
-  def initialize(h = {})
+  def initialize(h_params = {})
+    # convert hash keys to symbols
+    h = Hash.new
+    h_params.keys.each do |k|
+      h[k.to_s.to_sym] = h_params[k]
+    end
+
     # main command
     @command = h[:command]
     @params = h[:params]

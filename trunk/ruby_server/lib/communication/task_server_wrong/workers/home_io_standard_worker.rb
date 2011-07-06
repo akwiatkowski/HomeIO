@@ -35,8 +35,7 @@ class HomeIoStandardWorker
 
   # Process command/TCP task
   def process(tcp_task)
-    #puts tcp_task.class.to_s
-    #puts tcp_task.inspect
+    puts "\n"*10
     i = 0
 
     # process only TcpTask
@@ -45,6 +44,7 @@ class HomeIoStandardWorker
     puts i += 1
     # select command
     _commands = HomeIoStandardCommands.commands.select { |c| c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0 }
+    puts _commands.inspect
     return :wrong_command if _commands.size == 0
 
     puts i += 1
@@ -52,12 +52,19 @@ class HomeIoStandardWorker
     begin
       puts i += 1
       puts tcp_task.inspect
-      res = ExtractorBasicObject.instance.get_cities
-      puts res.inspect
-      #res = command[:proc].call(tcp_task.params)
+      # TODO - WTF?!
+      #res = ExtractorBasicObject.instance.get_cities
+      #
+      res = command[:proc].call(tcp_task.params)
       # process result to String when set
       puts i += 1
+      puts res.inspect
+      puts "\n"*10
+
+      # string response
       return process_to_string(command, res) if tcp_task.string_response
+      # normal response
+      return res
     rescue => e
       puts i += 1
       command = TcpTask.new

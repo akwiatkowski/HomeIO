@@ -42,7 +42,9 @@ class HomeIoStandardWorker
     return :wrong_object_type unless tcp_task.kind_of? TcpTask
 
     # select command
-    _commands = HomeIoStandardCommands.commands.select { |c| c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0 }
+    _commands = HomeIoStandardCommands.commands.select { |c|
+      c[:command].select { |d| d.to_s == tcp_task.command.to_s }.size > 0
+    }
     return :wrong_command if _commands.size == 0
 
     command = _commands.first

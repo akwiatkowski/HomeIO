@@ -3,16 +3,21 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.7'
 
 # DBs
-#gem 'mysql2'
+gem 'mysql2'
+gem 'mysql'
 gem 'pg'
 
 # foreign keys
 gem 'foreigner'
+
+# web sockets
+gem 'em-websocket'
 
 # others
 gem 'geokit'
 gem 'json'
 
 gem 'robustthread'
+
 # probably not used anywhere
 gem 'hpricot'

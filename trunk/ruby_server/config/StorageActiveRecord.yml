@@ -12,16 +12,9 @@
 
 :connection_sqlite:
   adapter: 'sqlite3'
-  database: 'data/sqlite/test.sqlite'
+  database: 'data/sqlite/db.sqlite'
 
 :connection_mysql:
-  adapter: "mysql"
-  host: "localhost"
-  database: "appdb"
-  username: "appuser"
-  password: "secret"
-
-:connection_used_mysql:
   adapter: "mysql"
   host: "localhost"
   database: "homeio"
@@ -29,9 +22,22 @@
   password: "homeio"
 
 :connection_postgres:
+# -- create db and user for HomeIO
 # CREATE USER homeio WITH PASSWORD 'homeio';
 # CREATE DATABASE homeio;
 # GRANT ALL PRIVILEGES ON DATABASE homeio to homeio;
+#
+# -- create readonly user
+# CREATE USER homeio_ro WITH PASSWORD 'homeio';
+# GRANT CONNECT ON DATABASE homeio TO homeio_ro;
+# GRANT USAGE ON SCHEMA public TO homeio_ro;
+# -- postgresql 9.0
+# GRANT SELECT ON ALL TABLES IN SCHEMA public TO homeio_ro;
+# -- postgresql 8.x
+# SELECT 'GRANT SELECT ON ' || relname || ' TO homeio_ro;'
+# FROM pg_class JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+# WHERE nspname = 'public' AND relkind IN ('r','v')
+# -- and then execute
   adapter: postgresql
   database: homeio
   username: homeio
@@ -40,9 +46,6 @@
   host: localhost
 
 :connection:
-# CREATE USER homeio WITH PASSWORD 'homeio';
-# CREATE DATABASE homeio;
-# GRANT ALL PRIVILEGES ON DATABASE homeio to homeio;
   adapter: postgresql
   database: homeio
   username: homeio

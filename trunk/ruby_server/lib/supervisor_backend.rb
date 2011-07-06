@@ -26,6 +26,7 @@ require "lib/weather_ripper/weather_ripper"
 require "lib/measurements/measurement_fetcher"
 require "lib/communication/task_server/tcp_comm_task_server"
 require "lib/communication/simple_http/simple_http"
+require 'lib/communication/web_socket_server/web_socket_server'
 
 # Backend supervisor
 
@@ -69,6 +70,13 @@ class SupervisorBackend
       SimpleHttp.new
     end
 
+    # web socket server
+    # TODO
+    #@rt_web_socket = StartThreaded.start_threaded(@config[:intervals][:simple_http], self) do
+    #  sleep @config[:intervals][:simple_http]
+      WebSocketServer.instance
+    #end
+
     # overseer manager
     @overseer_manager = OverseerManager.instance
     @overseer_manager.start_all
@@ -84,13 +92,6 @@ class SupervisorBackend
     #wo.start
 
     #end
-
-#    require 'lib/action/action_manager'
-#    a = ActionManager.instance.get_action_by_name("output_4_off")
-#    puts "\n" * 10
-#    puts a.execute
-#    puts a.to_yaml
-#    puts "\n" * 10
 
   end
 
