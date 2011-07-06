@@ -11,4 +11,3 @@ fi
 # execute bundler
 bundle | grep -v 'Using' | grep -v 'complete' | sed '/^$/d'
 
-
