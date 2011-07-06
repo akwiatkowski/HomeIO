@@ -1,3 +1,2 @@
 echo RVM init
-# use gemset
-rvm 1.8.7@homeio
+rvm use 1.8.7@homeio
