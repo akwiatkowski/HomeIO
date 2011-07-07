@@ -206,6 +206,15 @@ class MetarStorage
 
   # Prepare directory structure for
   def prepare_directories( obj )
+    # metars directory
+    metar_log_dir = File.join(
+      Constants::DATA_DIR,
+      MetarConstants::METAR_LOG_DIR
+    )
+    if not File.exists?( metar_log_dir )
+      Dir.mkdir( metar_log_dir )
+    end
+
     # city directory
     metar_log_dir = File.join(
       Constants::DATA_DIR,
