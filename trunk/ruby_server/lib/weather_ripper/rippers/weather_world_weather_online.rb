@@ -41,6 +41,9 @@ class WeatherWorldWeatherOnline
     wp = WeatherProvider.find_or_create_by_name(provider_name)
     wp.save!
     @id = wp.id
+
+    # will be loaded later
+    @cities = nil
   end
 
   def provider_name
@@ -61,6 +64,9 @@ class WeatherWorldWeatherOnline
 
   def check_all
     return unless @enabled == true
+    # load all cities
+    @cities = City.all if @cities.nil?
+
     @cities.each do |c|
       load_city(c)
     end
