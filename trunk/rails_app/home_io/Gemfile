@@ -3,6 +3,9 @@ source 'http://rubygems.org'
 # main
 gem 'rails', '3.0.7'
 gem 'rake'
+gem 'rack', '1.2.3'
+#gem 'arel', '2.0.9' # 1.8.7
+#gem 'arel', '2.0.10' # 1.9.2
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # DBs

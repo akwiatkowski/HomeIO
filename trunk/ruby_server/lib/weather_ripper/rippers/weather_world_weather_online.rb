@@ -44,7 +44,12 @@ class WeatherWorldWeatherOnline
 
     # get all cities
     @cities = City.all
-    load_city(@cities.first)
+    if not @city.nil?
+      load_city(@cities.first)
+    else
+      puts "#{self.class} disabled - no cities"
+      @enabled = false
+    end
   end
 
   def provider_name
