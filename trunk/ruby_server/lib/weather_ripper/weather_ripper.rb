@@ -57,7 +57,7 @@ class WeatherRipper
     ]
 
     # get cities id at start when needed, WeatherWorldWeatherOnline needs cities in DB
-    CityProxy.instance.post_init
+    #CityProxy.instance.post_init
 
     @world_weather_provider = WeatherWorldWeatherOnline.instance
 
@@ -67,7 +67,7 @@ class WeatherRipper
   # Fetch weather from all providers, and all cities
   def fetch
     # get cities id at start when needed
-    #CityProxy.instance.post_init
+    CityProxy.instance.post_init
 
     @providers.each do |p|
       p.check_all

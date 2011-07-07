@@ -41,7 +41,14 @@ class WeatherWorldWeatherOnline
     wp = WeatherProvider.find_or_create_by_name(provider_name)
     wp.save!
     @id = wp.id
+  end
 
+  def provider_name
+    "WorldWeatherOnline"
+  end
+
+  # TODO probably not used
+  def first_check
     # get all cities
     @cities = City.all
     if not @city.nil?
@@ -50,10 +57,6 @@ class WeatherWorldWeatherOnline
       puts "#{self.class} disabled - no cities"
       @enabled = false
     end
-  end
-
-  def provider_name
-    "WorldWeatherOnline"
   end
 
   def check_all
