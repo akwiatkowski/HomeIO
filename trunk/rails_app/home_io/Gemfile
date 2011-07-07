@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 # main
 gem 'rails', '3.0.7'
+gem 'rake'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # DBs
