@@ -1,13 +1,1 @@
-echo RVM init
-
-# choose gemset and ruby version
-rvm use 1.8.7@homeio --create
-
-# install bundler
-if ! command -v bundle ; then
-  gem install bundler
-fi
-
-# execute bundler
-bundle | grep -v 'Using' | grep -v 'complete' | sed '/^$/d'
-
+../rails_app/home_io/.rvmrc
