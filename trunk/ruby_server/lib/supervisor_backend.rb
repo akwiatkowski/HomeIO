@@ -54,7 +54,7 @@ class SupervisorBackend
     # updates city flags
     @rt_cities_flag_update = StartThreaded.start_threaded(@config[:intervals][:update_logged_flag], self) do
       sleep 300
-      update_logged_flag
+      StorageActiveRecord.instance.update_logged_flag
     end
 
     # communication server
@@ -93,13 +93,6 @@ class SupervisorBackend
 
     #end
 
-  end
-
-  private
-
-  # Update flags used for not searching through entire table when city has no weather or metar data
-  def update_logged_flag
-    StorageActiveRecord.instance.update_logged_flag
   end
 
 end

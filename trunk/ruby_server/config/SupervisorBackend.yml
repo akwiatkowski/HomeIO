@@ -6,3 +6,10 @@
   :WeatherRipper: 7200
   :update_logged_flag: 8000
   :simple_http: 10
+
+# initial sleeps, useful on slow computers
+:sleeps:
+  :MetarLogger: 20
+  :WeatherRipper: 2
+  :update_logged_flag: 600
+  :simple_http: 10

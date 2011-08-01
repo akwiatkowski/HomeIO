@@ -1,13 +1,19 @@
 == HomeIO
 
-= Installation
+= Installation and running
 
 1. Use RVM. It helps.
 2. Go into '/trunk/rails_app/home_io' and allow RVM to execute .rmvrc or execute it content yourself.
    Preferred Ruby version is 1.8.7, patchlevel >330. Tested on 334 but should work well with later versions of Ruby.
 3. Execute 'rake db:migrate'.
-4. Go into '/trunk/ruby_server'.
+4. Go into '/trunk/ruby_server' and run backend (read below).
+5. Deploy web app. I prefer nginx+passenger.
 
+
+
+= Running backend
+
+1. 'ruby lib/backend_weather.rb' - run process which only fetch weather information.
 
 
 TODO: Remove this garbage
