@@ -3,8 +3,10 @@ class AddUserAdminFlag < ActiveRecord::Migration
     add_column :users, :admin, :boolean, :default => false, :null => false
 
     # first registered user become admin
-    u = User.first
-    u.update_attribute( :admin, true ) unless u.nil?
+    if defined? User
+      u = User.first
+      u.update_attribute( :admin, true ) unless u.nil?
+    end
   end
 
   def self.down
