@@ -94,14 +94,14 @@ class City < ActiveRecord::Base
   end
 
   # Calculate waged average for future prediction
-  def self.future_prediction(parameter_key, how_long, cities_array = City.local, from = Time.now)
+  def self.adv_attr_avg(parameter_key, how_long, cities_array = City.local, from = Time.now)
     weather_array = Array.new
 
     # collect weather data
     cities_array.each do |c|
       a = c.weather_archives.where("time_to >= ? and time_from <= ?", from, from + how_long)
       weather_array += a.collect { |w|
-        puts w.attributes.inspect
+        #puts w.attributes.inspect
         {
           :distance => c.calculated_distance,
           :value => w.attributes[parameter_key.to_s]
@@ -116,8 +116,7 @@ class City < ActiveRecord::Base
     return nil if weather_array.size == 0
 
     # debug info
-    puts weather_array.to_yaml
-    #return weather_array
+    # puts weather_array.to_yaml
 
     # calculate waged average
     sum_value = 0.0
@@ -128,7 +127,9 @@ class City < ActiveRecord::Base
       sum_inv_distance += 1.0 / w[:distance]
     end
 
-    return sum_value
+    abg_value = sum_value / sum_inv_distance
+
+    return abg_value
   end
 
 end
