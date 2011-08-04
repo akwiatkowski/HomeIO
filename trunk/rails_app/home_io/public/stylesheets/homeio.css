@@ -23,16 +23,3 @@ body {
 #flash{
     width: 100%;
 }
-
-#flash span.error {
-    border: 2px dotted red;
-}
-
-#flash span.warning {
-    border: 2px dotted orange;
-}
-
-/* flash messages */
-#flash span.notice {
-    border: 2px dotted green;
-}

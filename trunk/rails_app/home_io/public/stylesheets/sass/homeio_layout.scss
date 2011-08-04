@@ -18,6 +18,7 @@ body {
     top: 0px;
     height: $top_logo_height;
     width: $page_width;
+    font-size: larger;
 }
 
 
@@ -26,8 +27,8 @@ body {
     position: absolute;
     //border: 1px dotted #F00;
     border-bottom: $dotted_pretty_border;
-    top: $top_logo_height;
-    height: $top_height;
+    top: $top_logo_height + $simple_padding;
+    height: $top_height - $simple_padding;
     width: $page_width;
 }
 
@@ -37,7 +38,8 @@ body {
     //border: 1px dotted #0F0;
     border-right: $dotted_pretty_border;
     top: $top_height + $top_logo_height;
-    width: $left_menu_width;
+    width: $left_menu_width - 2 * $simple_padding;
+    padding: $simple_padding $simple_padding $simple_padding $simple_padding;
 
 
 }
@@ -49,7 +51,7 @@ body {
     top: $top_height + $top_logo_height;
     left: $left_menu_width;
     width: $page_width - $left_menu_width - 2 * $simple_padding;
-    padding: 0 $simple_padding 0 $simple_padding;
+    padding: $simple_padding $simple_padding $simple_padding $simple_padding;
 }
 
 hr {
@@ -61,7 +63,9 @@ hr {
 
 /* universal table with data, measurements, stats, .. */
 table.data_table {
-    margin: 5px 5px 5px 5px;
+    margin: 5px 0px 5px 5px;
+    padding-right: 5px;
+    width: 100%;
 }
 
 table.data_table tr td{
@@ -97,4 +101,27 @@ ul.details li span.parameter {
 #chart {
     width: 800px;
     height: 600px;
+}
+
+
+// not layouys
+
+#flash span.error {
+    border-bottom: 1px dotted red;
+}
+
+#flash span.warning {
+    border-bottom: 1px dotted orange;
+}
+
+/* flash messages */
+#flash span.notice {
+    border-bottom: 2px dotted green;
+}
+
+// left navigation, less important things
+#meas ul #meas_current ul li,
+#meas ul #meas_by_type ul li,
+#actions ul #action_events_by_type ul li {
+    font-size: smaller;
 }

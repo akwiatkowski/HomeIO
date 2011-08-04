@@ -100,7 +100,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     login = ""
     login = current_user.login unless current_user.nil?
-    primary.item :account, "Account (#{login})", user_session_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
+    primary.item :account, "Account (#{login})", account_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
       #sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
       sec.item :account_logout, 'Logout', logout_user_session_path, :if => Proc.new { current_user }
     end
