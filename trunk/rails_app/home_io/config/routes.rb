@@ -18,7 +18,7 @@ HomeIo::Application.routes.draw do
   end
   # end of commentable resources
 
-# overseers
+  # overseers
   resources :overseers do
     #resources :overseer_parameters
     #resources :action_events
@@ -53,11 +53,11 @@ HomeIo::Application.routes.draw do
   end
 
 
-  resources :cities do |c|
+  resources :cities do
     get :chart, :on => :collection
 
-    #c.resources :weather_metar_archives
-    #c.resources :weather_archives
+    #resources :weather_metar_archives
+    #resources :weather_archives
   end
 
   resource :user_session do

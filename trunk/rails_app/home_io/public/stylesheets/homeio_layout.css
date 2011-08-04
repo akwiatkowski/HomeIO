@@ -1,22 +1,41 @@
+body {
+  width: 1240px; }
+
+#top_logo {
+  position: absolute;
+  border-bottom: 1px dotted #aaaaaa;
+  top: 0px;
+  height: 50px;
+  width: 1240px; }
+
 /* top nav bar */
 #top_navcontainer {
   position: absolute;
-  border: 1px dotted #F00;
-  top: 0px;
-  height: 30px; }
+  border-bottom: 1px dotted #aaaaaa;
+  top: 50px;
+  height: 30px;
+  width: 1240px; }
 
 /* left nav bard */
 #left_navcontainer {
   position: absolute;
-  border: 1px dotted #0F0;
-  top: 30px;
-  width: 220px; }
+  border-right: 1px dotted #aaaaaa;
+  top: 80px;
+  width: 300px; }
 
 #content_container {
   position: absolute;
-  border: 1px dotted #00F;
-  top: 30px;
-  left: 220px; }
+  border-right: 1px dotted #aaaaaa;
+  top: 80px;
+  left: 300px;
+  width: 930px;
+  padding: 0 5px 0 5px; }
+
+hr {
+  border-top: 1px dotted #aaaaaa;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px; }
 
 /* universal table with data, measurements, stats, .. */
 table.data_table {
