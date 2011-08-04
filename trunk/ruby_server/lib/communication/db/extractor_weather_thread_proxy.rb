@@ -43,10 +43,14 @@ class ExtractorWeatherThreadProxy
 
   # Refresh weather prediction
   def refresh
-    @wind_prediction = City.future_prediction( :wind, 1.day )
+    @wind_prediction = City.adv_attr_avg( :wind, 1.day )
     AdvLog.instance.logger(self).debug("Wind: #{@wind_prediction}")
-    @temperature_prediction = City.future_prediction( :temperature, 1.day )
+    @temperature_prediction = City.adv_attr_avg( :temperature, 1.day )
     AdvLog.instance.logger(self).debug("Temperature: #{@temperature_prediction}")
+
+    puts "* Weather thread proxy - temperature #{@temperature_prediction} oC"
+    puts "* Weather thread proxy - wind speed #{@wind_prediction} m/s"
+
   end
 
 end
