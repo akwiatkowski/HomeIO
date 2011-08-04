@@ -19,23 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require "lib/utils/config_loader"
-require "lib/utils/start_threaded"
-require "lib/communication/im/im_bots"
+# Startup all backend modules
 
-class SupervisorIm
-
-  def initialize
-    @config = ConfigLoader.instance.config(self)
-
-    @rt_im = StartThreaded.start_threaded(@config[:restart_sleep], self) do
-      ImBots.instance.start
-      sleep(@config[:restart_intervals])
-      ImBots.instance.stop
-    end
-
-  end
-
-end
-
-i = SupervisorIm.new
+require 'lib/backend_weather'
+require 'lib/backend_control'

@@ -64,7 +64,15 @@ class AverageOverseer < StandardOverseer
 
   # Check if conditions are met
   def check
-    puts "#{VERBOSE_PREFIX}#{self.class} check condition - #{average_value.inspect} <> #{threshold_value}, gr = #{greater}" if VERBOSE
+    if VERBOSE
+      greater ? gr_sym = ">" : gr_sym = "<"
+
+      _current_value = average_value
+      _current_value = "NULL" if _current_value.nil?
+
+      puts "#{VERBOSE_PREFIX}#{self.class} check condition - value #{gr_sym} threshold"
+      puts "#{VERBOSE_PREFIX}#{self.class} check condition - #{_current_value} #{gr_sym} #{threshold_value.to_s}"
+    end
 
     av = average_value
 

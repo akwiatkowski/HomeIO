@@ -53,3 +53,5 @@ end
   StorageActiveRecord.instance.update_logged_flag
   puts "Backend thread - flag updater - DONE"
 end
+
+puts "Backend weather, init finished"

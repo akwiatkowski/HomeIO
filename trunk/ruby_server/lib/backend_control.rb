@@ -57,3 +57,4 @@ end
 #  WebSocketServer.instance
 #end
 
+puts "Backend control, init finished"

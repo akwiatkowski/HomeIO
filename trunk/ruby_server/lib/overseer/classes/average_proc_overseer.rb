@@ -71,10 +71,10 @@ class AverageProcOverseer < AverageOverseer
 
     # proc call result must return true if 
     if res == true and pr == true
-      puts "#{VERBOSE_PREFIX}#{self.class} check with proc condition - TRUE, proc result #{pr}" if VERBOSE
+      puts "#{VERBOSE_PREFIX}#{self.class} standard and proc conditions MET (proc result #{pr})" if VERBOSE
       return true
     else
-      puts "#{VERBOSE_PREFIX}#{self.class} check with proc condition - false, proc result #{pr}" if VERBOSE
+      puts "#{VERBOSE_PREFIX}#{self.class} conditions NOT met (proc result #{pr})" if VERBOSE
       return false
     end
 
