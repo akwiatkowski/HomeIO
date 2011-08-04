@@ -32,13 +32,13 @@ class AverageProcOverseer < AverageOverseer
   def valid?
     # proc must be not empty
     if proc.nil?
-      puts "Proc can not be nil"
+      puts "#{VERBOSE_PREFIX}Proc can not be nil"
       return false
     end
 
     # proc must return valid
     unless proc_result == true or proc_result == false
-      puts "Proc do not return true/false"
+      puts "#{VERBOSE_PREFIX}Proc do not return true/false"
       return false
     end
 
@@ -71,10 +71,10 @@ class AverageProcOverseer < AverageOverseer
 
     # proc call result must return true if 
     if res == true and pr == true
-      puts "#{self.class} check with proc condition - TRUE, proc result #{pr}" if VERBOSE
+      puts "#{VERBOSE_PREFIX}#{self.class} check with proc condition - TRUE, proc result #{pr}" if VERBOSE
       return true
     else
-      puts "#{self.class} check with proc condition - false, proc result #{pr}" if VERBOSE
+      puts "#{VERBOSE_PREFIX}#{self.class} check with proc condition - false, proc result #{pr}" if VERBOSE
       return false
     end
 

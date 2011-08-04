@@ -24,9 +24,10 @@ require 'rubygems'
 require 'em-websocket'
 require 'json'
 
-require 'lib/communication/task_server_wrong/workers/home_io_standard_worker'
+require 'lib/communication/task_server/workers/home_io_standard_worker'
+require 'lib/utils/adv_log'
 
-# Simple web socket server for measurements and events
+# Simple web socket server for measurements and events. Under development.
 
 class WebSocketServer
   include Singleton
@@ -34,6 +35,18 @@ class WebSocketServer
   def initialize
     @worker = HomeIoStandardWorker.instance
 
+    begin
+      start
+    rescue => e
+      AdvLog.instance.logger(self).error("#{self.class.to_s} crashed")
+      AdvLog.instance.logger(self).error(e.inspect)
+    end
+
+  end
+
+  private
+
+  def start
     EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8082) do |ws|
       ws.onopen {
         # send initial message
@@ -52,11 +65,9 @@ class WebSocketServer
     end
   end
 
-  private
-
   # Initial message
   def on_init
-    return { :a => 1 }
+    return { :test => 'ok' }
   end
 
   def on_message(msg)

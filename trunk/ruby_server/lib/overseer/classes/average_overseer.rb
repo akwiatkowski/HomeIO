@@ -53,7 +53,7 @@ class AverageOverseer < StandardOverseer
   def valid?
     # measurement type must be available
     if average_count.nil?
-      puts "Average count is not set"
+      puts "Error #{VERBOSE_PREFIX}Average count is not set"
       return false
     end
 
@@ -64,7 +64,7 @@ class AverageOverseer < StandardOverseer
 
   # Check if conditions are met
   def check
-    puts "#{self.class} check condition - #{average_value.inspect} <> #{threshold_value}, gr = #{greater}" if VERBOSE
+    puts "#{VERBOSE_PREFIX}#{self.class} check condition - #{average_value.inspect} <> #{threshold_value}, gr = #{greater}" if VERBOSE
 
     av = average_value
 

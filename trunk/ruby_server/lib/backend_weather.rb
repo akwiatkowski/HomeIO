@@ -35,6 +35,7 @@ puts "Backend - Weather"
   puts "Backend thread - METAR"
   sleep @config[:sleeps][:MetarLogger]
   MetarLogger.instance.start
+  puts "Backend thread - METAR - DONE"
 end
 
 # weather
@@ -42,6 +43,7 @@ end
   puts "Backend thread - Weather"
   sleep @config[:sleeps][:MetarLogger]
   WeatherRipper.instance.start
+  puts "Backend thread - Weather - DONE"
 end
 
 # updates city flags, db fetching optim.
@@ -49,4 +51,5 @@ end
   puts "Backend thread - flag updater"
   sleep @config[:sleeps][:MetarLogger]
   StorageActiveRecord.instance.update_logged_flag
+  puts "Backend thread - flag updater - DONE"
 end

@@ -33,6 +33,8 @@ class WindTurbineOverseer
 
   SUB_OVERSEERS_CLASS = AverageProcOverseer
 
+  VERBOSE_PREFIX = "OVSR (Wind) - "
+
   def initialize(params)
     @params = params
 
@@ -117,7 +119,7 @@ class WindTurbineOverseer
   end
 
   def wrong_params
-    puts @params.inspect
+    puts "#{VERBOSE_PREFIX} wrong params #{@params.inspect}"
     raise 'Not enough parameters'
   end
 
@@ -146,10 +148,10 @@ class WindTurbineOverseer
     begin
       outputs = MeasurementFetcher.instance.get_value_by_name("outputs").to_i
       check_outputs = (outputs & 2) > 0
-      puts "First inverter outputs #{outputs}, check_outputs #{check_outputs}"
+      puts "#{VERBOSE_PREFIX}First inverter outputs #{outputs}, check_outputs #{check_outputs}"
       return check_outputs
     rescue
-      puts "First inverter status can not be read"
+      puts "#{VERBOSE_PREFIX}First inverter status can not be read"
       false
     end
   end
@@ -158,10 +160,10 @@ class WindTurbineOverseer
     begin
       outputs = MeasurementFetcher.instance.get_value_by_name("outputs").to_i
       check_outputs = (outputs & 4) > 0
-      puts "Second inverter outputs #{outputs}, check_outputs #{check_outputs}"
+      puts "#{VERBOSE_PREFIX}Second inverter outputs #{outputs}, check_outputs #{check_outputs}"
       return check_outputs
     rescue
-      puts "Second inverter status can not be read"
+      puts "#{VERBOSE_PREFIX}Second inverter status can not be read"
       false
     end
   end

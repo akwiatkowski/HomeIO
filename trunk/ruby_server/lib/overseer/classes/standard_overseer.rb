@@ -33,6 +33,9 @@ class StandardOverseer
   # show some information
   VERBOSE = true
 
+  # show this before putting overseers information
+  VERBOSE_PREFIX = "OVSR - "
+
   # Was conditions met last time. State is set when action was successfully executed.
   attr_reader :state
 
@@ -82,7 +85,7 @@ class StandardOverseer
     # when was started
     @stats[:start_time] = Time.now
 
-    puts "#{self.class} started - #{@params.inspect}" if VERBOSE
+    puts "#{VERBOSE_PREFIX}#{self.class} started - #{@params.inspect}" if VERBOSE
     @rt = StartThreaded.start_threaded(interval, self) do
       # check and execute action if needed
       loop_method
@@ -196,25 +199,25 @@ class StandardOverseer
   def valid?
     # measurement type must be available
     if measurement.nil?
-      puts "Measurement type is not available for #{self.inspect}"
+      puts "Error #{VERBOSE_PREFIX}Measurement type is not available for #{self.inspect}"
       return false
     end
 
     # action
     if action.nil?
-      puts "Action type is not available for #{self.inspect}"
+      puts "Error #{VERBOSE_PREFIX}Action type is not available for #{self.inspect}"
       return false
     end
 
     # threshold value
     if threshold_value.nil?
-      puts "Threshold value is not set #{self.inspect}"
+      puts "Error #{VERBOSE_PREFIX}Threshold value is not set #{self.inspect}"
       return false
     end
 
     # interval
     if interval.nil?
-      puts "Interval is not set #{self.inspect}"
+      puts "Error #{VERBOSE_PREFIX}Interval is not set #{self.inspect}"
       return false
     end
 
@@ -247,7 +250,7 @@ class StandardOverseer
 
   # Check if conditions are met
   def check
-    puts "#{self.class} check condition - #{measurement.value} <> #{threshold_value}, gr = #{greater}" if VERBOSE
+    puts "#{VERBOSE_PREFIX}#{self.class} check condition - #{measurement.value} <> #{threshold_value}, gr = #{greater}" if VERBOSE
 
     # last checked value
     @stats[:last_checked_value] = measurement.value
@@ -278,13 +281,13 @@ class StandardOverseer
     @stats[:hit_count] = @stats[:hit_count].to_i + 1
     @stats[:state] = @state
 
-    puts "#{self.class} execute action - #{@params.inspect}, action #{action_name}" if VERBOSE
+    puts "#{VERBOSE_PREFIX}#{self.class} execute action - #{@params.inspect}, action #{action_name}" if VERBOSE
     # old, not storing overseer id
     #@state = action.execute
     # new, using overseer id
     @state = action.execute(nil, @overseer_id)
 
-    puts "#{self.class} state after #{state}"
+    puts "#{VERBOSE_PREFIX}#{self.class} state after #{state}"
   end
 
 
