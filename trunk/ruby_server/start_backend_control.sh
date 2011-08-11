@@ -21,6 +21,6 @@
 
 for (( c=1; c>=0; c++ ))
 do
-  echo "Starting IM server for $c time..."
-  rake supervisor:im
+  echo "Starting backend - control for $c time..."
+  ruby lib/backend_control.rb
 done

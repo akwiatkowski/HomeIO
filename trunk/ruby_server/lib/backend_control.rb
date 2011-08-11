@@ -20,6 +20,9 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# store PID
+require 'lib/utils/pid'
+
 require "lib/utils/start_threaded"
 require "lib/measurements/measurement_fetcher"
 require "lib/communication/task_server/tcp_comm_task_server"

@@ -21,6 +21,6 @@
 
 for (( c=1; c>=0; c++ ))
 do
-  echo "Starting backend server for $c time..."
-  rake supervisor:backend
+  echo "Starting backend - weather for $c time..."
+  ruby lib/backend_weather.rb
 done
