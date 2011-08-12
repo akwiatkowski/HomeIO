@@ -8,8 +8,10 @@ $simple_padding: 5px;
 $dotted_pretty_border: 1px dotted #AAA;
 
 body {
+    position: relative;
     width: $page_width;
 }
+
 
 #top_logo {
     position: absolute;
@@ -54,12 +56,7 @@ body {
     padding: $simple_padding $simple_padding $simple_padding $simple_padding;
 }
 
-hr {
-    border-top: $dotted_pretty_border;
-    border-bottom: 0px;
-    border-left: 0px;
-    border-right: 0px;
-}
+
 
 /* universal table with data, measurements, stats, .. */
 table.data_table {
@@ -73,25 +70,15 @@ table.data_table tr td{
 }
 
 table.data_table thead tr{
-    background-color: #CCC;
 }
 
 table.data_table tr.odd{
-    background-color: #CCC;
 }
 
 table.data_table tr.even{
-    background-color: #FFF;
 }
 
-/* standard detail list*/
-ul.details {
 
-}
-
-ul.details li span.parameter {
-    font-weight: bolder;
-}
 
 #graph_holder {
     width: 800px;
@@ -103,25 +90,9 @@ ul.details li span.parameter {
     height: 600px;
 }
 
-
-// not layouys
-
-#flash span.error {
-    border-bottom: 1px dotted red;
+li.meas_archive {
+    background-image: url(/images/measurement1.png);
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 
-#flash span.warning {
-    border-bottom: 1px dotted orange;
-}
-
-/* flash messages */
-#flash span.notice {
-    border-bottom: 2px dotted green;
-}
-
-// left navigation, less important things
-#meas ul #meas_current ul li,
-#meas ul #meas_by_type ul li,
-#actions ul #action_events_by_type ul li {
-    font-size: smaller;
-}

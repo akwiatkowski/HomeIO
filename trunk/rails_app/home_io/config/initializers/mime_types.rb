@@ -7,3 +7,4 @@
 # used for universal raphael graphs
 #Mime::Type.register_alias "text/html", :html_graph
 Mime::Type.register_alias "application/json", :json_graph
+Mime::Type.register_alias "text/plain", :txt

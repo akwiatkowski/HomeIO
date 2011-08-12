@@ -29,6 +29,7 @@ class MeasTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.haml
+      format.txt { render :layout => nil }# index.html.haml
       format.xml { render :xml => @meas_archives }
       #format.json { render :json => @meas_archives }
       format.json { render :json => @meas_archives.to_json(:include => :meas_type) }

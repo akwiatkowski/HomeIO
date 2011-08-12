@@ -1,0 +1,19 @@
+!!! 5
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
+  %head
+    %title= "HomeIO"
+    = stylesheet_link_tag 'homeio_universal', 'homeio_mobile_layout', 'scaffold'
+    = csrf_meta_tag
+  %body
+    #top_logo
+      %h1= "HomeIO"
+    #top_navcontainer
+      = render_navigation :expand_all => false
+    #content_container
+      - unless flash.blank?
+        #flash
+          - types = [:error, :warning, :notice].each do |t|
+            - unless flash[ t ].blank?
+              %span{:class => t}= flash[t]
+              - flash[ t ] = nil
+      = yield

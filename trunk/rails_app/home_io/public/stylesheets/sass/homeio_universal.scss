@@ -1,0 +1,67 @@
+$dotted_pretty_border: 1px dotted #AAA;
+
+hr {
+    border-top: $dotted_pretty_border;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+table.data_table thead tr{
+    background-color: #CCC;
+}
+
+table.data_table tr.odd{
+    background-color: #CCC;
+}
+
+table.data_table tr.even{
+    background-color: #FFF;
+}
+
+/* standard detail list*/
+ul.details {
+}
+
+ul.details li span.parameter {
+    font-weight: bolder;
+}
+
+/* flash messages */
+#flash span.error {
+    border-bottom: 1px dotted red;
+}
+
+#flash span.warning {
+    border-bottom: 1px dotted orange;
+}
+
+#flash span.notice {
+    border-bottom: 1px dotted green;
+}
+
+// left navigation, less important things
+#meas ul #meas_current ul li,
+#meas ul #meas_by_type ul li,
+#actions ul #action_events_by_type ul li {
+    font-size: smaller;
+}
+
+/* one meas archive */
+ul.meas_archive {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+span.small_info {
+    font-size: smaller;
+}
+
+
+
+/* flash messages */
+#flash{
+    width: 100%;
+}

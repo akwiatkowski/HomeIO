@@ -2,7 +2,8 @@
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= "HomeIO"
-    = stylesheet_link_tag :all
+    - #= stylesheet_link_tag :homeio_universal, :homeio_normal_layout
+    = stylesheet_link_tag 'homeio_universal', 'homeio_normal_layout', 'scaffold', 'jquery-ui'
     
     = javascript_include_tag 'jquery-1.5.2.min'
     = javascript_include_tag 'jquery.qtip-1.0.0-rc3.min'
@@ -18,7 +19,7 @@
     = javascript_include_tag 'jquery-ui.min'
 
     - if false
-      - # ajax dashborad/backbone
+      - # ajax dashboard/backbone
       = javascript_include_tag 'json2'
       = javascript_include_tag 'underscore'
       = javascript_include_tag 'backbone'

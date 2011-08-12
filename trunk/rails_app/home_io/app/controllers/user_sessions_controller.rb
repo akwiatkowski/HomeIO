@@ -8,6 +8,8 @@ class UserSessionsController < ApplicationController
 
   def create
     @user_session = UserSession.new(params[:user_session])
+    # not pretty but works
+    session[:mobile] = params[:user_session][:mobile] == '1'
     if @user_session.save
       flash[:notice] = "Login successful!"
       #redirect_back_or_default account_url

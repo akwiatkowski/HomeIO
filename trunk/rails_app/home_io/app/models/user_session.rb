@@ -22,4 +22,12 @@
 class UserSession < Authlogic::Session::Base
   login_field :login
   password_field :password
+
+  # timeout
+  logout_on_timeout true
+
+  # anti brute force
+  consecutive_failed_logins_limit 15
+
+  attr_accessor :mobile
 end

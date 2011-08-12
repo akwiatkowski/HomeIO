@@ -22,7 +22,8 @@
 class User < ActiveRecord::Base
   acts_as_authentic do |c|
     # for available options see documentation in: Authlogic::ActsAsAuthentic
-    #c.my_config_option = my_value 
+    #c.my_config_option = my_value
+    c.logged_in_timeout = 1.day # default is 10.minutes
   end # block optional
 
   # will paginate

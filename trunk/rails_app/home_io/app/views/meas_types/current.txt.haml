@@ -1,0 +1,27 @@
+- @meas_archives.each do |meas_archive|
+  - unless meas_archive.nil?
+    - t = ""
+    - t += meas_archive.meas_type.name_human
+    - t += "\t"
+    - t += meas_value(meas_archive)
+    - t += "\t"
+    - t += meas_archive.meas_type.unit
+    = t
+
+- time_from = nil
+- time_to = nil
+- @meas_archives.each do |meas_archive|
+  - if time_to.nil? or time_to < meas_archive.time_to
+    - time_to = meas_archive.time_to
+  - if time_from.nil? or time_from > meas_archive.time_from
+    - time_from = meas_archive.time_from
+
+- begin
+  - t = "\n"
+  - t += time_from.to_s(:db)
+  - t += " - "
+  - t += time_to.to_s(:db)
+  = t
+- rescue
+  = "No times"
+

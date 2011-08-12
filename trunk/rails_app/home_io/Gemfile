@@ -6,6 +6,9 @@ gem 'rake'
 gem 'rack' #, '1.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# testing
+gem 'rspec'
+
 # DBs
 # gem 'sqlite3'
 gem 'mysql2'
@@ -63,6 +66,8 @@ gem 'hpricot'
 # probably not used
 # gem 'mini_magick'
 
+# mobiles
+# https://github.com/benlangfeld/mobile-fu
 
 
 

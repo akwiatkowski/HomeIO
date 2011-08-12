@@ -46,6 +46,8 @@ SimpleNavigation::Configuration.run do |navigation|
           ter.item "meas_types_#{t.id}_cache".to_sym, t.name_human, meas_type_meas_cache_path(t)
         end
       end
+      sec.item :meas_current, 'Current values (txt)', current_meas_types_path(:txt)
+
       sec.item :meas_auto_refresh, 'Auto refresh', auto_refresh_meas_types_path
       sec.item :meas_by_type, 'Archived by type', current_meas_types_path do |ter|
         MeasType.all.each do |t|
@@ -53,7 +55,7 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
-      sec.item :meas_current, 'Manage', meas_types_path, :if => Proc.new { can?(:manage, MeasType) }
+      sec.item :meas_manage, 'Manage', meas_types_path, :if => Proc.new { can?(:manage, MeasType) }
 
       #sec.item :meas_current, 'Current', meas_type_meas_archives_path(0)
       ##sec.item :meas_archived, 'Archived', meas_archives_path

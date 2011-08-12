@@ -58,7 +58,9 @@ class ApplicationController < ActionController::Base
     if request.xhr?
       nil
     else
-      'application'
+      #return 'mobile' if not current_user_session.nil? and current_user_session.mobile
+      return 'mobile' if not current_user_session.nil? and session[:mobile]
+      return 'normal'
     end
   end
 
