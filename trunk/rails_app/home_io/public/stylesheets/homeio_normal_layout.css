@@ -1,0 +1,57 @@
+body {
+  position: relative;
+  width: 1240px; }
+
+#top_logo {
+  position: absolute;
+  border-bottom: 1px dotted #aaaaaa;
+  top: 0px;
+  height: 50px;
+  width: 1240px;
+  font-size: larger; }
+
+/* top nav bar */
+#top_navcontainer {
+  position: absolute;
+  border-bottom: 1px dotted #aaaaaa;
+  top: 55px;
+  height: 25px;
+  width: 1240px; }
+
+/* left nav bard */
+#left_navcontainer {
+  position: absolute;
+  border-right: 1px dotted #aaaaaa;
+  top: 80px;
+  width: 290px;
+  padding: 5px 5px 5px 5px; }
+
+#content_container {
+  position: absolute;
+  border-right: 1px dotted #aaaaaa;
+  top: 80px;
+  left: 300px;
+  width: 930px;
+  padding: 5px 5px 5px 5px; }
+
+/* universal table with data, measurements, stats, .. */
+table.data_table {
+  margin: 5px 0px 5px 5px;
+  padding-right: 5px;
+  width: 100%; }
+
+table.data_table tr td {
+  padding: 2px 10px 2px 10px; }
+
+#graph_holder {
+  width: 800px;
+  height: 600px; }
+
+#chart {
+  width: 800px;
+  height: 600px; }
+
+li.meas_archive {
+  background-image: url(/images/measurement1.png);
+  background-repeat: no-repeat;
+  padding-left: 20px; }
