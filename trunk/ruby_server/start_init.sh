@@ -15,10 +15,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO: reorganize dir structure, use rails structure and put everything into backend
-# ... but rails is not the most important part... or maybe not
+# Init RVM
 
-echo "Starting IoServer"
-cd ../IoServer
-make
-./ioserver.bin /dev/ttyS0
+[[ -s "/usr/local/rvm/scripts/rvm" ]] && . "/usr/local/rvm/scripts/rvm" # Load RVM function
+rvm use 1.8.7@homeio2

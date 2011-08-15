@@ -13,15 +13,29 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
 # Usage:
+# --init - perform RVM initialization
 # --io - start IoServer (bash start_ioserver.sh)
 # --noweather - do not start weather backend
 # --nocontrol - do not start control backend
 # --nginx - start or restart nginx
 
+
+
+
+# perform RVM init
+for var in "$@"
+do
+    # echo "$var"
+    if [ $var == "--init" ]
+    then
+        echo "Init RVM"
+        bash start_init.sh
+    fi
+done
 
 
 
