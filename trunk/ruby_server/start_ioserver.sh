@@ -19,4 +19,6 @@
 # ... but rails is not the most important part
 
 echo "Starting IoServer"
-../IoServer/ioserver.bin /dev/ttyS0
+cd ../IoServer
+make
+./ioserver.bin /dev/ttyS0

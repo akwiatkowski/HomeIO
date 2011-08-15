@@ -19,6 +19,8 @@
 # start screen
 screen -admS homeio top
 
+
+
 # start ioserver when "--io" argument was added
 for var in "$@"
 do
@@ -30,11 +32,47 @@ do
     fi
 done
 
+
+
 # add weather backend
-screen -rm homeio -X screen bash start_backend_weather.sh
+NO_WEATHER="0"
+for var in "$@"
+do
+    # echo "$var"
+    if [ $var == "--noweather" ]
+    then
+        NO_WEATHER="1"
+    fi
+done
+
+if [ $NO_WEATHER == "1" ]
+then
+  echo "No weather backend"
+else
+  screen -rm homeio -X screen bash start_backend_weather.sh
+fi
+
+
 
 # add control backend
-screen -rm homeio -X screen bash start_backend_control.sh
+NO_CONTROL="0"
+for var in "$@"
+do
+    # echo "$var"
+    if [ $var == "--nocontrol" ]
+    then
+        NO_CONTROL="1"
+    fi
+done
+
+if [ NO_CONTROL == "1" ]
+then
+  echo "No control backend"
+else
+  screen -rm homeio -X screen bash start_backend_control.sh
+fi
+
+
 
 # re/start nginx when "--nginx" argument was added
 for var in "$@"
