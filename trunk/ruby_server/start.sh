@@ -26,18 +26,6 @@
 
 
 
-# perform RVM init
-for var in "$@"
-do
-    # echo "$var"
-    if [ $var == "--init" ]
-    then
-        echo "Init RVM"
-        bash start_init.sh
-    fi
-done
-
-
 
 # all capabilities, create and detach, more optimum output
 # start screen
