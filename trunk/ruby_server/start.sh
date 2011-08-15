@@ -15,6 +15,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+
+# Usage:
+# --io - start IoServer (bash start_ioserver.sh)
+# --noweather - do not start weather backend
+# --nocontrol - do not start control backend
+# --nginx - start or restart nginx
+
+
+
+
 # all capabilities, create and detach, more optimum output
 # start screen
 screen -admS homeio top
@@ -65,7 +75,7 @@ do
     fi
 done
 
-if [ NO_CONTROL == "1" ]
+if [ $NO_CONTROL == "1" ]
 then
   echo "No control backend"
 else
