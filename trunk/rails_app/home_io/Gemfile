@@ -6,6 +6,9 @@ gem 'rake'
 gem 'rack' #, '1.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# deployment
+gem 'passenger'
+
 # testing
 gem 'rspec'
 
