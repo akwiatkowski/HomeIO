@@ -19,11 +19,33 @@
 # start screen
 screen -admS homeio top
 
+# start ioserver when "--io" argument was added
+for var in "$@"
+do
+    # echo "$var"
+    if [ $var == "--io" ]
+    then
+        echo "Start IO"
+        screen -rm homeio -X screen bash start_ioserver.sh
+    fi
+done
+
 # add weather backend
 screen -rm homeio -X screen bash start_backend_weather.sh
 
 # add control backend
 screen -rm homeio -X screen bash start_backend_control.sh
+
+# re/start nginx when "--nginx" argument was added
+for var in "$@"
+do
+    # echo "$var"
+    if [ $var == "--nginx" ]
+    then
+        echo "Re/start nginx"
+        screen -rm homeio -X screen bash start_nginx.sh
+    fi
+done
 
 
 

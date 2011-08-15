@@ -15,12 +15,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+# TODO: reorganize dir structure, use rails structure and put everything into backend
+# ... but rails is not the most important part
 
-# Start control backend
-
-sleep 1
-for (( c=1; c>=0; c++ ))
-do
-  echo "Starting backend - control for $c time..."
-  ruby lib/backend_control.rb
-done
+echo "Starting IoServer"
+../IoServer/ioserver.bin /dev/ttyS0

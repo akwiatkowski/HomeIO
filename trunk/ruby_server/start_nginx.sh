@@ -15,12 +15,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+# Start/restart nginx
 
-# Start control backend
-
-sleep 1
-for (( c=1; c>=0; c++ ))
-do
-  echo "Starting backend - control for $c time..."
-  ruby lib/backend_control.rb
-done
+if [ -e /opt/nginx/logs/nginx.pid ]
+then
+    echo "Restarting nginx"
+    /opt/nginx/sbin/nginx -s reload
+else
+    echo "Starting nginx"
+    /opt/nginx/sbin/nginx
+fi

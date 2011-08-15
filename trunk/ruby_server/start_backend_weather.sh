@@ -16,8 +16,7 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Start IM server and restart it after crash
-# It is easier and safer than fixing rgadu to be reliable on some networks
+# Start weather backend
 
 for (( c=1; c>=0; c++ ))
 do
