@@ -15,25 +15,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Start control backend
-
-# obsolete
-# # perform RVM init
-# for var in "$@"
-# do
-#     # echo "$var"
-#     if [ $var == "--init" ]
-#     then
-#         echo "Init RVM"
-#         bash start_init.sh
-#     fi
-# done
+# If you have problem with cron and rvm use this file
+# in...
+# @reboot                 bash /opt/homeio.sh > /tmp/homeio_init.log
 
 
-sleep 1
-for (( c=1; c>=0; c++ ))
-do
-  echo "Starting backend - control for $c time..."
-  ruby lib/backend_control.rb
-done
+
+export SHELL=/bin/bash
+# /etc/profile.d/rvm.sh
+[[ -s "/usr/local/rvm/scripts/rvm" ]] && . "/usr/local/rvm/scripts/rvm" # Load RVM function
+rvm --default use 1.8.7@homeio2
+ruby -v
+
+cd /opt/HomeIO/trunk/ruby_server
+bash start.sh --io --nginx

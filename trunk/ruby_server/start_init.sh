@@ -16,6 +16,4 @@
 #    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 # Init RVM
-
-[[ -s "/usr/local/rvm/scripts/rvm" ]] && . "/usr/local/rvm/scripts/rvm" # Load RVM function
-rvm use 1.8.7@homeio2
+# obsolete
