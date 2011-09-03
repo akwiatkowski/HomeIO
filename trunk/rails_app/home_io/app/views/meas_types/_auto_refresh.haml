@@ -24,4 +24,17 @@
     });
   }
 
-  var holdTheInterval = setInterval(updateMeasurements, 1000);
+  //var holdTheInterval = setInterval(updateMeasurements, 1000);
+
+  // http://net.tutsplus.com/tutorials/javascript-ajax/start-using-html5-websockets-today/
+
+  var socket = new WebSocket("ws://localhost:8082");
+
+  socket.onopen = function(){
+    alert("Socket has been opened!");
+  }
+
+  socket.onmessage = function(msg){
+    alert(msg.data); //Awesome!
+  }
+  

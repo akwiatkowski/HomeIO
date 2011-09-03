@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
       nil
     else
       #return 'mobile' if not current_user_session.nil? and current_user_session.mobile
-      return 'mobile' if not current_user_session.nil? and session[:mobile]
+      return 'mobile' if session[:mobile]
       return 'normal'
     end
   end
@@ -70,5 +70,15 @@ class ApplicationController < ActionController::Base
     #redirect_to root_url, :alert => exception.message
     flash[:error] = "You are not authorized"
     redirect_to root_url, :alert => exception.message
+  end
+
+  # Modify mobile flag using params
+  before_filter :check_mobile_params_flag
+  def check_mobile_params_flag
+    puts params[:_m], "^"*100
+    session[:mobile] = true if params[:_m] == 't'
+    session[:mobile] = false if params[:_m] == 'f'
+    puts session[:mobile]
+    return true
   end
 end
