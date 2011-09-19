@@ -54,6 +54,12 @@ gem 'rack-coffee'
 #gem 'bistro_car'
 gem 'barista'
 
+# graphics
+# gem 'rmagick'
+
+# graphs
+gem 'technical_graph'
+
 # backend addons
 gem 'geokit'
 gem 'json'

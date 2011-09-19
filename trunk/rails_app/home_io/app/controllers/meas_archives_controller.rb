@@ -7,7 +7,11 @@ class MeasArchivesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @meas_archives }
-      format.json_graph  { render :json => MeasArchive.to_json_graph( @meas_archives ) }
+      format.json_graph { render :json => MeasArchive.to_json_graph(@meas_archives) }
+      format.png {
+        string = UniversalGraph.process_meas(@meas_archives)
+        send_data(string, :type => 'image/png', :disposition => 'inline')
+      }
     end
   end
 
@@ -19,7 +23,7 @@ class MeasArchivesController < ApplicationController
     # http://www.highcharts.com/ref/#series--data
     @h = LazyHighCharts::HighChart.new('graph') do |f|
       #f.series(:name => @meas_type.name_human, :data => @meas_archives.collect{|m| m.value})
-      f.series(:name => @meas_type.name_human, :data => @meas_archives.collect{|m| [m.time_to.to_f, m.value]})
+      f.series(:name => @meas_type.name_human, :data => @meas_archives.collect { |m| [m.time_to.to_f, m.value] })
       puts f.chart[:legend][:style][:left] = '10px'
     end
 

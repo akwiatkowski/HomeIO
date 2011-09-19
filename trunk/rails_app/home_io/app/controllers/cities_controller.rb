@@ -9,6 +9,7 @@ class CitiesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @cities }
+      #format.png { send_file '', :type => 'image/png', :filename => 'city.png', :disposition => :inline }
     end
   end
 
@@ -63,6 +64,10 @@ class CitiesController < ApplicationController
           :x => times,
           :y => values
         }
+      }
+      format.png {
+        string = UniversalGraph.process_weather( @weathers, params[:type] )
+        send_data( string, :type => 'image/png', :disposition => 'inline' )
       }
     end
   end
