@@ -25,7 +25,8 @@ class MeasTypesController < ApplicationController
       no_direct_connection_to_backend
     end
 
-    @meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)
+    # TODO: will_paginate stop working with arrays
+    #@meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.haml
