@@ -55,7 +55,7 @@ end
 
 # web socket server
 # unstable
-#@rt_websocket = StartThreaded.start_threaded(@config[:intervals][:simple_http], self) do
+#@rt_web_socket = StartThreaded.start_threaded(@config[:intervals][:simple_http], self) do
 #  sleep @config[:sleeps][:simple_http]
 #  WebSocketServer.instance
 #end

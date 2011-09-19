@@ -82,7 +82,7 @@ GEM
     mime-types (1.16)
     mysql (2.8.1)
     mysql2 (0.3.7)
-    passenger (3.0.9)
+    passenger (3.0.7)
       daemon_controller (>= 0.2.5)
       fastthread (>= 1.0.1)
       rack
@@ -157,9 +157,9 @@ DEPENDENCIES
   json
   mysql
   mysql2
-  passenger
+  passenger (= 3.0.7)
   pg
-  rack
+  rack (= 1.2.4)
   rack-coffee
   rails (= 3.0.9)
   rake
