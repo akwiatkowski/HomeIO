@@ -22,8 +22,9 @@ gem 'pg'
 gem 'foreigner'
 gem 'composite_primary_keys' #, '=3.1.0'
 gem 'default_value_for'
-gem 'will_paginate', " >= 3.0.pre4" #, " >= 3.0.pre2"
+gem 'will_paginate' #, " >= 3.0.pre4" #, " >= 3.0.pre2"
 gem 'acts_as_commentable'
+gem 'has_scope'
 
 # auth
 # https://github.com/binarylogic/authlogic/blob/master/README.rdoc
