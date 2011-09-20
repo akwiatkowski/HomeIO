@@ -64,6 +64,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Desktop users has more data in 1 page
+  def mobile_pagination_multiplier
+    return 1 if session[:mobile]
+    return 5
+  end
+
 
   # when user has no proper rights
   rescue_from CanCan::AccessDenied do |exception|
@@ -75,10 +81,8 @@ class ApplicationController < ActionController::Base
   # Modify mobile flag using params
   before_filter :check_mobile_params_flag
   def check_mobile_params_flag
-    puts params[:_m], "^"*100
     session[:mobile] = true if params[:_m] == 't'
     session[:mobile] = false if params[:_m] == 'f'
-    puts session[:mobile]
     return true
   end
 end
