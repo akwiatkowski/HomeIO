@@ -33,6 +33,10 @@ class WeatherArchive < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
 
+  default_scope :order => "time_from DESC", :limit => 100
+
+  scope :city_id, lambda { |city_id| where({:city_id => city_id}) }
+
   # This was stored based by future prediction
   def predicted?
     if self.updated_at >= self.time_from

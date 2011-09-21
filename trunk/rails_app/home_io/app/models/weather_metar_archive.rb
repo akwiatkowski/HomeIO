@@ -31,6 +31,10 @@ class WeatherMetarArchive < ActiveRecord::Base
 
   validates_length_of :raw, :maximum => 200
 
+  default_scope :order => "time_from DESC", :limit => 100
+
+  scope :city_id, lambda { |city_id| where({:city_id => city_id}) }
+
   # will paginate
   cattr_reader :per_page
   @@per_page = 20

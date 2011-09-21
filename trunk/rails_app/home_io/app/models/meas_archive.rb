@@ -34,6 +34,11 @@ class MeasArchive < ActiveRecord::Base
   # recent measurements
   scope :recent, :order => "time_from DESC", :include => :meas_type
 
+  scope :time_from, lambda {|from| { :conditions =>["time_from >= ?", from]} }
+  scope :time_to, lambda {|tto| { :conditions =>["time_to <= ?", tto]} }
+  #named_scope :meas_type_id, proc {|id| puts "MID\n"*10;{ :conditions => {:meas_type_id => id} } }
+
+
 
   # Measurement time range begin. Fix for storing microseconds
   def time_from_w_ms

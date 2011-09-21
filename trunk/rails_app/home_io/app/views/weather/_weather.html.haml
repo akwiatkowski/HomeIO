@@ -1,0 +1,92 @@
+%h1= "Weather detail"
+
+%ul.details
+  %li
+    = "City"
+    = " - "
+    %span.parameter= link_to weather.city.name, city_path(weather.city)
+  - if weather.kind_of? WeatherMetarArchive
+    %li
+      = "Raw"
+      = " - "
+      %span.parameter= weather.raw
+  - if weather.kind_of? WeatherArchive
+    %li
+      = "Provider"
+      = " - "
+      %span.parameter= weather.weather_provider.name
+
+  - date_from = l weather.time_from, :format => :date
+  - date_to = l weather.time_to, :format => :date
+  %li
+    -# if dates are equal show only 'date'
+    - if not date_from == date_to
+      = "Date from"
+    - else
+      = "Date"
+    = " - "
+    %span.parameter= date_from
+
+  %li
+    = "Time from"
+    = " - "
+    %span.parameter= l weather.time_from, :format => :pro_time
+
+  -# show only when there is another day
+  - if not date_from == date_to
+    %li
+      = "Date to"
+      = " - "
+      %span.parameter= l weather.time_to, :format => :date
+
+
+  %li
+    = "Time to"
+    = " - "
+    %span.parameter= l weather.time_to, :format => :pro_time
+
+
+  %li
+    = "Id"
+    = " - "
+    %span.parameter= weather.id
+
+  %li
+    = "Temperature"
+    = " - "
+    %span.parameter= weather.temperature
+
+  %li
+    = "Wind"
+    = " - "
+    %span.parameter= "%.1f" % weather.wind
+
+  %li
+    = "Pressure"
+    = " - "
+    %span.parameter= weather.pressure
+
+  - if weather.kind_of? WeatherMetarArchive
+    %li
+      = "Rain (metar)"
+      = " - "
+      %span.parameter= weather.rain_metar
+  - if weather.kind_of? WeatherMetarArchive
+    - if not weather_row.rain.nil?
+      %li
+        = "Rain [mm]"
+        = " - "
+        = "%.1f" % weather.rain
+
+  - if weather.kind_of? WeatherMetarArchive
+    %li
+      = "Snow (metar)"
+      = " - "
+      %span.parameter= weather.snow_metar
+  - if weather.kind_of? WeatherMetarArchive
+    - if not weather.snow.nil?
+      %li
+        = "Snow [mm]"
+        = " - "
+        = "%.1f" % weather.snow
+

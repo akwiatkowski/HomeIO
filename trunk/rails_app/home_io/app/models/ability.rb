@@ -30,6 +30,9 @@ class Ability
     cannot :destroy, ActionEvent
     cannot :destroy, ActionType
 
+    cannot :destroy, WeatherArchive
+    cannot :destroy, WeatherMetarArchive
+
     # not logged user
     if user.nil?
       # can nothing nearly
@@ -44,7 +47,7 @@ class Ability
 
     else
       # ordinary user
-      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer, HomeArchive]
+      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer, HomeArchive, WeatherArchive, WeatherMetarArchive]
 
       # only edit self memos
       can :manage, user.memos

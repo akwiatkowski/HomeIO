@@ -1,5 +1,4 @@
 HomeIo::Application.routes.draw do
-
   # statistics calculated by day
   resources :day_statistics, :except => [:new, :create, :edit, :update, :delete]
 
@@ -54,10 +53,10 @@ HomeIo::Application.routes.draw do
 
 
   resources :cities do
-    get :chart, :on => :collection
-
-    #resources :weather_metar_archives
-    #resources :weather_archives
+    #get :chart, :on => :collection
+    #resources :weathers # TODO remove this resource
+    resources :weather_metar_archives, :only => [:index, :show]
+    resources :weather_archives, :only => [:index, :show]
   end
 
   resource :user_session do

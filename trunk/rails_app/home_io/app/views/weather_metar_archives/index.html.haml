@@ -1,0 +1,23 @@
+%h1= "Weather"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Date"
+      %th= "Time from"
+      %th= "Time to"
+      %th= "Temperature"
+      %th= "Wind"
+      %th= "Pressure"
+      %th= "Rain (metar)"
+      %th= "Snow (metar)"
+
+  = render :partial => 'weather/weather_row', :collection => @weather_metar_archives
+%hr
+- if false
+  %p= will_paginate @weather_metar_archives
+  %p= page_entries_info @weather_metar_archives
+
+
+
+

@@ -18,10 +18,10 @@ class WeatherArchivesControllerTest < ActionController::TestCase
 
   test "should create weather_archive" do
     assert_difference('WeatherArchive.count') do
-      post :create, :weather_archive => @weather_archive.attributes
+      post :create, :weather_archives => @weather_archive.attributes
     end
 
-    assert_redirected_to weather_archive_path(assigns(:weather_archive))
+    assert_redirected_to weather_archive_path(assigns(:weather_archives))
   end
 
   test "should show weather_archive" do
@@ -35,8 +35,8 @@ class WeatherArchivesControllerTest < ActionController::TestCase
   end
 
   test "should update weather_archive" do
-    put :update, :id => @weather_archive.to_param, :weather_archive => @weather_archive.attributes
-    assert_redirected_to weather_archive_path(assigns(:weather_archive))
+    put :update, :id => @weather_archive.to_param, :weather_archives => @weather_archive.attributes
+    assert_redirected_to weather_archive_path(assigns(:weather_archives))
   end
 
   test "should destroy weather_archive" do

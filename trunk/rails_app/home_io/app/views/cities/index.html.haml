@@ -1,7 +1,15 @@
 %h2= "Cities"
 
-= render :partial => 'cities/city_array', :locals => {:city_array => @cities}
-=# link_to "Chart", chart_meas_type_meas_archives_path
+= "Within radius [km] "
+= form_tag cities_path, :method => :get
+= text_field_tag :within_range, params[:within_range]
+= submit_tag
 
 %hr
-= render :partial => "graphs/graph", :locals => {:_params => params.merge(:action => :chart)}
+
+= render :partial => 'cities/city_array', :locals => {:city_array => @cities}
+
+- if false
+  - # graphs deprecated, route modification
+  %hr
+  = render :partial => "graphs/graph", :locals => {:_params => params.merge(:action => :chart)}

@@ -1,10 +1,12 @@
 class CitiesController < ApplicationController
+  has_scope :within_range
+  has_scope :page
+
   # GET /cities
   # GET /cities.xml
   def index
-    #@cities = City.all
-    @cities = City.paginate(:page => params[:page])
     authorize! :read, City
+    @cities = apply_scopes(City).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +16,7 @@ class CitiesController < ApplicationController
   end
 
   # GET /cities/chart
+  # DEPRECATED
   def chart
     @weathers = City.get_all_weather
     authorize! :read, City

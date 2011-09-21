@@ -37,7 +37,7 @@ class City < ActiveRecord::Base
   LOCAL_CITY_LIMIT = 40
 
   scope :local, lambda { where("calculated_distance < ?", LOCAL_CITY_LIMIT) }
-  scope :within_range, lambda { |d| where("calculated_distance <= ?", d) }
+  scope :within_range, lambda { |d| where("calculated_distance <= ?", d.to_f) }
 
   # will paginate
   cattr_reader :per_page

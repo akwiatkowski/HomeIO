@@ -1,0 +1,33 @@
+- if weather_row.kind_of? WeatherMetarArchive
+  - title = "Metar code: #{weather_row.raw}"
+- else
+  - title = nil
+%tr{:class => cycle("even", "odd"), :title => title}
+  - if weather_row.kind_of? WeatherArchive
+    = weather_row.weather_provider.name
+
+  %td= l weather_row.time_from, :format => :date
+  %td= l weather_row.time_from, :format => :pro_time
+  %td= l weather_row.time_to, :format => :pro_time
+  %td= weather_row.temperature
+  %td= "%.1f" % weather_row.wind
+  %td= weather_row.pressure
+  %td
+    - if weather_row.kind_of? WeatherMetarArchive
+      = weather_row.rain_metar
+    - if weather_row.kind_of? WeatherArchive
+      - if not weather_row.rain.nil?
+        = "%.1f" % weather_row.rain
+
+  %td
+    - if weather_row.kind_of? WeatherMetarArchive
+      = weather_row.snow_metar
+    - if weather_row.kind_of? WeatherArchive
+      - if not weather_row.snow.nil?
+        = "%.1f" % weather_row.snow
+  %td
+    - if weather_row.kind_of? WeatherMetarArchive
+      = link_to "Detail", city_weather_metar_archive_path(params[:city_id], weather_row)
+    - if weather_row.kind_of? WeatherArchive
+      = link_to "Detail", city_weather_archive_path(params[:city_id], weather_row)
+
