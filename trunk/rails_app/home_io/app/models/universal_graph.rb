@@ -42,19 +42,38 @@ class UniversalGraph
 
   def self.process_meas(meas_data)
     data = Array.new
+
+    t = meas_data.sort { |a, b| a.time_from <=> b.time_from }
+    if (t.last.time_from - t.first.time_from) > 120.0
+      minutes = true
+    end
+
+    if minutes
+      x_label = "minutes, time"
+      divider = 60.0
+      x_interval = 1.0
+    else
+      x_label = "10 seconds, time"
+      divider = 1.0
+      x_interval = 10.0
+    end
+
     meas_data.each do |w|
-      data << { :x => (Time.now - w.time_from) / 60.0, :y => w.value }
-      data << { :x => (Time.now - w.time_to) / 60.0, :y => w.value }
+      data << { :x => (Time.now - w.time_from) / divider, :y => w.value }
+      # current measurements has identical times
+      if not w.time_from == w.time_to
+        data << { :x => (Time.now - w.time_to) / divider, :y => w.value }
+      end
     end
 
     xs = data.collect { |d| d[:x] }
     ys = data.collect { |d| d[:y] }
 
     h = {
-      :x_axis_label => 'minutes',
+      :x_axis_label => x_label,
       :y_axis_label => 'value',
 
-      :x_axis_interval => 60.0,
+      :x_axis_interval => x_interval,
       :y_axis_count => 10,
       :x_axis_fixed_interval => true,
       :y_axis_fixed_interval => false,
