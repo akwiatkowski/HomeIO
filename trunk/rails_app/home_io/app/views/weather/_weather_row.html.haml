@@ -4,7 +4,7 @@
   - title = nil
 %tr{:class => cycle("even", "odd"), :title => title}
   - if weather_row.kind_of? WeatherArchive
-    = weather_row.weather_provider.name
+    %td= weather_row.weather_provider.name
 
   %td= l weather_row.time_from, :format => :date
   %td= l weather_row.time_from, :format => :pro_time

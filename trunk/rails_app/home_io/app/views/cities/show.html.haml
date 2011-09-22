@@ -2,11 +2,16 @@
 %h3
   = @city.country
   - unless @city.metar.nil?
-    = " - "
+    = ", "
     = @city.metar
 
 #info
+  = "Google Maps "
   = link_to( @city.lat.to_s + "," + @city.lon.to_s, "http://maps.google.pl/maps?q=#{@city.lat},#{@city.lon}")
+  = ", "
+  = render :partial => 'cities/city_weather', :locals => {:city => @city}
+
+%hr
 
 %h2= "Temperature [C]"
 = render :partial => "graphs/graph", :locals => {:_params => params.clone.merge({:type => :temperature}), :smooth => false, :width => 800}

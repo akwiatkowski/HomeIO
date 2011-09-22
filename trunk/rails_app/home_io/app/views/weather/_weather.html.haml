@@ -1,4 +1,4 @@
-%h1= "Weather detail"
+%h2= "Weather detail"
 
 %ul.details
   %li
@@ -51,42 +51,50 @@
     = " - "
     %span.parameter= weather.id
 
-  %li
-    = "Temperature"
-    = " - "
-    %span.parameter= weather.temperature
+  - if not weather.temperature.nil?
+    %li
+      = "Temperature"
+      = " - "
+      %span.parameter= weather.temperature
+      = " C"
 
-  %li
-    = "Wind"
-    = " - "
-    %span.parameter= "%.1f" % weather.wind
+  - if not weather.wind.nil?
+    %li
+      = "Wind"
+      = " - "
+      %span.parameter= "%.1f" % weather.wind
+      = " m/s"
 
-  %li
-    = "Pressure"
-    = " - "
-    %span.parameter= weather.pressure
+  - if not weather.pressure.nil?
+    %li
+      = "Pressure"
+      = " - "
+      %span.parameter= weather.pressure
+      = " hPa"
 
   - if weather.kind_of? WeatherMetarArchive
     %li
       = "Rain (metar)"
       = " - "
       %span.parameter= weather.rain_metar
-  - if weather.kind_of? WeatherMetarArchive
-    - if not weather_row.rain.nil?
+  - if weather.kind_of? WeatherArchive
+    - if not weather.rain.nil?
       %li
         = "Rain [mm]"
         = " - "
-        = "%.1f" % weather.rain
+        %span.parameter= "%.1f" % weather.rain
+        = " mm"
 
   - if weather.kind_of? WeatherMetarArchive
     %li
       = "Snow (metar)"
       = " - "
       %span.parameter= weather.snow_metar
-  - if weather.kind_of? WeatherMetarArchive
+  - if weather.kind_of? WeatherArchive
     - if not weather.snow.nil?
       %li
-        = "Snow [mm]"
+        = "Snow"
         = " - "
-        = "%.1f" % weather.snow
+        %span.parameter= "%.1f" % weather.snow
+        = " mm"
 

@@ -7,9 +7,5 @@
   %td= link_to "Details", city_path(city)
 
   %td
-    - if city.logged_metar
-      = link_to "Weather", city_weather_metar_archives_path(city)
-      - if city.logged_weather
-        = link_to " (non metar)", city_weather_archives_path(city)
-    - elsif city.logged_weather
-      = link_to "Weather", city_weather_archives_path(city)
+    = render :partial => 'cities/city_weather', :locals => {:city => city}
+
