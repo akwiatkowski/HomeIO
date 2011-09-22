@@ -52,9 +52,7 @@ class CitiesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml { render :xml => @weathers }
-      format.json { render :json => @weathers.collect { |w|
-        { :time => w.time_from.to_i, :temperature => w.temperature }
-      } }
+      format.json { render :json => @weathers }
       format.json_graph {
         type = params[:type]
         type = "temperature" if type.nil?
@@ -69,8 +67,8 @@ class CitiesController < ApplicationController
         }
       }
       format.png {
-        string = UniversalGraph.process_weather( @weathers, params[:type] )
-        send_data( string, :type => 'image/png', :disposition => 'inline' )
+        string = UniversalGraph.process_weather(@weathers, params[:type])
+        send_data(string, :type => 'image/png', :disposition => 'inline')
       }
     end
   end

@@ -2,7 +2,8 @@ class MeasArchivesController < ApplicationController
   # GET /meas_archives
   # GET /meas_archives.xml
   def index
-    @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.recent.paginate(:page => params[:page], :per_page => 20)
+    @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.recent.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
+    #@meas_archives = apply_scopes(MeasArchive).paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
 
     respond_to do |format|
       format.html # index.html.erb
