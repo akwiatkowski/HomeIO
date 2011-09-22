@@ -40,11 +40,12 @@
     = csrf_meta_tag
   %body
     #top_logo
-      %h1= "HomeIO"
+      %h1= link_to "HomeIO", root_path
     #top_navcontainer
       = render_navigation :renderer => :breadcrumbs, :join_with => " &gt; "
     #left_navcontainer
-      = render_navigation :expand_all => true
+      -# = render_navigation :expand_all => true
+      = render_navigation :expand_all => false
     #content_container
       - unless flash.blank?
         #flash

@@ -6,7 +6,7 @@
     = csrf_meta_tag
   %body
     #top_logo
-      %h1= "HomeIO"
+      %h1= link_to "HomeIO", root_path
     #content_container
       - unless flash.blank?
         #flash

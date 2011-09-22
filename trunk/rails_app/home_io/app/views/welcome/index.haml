@@ -1,1 +1,8 @@
 %h2= "Welcome"
+
+#welcome_menu
+  %li
+    %ul= link_to "Current measurements", current_meas_types_path
+    %ul= link_to "Actions", action_types_path
+    %ul= link_to "Last executed actions", action_type_action_events_path(0)
+    %ul= link_to "Overseers status", status_overseers_path
