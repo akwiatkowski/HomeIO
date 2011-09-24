@@ -1,5 +1,8 @@
 class MeasArchivesController < ApplicationController
   has_scope :meas_type_id
+  has_scope :time_from
+  has_scope :time_to
+
 
   # GET /meas_archives
   # GET /meas_archives.xml

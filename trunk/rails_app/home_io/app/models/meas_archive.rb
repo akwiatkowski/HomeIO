@@ -34,8 +34,14 @@ class MeasArchive < ActiveRecord::Base
   # recent measurements
   scope :recent, :order => "time_from DESC", :include => :meas_type
 
-  scope :time_from, lambda {|from| { :conditions =>["time_from >= ?", from]} }
-  scope :time_to, lambda {|tto| { :conditions =>["time_to <= ?", tto]} }
+  scope :time_from, lambda {|from|
+    tf = from.to_time
+    where ["time_from >= ?", tf]
+    }
+  scope :time_to, lambda {|tto|
+    tt = tto.to_time
+    where ["time_to <= ?", tt]
+  }
   #scope :meas_type_id, proc {|id| { :conditions => {:meas_type_id => id} } }, :if =>
   scope :meas_type_id, lambda { |id| where(:meas_type_id => id) unless id == 'all' }
 

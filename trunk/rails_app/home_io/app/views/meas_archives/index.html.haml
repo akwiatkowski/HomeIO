@@ -1,6 +1,19 @@
 %h2= "Measurement archives"
 
+= form_tag params.clone, :method => :get
+= "Time filter"
+= text_field_tag :time_from, params[:time_from]
+= " to "
+= text_field_tag :time_to, params[:time_to]
+= submit_tag "Filter"
+
+%hr
+
 = link_to "Graph (PNG)", params.clone.merge({:format => :png})
+= link_to "XML", params.clone.merge({:format => :xml})
+= link_to "Json", params.clone.merge({:format => :json})
+
+%hr
 
 = render :partial => 'meas_archives/meas_archive_array', :locals => {:meas_archive_array => @meas_archives}
 
