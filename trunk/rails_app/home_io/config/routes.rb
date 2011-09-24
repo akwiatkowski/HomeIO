@@ -48,8 +48,9 @@ HomeIo::Application.routes.draw do
     end
 
     resource :meas_cache
-
   end
+
+  resources :meas_caches, :only => [:index]
 
 
   resources :cities do

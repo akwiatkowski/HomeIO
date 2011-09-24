@@ -40,16 +40,16 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            when the item should be highlighted, you can set a regexp which is matched
     #                            against the current URI.
     #
-    primary.item :meas, 'Measurements', current_meas_types_path, :if => Proc.new { can?(:read, MeasType) } do |sec|
-      sec.item :meas_current, 'Current values', current_meas_types_path do |ter|
+    primary.item :meas, 'Measurements', meas_caches_path, :if => Proc.new { can?(:read, MeasType) } do |sec|
+      sec.item :meas_current, 'Current values', meas_caches_path do |ter|
         MeasType.all.each do |t|
           ter.item "meas_types_#{t.id}_cache".to_sym, t.name_human, meas_type_meas_cache_path(t)
         end
       end
-      sec.item :meas_current, 'Current values (txt)', current_meas_types_path(:txt)
+      sec.item :meas_current, 'Current values (txt)', meas_caches_path(:txt)
 
       sec.item :meas_auto_refresh, 'Auto refresh', auto_refresh_meas_types_path
-      sec.item :meas_by_type, 'Archived by type', current_meas_types_path do |ter|
+      sec.item :meas_by_type, 'Archived by type', meas_caches_path do |ter|
         MeasType.all.each do |t|
           ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)
         end
