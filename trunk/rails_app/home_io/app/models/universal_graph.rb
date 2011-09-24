@@ -1,20 +1,18 @@
 class UniversalGraph
-  WIDTH = 4000
-  HEIGHT = 3000
+  WIDTH = 3000
+  HEIGHT = 2000
 
   STD_OPTIONS = {
     :axis_antialias => false,
-    :layers_antialias => true,
-    :font_antialias => true,
 
-    :layers_font_size => 8,
+    :layers_font_size => 10,
     :axis_font_size => 10,
-    :axis_label_font_size => 14
+    :axis_label_font_size => 24
   }
 
   # TODO: make it DRY
 
-  def self.process_weather(weather_data, type)
+  def self.process_weather(weather_data, type, antialias = false)
     type = "temperature" if type.nil?
 
     data = Array.new
@@ -40,7 +38,10 @@ class UniversalGraph
       :x_min => xs.min,
       :x_max => xs.max,
       :y_min => ys.min,
-      :y_max => ys.max
+      :y_max => ys.max,
+
+      :layers_antialias => antialias,
+      :font_antialias => antialias
     }.merge(STD_OPTIONS)
 
     tg = TechnicalGraph.new(h)
@@ -50,7 +51,7 @@ class UniversalGraph
     return tg.image_drawer.to_png
   end
 
-  def self.process_meas(meas_data)
+  def self.process_meas(meas_data, antialias = false)
     data = Array.new
 
     t = meas_data.sort { |a, b| a.time_from <=> b.time_from }
@@ -93,7 +94,10 @@ class UniversalGraph
       :x_min => xs.min,
       :x_max => xs.max,
       :y_min => ys.min,
-      :y_max => ys.max
+      :y_max => ys.max,
+
+      :layers_antialias => antialias,
+      :font_antialias => antialias
     }.merge(STD_OPTIONS)
 
     tg = TechnicalGraph.new(h)

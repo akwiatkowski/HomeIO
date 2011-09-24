@@ -1,5 +1,7 @@
 %h2= "Measurement archives"
 
+= link_to "Graph (PNG)", params.clone.merge({:format => :png})
+
 = render :partial => 'meas_archives/meas_archive_array', :locals => {:meas_archive_array => @meas_archives}
 
 %hr

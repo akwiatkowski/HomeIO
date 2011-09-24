@@ -59,7 +59,7 @@ gem 'barista'
 # gem 'rmagick'
 
 # graphs
-gem 'technical_graph', '0.0.3'
+gem 'technical_graph', '0.1.0'
 
 # backend addons
 gem 'geokit'

@@ -67,7 +67,7 @@ class CitiesController < ApplicationController
         }
       }
       format.png {
-        string = UniversalGraph.process_weather(@weathers, params[:type])
+        string = UniversalGraph.process_weather(@weathers, params[:type], params[:antialias])
         send_data(string, :type => 'image/png', :disposition => 'inline')
       }
     end

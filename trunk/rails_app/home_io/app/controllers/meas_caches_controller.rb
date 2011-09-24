@@ -42,7 +42,7 @@ class MeasCachesController < ApplicationController
       format.xml { render :xml => @meas_archives }
       format.json_graph  { render :json => MeasArchive.to_json_graph( @meas_archives ) }
       format.png {
-        string = UniversalGraph.process_meas(@meas_archives)
+        string = UniversalGraph.process_meas(@meas_archives, params[:antialias])
         send_data(string, :type => 'image/png', :disposition => 'inline')
       }
     end

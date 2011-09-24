@@ -38,7 +38,7 @@ HomeIo::Application.routes.draw do
   resources :memos
 
 # measurement types
-  resources :meas_types do
+  resources :meas_types, :only => [:show, :edit, :index] do
     resources :meas_archives do
       get :chart, :on => :collection
       resources :comments

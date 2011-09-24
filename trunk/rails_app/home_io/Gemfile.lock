@@ -121,7 +121,7 @@ GEM
     sass (3.1.7)
     simple-navigation (3.5.0)
       activesupport (>= 2.3.2)
-    technical_graph (0.0.3)
+    technical_graph (0.1.0)
       rmagick
     thor (0.14.6)
     treetop (1.4.10)
@@ -163,5 +163,5 @@ DEPENDENCIES
   rspec
   sass
   simple-navigation
-  technical_graph (= 0.0.3)
+  technical_graph (= 0.1.0)
   will_paginate
