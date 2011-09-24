@@ -1,3 +1,35 @@
 %h2= "Current measurements"
 = render :partial => 'meas_archives/meas_archive_array', :locals => {:meas_archive_array => @meas_archives}
 
+%hr
+
+= check_box_tag :auto_refresh, "1", false
+= "Autorefresh"
+
+:javascript
+  function updateMeasurements() {
+
+    if ( ! $('#auto_refresh').is(':checked') ) {
+      return;
+    }
+
+    $.ajax("#{meas_caches_url(:format => :json_autorefresh)}", {
+      timeoutNumber: 400,
+      dataType: 'json',
+      success: function(data){
+        // update only values, data size optimization as hell :]
+
+        // empty table,
+        //$("tbody").empty();
+
+        $.each(data, function(index, value) {
+          // add measurement name and value
+          //$("tbody").append("<tr><td>" +value["name"] + "</td><td>" +  value["value"] + "</td><td>" + value["unit"] + "</td></tr>");
+          $("span.meas_value." + value["name"]).text( value["value"] );
+          $("span.meas_time." + value["name"]).text( value["time"] );
+        });
+      }
+    });
+  }
+
+  var holdTheInterval = setInterval(updateMeasurements, 2000);

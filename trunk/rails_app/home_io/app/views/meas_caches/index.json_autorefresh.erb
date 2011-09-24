@@ -1,0 +1,5 @@
+[
+<% @meas_archives.each_with_index do |m,i| %>
+    {"name":"<%= m.meas_type.name %>", "time":"<%= l m.time_from, :format => :pro_time %>", "value":<%= meas_value(m) %>}<% if (@meas_archives.size - 1 > i)%>,<% end %>
+<% end %>
+]

@@ -6,7 +6,7 @@
     %td= meas_archive.meas_type.name_human
 
     %td{:title => "value #{meas_archive.value}, raw #{meas_archive.raw}", :id => value_td_id}
-      %span= meas_value(meas_archive)
+      %span{:class => "meas_value #{meas_archive.meas_type.name}"}= meas_value(meas_archive)
       %span= meas_archive.meas_type.unit
 
     %td= l meas_archive.time_from_w_ms, :format => :date
@@ -20,7 +20,7 @@
 
     - else
       %td{:colspan => 2, :title => "unix #{meas_archive.time_from_w_ms.to_f}"}
-        %span= l meas_archive.time_from_w_ms, :format => :pro_time
+        %span{:class => "meas_time #{meas_archive.meas_type.name}"}= l meas_archive.time_from_w_ms, :format => :pro_time
         %span.small_info= " (current)"
 
   - else

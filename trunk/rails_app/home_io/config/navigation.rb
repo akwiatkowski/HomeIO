@@ -48,7 +48,6 @@ SimpleNavigation::Configuration.run do |navigation|
       end
       sec.item :meas_current, 'Current values (txt)', meas_caches_path(:txt)
 
-      sec.item :meas_auto_refresh, 'Auto refresh', auto_refresh_meas_types_path
       sec.item :meas_by_type, 'Archived by type', meas_caches_path do |ter|
         MeasType.all.each do |t|
           ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)

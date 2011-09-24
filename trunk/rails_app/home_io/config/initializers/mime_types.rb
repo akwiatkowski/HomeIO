@@ -10,3 +10,6 @@ Mime::Type.register_alias "application/json", :json_graph
 Mime::Type.register_alias "text/plain", :txt
 Mime::Type.register_alias "image/png", :png
 
+# simpler type of json response
+Mime::Type.register_alias "application/json", :json_autorefresh
+

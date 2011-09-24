@@ -39,9 +39,6 @@ HomeIo::Application.routes.draw do
 
 # measurement types
   resources :meas_types do
-    get :current, :on => :collection
-    get :auto_refresh, :on => :collection
-
     resources :meas_archives do
       get :chart, :on => :collection
       resources :comments
@@ -50,7 +47,8 @@ HomeIo::Application.routes.draw do
     resource :meas_cache
   end
 
-  resources :meas_caches, :only => [:index]
+  resources :meas_caches, :only => [:index] do
+  end
 
 
   resources :cities do

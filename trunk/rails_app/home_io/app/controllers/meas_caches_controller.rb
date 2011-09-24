@@ -16,12 +16,13 @@ class MeasCachesController < ApplicationController
       format.html # index.html.haml
       format.txt { render :layout => nil }# index.html.haml
       format.xml { render :xml => @meas_archives }
-      #format.json { render :json => @meas_archives }
+      format.json_autorefresh { render :layout => nil }
       format.json { render :json => @meas_archives.to_json(:include => :meas_type) }
     end
   end
 
   def show
+    authorize! :read, MeasArchive
     @meas_type = MeasType.find(params[:meas_type_id])
 
     begin

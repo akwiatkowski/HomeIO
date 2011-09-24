@@ -12,11 +12,6 @@ class MeasTypesController < ApplicationController
     end
   end
 
-  # GET /meas_types/auto_refresh
-  def auto_refresh
-    authorize! :read, MeasType
-  end
-
   # GET /meas_types/1
   # GET /meas_types/1.xml
   def show
