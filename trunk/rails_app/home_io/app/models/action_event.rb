@@ -36,5 +36,15 @@ class ActionEvent < ActiveRecord::Base
   @@per_page = 20
 
   acts_as_commentable
+
+  scope :time_from, lambda {|from|
+    tf = from.to_time
+    where ["time >= ?", tf]
+    }
+  scope :time_to, lambda {|tto|
+    tt = tto.to_time
+    where ["time <= ?", tt]
+  }
+  scope :action_type_id, lambda { |id| where(:action_type_id => id) unless id == 'all' }
   
 end

@@ -8,7 +8,7 @@
 
   - @action_types.each do |action_type|
     %tr{:class => cycle("even", "odd")}
-      %td= action_type.name
+      %td= action_type.name_human
 
       - if can?(:execute, action_type)
         %td= link_to 'Execute', execute_action_type_path(action_type), :method => :post

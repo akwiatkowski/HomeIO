@@ -42,7 +42,6 @@ class MeasArchive < ActiveRecord::Base
     tt = tto.to_time
     where ["time_to <= ?", tt]
   }
-  #scope :meas_type_id, proc {|id| { :conditions => {:meas_type_id => id} } }, :if =>
   scope :meas_type_id, lambda { |id| where(:meas_type_id => id) unless id == 'all' }
 
 

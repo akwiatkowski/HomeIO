@@ -16,6 +16,10 @@ class MeasArchivesController < ApplicationController
         @meas_archives = meas_archives.limit(1000)
         render :xml => @meas_archives
       }
+      format.json {
+        @meas_archives = meas_archives.limit(1000)
+        render :json => @meas_archives
+      }
       format.json_graph {
         @meas_archives = meas_archives.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
         render :json => MeasArchive.to_json_graph(@meas_archives)

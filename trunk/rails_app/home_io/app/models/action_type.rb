@@ -34,4 +34,8 @@ class ActionType < ActiveRecord::Base
 
   set_inheritance_column :sti_type
 
+  def name_human
+    self.name.humanize
+  end
+
 end

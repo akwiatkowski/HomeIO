@@ -64,7 +64,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) } do |sec|
-      sec.item :last_action_events, 'Last action events', action_type_action_events_path(0)
+      sec.item :last_action_events, 'Last action events', action_type_action_events_path('all')
 
       sec.item :action_events_by_type, 'Action events by type', action_types_path do |ter|
         ActionType.all.each do |t|
