@@ -1,6 +1,16 @@
 class UniversalGraph
-  WIDTH = 2000
-  HEIGHT = 1500
+  WIDTH = 4000
+  HEIGHT = 3000
+
+  STD_OPTIONS = {
+    :axis_antialias => false,
+    :layers_antialias => true,
+    :font_antialias => true,
+
+    :layers_font_size => 8,
+    :axis_font_size => 10,
+    :axis_label_font_size => 14
+  }
 
   # TODO: make it DRY
 
@@ -31,7 +41,7 @@ class UniversalGraph
       :x_max => xs.max,
       :y_min => ys.min,
       :y_max => ys.max
-    }
+    }.merge(STD_OPTIONS)
 
     tg = TechnicalGraph.new(h)
     tg.add_layer(data)
@@ -84,7 +94,7 @@ class UniversalGraph
       :x_max => xs.max,
       :y_min => ys.min,
       :y_max => ys.max
-    }
+    }.merge(STD_OPTIONS)
 
     tg = TechnicalGraph.new(h)
     tg.add_layer(data)
