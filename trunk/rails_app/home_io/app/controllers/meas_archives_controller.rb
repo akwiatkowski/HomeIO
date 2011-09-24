@@ -1,15 +1,24 @@
 class MeasArchivesController < ApplicationController
+  has_scope :meas_type_id
+
   # GET /meas_archives
   # GET /meas_archives.xml
   def index
-    @meas_archives = MeasType.find(params[:meas_type_id]).meas_archives.recent.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
-    #@meas_archives = apply_scopes(MeasArchive).paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
+    #@meas_archives = apply_scopes(MeasArchive).order("time_from DESC").paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
+    meas_archives = apply_scopes(MeasArchive).order("time_from DESC")
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @meas_archives }
-      format.json_graph { render :json => MeasArchive.to_json_graph(@meas_archives) }
+      format.html { @meas_archives = meas_archives.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier) } # index.html.erb
+      format.xml {
+        @meas_archives = meas_archives.limit(1000)
+        render :xml => @meas_archives
+      }
+      format.json_graph {
+        @meas_archives = meas_archives.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier)
+        render :json => MeasArchive.to_json_graph(@meas_archives)
+      }
       format.png {
+        @meas_archives = meas_archives.limit(1000)
         string = UniversalGraph.process_meas(@meas_archives, params[:antialias])
         send_data(string, :type => 'image/png', :disposition => 'inline')
       }

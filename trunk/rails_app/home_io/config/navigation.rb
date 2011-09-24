@@ -50,8 +50,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sec.item :meas_by_type, 'Types', meas_types_path
 
-      #sec.item :meas_by_type, 'Archived', meas_type_meas_archives_path('all') do |ter|
-      sec.item :meas_by_type, 'Archived', meas_types_path do |ter|
+      sec.item :meas_by_type, 'Archived', meas_type_meas_archives_path('all') do |ter|
         MeasType.all.each do |t|
           ter.item "meas_types_#{t.id}".to_sym, t.name_human, meas_type_meas_archives_path(t)
         end

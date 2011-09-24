@@ -36,7 +36,8 @@ class MeasArchive < ActiveRecord::Base
 
   scope :time_from, lambda {|from| { :conditions =>["time_from >= ?", from]} }
   scope :time_to, lambda {|tto| { :conditions =>["time_to <= ?", tto]} }
-  #named_scope :meas_type_id, proc {|id| puts "MID\n"*10;{ :conditions => {:meas_type_id => id} } }
+  #scope :meas_type_id, proc {|id| { :conditions => {:meas_type_id => id} } }, :if =>
+  scope :meas_type_id, lambda { |id| where(:meas_type_id => id) unless id == 'all' }
 
 
 
