@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110524212323) do
+ActiveRecord::Schema.define(:version => 20110925193559) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(:version => 20110524212323) do
     t.integer  "meas_type_id"
   end
 
-  add_index "meas_archives", ["meas_type_id", "time_from", "_time_from_ms"], :name => "meas_archive_meat_type_time_index", :unique => true
+  add_index "meas_archives", ["meas_type_id", "time_from"], :name => "meas_archive_meat_type_time_index2", :unique => true
 
   create_table "meas_types", :force => true do |t|
     t.string   "name",       :limit => 64,                  :null => false
