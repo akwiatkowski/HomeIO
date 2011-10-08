@@ -22,6 +22,9 @@
 require 'lib/communication/tcp/tcp_comm_protocol'
 require 'lib/communication/task_server/tcp_task'
 require 'lib/utils/config_loader'
+require 'lib/storage/storage_active_record'
+require 'lib/storage/active_record/backend_models/weather_archive'
+require 'lib/storage/active_record/backend_models/weather_metar_archive'
 
 # Run this file in cron to check if servers are running ok.
 # They tend to freeze every week, I know this issue but it is hard to analyze
@@ -33,12 +36,21 @@ class BackendWatchdog
 
   # restart control backend if earliest measurement is more than ... ago
   MEASUREMENTS_TIMEOUT = 15*60
+  # restart weather backend if weathers are ... ago
+  WEATHER_TIMEOUT = 12*3600
+  METAR_TIMEOUT = 2*3600
 
+  # show some info
   VERBOSE = true
+
+  # right to kill
+  ARMED = true
 
   def initialize
     @tcp_config = ConfigLoader.instance.config('TcpCommTaskServer')
     @tcp_port = @tcp_config[:port]
+
+    @storage_ar = StorageActiveRecord.instance
   end
 
   def get_pids
@@ -58,16 +70,39 @@ class BackendWatchdog
     return pid
   end
 
-# Check if latest WeatherArchive was updated later than 12 hours ago
-# and latest WeatherMetarArchive was updated later than 3 hours ago
+  # Check if latest WeatherArchive was updated later than 12 hours ago
+  # and latest WeatherMetarArchive was updated later than 2 hours ago
   def check_weather_backend
+    # fetch last 20 WeatherArchive and WeatherMetarArchive sorting by id
+    # and calculate minimum time
 
+    a = WeatherArchive.order("id DESC").limit(20).all
+    time = a.collect { |w| w.updated_at }.min
+    time_d = Time.now - time
+    puts "Weather interval = #{time_d}" if VERBOSE
+
+    if time_d > WEATHER_TIMEOUT
+      puts "Weather backend timeout"
+      return true
+    end
+
+    a = WeatherMetarArchive.order("id DESC").limit(20).all
+    time = a.collect { |w| w.updated_at }.min
+    time_d = Time.now - time
+    puts "Weather (metar) interval = #{time_d}" if VERBOSE
+
+    if time_d > WEATHER_TIMEOUT
+      puts "Weather backend timeout"
+      return true
+    end
+
+    return false
   end
 
-# Tries to get current measurements via TCP, check if all of them are at least
-# later than 15 minutes ago
-#
-# Warning: time sync issue on virtual machines
+  # Tries to get current measurements via TCP, check if all of them are at least
+  # later than 15 minutes ago
+  #
+  # Warning: time sync issue on virtual machines
   def check_control_backend
     comm = TcpTask.factory(
       {
@@ -96,5 +131,6 @@ class BackendWatchdog
 end
 
 b = BackendWatchdog.new
-puts b.check_control_backend.inspect
+#puts b.check_control_backend.inspect
+puts b.check_weather_backend
 
