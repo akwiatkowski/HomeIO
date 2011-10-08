@@ -32,7 +32,11 @@
     var x = data["x"];
     var y = data["y"];
 
-    var lines = r#{graph_div_html_id}.g.linechart(#{padding}, 0, #{width}, #{height}, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: #{smooth} });
+    if (x.length > 0) {
+      var lines = r#{graph_div_html_id}.g.linechart(#{padding}, 0, #{width}, #{height}, x, y, {nostroke: false, axis: "0 0 1 1", symbol: "x", smooth: #{smooth} });
+    } else {
+       // alert('no data');
+    };
 
   });
 
