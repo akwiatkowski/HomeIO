@@ -1,0 +1,23 @@
+%h2= "Measurement type groups"
+
+%table.data_table
+  %thead
+    %tr
+      %th= "Group name"
+      %th= "Unit"
+      %th{:colspan => 2}= "Actions"
+
+  - @meas_type_groups.each do |meas_type_group|
+    %tr{:class => cycle("even", "odd")}
+      %td= meas_type_group.name
+      %td= meas_type_group.unit
+      %td= link_to 'Show', meas_type_group
+      %td
+        - if can?(:manage, MeasTypeGroup)
+          = link_to 'Edit', edit_meas_type_group_path(meas_type_group)
+      %td
+        - if can?(:manage, MeasTypeGroup)
+          = link_to 'Destroy', meas_type_group, :confirm => 'Are you sure?', :method => :delete
+
+- if can?(:manage, MeasTypeGroup)
+  = link_to 'New Meas type group', new_meas_type_group_path

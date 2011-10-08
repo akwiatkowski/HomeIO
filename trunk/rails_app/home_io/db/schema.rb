@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110925193559) do
+ActiveRecord::Schema.define(:version => 20111008155553) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -93,11 +93,19 @@ ActiveRecord::Schema.define(:version => 20110925193559) do
 
   add_index "meas_archives", ["meas_type_id", "time_from"], :name => "meas_archive_meat_type_time_index2", :unique => true
 
-  create_table "meas_types", :force => true do |t|
-    t.string   "name",       :limit => 64,                  :null => false
+  create_table "meas_type_groups", :force => true do |t|
+    t.string   "name",       :default => "", :null => false
+    t.string   "unit",       :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "unit",       :limit => 32, :default => "?", :null => false
+  end
+
+  create_table "meas_types", :force => true do |t|
+    t.string   "name",               :limit => 64,                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "unit",               :limit => 32, :default => "?", :null => false
+    t.integer  "meas_type_group_id"
   end
 
   add_index "meas_types", ["name"], :name => "index_meas_types_on_name", :unique => true
@@ -198,6 +206,8 @@ ActiveRecord::Schema.define(:version => 20110925193559) do
   add_foreign_key "home_archives", "users", :name => "home_archives_user_id_fk", :dependent => :restrict
 
   add_foreign_key "meas_archives", "meas_types", :name => "meas_archives_meas_type_id_fk", :dependent => :restrict
+
+  add_foreign_key "meas_types", "meas_type_groups", :name => "meas_types_meas_type_group_id_fk"
 
   add_foreign_key "overseer_parameters", "overseers", :name => "overseer_parameters_overseer_id_fk", :dependent => :delete
 

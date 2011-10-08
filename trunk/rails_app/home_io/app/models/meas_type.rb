@@ -23,6 +23,7 @@
 # Measurement types
 
 class MeasType < ActiveRecord::Base
+  belongs_to :meas_type_group
   has_many :meas_archives
 
   validates_presence_of :name

@@ -55,6 +55,8 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
+      sec.item :meas_manage, 'Groups', meas_type_groups_path, :if => Proc.new { can?(:read, MeasTypeGroup) }
+
       sec.item :meas_manage, 'Manage', meas_types_path, :if => Proc.new { can?(:manage, MeasType) }
 
       #sec.item :meas_current, 'Current', meas_type_meas_archives_path(0)

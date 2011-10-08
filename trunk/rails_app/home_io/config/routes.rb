@@ -1,4 +1,6 @@
 HomeIo::Application.routes.draw do
+  resources :meas_type_groups
+
   # statistics calculated by day
   resources :day_statistics, :except => [:new, :create, :edit, :update, :delete]
 
@@ -38,7 +40,7 @@ HomeIo::Application.routes.draw do
   resources :memos
 
 # measurement types
-  resources :meas_types, :only => [:show, :edit, :index] do
+  resources :meas_types, :only => [:show, :edit, :index, :update] do
     resources :meas_archives do
       get :chart, :on => :collection
       resources :comments
