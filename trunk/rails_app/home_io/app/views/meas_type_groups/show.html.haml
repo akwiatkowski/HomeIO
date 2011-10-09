@@ -16,6 +16,7 @@
         = link_to meas_type.name, meas_type
         = ", "
         = link_to "cache", meas_type_meas_cache_path(meas_type)
+        = link_to "(graph)", meas_type_meas_cache_path(meas_type, :png)
         = ", "
         = link_to "archived", meas_type_meas_archive_path(meas_type)
 

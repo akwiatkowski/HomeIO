@@ -23,5 +23,18 @@
           = check_box_tag "meas_type_group[meas_type_ids][]", meas_type.id, @meas_type_group.meas_types.include?(meas_type)
           = meas_type.name_human
 
+  .field
+    = f.label :y_min
+    %br/
+    = f.text_field :y_min
+  .field
+    = f.label :y_max
+    %br/
+    = f.text_field :y_max
+  .field
+    = f.label :y_interval
+    %br/
+    = f.text_field :y_interval
+
   .actions
     = f.submit

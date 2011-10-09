@@ -2,6 +2,7 @@ class MeasTypeGroupsController < ApplicationController
   # GET /meas_type_groups
   # GET /meas_type_groups.xml
   def index
+    authorize! :read, MeasTypeGroup
     @meas_type_groups = MeasTypeGroup.all
 
     respond_to do |format|
@@ -13,6 +14,7 @@ class MeasTypeGroupsController < ApplicationController
   # GET /meas_type_groups/1
   # GET /meas_type_groups/1.xml
   def show
+    authorize! :read, MeasTypeGroup
     @meas_type_group = MeasTypeGroup.find(params[:id])
 
     respond_to do |format|
@@ -24,6 +26,7 @@ class MeasTypeGroupsController < ApplicationController
   # GET /meas_type_groups/new
   # GET /meas_type_groups/new.xml
   def new
+    authorize! :manage, MeasTypeGroup
     @meas_type_group = MeasTypeGroup.new
 
     respond_to do |format|
@@ -34,12 +37,14 @@ class MeasTypeGroupsController < ApplicationController
 
   # GET /meas_type_groups/1/edit
   def edit
+    authorize! :manage, MeasTypeGroup
     @meas_type_group = MeasTypeGroup.find(params[:id])
   end
 
   # POST /meas_type_groups
   # POST /meas_type_groups.xml
   def create
+    authorize! :manage, MeasTypeGroup
     @meas_type_group = MeasTypeGroup.new(params[:meas_type_group])
 
     respond_to do |format|
@@ -56,6 +61,7 @@ class MeasTypeGroupsController < ApplicationController
   # PUT /meas_type_groups/1
   # PUT /meas_type_groups/1.xml
   def update
+    authorize! :manage, MeasTypeGroup
     @meas_type_group = MeasTypeGroup.find(params[:id])
 
     respond_to do |format|

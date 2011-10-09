@@ -1,11 +1,14 @@
 HomeIo::Application.routes.draw do
-  resources :meas_type_groups
+
+  resources :meas_type_groups do
+    resource :meas_type_group_graph, :only => [:show]
+  end
 
   # statistics calculated by day
-  resources :day_statistics, :except => [:new, :create, :edit, :update, :delete]
+  resources :day_statistics, :only => [:index, :show]
 
   # all in one place
-  resource :dashboard, :except => [:new, :create, :edit, :update, :delete]
+  resource :dashboard, :only => [:index, :show]
 
   resources :home_archives
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111009125728) do
+ActiveRecord::Schema.define(:version => 20111009144208) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -98,6 +98,9 @@ ActiveRecord::Schema.define(:version => 20111009125728) do
     t.string   "unit",       :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "y_min"
+    t.float    "y_max"
+    t.float    "y_interval"
   end
 
   create_table "meas_type_groups_meas_types", :id => false, :force => true do |t|
