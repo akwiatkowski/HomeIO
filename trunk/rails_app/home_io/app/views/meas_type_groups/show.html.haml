@@ -1,0 +1,24 @@
+%h2= "Measurement type group - #{@meas_type_group.name}"
+
+%p
+  %b= "Name:"
+  = @meas_type_group.name
+
+%p
+  %b= "Unit:"
+  = @meas_type_group.unit
+
+%p
+  %b= "Measurement types:"
+  %ul
+    - @meas_type_group.meas_types.each do |meas_type|
+      %li
+        = link_to meas_type.name, meas_type
+        = ", "
+        = link_to "cache", meas_type_meas_cache_path(meas_type)
+        = ", "
+        = link_to "archived", meas_type_meas_archive_path(meas_type)
+
+- if can?(:manage, MeasTypeGroup)
+  = link_to 'Edit', edit_meas_type_group_path(@meas_type_group)
+= link_to 'Back', meas_type_groups_path

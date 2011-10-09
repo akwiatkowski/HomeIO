@@ -44,8 +44,7 @@
     #top_navcontainer
       = render_navigation :renderer => :breadcrumbs, :join_with => " &gt; "
     #left_navcontainer
-      -# = render_navigation :expand_all => true
-      = render_navigation :expand_all => false
+      = render_navigation :expand_all => true
     #content_container
       - unless flash.blank?
         #flash
