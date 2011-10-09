@@ -15,5 +15,13 @@
     = f.label :unit
     %br/
     = f.text_field :unit
+
+  .field
+    %ul
+      - for meas_type in MeasType.all
+        %li
+          = check_box_tag "meas_type_group[meas_type_ids][]", meas_type.id, @meas_type_group.meas_types.include?(meas_type)
+          = meas_type.name_human
+
   .actions
     = f.submit

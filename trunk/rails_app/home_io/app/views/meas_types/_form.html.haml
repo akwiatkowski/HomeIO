@@ -11,10 +11,11 @@
     = f.label :unit
     %br/
     = f.text_field :unit
-  .field
-    = f.label :meas_type_group
-    %br/
-    = f.select("meas_type_group_id", MeasTypeGroup.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
+  - if false
+    .field
+      = f.label :meas_type_group
+      %br/
+      = f.select("meas_type_group_id", MeasTypeGroup.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 
 
   .actions
