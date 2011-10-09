@@ -73,8 +73,8 @@ class MeasTypeGroupGraph
           :y_axis_count => group.y_interval,
           :x_axis_fixed_interval => true,
           :y_axis_fixed_interval => false,
-          #:width => WIDTH,
-          #:height => HEIGHT,
+          :width => 8000,
+          :height => 2000,
 
           :y_min => group.y_min,
           :y_max => group.y_max,
