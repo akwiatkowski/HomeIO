@@ -20,6 +20,9 @@
         = ", "
         = link_to "archived", meas_type_meas_archive_path(meas_type)
 
+%p
+  = link_to "Group graph", meas_type_group_meas_type_group_graph_path(@meas_type_group)
+
 - if can?(:manage, MeasTypeGroup)
   = link_to 'Edit', edit_meas_type_group_path(@meas_type_group)
 = link_to 'Back', meas_type_groups_path
