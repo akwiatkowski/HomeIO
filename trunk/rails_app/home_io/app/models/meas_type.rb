@@ -38,7 +38,7 @@ class MeasType < ActiveRecord::Base
   # recent measurements
   # not working, maybe later rewrite
   #scope :recent_measurements, lambda { |meas_type_id| where('id = ?', meas_type_id).meas_archives.recent }
-  
+
   # Use I18n
   def name_human
     self.name.humanize

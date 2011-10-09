@@ -22,25 +22,7 @@
 
 # Measurement types
 
-# some issues with HABTM
+require 'lib/storage/active_record/rails_models/meas_type_group'
 
-#require 'lib/storage/active_record/rails_models/meas_type'
-
-#class MeasType
-#end
-
-class MeasType < ActiveRecord::Base
-  has_many :meas_archives
-
-  validates_presence_of :name
-  validates_uniqueness_of :name
-
-  set_inheritance_column :sti_type
-
-  # Use I18n
-  def name_human
-    self.name.humanize
-  end
-
+class MeasTypeGroup
 end
-
