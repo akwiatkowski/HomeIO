@@ -80,7 +80,7 @@ class MeasArchiveBackup
     f.puts "meas_type.name;time_from_unix;time_to_unix;raw;value;"
 
     ma.each do |m|
-      meas_type_name = @meas_types.select{|mt| mt.id = m.meas_type_id}.first.name
+      meas_type_name = @meas_types.select{|mt| mt.id == m.meas_type_id}.first.name
       f.puts "#{meas_type_name};#{m.time_from.to_f};#{m.time_to.to_f};#{m.raw};#{m.value};"
     end
 
