@@ -30,8 +30,8 @@ require 'lib/storage/active_record/backend_models/meas_archive'
 class MeasArchiveBackup
 
   # amount of meas. fetched in 1 step
-  #INTERVAL = 10_000
-  INTERVAL = 2000
+  INTERVAL = 50_000
+  #INTERVAL = 2000
 
   # show some info
   VERBOSE = true
