@@ -1,10 +1,11 @@
 source 'http://rubygems.org'
 
 # main
-gem 'rails', '3.0.9'
+#gem 'rails', '3.0.9'
+gem 'rails', '3.1.1'
 gem 'rake'
-gem 'rack', '1.2.1' #'1.2.4'
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+#gem 'rack', '1.2.1' #'1.2.4'
+gem 'rack' #, '1.2.1' #'1.2.4'
 
 # deployment
 gem 'passenger', '3.0.7'
@@ -59,7 +60,7 @@ gem 'barista'
 # gem 'rmagick'
 
 # graphs
-gem 'technical_graph', '0.2.0'
+gem 'technical_graph', '0.3.1'
 
 # backend addons
 gem 'geokit'
