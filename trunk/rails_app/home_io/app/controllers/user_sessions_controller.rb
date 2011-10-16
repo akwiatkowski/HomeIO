@@ -20,7 +20,6 @@ class UserSessionsController < ApplicationController
   end
 
   def show
-    
   end
 
   def logout

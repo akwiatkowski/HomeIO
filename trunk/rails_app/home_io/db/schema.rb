@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111009144208) do
+ActiveRecord::Schema.define(:version => 20111016154431) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -65,6 +65,23 @@ ActiveRecord::Schema.define(:version => 20111009144208) do
   add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
   add_index "comments", ["commentable_type"], :name => "index_comments_on_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "job_class"
+    t.integer  "progress",   :default => 0, :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "home_archive_types", :force => true do |t|
     t.string   "name"
@@ -145,6 +162,13 @@ ActiveRecord::Schema.define(:version => 20111009144208) do
   end
 
   add_index "overseers", ["name"], :name => "index_overseers_on_name", :unique => true
+
+  create_table "user_tasks", :force => true do |t|
+    t.integer "user_id"
+    t.integer "delayed_job_id"
+    t.text    "params"
+    t.string  "klass"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login",                                  :null => false

@@ -46,6 +46,9 @@ class User < ActiveRecord::Base
 
   has_many :home_archives
 
+  has_many :user_tasks
+  has_many :delayed_jobs, :through => :user_tasks
+
   default_scope :order => 'created_at ASC'
 
 end

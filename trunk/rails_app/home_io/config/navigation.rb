@@ -57,7 +57,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       sec.item :meas_type_groups, 'Groups', meas_type_groups_path, :if => Proc.new { can?(:read, MeasTypeGroup) } do |ter|
         MeasTypeGroup.all.each do |t|
-          ter.item "meas_type_gruop_#{t.id}".to_sym, t.name.humanize, action_type_action_events_path(t)
+          ter.item "meas_type_gruop_#{t.id}".to_sym, t.name.humanize, meas_type_group_path(t)
         end
       end
 

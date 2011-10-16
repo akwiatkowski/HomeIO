@@ -1,28 +1,8 @@
 %h2= "Measurement group graph"
 
-= form_tag params.clone, :method => :get
-= "Time ranges from "
-= text_field_tag :time_from, params[:time_from] || (Time.now - 1.day).to_s(:db)
-= " to "
-= text_field_tag :time_to, params[:time_to] || Time.now.to_s(:db)
-= submit_tag "Filter"
-
-%hr
-
-%ul
-  - @meas_type_group_graph[:meas].each do |m|
-    %li
-      = m[:meas_type].name_human
-      = " - "
-      = m[:meas_archives_count]
-      = " measurements"
-
-%hr
-
 %p
-  = link_to "Graph (png)", params.clone.merge({:format => :png})
+  = "Graph is being created right now..."
 
-%p
-  = "Process time "
-  = @process_time.to_i
-  = " seconds"
+
+= debug @mtgg
+= debug @job

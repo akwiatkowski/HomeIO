@@ -1,7 +1,12 @@
 class MeasTypeGroupGraphsController < ApplicationController
   def show
+    @graph = GraphTask.new(params, session)
+    @job = Delayed::Job.enqueue(@graph)
+  end
+
+  def show_old
     t = Time.now
-    @meas_type_group_graph = MeasTypeGroupGraph.find(params, current_user)
+    @meas_type_group_graph = GraphTask.find(params, current_user)
     @process_time = Time.now - t
 
     respond_to do |format|
