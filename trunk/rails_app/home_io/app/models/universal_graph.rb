@@ -97,11 +97,23 @@ class UniversalGraph
       :y_max => ys.max,
 
       :layers_antialias => antialias,
-      :font_antialias => antialias
+      :font_antialias => antialias,
     }.merge(STD_OPTIONS)
 
+    layer_params = {
+      :simple_smoother => true,
+      :simple_smoother_level => 20,
+      :simple_smoother_strategy => :gauss,
+      :simple_smoother_x => true,
+      :color => 'red'
+    }
+    layer_params_raw = {
+      :color => 'blue'
+    }
+
     tg = TechnicalGraph.new(h)
-    tg.add_layer(data)
+    tg.add_layer(data, layer_params_raw)
+    tg.add_layer(data, layer_params)
     tg.render
 
     return tg.image_drawer.to_png
