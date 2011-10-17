@@ -40,14 +40,22 @@ class GraphTask
 
   def time_from
     if @time_from.nil?
-      @time_from = Time.at(params[:time_from].to_f) || time_to - 10.minutes
+      begin
+        @time_from = params[:time_from].to_time
+      rescue
+        @time_from = time_to - 10.minutes
+      end
     end
     return @time_from
   end
 
   def time_to
     if @time_to.nil?
-      @time_to = Time.at(params[:time_to].to_f) || Time.now
+      begin
+        @time_to = params[:time_to].to_time
+      rescue
+        @time_to = Time.now
+      end
     end
     return @time_to
   end
@@ -135,14 +143,14 @@ class GraphTask
 
   # Fetch measurements to layer
   def fetch_measurement_type(type)
-    measurements = MeasArchive.where(
-      [
+    conditions = [
         "meas_type_id = ? and time_from >= ? and time_from <= ?",
         type.id,
         time_from,
         time_to
       ]
-    ).all
+    puts "Fetching measurements, conditions #{conditions.inspect}"
+    measurements = MeasArchive.where(conditions).all
 
     meas_data = Array.new
     measurements.each do |m|
@@ -178,14 +186,15 @@ class GraphTask
 
     # fetch if city has any weather data
     if not weather_klass.nil?
-      weather_db_data = weather_klass.where(
-        [
+      conditions = [
           "city_id = ? and time_from >= ? and time_from <= ?",
           city.id,
           time_from,
           time_to
         ]
-      )
+      puts "Fetching weather data, conditions #{conditions.inspect}"
+      weather_db_data = weather_klass.where(conditions).all
+
     end
 
     # TODO it would be nice to crate something that translate snow to snow_metar when needed
