@@ -25,4 +25,6 @@
 class UserTask < ActiveRecord::Base
   belongs_to :user
   belongs_to :delayed_job
+
+  serialize :params
 end

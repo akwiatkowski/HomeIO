@@ -1,7 +1,11 @@
 class MeasTypeGroupGraphsController < ApplicationController
   def show
-    @graph = GraphTask.new(params, session)
-    @job = Delayed::Job.enqueue(@graph)
+    if params[:start]
+      @graph = GraphTask.new(params, session)
+      puts "Starting GraphTask"
+      @job = Delayed::Job.enqueue(@graph)
+      @graph.delayed_job_id = @job.id
+    end
   end
 
   def show_old

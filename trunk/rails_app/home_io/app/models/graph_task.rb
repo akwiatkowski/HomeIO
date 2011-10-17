@@ -24,36 +24,202 @@
 
 class GraphTask
 
-  def initialize(params, session, options = {})
-    klass = ''
+  # for future version
+  FETCH_INTERVAL = 1.day
 
+  # where store graphs and semi-outputs
+  DIR_PATH = File.join(Rails.root, "tmp", "graphs")
 
+  def initialize(params, session, options = { })
     @params = params
+    @user_id = session[:user_id]
+    @options = options
+  end
+
+  attr_reader :params
+
+  def time_from
+    if @time_from.nil?
+      @time_from = Time.at(params[:time_from].to_f) || time_to - 10.minutes
+    end
+    return @time_from
+  end
+
+  def time_to
+    if @time_to.nil?
+      @time_to = Time.at(params[:time_to].to_f) || Time.now
+    end
+    return @time_to
   end
 
   def perform
-    10.times do
-      sleep 5
-      puts @params.inspect
+    begin
+      perform_inside
+    rescue => e
+      puts e.inspect
+      puts e.backtrace
     end
   end
 
-  
+  def perform_inside
+    @task = UserTask.new(
+      {
+        :user_id => @user_id,
+        :params => params,
+        :delayed_job => @delayed_job_id
+      })
+    @task.save!
+
+    puts "Starting GraphTask, id #{@task.id}"
+
+    layers = fetch_data
+    puts "Data fetched, id #{@task.id}"
+
+    # create dir for outputs
+    Dir.mkdir(DIR_PATH) if not File.exists?(DIR_PATH)
+    file_name = File.join(DIR_PATH, "#{@task.id}.yml")
+    File.open(file_name, 'w') do |out|
+      out.write(layers.to_yaml)
+    end
+    puts "Data save to #{file_name}, id #{@task.id}"
+
+    # create graph
+    file_name = File.join(DIR_PATH, "#{@task.id}.png")
+    create_graphs(layers, file_name)
+    puts "Graph created #{file_name}, id #{@task.id}"
+
+  end
+
+  # Connect with DelayedJob
+  def delayed_job_id=(did)
+    # whatever is first
+    if @task.nil?
+      @delayed_job_id = did
+    else
+      @task.update_attribute(:delayed_job_id, did)
+    end
+  end
+
+  def klass=(k)
+    @task.update_attribute(:klass, dj.id)
+  end
+
+
+  # First part, fetching data from DB
   def fetch_data
+    layers = Array.new
+
     if params[:meas_type_group_id]
-      klass = MeasTypeGroup
+      # selected types
+      klass = 'MeasTypeGroup'
+      types = MeasTypeGroup.find(params[:meas_type_group_id]).types
+      types.each do |type|
+        layers << fetch_measurement_type(type)
+      end
     end
     if params[:meas_type_id]
-      klass = MeasType
+      # one type
+      klass = 'MeasType'
+      type = MeasType.find(params[:meas_type_id])
+      layers << fetch_measurement_type(type)
     end
-    if params[:meas_type_id]
-      klass = MeasType
+    if params[:city_id]
+      klass = 'City' # TODO or WeatherArchive / WeatherMetarArchive
+      city = City.find(params[:city_id])
+      type = params[:type] || 'temperature'
+      layers << fetch_weather_data(city, type)
     end
 
+    return layers
   end
 
+  # Fetch measurements to layer
+  def fetch_measurement_type(type)
+    measurements = MeasArchive.where(
+      [
+        "meas_type_id = ? and time_from >= ? and time_from <= ?",
+        type.id,
+        time_from,
+        time_to
+      ]
+    ).all
 
-  
+    meas_data = Array.new
+    measurements.each do |m|
+      meas_data << {
+        :x => Time.now.to_f - (m.time_from.to_f + m.time_to.to_f) / 2.0,
+        :y => m.value
+      }
+    end
+
+    layer_options = {
+      :label => type.name_human + " [#{type.unit}]"
+    }
+
+    layer = {
+      :data => meas_data,
+      :options => layer_options
+    }
+
+    return layer
+  end
+
+  # Fetch weather data
+  def fetch_weather_data(city, type)
+    weather_db_data = Array.new
+
+    # choose class depends on city definition
+    weather_klass = nil
+    if city.logged_metar
+      weather_klass = WeatherMetarArchive
+    elsif city.logged_weather
+      weather_klass = WeatherArchive
+    end
+
+    # fetch if city has any weather data
+    if not weather_klass.nil?
+      weather_db_data = weather_klass.where(
+        [
+          "city_id = ? and time_from >= ? and time_from <= ?",
+          city.id,
+          time_from,
+          time_to
+        ]
+      )
+    end
+
+    # TODO it would be nice to crate something that translate snow to snow_metar when needed
+
+    weather_data = Array.new
+    weather_db_data.each do |w|
+      weather_data << {
+        :x => Time.now.to_f - (m.time_from.to_f + m.time_to.to_f) / 2.0,
+        :y => m.attributes[type.to_sym]
+      }
+    end
+
+    layer_options = {
+      :label => type.humanize
+    }
+
+    layer = {
+      :data => weather_data,
+      :options => layer_options
+    }
+
+    return layer
+  end
+
+  # Create sweet graph
+  def create_graphs(layers, file_path)
+    tg = TechnicalGraph.new
+    layers.each do |l|
+      tg.add_layer(l[:data], l[:options])
+    end
+    tg.render
+    tg.image_drawer.save_to_file(file_path)
+  end
+
 
   ## What is returned when user was not polite
   #EMPTY = {

@@ -1,8 +1,19 @@
 %h2= "Measurement group graph"
 
-%p
+= form_tag params.clone, :method => :get
+= hidden_field_tag :start, true
+= "Time ranges from "
+= text_field_tag :time_from, params[:time_from] || (Time.now - 1.day).to_s(:db)
+= " to "
+= text_field_tag :time_to, params[:time_to] || Time.now.to_s(:db)
+= submit_tag "Filter"
+
+%hr
+
+- if @graph and @job
   = "Graph is being created right now..."
 
+%hr
 
 = debug @mtgg
 = debug @job
