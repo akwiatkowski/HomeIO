@@ -35,11 +35,11 @@ class MeasArchive < ActiveRecord::Base
   scope :recent, :order => "time_from DESC", :include => :meas_type
 
   scope :time_from, lambda {|from|
-    tf = from.to_time
+    tf = from.to_time(:local)
     where ["time_from >= ?", tf]
     }
   scope :time_to, lambda {|tto|
-    tt = tto.to_time
+    tt = tto.to_time(:local)
     where ["time_to <= ?", tt]
   }
   scope :meas_type_id, lambda { |id| where(:meas_type_id => id) unless id == 'all' }

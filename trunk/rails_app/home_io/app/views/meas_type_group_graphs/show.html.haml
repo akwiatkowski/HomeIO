@@ -2,10 +2,21 @@
 
 = form_tag params.clone, :method => :get
 = hidden_field_tag :start, true
+
 = "Time ranges from "
 = text_field_tag :time_from, params[:time_from] || (Time.now - 1.day).to_s(:db)
 = " to "
 = text_field_tag :time_to, params[:time_to] || Time.now.to_s(:db)
+%br
+
+= check_box_tag :smooth, true, params[:smooth]
+= " enable data smoothing"
+%br
+
+= check_box_tag :noise_removal, true, params[:noise_removal]
+= " enable data noise_removal"
+%br
+
 = submit_tag "Filter"
 
 %hr

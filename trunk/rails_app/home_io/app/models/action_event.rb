@@ -38,11 +38,11 @@ class ActionEvent < ActiveRecord::Base
   acts_as_commentable
 
   scope :time_from, lambda {|from|
-    tf = from.to_time
+    tf = from.to_time(:local)
     where ["time >= ?", tf]
     }
   scope :time_to, lambda {|tto|
-    tt = tto.to_time
+    tt = tto.to_time(:local)
     where ["time <= ?", tt]
   }
   scope :action_type_id, lambda { |id| where(:action_type_id => id) unless id == 'all' }

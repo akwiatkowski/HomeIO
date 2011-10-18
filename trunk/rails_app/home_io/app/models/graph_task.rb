@@ -30,18 +30,63 @@ class GraphTask
   # where store graphs and semi-outputs
   DIR_PATH = File.join(Rails.root, "tmp", "graphs")
 
+  GRAPH_OPTIONS = {
+    :axis_density_enlarge_image => true,
+    :x_axis_min_distance => 300,
+    :y_axis_min_distance => 200,
+
+    :x_axis_fixed_interval => true,
+    :x_axis_interval => 1, # default hourly or daily
+
+    :y_axis_fixed_interval => false, # override in meas_type_group to use set interval
+    :y_axis_count => 10,
+
+    :x_axis_label => 'time [hours]',
+    :y_axis_label => 'value',
+
+    :legend => true,
+    :legend_auto => true,
+    :legend_width => 150,
+    :legend_margin => 60
+  }
+
+
   def initialize(params, session, options = { })
     @params = params
     @user_id = session[:user_id]
     @options = options
+
+    @graph_options = GRAPH_OPTIONS.clone
   end
 
-  attr_reader :params
+  attr_reader :params, :graph_options, :options
+
+  # Some minor changes to layer options, like smoothing
+  # Set by options or params
+  def layer_options_mods
+    return @layer_options_mods if not @layer_options_mods.nil?
+    @layer_options_mods = Hash.new
+
+    if options[:smooth] or params[:smooth]
+      @layer_options_mods[:simple_smoother] = true
+      @layer_options_mods[:simple_smoother_level] = 20
+      @layer_options_mods[:simple_smoother_strategy] = :gauss
+      @layer_options_mods[:simple_smoother_x] = true
+    end
+
+    if options[:noise_removal] or params[:noise_removal]
+      @layer_options_mods[:noise_removal] = true
+      @layer_options_mods[:noise_removal_level] = 3 # 3 default
+      @layer_options_mods[:noise_removal_window_size] = 10 # 10 default
+    end
+
+    return @layer_options_mods
+  end
 
   def time_from
     if @time_from.nil?
       begin
-        @time_from = params[:time_from].to_time
+        @time_from = params[:time_from].to_time(:local)
       rescue
         @time_from = time_to - 10.minutes
       end
@@ -52,7 +97,7 @@ class GraphTask
   def time_to
     if @time_to.nil?
       begin
-        @time_to = params[:time_to].to_time
+        @time_to = params[:time_to].to_time(:local)
       rescue
         @time_to = Time.now
       end
@@ -85,9 +130,9 @@ class GraphTask
 
     # create dir for outputs
     Dir.mkdir(DIR_PATH) if not File.exists?(DIR_PATH)
-    file_name = File.join(DIR_PATH, "#{@task.id}.yml")
+    file_name = File.join(DIR_PATH, "#{@task.id}.json")
     File.open(file_name, 'w') do |out|
-      out.write(layers.to_yaml)
+      out.write(layers.to_json)
     end
     puts "Data save to #{file_name}, id #{@task.id}"
 
@@ -120,7 +165,15 @@ class GraphTask
     if params[:meas_type_group_id]
       # selected types
       klass = 'MeasTypeGroup'
-      types = MeasTypeGroup.find(params[:meas_type_group_id]).types
+      group = MeasTypeGroup.find(params[:meas_type_group_id])
+      types = group.types
+
+      # groups store some extra options
+      graph_options[:y_min] = group.y_min
+      graph_options[:y_max] = group.y_max
+      graph_options[:y_axis_interval] = group.y_interval
+      #graph_options[:xy_behaviour] = :fixed # maybe someday as an option
+
       types.each do |type|
         layers << fetch_measurement_type(type)
       end
@@ -129,12 +182,18 @@ class GraphTask
       # one type
       klass = 'MeasType'
       type = MeasType.find(params[:meas_type_id])
-      layers << fetch_measurement_type(type)
+      layer = fetch_measurement_type(type)
+      layers << layer
     end
     if params[:city_id]
       klass = 'City' # TODO or WeatherArchive / WeatherMetarArchive
       city = City.find(params[:city_id])
       type = params[:type] || 'temperature'
+
+      graph_options[:y_axis_label] = type
+      graph_options[:x_axis_label] = 'time [days]'
+      graph_options[:x_axis_interval] = 24*3600
+
       layers << fetch_weather_data(city, type)
     end
 
@@ -144,25 +203,26 @@ class GraphTask
   # Fetch measurements to layer
   def fetch_measurement_type(type)
     conditions = [
-        "meas_type_id = ? and time_from >= ? and time_from <= ?",
-        type.id,
-        time_from,
-        time_to
-      ]
+      "meas_type_id = ? and time_from >= ? and time_from <= ?",
+      type.id,
+      time_from,
+      time_to
+    ]
     puts "Fetching measurements, conditions #{conditions.inspect}"
     measurements = MeasArchive.where(conditions).all
+    puts "Fetched measurements, size #{measurements.size}"
 
     meas_data = Array.new
     measurements.each do |m|
       meas_data << {
-        :x => Time.now.to_f - (m.time_from.to_f + m.time_to.to_f) / 2.0,
+        :x => ( (m.time_from.to_f + m.time_to.to_f) / 2.0 - Time.now.to_f ) / 3600, #hours
         :y => m.value
       }
     end
 
     layer_options = {
       :label => type.name_human + " [#{type.unit}]"
-    }
+    }.merge(layer_options_mods)
 
     layer = {
       :data => meas_data,
@@ -187,13 +247,14 @@ class GraphTask
     # fetch if city has any weather data
     if not weather_klass.nil?
       conditions = [
-          "city_id = ? and time_from >= ? and time_from <= ?",
-          city.id,
-          time_from,
-          time_to
-        ]
+        "city_id = ? and time_from >= ? and time_from <= ?",
+        city.id,
+        time_from,
+        time_to
+      ]
       puts "Fetching weather data, conditions #{conditions.inspect}"
       weather_db_data = weather_klass.where(conditions).all
+      puts "Fetched weather data, size #{weather_db_data.size}"
 
     end
 
@@ -202,14 +263,14 @@ class GraphTask
     weather_data = Array.new
     weather_db_data.each do |w|
       weather_data << {
-        :x => Time.now.to_f - (m.time_from.to_f + m.time_to.to_f) / 2.0,
+        :x => ( (w.time_from.to_f + w.time_to.to_f) / 2.0 - Time.now.to_f ) / 24*3600, #hours
         :y => m.attributes[type.to_sym]
       }
     end
 
     layer_options = {
       :label => type.humanize
-    }
+    }.merge(layer_options_mods)
 
     layer = {
       :data => weather_data,
@@ -221,7 +282,7 @@ class GraphTask
 
   # Create sweet graph
   def create_graphs(layers, file_path)
-    tg = TechnicalGraph.new
+    tg = TechnicalGraph.new(GRAPH_OPTIONS)
     layers.each do |l|
       tg.add_layer(l[:data], l[:options])
     end

@@ -1,5 +1,6 @@
 class MeasTypeGroupGraphsController < ApplicationController
   def show
+    authorize! :read, MeasTypeGroup
     if params[:start]
       @graph = GraphTask.new(params, session)
       puts "Starting GraphTask"
@@ -7,6 +8,8 @@ class MeasTypeGroupGraphsController < ApplicationController
       @graph.delayed_job_id = @job.id
     end
   end
+
+  private
 
   def show_old
     t = Time.now
