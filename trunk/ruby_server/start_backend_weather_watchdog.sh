@@ -16,12 +16,12 @@
 #    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Start control backend
+# Start weather watchdog
 
-
-sleep 1
+echo "Starting weather watchdog - interval 900 seconds"
 for (( c=1; c>=0; c++ ))
 do
-  echo "Starting backend - control for $c time..."
-  ruby lib/backend_control.rb
+  sleep 900
+  echo "Starting weather watchdog - weather for $c time @ `date`..."
+  ruby lib/backend_weather_watchdog.rb
 done

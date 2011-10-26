@@ -62,6 +62,7 @@ then
   echo "No weather backend"
 else
   screen -rm homeio -X screen bash start_backend_weather.sh
+  screen -rm homeio -X screen bash start_backend_weather_watchdog.sh
 fi
 
 
@@ -82,6 +83,7 @@ then
   echo "No control backend"
 else
   screen -rm homeio -X screen bash start_backend_control.sh
+  screen -rm homeio -X screen bash start_backend_control_watchdog.sh
 fi
 
 

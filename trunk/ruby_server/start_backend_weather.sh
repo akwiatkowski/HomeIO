@@ -18,18 +18,6 @@
 
 # Start weather backend
 
-# obsolete
-# # perform RVM init
-# for var in "$@"
-# do
-#     # echo "$var"
-#     if [ $var == "--init" ]
-#     then
-#         echo "Init RVM"
-#         bash start_init.sh
-#     fi
-# done
-
 
 for (( c=1; c>=0; c++ ))
 do

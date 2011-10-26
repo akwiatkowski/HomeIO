@@ -20,12 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'lib/utils/adv_log'
-require 'lib/communication/tcp/tcp_comm_protocol'
-require 'lib/communication/task_server/tcp_task'
 require 'lib/utils/config_loader'
-require 'lib/storage/storage_active_record'
-require 'lib/storage/active_record/backend_models/weather_archive'
-require 'lib/storage/active_record/backend_models/weather_metar_archive'
 
 # Run this file in cron to check if servers are running ok.
 # They tend to freeze every week, I know this issue but it is hard to analyze
@@ -50,19 +45,58 @@ class BackendWatchdog
   DIR_PATH = "data/pid/"
 
   def initialize
-    @tcp_config = ConfigLoader.instance.config('TcpCommTaskServer')
-    @tcp_port = @tcp_config[:port]
+    @logger = AdvLog.instance.logger(self)
+  end
+
+  # Flags for using only one type
+  def can_check_weather!
+    @can_check_weather = true
+  end
+
+  def can_check_weather?
+    @can_check_weather == true
+  end
+
+  def can_check_meas!
+    @can_check_meas = true
+  end
+
+  def can_check_meas?
+    @can_check_meas == true
+  end
+
+  # DB initialization for weather checking
+  def init_for_weather_check
+    return if not @storage_ar.nil?
+
+    # separating measurements from weather
+    require 'lib/storage/storage_active_record'
+    require 'lib/storage/active_record/backend_models/weather_archive'
+    require 'lib/storage/active_record/backend_models/weather_metar_archive'
 
     @storage_ar = StorageActiveRecord.instance
+    @storage_ar
+  end
 
-    @logger = AdvLog.instance.logger(self)
+  # TCP client initialization for weather checking
+  def init_for_meas_check
+    return @tcp_port if not @tcp_port.nil?
+
+    # separating measurements from weather
+    require 'lib/communication/tcp/tcp_comm_protocol'
+    require 'lib/communication/task_server/tcp_task'
+
+    @tcp_config = ConfigLoader.instance.config('TcpCommTaskServer')
+    @tcp_port = @tcp_config[:port]
   end
 
   def scan_pids
     pids = get_pids
 
     pids.each do |p|
-      if p[:file] =~ /control/
+      if p[:file] =~ /control/ and can_check_meas?
+        init_for_meas_check
+
         txt = "Checking control"
         puts txt
         @logger.debug(txt)
@@ -70,7 +104,9 @@ class BackendWatchdog
         kill_pid(p) if check_control_backend
       end
 
-      if p[:file] =~ /weather/
+      if p[:file] =~ /weather/ and can_check_weather?
+        init_for_weather_check
+
         txt = "Checking weather"
         puts txt
         @logger.debug(txt)
@@ -122,7 +158,7 @@ class BackendWatchdog
     a = WeatherArchive.order("id DESC").limit(20).all
     time = a.collect { |w| w.updated_at }.min
     time_d = Time.now - time
-    txt = "Weather interval = #{time_d} (#{(time_d / 60).to_i} min, #{(time_d / 3600).to_i} h, threshold #{MEASUREMENTS_TIMEOUT})"
+    txt = "Weather interval = #{time_d} (#{(time_d / 60).to_i} min, #{(time_d / 3600).to_i} h, threshold #{WEATHER_TIMEOUT})"
     puts txt if VERBOSE
     @logger.debug(txt)
 
@@ -179,7 +215,7 @@ class BackendWatchdog
       txt = "Control backend timeout"
       puts txt if VERBOSE
       @logger.warn(txt)
-      
+
       return true
     else
       return false
@@ -188,6 +224,3 @@ class BackendWatchdog
   end
 
 end
-
-b = BackendWatchdog.new
-b.scan_pids

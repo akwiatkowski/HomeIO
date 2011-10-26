@@ -15,5 +15,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-# Init RVM
-# obsolete
+
+# Start control backend watchdog
+
+echo "Starting backend watchdog - interval 300 seconds"
+for (( c=1; c>=0; c++ ))
+do
+  sleep 300
+  echo "Starting backend watchdog - control for $c time @ `date`"
+  ruby lib/backend_control_watchdog.rb
+done
