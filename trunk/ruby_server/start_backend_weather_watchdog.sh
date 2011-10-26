@@ -18,10 +18,10 @@
 
 # Start weather watchdog
 
-echo "Starting weather watchdog - interval 900 seconds"
+echo "Starting weather watchdog - interval 14 400 seconds (4 hours)"
 for (( c=1; c>=0; c++ ))
 do
-  sleep 900
+  sleep 14400
   echo "Starting weather watchdog - weather for $c time @ `date`..."
   ruby lib/backend_weather_watchdog.rb
 done
