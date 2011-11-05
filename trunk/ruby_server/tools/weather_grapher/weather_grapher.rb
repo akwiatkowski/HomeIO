@@ -178,6 +178,7 @@ class WeatherGrapher
   def reset_layers
     @zero_time = nil
     @days = ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
+    puts "Time from #{time_to}, time to #{time_from}"
     puts "Days in time ranges #{@days}, image width #{@days * WIDTH_PER_DAY}"
     @tg = TechnicalGraph.new(
       GRAPH_OPTIONS.clone.merge(
