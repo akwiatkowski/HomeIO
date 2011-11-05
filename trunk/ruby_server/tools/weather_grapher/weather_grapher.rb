@@ -199,19 +199,20 @@ class WeatherGrapher
     collection = weather_klass.where(["time_from > ? and time_from < ? and city_id = ?", time_from, time_to, city_id])
     count = collection.count
     puts "#{Time.now.to_s(:db)} Fetching #{count} records"
+    data = collection.all
+    puts "#{Time.now.to_s(:db)} All data fetched"
 
     # first time
-    first = collection.order("time_from ASC").first
+    first = data.sort{|a,b| a.time_from <=> b.time_from }.first
     # setting zero time only once
     self.zero_time = first.time_from if @zero_time.nil?
     puts "#{Time.now.to_s(:db)} First time #{first.time_from.to_s(:db)}"
 
     #last time
-    last = collection.order("time_from ASC").last
+    first = data.sort{|a,b| a.time_from <=> b.time_from }.last
     puts "#{Time.now.to_s(:db)} Last time #{last.time_from.to_s(:db)}"
 
-    data = collection.all
-    puts "#{Time.now.to_s(:db)} All data fetched"
+
 
     if SAVE_FETCHED_DATA_TO_JSON_FILE
       f = File.new("#{prepare_output_filename}.json", "w")
