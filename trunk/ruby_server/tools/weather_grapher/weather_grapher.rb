@@ -209,7 +209,7 @@ class WeatherGrapher
     puts "#{Time.now.to_s(:db)} First time #{first.time_from.to_s(:db)}"
 
     #last time
-    first = data.sort{|a,b| a.time_from <=> b.time_from }.last
+    last = data.sort{|a,b| a.time_from <=> b.time_from }.last
     puts "#{Time.now.to_s(:db)} Last time #{last.time_from.to_s(:db)}"
 
 
