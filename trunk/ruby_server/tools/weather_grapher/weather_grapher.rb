@@ -59,6 +59,9 @@ class WeatherGrapher
 
   ONE_DAY = 24*3600
 
+  # graph width per one day
+  WIDTH_PER_DAY =  24*5
+
   METAR_TYPES = [
     'wind', 'snow_metar', 'rain_metar', 'temperature'
   ]
@@ -174,11 +177,13 @@ class WeatherGrapher
   # New graph
   def reset_layers
     @zero_time = nil
+    @days = ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
     @tg = TechnicalGraph.new(
       GRAPH_OPTIONS.clone.merge(
         {
           :x_min => 0,
-          :x_max => ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
+          :x_max => @days,
+          :width => @days * WIDTH_PER_DAY
         }
       ))
   end
