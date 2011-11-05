@@ -97,7 +97,6 @@ class WeatherGrapher
   def initialize
     puts "#{Time.now.to_s(:db)} #{self.class} initializing"
     StorageActiveRecord.instance
-    reset_layers
   end
 
   attr_reader :options
@@ -174,20 +173,9 @@ class WeatherGrapher
     raise 'City has no weather stored (both metar and weather flags are marked to false)' if weather_klass.nil?
   end
 
-  # New graph
+  # New graph image
   def reset_layers
-    @zero_time = nil
-    @days = ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
-    puts "Time from #{time_to}, time to #{time_from}"
-    puts "Days in time ranges #{@days}, image width #{@days * WIDTH_PER_DAY}"
-    @tg = TechnicalGraph.new(
-      GRAPH_OPTIONS.clone.merge(
-        {
-          :x_min => 0,
-          :x_max => @days,
-          :width => @days * WIDTH_PER_DAY
-        }
-      ))
+    prepare_graph
   end
 
   # Timestamp used for starting
@@ -199,7 +187,31 @@ class WeatherGrapher
     @zero_time = process_time(t)
   end
 
+  # New graph image
+  def prepare_graph
+    check_parameters
+
+    @zero_time = nil
+    @days = ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
+    puts "#{Time.now.to_s(:db)} Time from #{time_to}, time to #{time_from}"
+    puts "#{Time.now.to_s(:db)} Days in time ranges #{@days}, image width #{@days * WIDTH_PER_DAY}"
+    @tg = TechnicalGraph.new(
+      GRAPH_OPTIONS.clone.merge(
+        {
+          :x_min => 0,
+          :x_max => @days,
+          :width => @days * WIDTH_PER_DAY
+        }
+      ))
+  end
+
+  # Create graph image if wasn't created
+  def prepare_graph_if_needed
+    prepare_graph if @tg.nil?
+  end
+
   def fetch_and_create_layer
+    prepare_graph_if_needed
     check_parameters
 
     # count
