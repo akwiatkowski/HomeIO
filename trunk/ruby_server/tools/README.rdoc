@@ -1,0 +1,5 @@
+* init_d_script - draft version of old init.d/rc.d scripts for starting and restarting, not maintained
+* meas_simulator - ioserver simulator, early stage, goal - create wind turbine + ioserver simulator
+* metar_joiner - joins fetched metar logs from >1 instances into one log, it works, or at least should
+* old_meas_sql_to_yml - util for exporting measurements using very old, pre homeio application, it worked some time ago
+* weather_grapher - utility to create graphs for weather graphs, used for prototyping for web app and for offline graphs
