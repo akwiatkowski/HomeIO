@@ -76,7 +76,6 @@ class WeatherGrapher
 
       w = WeatherGrapher.new
       w.both_smooth_and_raw
-      w.reset_layers
 
       w.weather_type = t
       w.time_from = Time.mktime(year) #'2009-01-01 0:00:00'.to_time
@@ -87,6 +86,7 @@ class WeatherGrapher
       #w.only_raw
       w.both_smooth_and_raw
 
+      w.reset_layers
       w.fetch_and_create_layer
       w.finish_graph
     end
