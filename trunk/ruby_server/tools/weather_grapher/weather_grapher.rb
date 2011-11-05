@@ -174,7 +174,13 @@ class WeatherGrapher
   # New graph
   def reset_layers
     @zero_time = nil
-    @tg = TechnicalGraph.new(GRAPH_OPTIONS)
+    @tg = TechnicalGraph.new(
+      GRAPH_OPTIONS.clone.merge(
+        {
+          :x_min => 0,
+          :x_max => ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
+        }
+      ))
   end
 
   # Timestamp used for starting
@@ -242,8 +248,8 @@ class WeatherGrapher
 
   def finish_graph
     @tg.render
-    @tg.image_drawer.save_to_file("#{prepare_output_filename}_png.png")
     @tg.image_drawer.save_to_file("#{prepare_output_filename}_svg.svg")
+    @tg.image_drawer.save_to_file("#{prepare_output_filename}_png.png")
   end
 
   private
