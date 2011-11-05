@@ -193,7 +193,7 @@ class WeatherGrapher
 
     @zero_time = nil
     @days = ((time_to.to_f - time_from.to_f) / ONE_DAY).ceil
-    puts "#{Time.now.to_s(:db)} Time from #{time_to}, time to #{time_from}"
+    puts "#{Time.now.to_s(:db)} Time from #{time_to.to_s(:db)}, time to #{time_from.to_s(:db)}"
     puts "#{Time.now.to_s(:db)} Days in time ranges #{@days}, image width #{@days * WIDTH_PER_DAY}"
     @tg = TechnicalGraph.new(
       GRAPH_OPTIONS.clone.merge(
@@ -288,7 +288,4 @@ class WeatherGrapher
   end
 
 end
-
-WeatherGrapher.metar_city_year('EPPO', 2011)
-
 
