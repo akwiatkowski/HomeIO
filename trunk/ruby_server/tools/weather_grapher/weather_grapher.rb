@@ -59,6 +59,37 @@ class WeatherGrapher
 
   ONE_DAY = 24*3600
 
+  METAR_TYPES = [
+    'wind', 'snow_metar', 'rain_metar', 'temperature'
+  ]
+
+  def self.metar_city_year(metar, year)
+    StorageActiveRecord.instance
+
+    city = City.find_by_metar(metar)
+    id = city.id
+    METAR_TYPES.each do |t|
+      puts "City #{city.name}, id #{id}, graph type #{t}"
+
+      w = WeatherGrapher.new
+      w.both_smooth_and_raw
+      w.reset_layers
+
+      w.weather_type = t
+      w.time_from = Time.mktime(year) #'2009-01-01 0:00:00'.to_time
+      w.time_to = Time.mktime(year + 1) #'2012-01-01 0:00:00'.to_time
+      w.city_id = id
+
+      #w.only_smooth
+      #w.only_raw
+      w.both_smooth_and_raw
+
+      w.fetch_and_create_layer
+      w.finish_graph
+    end
+
+  end
+
   # Initialize script
   def initialize
     puts "#{Time.now.to_s(:db)} #{self.class} initializing"
@@ -232,66 +263,6 @@ class WeatherGrapher
 
 end
 
-def process_simple
-  w = WeatherGrapher.new
-  w.weather_type = 'wind'
-  w.time_from = '2010-01-01 0:00:00'.to_time
-#w.time_to = '2010-01-10 0:00:00'.to_time
-  w.time_to = '2011-01-10 0:00:00'.to_time
-  w.city = "Poznań"
-
-  w.only_smooth
-#w.only_raw
-#w.both_smooth_and_raw
-
-  w.fetch_and_create_layer
-
-  w.city = "Warszawa"
-  w.fetch_and_create_layer
-
-  w.city = "Katowice"
-  w.fetch_and_create_layer
-
-  w.finish_graph
-end
-
-def process_external
-  # external "night" action
-
-# 2010 year
-  long_ids = [
-    24, 37, 47, 66, 70, 76, 1, 3, 4, 5, 6, 8, 9, 10, 11, 13, 18
-  ]
-
-  types = [
-    'wind', 'snow_metar', 'rain_metar', 'temperature'
-  ]
-
-  long_ids.each do |id|
-    types.each do |t|
-      puts "Id #{id} type #{t}"
-      
-      w = WeatherGrapher.new
-      #w.only_raw
-      w.both_smooth_and_raw
-
-      w.reset_layers
-
-      w.weather_type = t
-      w.time_from = '2009-01-01 0:00:00'.to_time
-      w.time_to = '2012-01-01 0:00:00'.to_time
-      #w.time_to = '2010-01-12 0:00:00'.to_time
-      w.city_id = id
-      w.only_smooth
-      #w.only_raw
-      w.both_smooth_and_raw
-      w.fetch_and_create_layer
-      w.finish_graph
-
-    end
-  end
-end
-
-process_external
+WeatherGrapher.metar_city_year('EPPO', 2011)
 
 

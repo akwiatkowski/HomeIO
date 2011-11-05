@@ -31,7 +31,7 @@ class WeatherMetarArchive < ActiveRecord::Base
 
   validates_length_of :raw, :maximum => 200
 
-  default_scope :order => "time_from DESC", :limit => 100
+  default_scope :order => "time_from DESC"
 
   scope :city_id, lambda { |city_id| where({:city_id => city_id}) }
 

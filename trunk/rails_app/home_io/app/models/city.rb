@@ -110,7 +110,7 @@ class City < ActiveRecord::Base
     end
 
     # remove bad elements
-    weather_array.delete_if{ |w| w[:value].nil? }
+    weather_array.delete_if { |w| w[:value].nil? }
 
     # fix for zero division
     return nil if weather_array.size == 0
@@ -130,6 +130,19 @@ class City < ActiveRecord::Base
     abg_value = sum_value / sum_inv_distance
 
     return abg_value
+  end
+
+
+  # From which table/class fetch archive weather data
+  # Metar has higher priority
+  def weather_class
+    if self.logged_metar
+      return WeatherMetarArchive
+    end
+    if self.logged_weather
+      return WeatherArchive
+    end
+    return nil
   end
 
 end
