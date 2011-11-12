@@ -1,20 +1,13 @@
 source 'http://rubygems.org'
 
-# main
-#gem 'rails', '3.0.9'
 gem 'rails', '3.1.1'
 gem 'rake'
-#gem 'rack', '1.2.1' #'1.2.4'
-gem 'rack' #, '1.2.1' #'1.2.4'
+gem 'rack'
 
 # deployment
 gem 'passenger', '3.0.7'
 
-# testing
-gem 'rspec'
-
 # DBs
-# gem 'sqlite3'
 gem 'mysql2'
 gem 'mysql'
 gem 'pg'
@@ -26,6 +19,16 @@ gem 'default_value_for'
 gem 'will_paginate' #, " >= 3.0.pre4" #, " >= 3.0.pre2"
 gem 'acts_as_commentable'
 gem 'has_scope'
+gem 'inherited_resources'
+
+# rails addons
+# https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
+gem 'simple-navigation'
+gem 'formtastic'
+gem 'haml'
+gem 'sass'
+gem 'hpricot'
+gem 'ruby_parser'
 
 # auth
 # https://github.com/binarylogic/authlogic/blob/master/README.rdoc
@@ -35,34 +38,22 @@ gem 'authlogic'
 # https://github.com/ryanb/cancan/blob/master/README.rdoc
 gem 'cancan'
 
-# web sockets
-gem 'em-websocket'
-
-# rails addons
-# https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
-gem 'simple-navigation'
-gem 'formtastic'
-gem 'haml'
-gem 'sass'
+group :assets do
+  gem 'sass-rails',   '~> 3.1.4'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier', '>= 1.0.3'
+end
 
 # JS
 gem 'jquery-rails'
 
-# coffee
-gem 'json'
-gem 'coffee-script', '~> 2.1.1'
-gem 'coffee-haml-filter'
-gem 'rack-coffee'
-#gem 'bistro_car'
-gem 'barista'
 
-# graphics
-# gem 'rmagick'
+# web sockets
+gem 'em-websocket'
 
 # graphs
-gem 'technical_graph', '0.4.0'
+gem 'technical_graph', '0.5.0'
 #gem 'technical_graph', :git => 'git://github.com/akwiatkowski/technical_graph.git'
-
 
 # backend addons
 gem 'geokit'
@@ -72,21 +63,11 @@ gem 'robustthread'
 # creating big graphs in background
 gem 'delayed_job'
 
-# probably not used anywhere
-gem 'hpricot'
-
 # web servers
 # gem 'unicorn'
-# gem 'thin'
-
-# probably not used
-# gem 'mini_magick'
 
 # mobiles
 # https://github.com/benlangfeld/mobile-fu
-
-
-
 
 # Deploy with Capistrano
 #gem 'capistrano'
@@ -96,23 +77,26 @@ gem 'hpricot'
 # gem 'ruby-debug'
 # gem 'ruby-debug19'
 
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
+group :development, :test do
+  # http://blog.notahat.com/posts/43
+  # http://qatechnotes.blogspot.com/2011/06/could-not-find-generator.html
+  # http://railscasts.com/episodes/155-beginning-with-cucumber
+  
+  gem 'cucumber'
+  gem 'rspec-rails'
+  gem 'rspec'
+  gem 'factory_girl_rails'
 
-#gem 'jrails'
-#gem "backbone-rails", "~> 0.3.3.1"
-#gem 'backbone_rails'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'cucumber-rails'
+  gem 'cucumber' #, '0.7.3'
+  gem 'rspec-rails'
+  gem 'spork'
+  # http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
+  gem 'watchr'
+  gem 'launchy'  # So you can do Then show me the page
 
-# https://github.com/probablycorey/mini_magick/blob/master/README.rdoc
-# http://pullmonkey.com/projects/open_flash_chart/view_source_code/y_right
-#gem 'open_flash_chart'
-
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
+  # DB
+  gem 'sqlite3'
+end

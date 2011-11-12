@@ -1,5 +1,5 @@
 echo RVM init, create gemset and bundle install
-rvm 1.8.7@homeio2 --create
+rvm 1.8.7@homeio --create
 
 if ! command -v bundle ; then
   echo installing bundler

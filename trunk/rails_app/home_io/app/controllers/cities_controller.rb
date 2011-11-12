@@ -70,6 +70,11 @@ class CitiesController < ApplicationController
         string = UniversalGraph.process_weather(@weathers, params[:type], params[:antialias])
         send_data(string, :type => 'image/png', :disposition => 'inline')
       }
+      # TODO cleanup this controllers, maybe inherited resources
+      format.svg {
+        string = UniversalGraph.process_weather(@weathers, params[:type], params[:antialias])
+        send_data(string, :type => 'image/png', :disposition => 'inline')
+      }
     end
   end
 
