@@ -1,4 +1,4 @@
-describe 'MeasType', :type => :model do
+describe 'MeasArchive', :type => :model do
 
   context 'simple test' do
     before(:each) do
@@ -8,15 +8,15 @@ describe 'MeasType', :type => :model do
         m = Factory(:meas_archive, :value => rand(50).to_f, :meas_type_id => @mt.id)
         @mt.meas_archives << m
       end
+      @ma = @mt.meas_archives.first
     end
 
     it "should have proper relations" do
-      @mt.meas_archives.size.should == @meas_archives_count
-      @mt.should.kind_of? MeasType
-      @mt.meas_archives.first.should.kind_of? MeasArchive
+      @ma.meas_type.should.kind_of? MeasType
+      @ma.time_from.should.kind_of? Time
     end
 
-    it 'has proper scopes' do
+    it 'has proper attributes and accessors' do
       MeasType.all.each do |mt|
         mt.name_human.should.kind_of? String
       end
