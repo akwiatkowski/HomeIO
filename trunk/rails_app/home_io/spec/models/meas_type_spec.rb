@@ -16,7 +16,7 @@ describe 'MeasType', :type => :model do
       @mt.meas_archives.first.should.kind_of? MeasArchive
     end
 
-    it 'has proper scopes' do
+    it 'has some special attributes' do
       MeasType.all.each do |mt|
         mt.name_human.should.kind_of? String
       end

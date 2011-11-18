@@ -11,9 +11,12 @@ describe 'MeasArchive', :type => :model do
       @ma = @mt.meas_archives.first
     end
 
-    it "should have proper relations" do
+    it "should have proper attributes types" do
       @ma.meas_type.should.kind_of? MeasType
       @ma.time_from.should.kind_of? Time
+      @ma.time_to.should.kind_of? Time
+      @ma.time_from.should.kind_of? Time
+      @ma.value.should.kind_of? Float
     end
 
     it 'has proper attributes and accessors' do
@@ -22,6 +25,18 @@ describe 'MeasArchive', :type => :model do
       end
     end
 
+    it 'shouldnt allow to store meas without value' do
+      m = MeasArchive.new
+      m.meas_type_id = @mt.id
+      m.save.should == false
+      m.errors.size.should > 0
+    end
+
+    it 'should check scopes' do
+       # not worky
+       #MeasArchive.time_from( Time.now ).all
+    end
 
   end
+
 end
