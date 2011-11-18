@@ -1,4 +1,4 @@
-describe 'ActionType', :type => :model do
+describe 'ActionEvent', :type => :model do
 
   context 'simple test' do
     before(:each) do
@@ -17,7 +17,7 @@ describe 'ActionType', :type => :model do
           me = Factory(
             :action_event,
             :action_type_id => m.id
-            )
+          )
           me.valid?
           me.errors.size.should == 0
 
@@ -30,7 +30,7 @@ describe 'ActionType', :type => :model do
 
     it "should check basics" do
       ActionType.all.each do |at|
-        at.name_human.should.kind_of? String
+        at.action_events.size.should == @action_events_count_per_type
       end
     end
 
