@@ -1,8 +1,9 @@
 describe 'User', :type => :model do
-  it "should be in any roles assigned to it" do
+  it "should create instance" do
     user = User.new
     user.should be_an_instance_of(User)
-    #user.assign_role("assigned role")
-    #user.should be_in_role("assigned role")
+
+    u = Factory(:user)
+    puts u.valid?
   end
 end

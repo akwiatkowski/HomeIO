@@ -1,4 +1,4 @@
 Factory.define :meas_type do |mt|
-  mt.sequence(:name) { |n| n || "meas_type_1" }
-  mt.sequence(:unit) { |n| n || "V" }
+  mt.sequence(:name) { |n| "meas_type_" + n.to_s }
+  mt.unit "V"
 end
