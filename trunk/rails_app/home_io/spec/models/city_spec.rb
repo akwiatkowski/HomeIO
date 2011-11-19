@@ -1,12 +1,12 @@
 describe 'City', :type => :model do
 
-  #it "should check basics" do
-  #  m = Factory(:city)
-  #  n = Factory(:city)
-  #  puts m.valid?, n.valid?
-  #
-  #end
+  it "should check basics" do
+    m = Factory(:city)
+    n = Factory(:city)
 
+    m.valid?.should
+    n.valid?.should
+  end
 
   context 'simple test' do
     before(:each) do
@@ -90,7 +90,7 @@ describe 'City', :type => :model do
     end
 
   end
-
+  
   context 'weather fetching tests' do
     before(:each) do
       @wp = Factory(:weather_provider, :name => "wp1")
@@ -121,7 +121,7 @@ describe 'City', :type => :model do
           if i % 3 == 1
             m.weather_metar_archives << Factory(
               :weather_metar_archive,
-              :city => m 
+              :city => m
             )
           end
         end
@@ -132,14 +132,6 @@ describe 'City', :type => :model do
 
       City.update_search_flags_for_all_cities
     end
-
-    #it 'should has proper relations' do
-    #  City.all.each do |c|
-    #    puts c.inspect
-    #    puts c.weather_archives.size
-    #    puts c.weather_metar_archives.size
-    #  end
-    #end
 
     it 'should be able to get last weather conditions' do
       last_weathers = City.get_all_weather
@@ -156,17 +148,31 @@ describe 'City', :type => :model do
       last_weathers_for_city = city.last_weather(@weathers_count)
       last_weathers_for_city.size.should == @weathers_count
 
+      # temperatures
       temperatures = last_weathers_for_city.collect { |w| w.temperature }
-      avg_temperature = temperatures.sum.to_f / temperatures.size.to_f
+      avg = temperatures.sum.to_f / temperatures.size.to_f
 
-      avg_temperature_2 = City.adv_attr_avg(
+      avg_2 = City.adv_attr_avg(
         'temperature',
-        2.month,
+        Time.now.to_i,
         [city],
-        Time.now - 1.month + 1.day
+        Time.at(0)
       )
 
-      puts avg_temperature, avg_temperature_2
+      avg.should be_within(0.01).of(avg_2)
+
+      #wind
+      winds = last_weathers_for_city.collect { |w| w.wind }
+      avg = winds.sum.to_f / winds.size.to_f
+
+      avg_2 = City.adv_attr_avg(
+        'wind',
+        Time.now.to_i,
+        [city],
+        Time.at(0)
+      )
+
+      avg.should be_within(0.01).of(avg_2)
     end
 
   end

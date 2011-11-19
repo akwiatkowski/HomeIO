@@ -11,12 +11,12 @@ describe 'ActionType', :type => :model do
       @action_events_count_per_type = 2
 
       (0...@model_instances_count).each do |i|
-        m = Factory(:action_type, :name => "action_type_" + i.to_s)
+        m = Factory(:action_type)
 
         @action_events_count_per_type.times do
           me = Factory(
             :action_event,
-            :action_type_id => m.id
+            :action_type => m
             )
           me.valid?
           me.errors.size.should == 0
