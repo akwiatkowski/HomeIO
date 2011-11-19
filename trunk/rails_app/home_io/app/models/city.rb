@@ -99,9 +99,11 @@ class City < ActiveRecord::Base
 
     # collect weather data
     cities_array.each do |c|
-      a = c.weather_archives.where("time_to >= ? and time_from <= ?", from, from + how_long)
+      conditions = ["time_from >= ? and time_from <= ? and city_id = ?", from, from + how_long, c.id]
+      klass = c.weather_class
+      a = klass.where(conditions).all
+
       weather_array += a.collect { |w|
-        #puts w.attributes.inspect
         {
           :distance => c.calculated_distance,
           :value => w.attributes[parameter_key.to_s]
@@ -114,9 +116,6 @@ class City < ActiveRecord::Base
 
     # fix for zero division
     return nil if weather_array.size == 0
-
-    # debug info
-    # puts weather_array.to_yaml
 
     # calculate waged average
     sum_value = 0.0
