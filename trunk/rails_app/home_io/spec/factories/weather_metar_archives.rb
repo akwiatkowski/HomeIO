@@ -1,6 +1,6 @@
 Factory.define :weather_metar_archive do |m|
-  m.time_from Time.now - 1.hours
-  m.time_to Time.now - 30.minutes
+  m.sequence(:time_from) { |n| Time.now - 1.hours - 30 * n.minutes }
+  m.sequence(:time_to) { |n| Time.now - 30.minutes - 30 * n.minutes }
 
   m.temperature 5.0
   m.wind 1.0
@@ -10,5 +10,5 @@ Factory.define :weather_metar_archive do |m|
 
   m.association :city
 
-  m.raw 'CITY '
+  m.sequence(:raw) { |n| "CITY #{n}" }
 end

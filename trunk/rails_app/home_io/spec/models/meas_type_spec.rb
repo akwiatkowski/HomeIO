@@ -5,7 +5,10 @@ describe 'MeasType', :type => :model do
       @meas_archives_count = 10
       @mt = Factory(:meas_type, :name => 'current')
       @meas_archives_count.times do
-        m = Factory(:meas_archive, :value => rand(50).to_f, :meas_type_id => @mt.id)
+        m = Factory(
+          :meas_archive,
+          :meas_type => @mt
+        )
         @mt.meas_archives << m
       end
     end

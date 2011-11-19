@@ -1,6 +1,6 @@
 Factory.define :weather_archive do |m|
-  m.time_from Time.now - 2.hours
-  m.time_to Time.now - 1.hour
+  m.sequence(:time_from) { |n| Time.now - 2.hours - n.minutes }
+  m.sequence(:time_to) { |n| Time.now - 1.hour - n.minutes }
 
   m.temperature 5.0
   m.wind 1.0

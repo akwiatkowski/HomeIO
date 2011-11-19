@@ -1,5 +1,13 @@
 describe 'City', :type => :model do
 
+  #it "should check basics" do
+  #  m = Factory(:city)
+  #  n = Factory(:city)
+  #  puts m.valid?, n.valid?
+  #
+  #end
+
+
   context 'simple test' do
     before(:each) do
       @model_instances_count = 10
@@ -9,7 +17,7 @@ describe 'City', :type => :model do
       @model_instances << @model_instance
 
       (0...@model_instances_count).each do |i|
-        m = Factory(:city, :name => "city_" + i.to_s)
+        m = Factory(:city)
         @model_instances << m
       end
 
@@ -41,14 +49,15 @@ describe 'City', :type => :model do
 
       city.weather_archives << Factory(
         :weather_archive,
-        :weather_provider_id => @wp.id
+        :weather_provider => @wp,
+        :city => city
       )
       city.update_search_flags
-      return # TODO
       city.weather_class.should == WeatherArchive
 
       city.weather_metar_archives << Factory(
-        :weather_metar_archive
+        :weather_metar_archive,
+        :city => city
       )
       city.update_search_flags
       city.weather_class.should == WeatherMetarArchive
@@ -60,15 +69,16 @@ describe 'City', :type => :model do
 
       city.weather_archives << Factory(
         :weather_archive,
-        :weather_provider_id => @wp.id
+        :weather_provider => @wp,
+        :city => city
       )
       city.save!
       City.update_search_flags_for_all_cities
-      return # TODO
       city.reload
       city.weather_class.should == WeatherArchive
       city.weather_metar_archives << Factory(
-        :weather_metar_archive
+        :weather_metar_archive,
+        :city => city
       )
       City.update_search_flags_for_all_cities
       city.reload
@@ -94,7 +104,7 @@ describe 'City', :type => :model do
       @weathers_count = 15
 
       (0...@model_instances_count).each do |i|
-        m = Factory(:city, :name => "city_" + i.to_s + Time.now.usec.to_s) 
+        m = Factory(:city, :name => "city_" + i.to_s + Time.now.usec.to_s)
         @model_instances << m
 
         # maybe not so optimized..
@@ -103,13 +113,15 @@ describe 'City', :type => :model do
           if i % 2 == 1
             m.weather_archives << Factory(
               :weather_archive,
-              :weather_provider_id => @wp.id
+              :weather_provider => @wp,
+              :city => m
             )
           end
 
           if i % 3 == 1
             m.weather_metar_archives << Factory(
-              :weather_metar_archive
+              :weather_metar_archive,
+              :city => m 
             )
           end
         end
@@ -120,6 +132,14 @@ describe 'City', :type => :model do
 
       City.update_search_flags_for_all_cities
     end
+
+    #it 'should has proper relations' do
+    #  City.all.each do |c|
+    #    puts c.inspect
+    #    puts c.weather_archives.size
+    #    puts c.weather_metar_archives.size
+    #  end
+    #end
 
     it 'should be able to get last weather conditions' do
       last_weathers = City.get_all_weather
@@ -146,9 +166,10 @@ describe 'City', :type => :model do
         Time.now - 1.month + 1.day
       )
 
-      puts avg_temperature,  avg_temperature_2
+      puts avg_temperature, avg_temperature_2
     end
 
   end
+  
 
 end
