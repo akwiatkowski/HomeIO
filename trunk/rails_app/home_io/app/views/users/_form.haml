@@ -1,3 +1,9 @@
+= #f.error_messages
+- if not @user.nil? and @user.errors.any?
+  %ul
+    - @user.errors.full_messages.each do |msg|
+      %li= msg
+
 = form.label :login
 %br
 = form.text_field :login
