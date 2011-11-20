@@ -80,7 +80,7 @@ class MeasArchive < ActiveRecord::Base
 
   # Create json data used for creating charts for MeasArchive instances
   # TODO move it elsewhere
-  def self.to_json_graph(array)
+  def self._todo_to_json_graph(array)
     times = Array.new
     values = Array.new
 
