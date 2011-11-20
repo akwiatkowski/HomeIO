@@ -1,4 +1,5 @@
 class CitiesController < ApplicationController
+  single_access_allowed :only => [:show, :index]
   has_scope :within_range
   has_scope :page
 
