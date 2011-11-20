@@ -10,6 +10,10 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
 
+  # http://stackoverflow.com/questions/7425490/silence-rails-schema-load-for-spork
+  ActiveRecord::Schema.verbose = false
+  load "#{Rails.root}/db/schema.rb"
+
   # CAPYBARA
   require 'capybara/rspec'
   # uses FF
@@ -41,30 +45,30 @@ Spork.prefork do
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false
     # instead of true.
-    config.use_transactional_fixtures = true
-    #config.use_transactional_fixtures = false
-
-    config.before(:suite) do
-      DatabaseCleaner.strategy = :truncation
-    end
+    #config.use_transactional_fixtures = true
+    config.use_transactional_fixtures = false
 
     config.before(:each) do
-      DatabaseCleaner.start
+      #DatabaseCleaner.start
+      #ActiveRecord::Migrator.up('db/migrate') # if in memory DB is used, need some fixes, reload models
     end
 
-    config.after(:each) do
-      DatabaseCleaner.clean
-    end
+    #config.after(:each) do
+    #  DatabaseCleaner.clean
+    #end
 
   end
 
+  DatabaseCleaner.start
 end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
   #require 'factory_girl_rails'
   #Dir[Rails.root.join("spec/factories/*.rb")].each { |f| require f }
-  DatabaseCleaner.start
+  #ActiveRecord::Migrator.up('db/migrate') # if in memory DB is used, need some fixes, reload models
+  # DatabaseCleaner.start # this was here
+  DatabaseCleaner.clean # this wasn't here'
 
   FactoryGirl.factories.clear
   FactoryGirl.find_definitions
