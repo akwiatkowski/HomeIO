@@ -29,5 +29,10 @@ class UserSession < Authlogic::Session::Base
   # anti brute force
   consecutive_failed_logins_limit 15
 
+  # sign in using token
+  # http://blog.smsohan.com/2010/04/using-authlogic-and-single-access-token.html
+  single_access_allowed_request_types :get
+  params_key :token
+
   attr_accessor :mobile
 end
