@@ -88,6 +88,9 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   gem 'capybara'
+  gem 'selenium'
+  gem 'capybara-webkit'
+
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber' #, '0.7.3'

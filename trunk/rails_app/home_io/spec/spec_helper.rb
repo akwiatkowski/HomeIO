@@ -10,8 +10,19 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
+  # CAPYBARA
+  require 'capybara/rspec'
+  # uses FF
+  Capybara.default_driver = :selenium
+  # uses something internal
+  #Capybara.javascript_driver = :webkit
+
+  # DB CLEANER
+  require 'database_cleaner'
+  DatabaseCleaner.strategy = :truncation
+
+  # Requires supporting ruby files with custom matchers and macros, etc,
+  # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
@@ -31,6 +42,20 @@ Spork.prefork do
     # examples within a transaction, remove the following line or assign false
     # instead of true.
     config.use_transactional_fixtures = true
+    #config.use_transactional_fixtures = false
+
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+
   end
 
 end
@@ -39,8 +64,14 @@ Spork.each_run do
   # This code will be run each time you run your specs.
   #require 'factory_girl_rails'
   #Dir[Rails.root.join("spec/factories/*.rb")].each { |f| require f }
+  DatabaseCleaner.start
+
   FactoryGirl.factories.clear
   FactoryGirl.find_definitions
+end
+
+Spork.after_each_run do
+  DatabaseCleaner.clean
 end
 
 # --- Instructions ---
@@ -53,8 +84,4 @@ end
 # - These instructions should self-destruct in 10 seconds.  If they don't,
 #   feel free to delete them.
 #
-
-
-
-
 
