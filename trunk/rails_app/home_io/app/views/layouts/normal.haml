@@ -48,10 +48,8 @@
     #content_container
       - unless flash.blank?
         #flash
-          - types = [:error, :warning, :notice].each do |t|
-            - unless flash[ t ].blank?
-              %span{:class => t}= flash[t]
-              - flash[ t ] = nil
+          - flash.each do |name, msg|
+            = content_tag :section, msg, :id => "flash_#{name}", :class => "flash"
       = yield
       %hr
         - if current_user

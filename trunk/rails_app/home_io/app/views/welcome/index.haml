@@ -1,12 +1,18 @@
 %h2= "Welcome"
 
 - if current_user
-  #welcome_menu
-    %li
-      %ul= link_to "Current measurements", meas_caches_path
-      %ul= link_to "Actions", action_types_path
-      %ul= link_to "Last executed actions", action_type_action_events_path(0)
-      %ul= link_to "Overseers status", status_overseers_path
+
+  %div{:style => 'height: 200px; width: 100%; align: center;', :align => 'center'}
+    %div.rounded_box
+      = link_to "Current measurements", meas_caches_path
+    %div.rounded_box
+      = link_to "Actions", action_types_path
+    %div.rounded_box
+      = link_to "Last executed actions", action_type_action_events_path('all')
+    %div.rounded_box
+      = link_to "Overseers status", status_overseers_path
+
+    %br
 
 - else
   = "Please login"

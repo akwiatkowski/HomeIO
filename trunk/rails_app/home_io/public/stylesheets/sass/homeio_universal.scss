@@ -28,16 +28,19 @@ ul.details li span.parameter {
 }
 
 /* flash messages */
-#flash span.error {
+ #flash_error, #flash_alert {
     border-bottom: 1px dotted red;
+    color: red;
 }
 
-#flash span.warning {
-    border-bottom: 1px dotted orange;
+#flash_warning {
+    border-bottom: 1px dotted darkorange;
+    color: darkorange;
 }
 
-#flash span.notice {
-    border-bottom: 1px dotted green;
+#flash_notice {
+    border-bottom: 1px dotted darkgreen;
+    color: darkgreen;
 }
 
 // left navigation, less important things
@@ -59,9 +62,13 @@ span.small_info {
     font-size: smaller;
 }
 
-
-
-/* flash messages */
-#flash{
-    width: 100%;
+.rounded_box {
+  float: left;
+  padding: 10px 10px 10px 10px;
+  margin: 5px 5px 5px 5px;
+  
+  border: 1px dotted #AAA;
+  border-radius: 15px;
+  width: 90px;
+  height: 90px;
 }
