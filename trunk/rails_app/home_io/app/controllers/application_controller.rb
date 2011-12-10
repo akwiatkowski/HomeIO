@@ -64,9 +64,10 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  #def after_sign_in_path_for(resource_or_scope)
-  #  stored_location_for(resource_or_scope) || meas_caches_path
-  #end
+  # Overriding default path after sign in
+  def after_sign_in_path_for(resource_or_scope)
+    stored_location_for(resource_or_scope) || meas_caches_path
+  end
 
   # http://rubydoc.info/github/plataformatec/devise/master/Devise/Controllers/Helpers:after_sign_in_path_for
   #def after_sign_in_path_for(resource)
