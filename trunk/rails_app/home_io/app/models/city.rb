@@ -44,8 +44,8 @@ class City < ActiveRecord::Base
   @@per_page = 20
 
   # Update flags used for not searching entire table for data which is not available
-  def update_search_flags
-    puts "Updating search flag for city ID #{self.id} - #{self.name}"
+  def update_search_flags(verbose = false)
+    puts "Updating search flag for city ID #{self.id} - #{self.name}" if verbose
     if WeatherArchive.find(:all, :conditions => { :city_id => self.id }, :limit => 1).size > 0
       update_attribute(:logged_weather, true)
     else
@@ -57,7 +57,7 @@ class City < ActiveRecord::Base
     else
       update_attribute(:logged_metar, false)
     end
-    puts "...done"
+    puts "...done" if verbose
   end
 
   # Update flags for all cities

@@ -6,6 +6,13 @@
 = check_box_tag :auto_refresh, "1", false
 = "Autorefresh"
 
+= " | "
+
+= "Access links: "
+= link_to "TXT", meas_caches_path({:format => :txt, :auth_token => current_user.authentication_token})
+= link_to "XML", meas_caches_path({:format => :xml, :auth_token => current_user.authentication_token})
+= link_to "JSON", meas_caches_path({:format => :json, :auth_token => current_user.authentication_token})
+
 :javascript
   function updateMeasurements() {
 

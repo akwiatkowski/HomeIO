@@ -3,34 +3,33 @@ describe "getting access via sign in or token", :type => :request, :js => true d
   context 'sign in testing' do
     before(:each) do
       # create user using factory
-      @u = Factory(
+      @u2 = Factory(
         :user,
-        :login => "user124",
-        :email => "user@user.pl",
+        :email => "user2@user.pl",
         :password => "user@user.pl",
         :password_confirmation => "user@user.pl"
       )
-
-      @u.save!
+      @u2.save!
 
       # register manually
       visit('/')
-      click_link "Register"
-      page.current_path.should == new_user_path #'/users/new'
+      click_link "Sign up"
+      page.current_path.should == new_user_registration_path #'/users/new'
 
-      within("#new_user") do
-        fill_in 'user_login', :with => 'user123'
-        fill_in 'user_email', :with => 'test@test.pl'
+      within("#user_new") do
+        fill_in 'user_email', :with => 'user@user.pl'
         fill_in 'user_password', :with => 'user@user.pl'
         fill_in 'user_password_confirmation', :with => 'user@user.pl'
       end
 
-      click_button 'Register'
-      page.current_path.should == account_path
+      click_button 'Sign up'
+      page.current_path.should == root_path
 
       within("#account_logout") do
         click_link "Logout"
       end
+
+      @u = User.find_by_email('user@user.pl')
     end
 
     it "sign me in standard" do
@@ -39,10 +38,10 @@ describe "getting access via sign in or token", :type => :request, :js => true d
 
       page.current_path.should == new_user_session_path
 
-      fill_in 'user_session_login', :with => 'user124'
-      fill_in 'user_session_password', :with => 'user@user.pl'
+      fill_in 'user_email', :with => 'user@user.pl'
+      fill_in 'user_password', :with => 'user@user.pl'
 
-      click_button "Login"
+      click_button "Sign in"
 
       page.current_path.should == meas_caches_path
 
@@ -56,9 +55,12 @@ describe "getting access via sign in or token", :type => :request, :js => true d
 
     it "sign me in using token" do
       @u.reload
-      token = @u.single_access_token
-      # url = "/meas_caches.json?token=#{token}"
-      url = "/cities?token=#{token}"
+      token = @u.authentication_token
+
+      puts @u.inspect
+
+      # url = "/meas_caches.json?auth_token=#{token}"
+      url = "/cities?auth_token=#{token}"
       visit(url)
       
     end

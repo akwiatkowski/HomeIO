@@ -62,10 +62,6 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       sec.item :meas_manage, 'Manage', meas_types_path, :if => Proc.new { can?(:manage, MeasType) }
-
-      #sec.item :meas_current, 'Current', meas_type_meas_archives_path(0)
-      ##sec.item :meas_archived, 'Archived', meas_archives_path
-      ##sec.item :meas_stats, 'Statistics', meas_archives_path
     end
 
     primary.item :actions, 'Actions', action_types_path, :if => Proc.new { can?(:read, ActionType) } do |sec|
@@ -86,7 +82,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :memos, 'Memos', memos_path, :if => Proc.new { can?(:read, Memo) }
 
-    primary.item :cities, 'Cities', cities_path, :if => Proc.new { current_user } do |sec|
+    primary.item :cities, 'Cities', cities_path, :if => Proc.new { can?(:read, City) } do |sec|
       #sec.item :cities_a, 'Weather', cities_path
       #sec.item :cities_b, 'METAR', cities_path
     end
@@ -103,14 +99,13 @@ SimpleNavigation::Configuration.run do |navigation|
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
     #primary.item :key_3, 'Admin', user_session_path, :class => 'special' #, :if => Proc.new { current_user.admin? }
-    primary.item :account, 'Sign in', new_user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
-    primary.item :account, 'Register', new_user_registration_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
+    primary.item :account_sign_in, 'Sign in', new_user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
+    primary.item :account_register, 'Sign up', new_user_registration_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
 
     login = ""
     login = current_user.email unless current_user.nil?
     primary.item :account, "Account (#{login})", account_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
-                                                                                                         #sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
-      sec.item :account_logout, 'Logout', destroy_user_session_path, :method => :delete, :if => Proc.new { current_user }
+      sec.item :account_logout, 'Logout', destroy_user_session_path, :if => Proc.new { current_user }
     end
 
     # you can also specify a css id or class to attach to this particular level

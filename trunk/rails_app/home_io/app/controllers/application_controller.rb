@@ -59,35 +59,23 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  # single access using token
-  # https://gist.github.com/298153/68313f894f2c7ceed70cfbad61cbbe3a615cdecc
-  def self.inherited(klass)
-    super
-    klass.extend(ClassMethods)
-    class << klass
-      attr_accessor :single_access_options
-    end
+  # I don't know why it is needed...
+  def self.allow_single_access(x)
+    return true
   end
 
-  module ClassMethods
-    def single_access_allowed(options=nil)
-      self.single_access_options=options
-      include(SingleAccessAllowed)
-    end
-  end
+  #def after_sign_in_path_for(resource_or_scope)
+  #  stored_location_for(resource_or_scope) || meas_caches_path
+  #end
 
-  module SingleAccessAllowed
-    def single_access_allowed?
-      options=self.class.single_access_options
-      return true unless options.kind_of?(Hash)
-      return [options[:except]].flatten.compact.index(params[:action].to_sym).nil? if options[:except].present?
-      return [options[:only]].flatten.compact.include?(params[:action].to_sym)
-    end
-  end
-
-
-  #def self.single_access_allowed
-  #  [:index, :show].index(params[:action].to_sym)
+  # http://rubydoc.info/github/plataformatec/devise/master/Devise/Controllers/Helpers:after_sign_in_path_for
+  #def after_sign_in_path_for(resource)
+  #  stored_location_for(resource) ||
+  #    if resource.is_a?(User) && resource.can_publish?
+  #      publisher_url
+  #    else
+  #      signed_in_root_path(resource)
+  #    end
   #end
 
 end
