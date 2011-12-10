@@ -12,14 +12,8 @@ describe "getting access via sign in or token", :type => :request, :js => true d
       )
 
       @u.save!
-      puts @u.inspect
-      @u.valid?
-      puts @u.errors.to_yaml
-      puts "^"*100
-      puts User.all.to_yaml
-      puts "^"*100
 
-      # register manualy
+      # register manually
       visit('/')
       click_link "Register"
       page.current_path.should == new_user_path #'/users/new'
@@ -31,22 +25,12 @@ describe "getting access via sign in or token", :type => :request, :js => true d
         fill_in 'user_password_confirmation', :with => 'user@user.pl'
       end
 
-      puts "^"*100
-      puts User.all.to_yaml
-      puts "^"*100
-
-
       click_button 'Register'
       page.current_path.should == account_path
 
       within("#account_logout") do
         click_link "Logout"
       end
-
-      puts "*"*100
-      puts User.all.to_yaml
-      puts "*"*100
-
     end
 
     it "sign me in standard" do
@@ -71,10 +55,12 @@ describe "getting access via sign in or token", :type => :request, :js => true d
 
 
     it "sign me in using token" do
-      token = user.single_access_token
+      @u.reload
+      token = @u.single_access_token
       # url = "/meas_caches.json?token=#{token}"
       url = "/cities?token=#{token}"
       visit(url)
+      
     end
 
   end

@@ -5,37 +5,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
 
   include AncestorHandling
-  include SingleAccessAllowedModule
 
   private
-  def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
-  end
-
-  def current_user
-    return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user
-  end
-
-  # TODO try to use cancan instead of that
-  def require_user
-    unless current_user
-      store_location
-      flash[:notice] = "You must be logged in to access this page"
-      redirect_to login_path
-      return false
-    end
-  end
-
-  def require_no_user
-    if current_user
-      store_location
-      flash[:notice] = "You must be logged out to access this page"
-      redirect_to root_url
-      return false
-    end
-  end
 
   def store_location
     session[:return_to] = request.request_uri
@@ -81,9 +52,42 @@ class ApplicationController < ActionController::Base
 
   # Modify mobile flag using params
   before_filter :check_mobile_params_flag
+
   def check_mobile_params_flag
     session[:mobile] = true if params[:_m] == 't'
     session[:mobile] = false if params[:_m] == 'f'
     return true
   end
+
+  # single access using token
+  # https://gist.github.com/298153/68313f894f2c7ceed70cfbad61cbbe3a615cdecc
+  def self.inherited(klass)
+    super
+    klass.extend(ClassMethods)
+    class << klass
+      attr_accessor :single_access_options
+    end
+  end
+
+  module ClassMethods
+    def single_access_allowed(options=nil)
+      self.single_access_options=options
+      include(SingleAccessAllowed)
+    end
+  end
+
+  module SingleAccessAllowed
+    def single_access_allowed?
+      options=self.class.single_access_options
+      return true unless options.kind_of?(Hash)
+      return [options[:except]].flatten.compact.index(params[:action].to_sym).nil? if options[:except].present?
+      return [options[:only]].flatten.compact.include?(params[:action].to_sym)
+    end
+  end
+
+
+  #def self.single_access_allowed
+  #  [:index, :show].index(params[:action].to_sym)
+  #end
+
 end

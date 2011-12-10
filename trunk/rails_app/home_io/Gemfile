@@ -4,6 +4,9 @@ gem 'rails', '3.1.1'
 gem 'rake'
 gem 'rack'
 
+# console
+gem 'pry'
+
 # deployment
 gem 'passenger', '3.0.7'
 
@@ -23,6 +26,7 @@ gem 'inherited_resources'
 
 # rails addons
 # https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
+gem 'nifty-generators'
 gem 'simple-navigation'
 gem 'formtastic'
 gem 'haml'
@@ -31,8 +35,7 @@ gem 'hpricot'
 gem 'ruby_parser'
 
 # auth
-# https://github.com/binarylogic/authlogic/blob/master/README.rdoc
-gem 'authlogic'
+gem 'devise'
 
 # rights managament
 # https://github.com/ryanb/cancan/blob/master/README.rdoc
@@ -82,19 +85,20 @@ group :development, :test do
   # http://qatechnotes.blogspot.com/2011/06/could-not-find-generator.html
   # http://railscasts.com/episodes/155-beginning-with-cucumber
   
-  gem 'cucumber'
   gem 'rspec-rails'
   gem 'rspec'
+
   gem 'factory_girl_rails'
 
   gem 'capybara'
-  gem 'selenium'
   gem 'capybara-webkit'
+  gem 'selenium'
 
   gem 'database_cleaner'
+
   gem 'cucumber-rails'
   gem 'cucumber' #, '0.7.3'
-  gem 'rspec-rails'
+
   gem 'spork'
   # http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
   gem 'watchr'

@@ -1,5 +1,7 @@
 HomeIo::Application.routes.draw do
 
+  devise_for :users
+
   resources :meas_type_groups do
     resource :meas_type_group_graph, :only => [:show]
   end

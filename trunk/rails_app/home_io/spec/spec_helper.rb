@@ -31,14 +31,7 @@ Spork.prefork do
     # instead of true.
     config.use_transactional_fixtures = false
 
-    #config.before(:suite) do
-    #  DatabaseCleaner.strategy = :transaction
-    #  DatabaseCleaner.clean_with(:truncation)
-    #end
-
     config.before(:each) do
-      #DatabaseCleaner.start
-
       if Capybara.current_driver == :rack_test
         DatabaseCleaner.strategy = :transaction
       else

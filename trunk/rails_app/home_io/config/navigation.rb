@@ -104,13 +104,13 @@ SimpleNavigation::Configuration.run do |navigation|
     # thus you can use all the methods and vars you have available in the views.
     #primary.item :key_3, 'Admin', user_session_path, :class => 'special' #, :if => Proc.new { current_user.admin? }
     primary.item :account, 'Sign in', new_user_session_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
-    primary.item :account, 'Register', new_user_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
+    primary.item :account, 'Register', new_user_registration_path, :if => Proc.new { not current_user } #:unless => Proc.new { logged_in? }
 
     login = ""
-    login = current_user.login unless current_user.nil?
+    login = current_user.email unless current_user.nil?
     primary.item :account, "Account (#{login})", account_path, :if => Proc.new { current_user } do |sec| #:unless => Proc.new { logged_in? }
                                                                                                          #sec.item :account_logout, 'Logout', user_session_path, :method => :delete, :if => Proc.new { current_user }
-      sec.item :account_logout, 'Logout', logout_user_session_path, :if => Proc.new { current_user }
+      sec.item :account_logout, 'Logout', destroy_user_session_path, :method => :delete, :if => Proc.new { current_user }
     end
 
     # you can also specify a css id or class to attach to this particular level
