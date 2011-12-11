@@ -56,8 +56,20 @@ describe "simple navigating website", :type => :request, :js => true do
           click_link m.name_human
         end
         page.current_path.should == meas_type_meas_archives_path(m)
-        # TODO add some test to diff
-        page.should have_selector("h2", :content => "Archived measurements")
+        page.should have_selector("h2", :content => "Archived measurements - #{m.name_human}")
+
+        prev_url = page.current_path
+        # checking XML
+        within("#utils") do
+          click_link 'XML'
+          #require 'rexml/document'
+          #data = REXML::Document.new(page.to_s)
+          #puts data.elements.size
+          #puts data.to_yaml
+          puts page.to_s
+        end
+        # after
+        visit(prev_url)
 
 
       end
