@@ -3,6 +3,9 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.1'
 gem 'rake'
 gem 'rack'
+# ruby 1.8.7 compatibility error
+# https://github.com/elisehuard/builder/commit/53582a84556102b4d81f144f8c6a28cf9157516d
+# gem 'builder', :git => 'git://github.com/elisehuard/builder.git'
 
 # console
 gem 'pry'
