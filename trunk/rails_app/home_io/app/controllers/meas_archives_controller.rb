@@ -13,11 +13,11 @@ class MeasArchivesController < ApplicationController
     respond_to do |format|
       format.html { @meas_archives = meas_archives.paginate(:page => params[:page], :per_page => 20 * mobile_pagination_multiplier) } # index.html.erb
       format.xml {
-        @meas_archives = meas_archives.limit(1000)
-        render :xml => @meas_archives
+        @meas_archives = meas_archives.limit(1000).all
+        render :xml => @meas_archives.to_xml
       }
       format.json {
-        @meas_archives = meas_archives.limit(1000)
+        @meas_archives = meas_archives.limit(1000).all
         render :json => @meas_archives
       }
       format.json_graph {
@@ -26,8 +26,13 @@ class MeasArchivesController < ApplicationController
       }
       format.png {
         @meas_archives = meas_archives.limit(1000)
-        string = UniversalGraph.process_meas(@meas_archives, params[:antialias])
+        string = UniversalGraph.process_meas(@meas_archives, params[:format], params[:antialias])
         send_data(string, :type => 'image/png', :disposition => 'inline')
+      }
+      format.svg {
+        @meas_archives = meas_archives.limit(1000)
+        string = UniversalGraph.process_meas(@meas_archives, params[:format], params[:antialias])
+        render :text => string
       }
     end
   end

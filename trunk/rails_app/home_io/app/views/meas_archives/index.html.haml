@@ -1,4 +1,7 @@
-%h2= "Archived measurements"
+- m = MeasType.find_by_id(params[:meas_type_id])
+- suffix = ''
+- suffix += " - #{m.name_human}" unless m.nil?
+%h2= "Archived measurements#{suffix}"
 
 = form_tag params.clone, :method => :get
 = "Time filter"
@@ -9,9 +12,11 @@
 
 %hr
 
-= link_to "Graph (PNG)", params.clone.merge({:format => :png})
-= link_to "XML", params.clone.merge({:format => :xml})
-= link_to "Json", params.clone.merge({:format => :json})
+#utils
+  = link_to "Graph (PNG)", params.clone.merge({:format => :png})
+  = link_to "Graph (SVG)", params.clone.merge({:format => :svg})
+  = link_to "XML", params.clone.merge({:format => :xml})
+  = link_to "Json", params.clone.merge({:format => :json})
 
 %hr
 

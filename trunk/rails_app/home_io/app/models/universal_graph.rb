@@ -51,7 +51,7 @@ class UniversalGraph
     return tg.image_drawer.to_png
   end
 
-  def self.process_meas(meas_data, antialias = false)
+  def self.process_meas(meas_data, format = :svg, antialias = false)
     data = Array.new
 
     t = meas_data.sort { |a, b| a.time_from <=> b.time_from }
@@ -96,8 +96,7 @@ class UniversalGraph
       :y_min => ys.min,
       :y_max => ys.max,
 
-      :layers_antialias => antialias,
-      :font_antialias => antialias,
+      :antialias => antialias
     }.merge(STD_OPTIONS)
 
     layer_params = {
@@ -116,7 +115,7 @@ class UniversalGraph
     tg.add_layer(data, layer_params)
     tg.render
 
-    return tg.image_drawer.to_png
+    return tg.image_drawer.to_format(format)
   end
 
 end
