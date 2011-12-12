@@ -12,7 +12,7 @@ describe "MeasArchivesController", :type => :request, :js => true do
 
       5.times do
         mt = Factory(:meas_type)
-        5.times do
+        50.times do
           ma = Factory(:meas_archive, :meas_type => mt)
         end
       end
@@ -42,13 +42,13 @@ describe "MeasArchivesController", :type => :request, :js => true do
         end
         page.current_path.should == meas_type_meas_archives_path(m)
         page.should have_selector("h2", :content => "Archived measurements - #{m.name_human}")
-        # page.status_code.should == 200 # not supported in selenium
+        page.status_code.should == 200 unless Capybara.current_driver == :selenium # not supported in selenium
 
         prev_url = page.current_path
         # checking XML
         within("#utils") do
           click_link 'XML'
-          # page.status_code.should == 200 # not supported in selenium
+          page.status_code.should == 200 unless Capybara.current_driver == :selenium # not supported in selenium
           xml_doc = Nokogiri::XML(page.body.to_s)
           # very simple xml validation
           xml_doc.children.size.should == 1
@@ -56,14 +56,15 @@ describe "MeasArchivesController", :type => :request, :js => true do
         # after
         visit(prev_url)
 
-        ## checking XML
-        #within("#utils") do
-        #  click_link 'Graph (SVG)'
-        #  xml_doc = Nokogiri::XML(page.body.to_s)
-        #  # very simple xml validation
-        #  xml_doc.children.size.should == 1
-        #end
-        #visit(prev_url)
+        # checking SVG
+        within("#utils") do
+          click_link 'Graph (SVG)'
+          page.status_code.should == 200 unless Capybara.current_driver == :selenium # not supported in selenium
+          xml_doc = Nokogiri::XML(page.body.to_s)
+          # very simple xml validation
+          xml_doc.children.size.should > 0
+        end
+        visit(prev_url)
       end
 
 

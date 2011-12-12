@@ -1,6 +1,6 @@
 # require 'capybara/rspec'
-describe "simple navigating website", :type => :request, :js => true do
-  context 'simple navigating website' do
+describe "MeasArchivesController", :type => :request, :js => true do
+  context 'simple test' do
     before(:each) do
       @u = Factory(
         :user,
@@ -16,9 +16,7 @@ describe "simple navigating website", :type => :request, :js => true do
           ma = Factory(:meas_archive, :meas_type => mt)
         end
       end
-    end
 
-    it "sign me in standard and navigate" do
       visit("/")
       click_link "Sign in"
 
@@ -32,6 +30,9 @@ describe "simple navigating website", :type => :request, :js => true do
       # page.current_path.should == root_path
       page.current_path.should == meas_caches_path
 
+    end
+
+    it "simple test" do
       # navigation phase
 
       click_link 'Measurements'
