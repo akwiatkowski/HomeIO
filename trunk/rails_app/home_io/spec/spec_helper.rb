@@ -9,6 +9,15 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
 
+  # CAPYBARA
+  require 'capybara/rspec'
+  # uses FF
+  Capybara.default_driver = :selenium
+  #Capybara.default_driver = :webkit
+  # uses something internal
+  Capybara.javascript_driver = :selenium
+  #Capybara.javascript_driver = :webkit
+
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
