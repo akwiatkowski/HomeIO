@@ -73,6 +73,8 @@ HomeIo::Application.routes.draw do
   resource :account, :controller => "users"
   resources :users
 
+  match 'mobile', :controller => "welcome", :action => "index", :mobile_device => 't'
+  match 'desktop', :controller => "welcome", :action => "index", :mobile_device => 'f'
 
 # The priority is based upon order of creation:
 # first created -> highest priority.
@@ -121,11 +123,15 @@ HomeIo::Application.routes.draw do
 #     resources :products
 #   end
 
+
 # You can have the root of your site routed with "root"
 # just remember to delete public/index.html.
 # root :to => "welcome#index"
-#root :controller => "user_sessions", :action => "new"
-  root :controller => "welcome", :action => "index"
+  #root :controller => "user_sessions", :action => "new"
+  #root :controller => "welcome", :action => "index", :mobile => 't'
+  root :to => "welcome#index"
+
+
 
 # See how all your routes lay out with "rake routes"
 

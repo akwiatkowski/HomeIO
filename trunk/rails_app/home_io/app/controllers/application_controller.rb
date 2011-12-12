@@ -31,14 +31,14 @@ class ApplicationController < ActionController::Base
       nil
     else
       #return 'mobile' if not current_user_session.nil? and current_user_session.mobile
-      return 'mobile' if session[:mobile]
+      return 'mobile' if mobile_device?
       return 'normal'
     end
   end
 
   # Desktop users has more data in 1 page
   def mobile_pagination_multiplier
-    return 1 if session[:mobile]
+    return 1 if mobile_device?
     return 5
   end
 
@@ -54,9 +54,13 @@ class ApplicationController < ActionController::Base
   before_filter :check_mobile_params_flag
 
   def check_mobile_params_flag
-    session[:mobile] = true if params[:_m] == 't'
-    session[:mobile] = false if params[:_m] == 'f'
+    session[:mobile] = true if params[:mobile_device] == 't'
+    session[:mobile] = false if params[:mobile_device] == 'f'
     return true
+  end
+
+  def mobile_device?
+    session[:mobile] == true
   end
 
   # I don't know why it is needed...

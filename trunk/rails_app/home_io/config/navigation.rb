@@ -108,6 +108,9 @@ SimpleNavigation::Configuration.run do |navigation|
       sec.item :account_logout, 'Logout', destroy_user_session_path, :if => Proc.new { current_user }
     end
 
+    primary.item :account, "Mobile", "/mobile", :if => Proc.new { not session[:mobile] }
+    primary.item :account, "Desktop", "/desktop", :if => Proc.new { session[:mobile] }
+
     # you can also specify a css id or class to attach to this particular level
     # works for all levels of the menu
     # primary.dom_id = 'menu-id'
