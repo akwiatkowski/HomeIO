@@ -11,6 +11,11 @@ describe "getting access via sign in or token", :type => :request, :js => true d
       )
       @u2.save!
 
+      3.times do
+        Factory(:city)
+        Factory(:meas_archive)
+      end
+
       # register manually
       visit('/')
       click_link "Sign up"
@@ -23,7 +28,7 @@ describe "getting access via sign in or token", :type => :request, :js => true d
       end
 
       click_button 'Sign up'
-      page.current_path.should == root_path
+      page.current_path.should == meas_caches_path
 
       within("#account_logout") do
         click_link "Logout"
@@ -56,13 +61,27 @@ describe "getting access via sign in or token", :type => :request, :js => true d
     it "sign me in using token" do
       @u.reload
       token = @u.authentication_token
-
-      puts @u.inspect
-
-      # url = "/meas_caches.json?auth_token=#{token}"
       url = "/cities?auth_token=#{token}"
       visit(url)
-      
+
+      City.all.each do |c|
+        page.should have_content(c.name)
+      end
+
+      url = "/meas_caches?auth_token=#{token}"
+      visit(url)
+      MeasType.all.each do |m|
+        meas_archive = MeasArchive.where(:meas_type_id => m.id).order('time_from DESC').first
+        page.should have_content(meas_archive.value.to_i.to_s)
+      end
+
+      url = "/meas_caches"
+      visit(url)
+      MeasType.all.each do |m|
+        meas_archive = MeasArchive.where(:meas_type_id => m.id).order('time_from DESC').first
+        page.should_not have_content(meas_archive.value.to_i.to_s)
+      end
+
     end
 
   end
