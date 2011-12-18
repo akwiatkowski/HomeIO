@@ -1,5 +1,0 @@
-source 'http://rubygems.org'
-
-gem 'plasmoid'
-gem 'haml'
-gem 'zip'

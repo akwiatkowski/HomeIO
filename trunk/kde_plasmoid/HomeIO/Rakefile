@@ -1,3 +1,0 @@
-require 'rubygems'
-require 'plasmoid'
-require 'plasmoid/tasks'

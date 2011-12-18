@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=HomeIOlite
+Comment=HomeIO
+Icon=view-calendar-tasks
+
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=qml/plasmoid2.qml
+X-Plasma-DefaultSize=350,280
+
+X-KDE-PluginInfo-Author=Aleksander Kwiatkowski
+X-KDE-PluginInfo-Email=chani@kde.org
+X-KDE-PluginInfo-Website=http://plasma.kde.org/
+X-KDE-PluginInfo-Category=Personal Information Management
+X-KDE-PluginInfo-Name=org.kde.victorycalendar-qml
+X-KDE-PluginInfo-Version=0.1
+
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-ServiceTypes=Plasma/Applet
+Type=Service
