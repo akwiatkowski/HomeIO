@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  time: 2011-05-15 23:19:25
-  error_status: false
-
-two:
-  time: 2011-05-15 23:19:25
-  error_status: false
