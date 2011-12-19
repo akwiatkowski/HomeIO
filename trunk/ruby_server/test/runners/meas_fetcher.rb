@@ -1,5 +1,5 @@
-require 'lib/measurements/measurement_fetcher'
-require "lib/communication/io_comm/io_protocol"
+require File.join Dir.pwd, 'lib/measurements/measurement_fetcher'
+require File.join Dir.pwd, "lib/communication/io_comm/io_protocol"
 require 'test/unit'
 
 class TestMeasFetcher < Test::Unit::TestCase

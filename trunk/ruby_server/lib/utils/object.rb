@@ -55,7 +55,8 @@ class Object
   # Fix wrong chars in text objects
   def to_s_fix_utf
     #self.to_s.unpack('C*').pack('U*')
-    self.to_s.gsub(/[\x80-\xff]/, ' ')
+    r = Regexp.new '[\x80-\xFF]', nil, 'n'
+    self.to_s.gsub(r, ' ')
   end
 
 end

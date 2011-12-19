@@ -22,10 +22,10 @@
 require 'rubygems'
 require 'robustthread'
 require 'singleton'
-require 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/core_classes'
 
-require "lib/communication/im/bots/xmpp4r_bot"
-require "lib/communication/im/bots/gadu_bot"
+require File.join Dir.pwd, "lib/communication/im/bots/xmpp4r_bot"
+require File.join Dir.pwd, "lib/communication/im/bots/gadu_bot"
 
 # Load and start IM bots
 

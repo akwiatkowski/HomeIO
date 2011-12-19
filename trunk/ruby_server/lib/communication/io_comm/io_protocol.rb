@@ -21,7 +21,7 @@
 
 require 'singleton'
 require 'socket'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # Singleton for fetching measurements using connected hardware
 

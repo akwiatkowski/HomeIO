@@ -19,9 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require "lib/utils/start_threaded"
-require 'lib/communication/io_comm/io_protocol'
-require 'lib/storage/storage_active_record'
+require File.join Dir.pwd, "lib/utils/start_threaded"
+require File.join Dir.pwd, 'lib/communication/io_comm/io_protocol'
+require File.join Dir.pwd, 'lib/storage/storage_active_record'
 
 # One type o measurement. Start threaded fetching measurement data from IoServer.
 

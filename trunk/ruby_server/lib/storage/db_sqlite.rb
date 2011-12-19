@@ -23,7 +23,7 @@
 require 'singleton'
 require 'rubygems'
 require 'sqlite3'
-require 'lib/storage/storage_db_abstract'
+require File.join Dir.pwd, 'lib/storage/storage_db_abstract'
 
 # Fast sql based storage engine
 

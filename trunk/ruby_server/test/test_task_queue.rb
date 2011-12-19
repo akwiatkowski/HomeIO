@@ -1,7 +1,7 @@
 require 'test/unit'
-require 'lib/communication/task_server/tcp_comm_task_server'
-require 'lib/communication/task_server/tcp_comm_task_client'
-require "lib/communication/db/extractor_active_record"
+require File.join Dir.pwd, 'lib/communication/task_server/tcp_comm_task_server'
+require File.join Dir.pwd, 'lib/communication/task_server/tcp_comm_task_client'
+require File.join Dir.pwd, "lib/communication/db/extractor_active_record"
 
 # TODO write test using wrong data, check stability
 

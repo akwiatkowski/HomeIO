@@ -1,4 +1,4 @@
-require 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/core_classes'
 require 'test/unit'
 
 class TestCoreClasses < Test::Unit::TestCase

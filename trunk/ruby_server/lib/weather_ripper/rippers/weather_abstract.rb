@@ -23,10 +23,10 @@
 require 'net/http'
 require 'rubygems'
 require 'hpricot'
-require 'lib/storage/storage'
-require 'lib/utils/adv_log'
-require 'lib/weather_ripper/utils/city_proxy'
-require 'lib/weather_ripper/weather'
+require File.join Dir.pwd, 'lib/storage/storage'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/weather_ripper/utils/city_proxy'
+require File.join Dir.pwd, 'lib/weather_ripper/weather'
 
 # Abstract class for all rippers
 

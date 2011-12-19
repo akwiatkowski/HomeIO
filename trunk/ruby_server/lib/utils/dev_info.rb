@@ -22,8 +22,8 @@
 
 require 'singleton'
 require 'yaml'
-require 'lib/utils/config_loader'
-require 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/adv_log'
 
 # Store and periodically saves development data
 # At start reload from stored file

@@ -20,12 +20,12 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
-require 'lib/weather_ripper/rippers/weather_onet_pl'
-require 'lib/weather_ripper/rippers/weather_wp_pl'
-require 'lib/weather_ripper/rippers/weather_interia_pl'
-require 'lib/weather_ripper/rippers/weather_world_weather_online'
+require File.join Dir.pwd, 'lib/weather_ripper/rippers/weather_onet_pl'
+require File.join Dir.pwd, 'lib/weather_ripper/rippers/weather_wp_pl'
+require File.join Dir.pwd, 'lib/weather_ripper/rippers/weather_interia_pl'
+require File.join Dir.pwd, 'lib/weather_ripper/rippers/weather_world_weather_online'
 
 # Fetch weather information from various web pages
 

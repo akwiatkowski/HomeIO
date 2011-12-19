@@ -19,11 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/utils/adv_log'
-require 'lib/utils/config_loader'
-require 'lib/storage/storage_active_record'
-require 'lib/storage/active_record/backend_models/meas_type'
-require 'lib/storage/active_record/backend_models/meas_archive'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/storage/storage_active_record'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/meas_type'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/meas_archive'
 
 # Start doing backup
 

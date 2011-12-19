@@ -20,15 +20,15 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'rubygems'
-require 'lib/utils/adv_log'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 require 'json'
 require 'technical_graph'
 
-require 'lib/storage/storage_active_record'
-require 'lib/storage/active_record/backend_models/city'
-require 'lib/storage/active_record/backend_models/weather_archive'
-require 'lib/storage/active_record/backend_models/weather_metar_archive'
+require File.join Dir.pwd, 'lib/storage/storage_active_record'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/city'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/weather_archive'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/weather_metar_archive'
 
 # Fetch data and create graph for weather
 # Class used for prototyping and offline creation of graph

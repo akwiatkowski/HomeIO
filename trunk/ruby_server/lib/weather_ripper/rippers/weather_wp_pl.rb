@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require 'lib/weather_ripper/rippers/weather_abstract'
+require File.join Dir.pwd, 'lib/weather_ripper/rippers/weather_abstract'
 
 # Wp.pl weather processor
 

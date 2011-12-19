@@ -23,7 +23,7 @@
 # Weather provider
 # Has class for non-metar weather acquisition
 
-require 'lib/storage/active_record/rails_models/weather_provider'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/weather_provider'
 
 class WeatherProvider
 end

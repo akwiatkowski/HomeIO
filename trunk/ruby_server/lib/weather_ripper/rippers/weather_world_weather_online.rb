@@ -21,9 +21,9 @@
 
 require 'singleton'
 require 'json'
-require 'lib/utils/core_classes'
-require 'lib/storage/storage_active_record'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/storage/storage_active_record'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # WorldWeatherOnline special weather processor
 

@@ -22,7 +22,7 @@
 
 require 'rubygems'
 require 'geokit'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # Proxy for geokit gem using predefined location
 

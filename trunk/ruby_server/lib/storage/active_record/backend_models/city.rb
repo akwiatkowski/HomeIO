@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require 'lib/storage/active_record/rails_models/city'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/city'
 require 'yaml'
 
 # Cities

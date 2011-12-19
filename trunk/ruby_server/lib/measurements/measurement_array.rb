@@ -20,9 +20,9 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require "lib/utils/config_loader"
-require "lib/storage/storage_active_record"
-require 'lib/measurements/measurement_type'
+require File.join Dir.pwd, "lib/utils/config_loader"
+require File.join Dir.pwd, "lib/storage/storage_active_record"
+require File.join Dir.pwd, 'lib/measurements/measurement_type'
 
 # Store all type of measurements here. Start and stop threads.
 

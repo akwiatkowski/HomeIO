@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/other/backend_watchdog'
+require File.join Dir.pwd, 'lib/other/backend_watchdog'
 
 b = BackendWatchdog.new
 b.can_check_weather!

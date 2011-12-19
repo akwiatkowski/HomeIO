@@ -22,8 +22,8 @@
 require 'rubygems'
 require 'singleton'
 
-require 'lib/communication/im/im_command_resolver'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/communication/im/im_command_resolver'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # Abstract class to all IM comm. classes
 

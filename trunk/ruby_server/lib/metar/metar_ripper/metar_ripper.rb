@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/core_classes'
 require 'singleton'
 
 # better way to load all files from dir

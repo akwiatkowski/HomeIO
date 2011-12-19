@@ -21,10 +21,10 @@
 
 
 require 'singleton'
-require 'lib/plugins/im/im_bots'
-require 'lib/storage/extractors/extractor_active_record'
+require File.join Dir.pwd, 'lib/plugins/im/im_bots'
+require File.join Dir.pwd, 'lib/storage/extractors/extractor_active_record'
 
-require 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/core_classes'
 require_files_from_directory("lib/plugins/im/bots/")
 
 class ImAutoupdatedStatus

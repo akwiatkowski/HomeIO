@@ -22,9 +22,9 @@
 require 'rubygems'
 require 'json'
 require 'singleton'
-require 'lib/utils/core_classes'
-require 'lib/utils/dev_info'
-require 'lib/storage/active_record/backend_models/meas_archive'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/dev_info'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/meas_archive'
 
 # Basic measurement storage in text files used when storage in DB is not possible
 

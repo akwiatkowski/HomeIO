@@ -20,13 +20,13 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require 'lib/metar/metar_constants'
-require 'lib/utils/config_loader'
-require 'lib/storage/storage'
-require 'lib/storage/storage_interface'
-require 'lib/utils/adv_log'
-require 'lib/weather_ripper/utils/city_proxy'
-require 'lib/weather_ripper/weather_ripper'
+require File.join Dir.pwd, 'lib/metar/metar_constants'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/storage/storage'
+require File.join Dir.pwd, 'lib/storage/storage_interface'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/weather_ripper/utils/city_proxy'
+require File.join Dir.pwd, 'lib/weather_ripper/weather_ripper'
 
 # Metar code model and processor
 

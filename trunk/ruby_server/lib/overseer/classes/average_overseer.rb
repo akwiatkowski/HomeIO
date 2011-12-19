@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/overseer/classes/standard_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/standard_overseer'
 
 # A little less simple class used to control system. Check one type of measurement and perform actions when average value
 # drops below or exceeds condition value.

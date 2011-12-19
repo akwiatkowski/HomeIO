@@ -20,10 +20,10 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/metar/metar_logger'
-require 'lib/utils/geolocation'
-require 'lib/storage/storage_active_record'
-require 'lib/storage/active_record/backend_models/city'
+require File.join Dir.pwd, 'lib/metar/metar_logger'
+require File.join Dir.pwd, 'lib/utils/geolocation'
+require File.join Dir.pwd, 'lib/storage/storage_active_record'
+require File.join Dir.pwd, 'lib/storage/active_record/backend_models/city'
 
 # Proxy class for recreating cities in DB
 

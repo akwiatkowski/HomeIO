@@ -22,7 +22,7 @@
 
 # Measurement types
 
-require 'lib/storage/active_record/rails_models/meas_type_group'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/meas_type_group'
 
 class MeasTypeGroup
 end

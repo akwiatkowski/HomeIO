@@ -21,13 +21,13 @@
 
 
 # store PID
-require 'lib/utils/pid'
+require File.join Dir.pwd, 'lib/utils/pid'
 
-require "lib/utils/start_threaded"
-require "lib/measurements/measurement_fetcher"
-require "lib/communication/task_server/tcp_comm_task_server"
-require "lib/communication/simple_http/simple_http"
-require 'lib/communication/web_socket_server/web_socket_server'
+require File.join Dir.pwd, "lib/utils/start_threaded"
+require File.join Dir.pwd, "lib/measurements/measurement_fetcher"
+require File.join Dir.pwd, "lib/communication/task_server/tcp_comm_task_server"
+require File.join Dir.pwd, "lib/communication/simple_http/simple_http"
+require File.join Dir.pwd, 'lib/communication/web_socket_server/web_socket_server'
 
 # Run this file if you wish to start control system (measure and control), and start communication servers.
 

@@ -20,8 +20,8 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/utils/config_loader'
-require 'lib/measurements/measurement_array'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/measurements/measurement_array'
 
 # Singleton for fetching and storing measurements. One of main feature of HomeIO.
 

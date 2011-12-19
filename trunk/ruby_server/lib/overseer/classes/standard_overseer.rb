@@ -19,11 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/communication/db/extractor_active_record'
-require 'lib/measurements/measurement_fetcher'
-require 'lib/overseer/overseer_manager'
-require 'lib/action/action_manager'
-require 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/communication/db/extractor_active_record'
+require File.join Dir.pwd, 'lib/measurements/measurement_fetcher'
+require File.join Dir.pwd, 'lib/overseer/overseer_manager'
+require File.join Dir.pwd, 'lib/action/action_manager'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
 
 # Simple class used to control system. Check one type of measurement and perform actions when value drops below or
 # exceeds sat value

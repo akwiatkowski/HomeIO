@@ -1,4 +1,4 @@
-require 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
 require 'test/unit'
 
 class TestStartThreaded < Test::Unit::TestCase

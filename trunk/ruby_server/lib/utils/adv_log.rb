@@ -21,7 +21,7 @@
 
 require 'logger'
 require 'singleton'
-require 'lib/utils/constants'
+require File.join Dir.pwd, 'lib/utils/constants'
 
 # Store loggers instances for every class which need logging
 

@@ -1,5 +1,5 @@
-require 'lib/home_io_meas'
-require 'lib/usart'
+require File.join Dir.pwd, 'lib/home_io_meas'
+require File.join Dir.pwd, 'lib/usart'
 
 Thread.abort_on_exception = true
 

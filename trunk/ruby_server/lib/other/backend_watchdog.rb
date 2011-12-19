@@ -19,8 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/utils/adv_log'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # Run this file in cron to check if servers are running ok.
 # They tend to freeze every week, I know this issue but it is hard to analyze
@@ -70,9 +70,9 @@ class BackendWatchdog
     return if not @storage_ar.nil?
 
     # separating measurements from weather
-    require 'lib/storage/storage_active_record'
-    require 'lib/storage/active_record/backend_models/weather_archive'
-    require 'lib/storage/active_record/backend_models/weather_metar_archive'
+    require File.join Dir.pwd, 'lib/storage/storage_active_record'
+    require File.join Dir.pwd, 'lib/storage/active_record/backend_models/weather_archive'
+    require File.join Dir.pwd, 'lib/storage/active_record/backend_models/weather_metar_archive'
 
     @storage_ar = StorageActiveRecord.instance
     @storage_ar
@@ -83,8 +83,8 @@ class BackendWatchdog
     return @tcp_port if not @tcp_port.nil?
 
     # separating measurements from weather
-    require 'lib/communication/tcp/tcp_comm_protocol'
-    require 'lib/communication/task_server/tcp_task'
+    require File.join Dir.pwd, 'lib/communication/tcp/tcp_comm_protocol'
+    require File.join Dir.pwd, 'lib/communication/task_server/tcp_task'
 
     @tcp_config = ConfigLoader.instance.config('TcpCommTaskServer')
     @tcp_port = @tcp_config[:port]

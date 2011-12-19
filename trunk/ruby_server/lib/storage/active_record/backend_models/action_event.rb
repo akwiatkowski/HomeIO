@@ -22,7 +22,7 @@
 
 # Events
 
-require 'lib/storage/active_record/rails_models/action_event'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/action_event'
 
 class ActionEvent
 end

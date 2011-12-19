@@ -1,4 +1,4 @@
-require 'lib/metar_logger.rb'
+require File.join Dir.pwd, 'lib/metar_logger.rb'
 require 'yaml'
 require 'test/unit'
 

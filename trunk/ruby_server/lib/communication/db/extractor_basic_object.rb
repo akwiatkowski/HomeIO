@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require "lib/communication/db/extractor_active_record"
+require File.join Dir.pwd, "lib/communication/db/extractor_active_record"
 
 # Wrap extractor to communicate only using basic object (Hashes, Arrays)
 # So no AR objects will be send via sockets

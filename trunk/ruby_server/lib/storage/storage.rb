@@ -21,11 +21,11 @@
 
 
 require 'singleton'
-require 'lib/utils/constants'
+require File.join Dir.pwd, 'lib/utils/constants'
 
-require "lib/storage/metar_storage"
-require "lib/storage/weather_storage"
-require "lib/storage/storage_active_record"
+require File.join Dir.pwd, "lib/storage/metar_storage"
+require File.join Dir.pwd, "lib/storage/weather_storage"
+require File.join Dir.pwd, "lib/storage/storage_active_record"
 
 # Rips raw metar from various sites
 

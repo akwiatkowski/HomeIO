@@ -19,26 +19,26 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/utils/core_classes'
-require 'lib/storage/storage_db_abstract'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/storage/storage_db_abstract'
 require 'rubygems'
 require 'active_record'
 require 'singleton'
 require 'acts_as_commentable'
-require 'lib/utils/start_threaded'
-require 'lib/storage/measurement_storage'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/storage/measurement_storage'
 
 # it is better for code completion
-require "lib/storage/active_record/backend_models/city"
-require "lib/storage/active_record/backend_models/meas_archive"
-require "lib/storage/active_record/backend_models/meas_type"
-require "lib/storage/active_record/backend_models/action_event"
-require "lib/storage/active_record/backend_models/action_type"
-require "lib/storage/active_record/backend_models/weather_archive"
-require "lib/storage/active_record/backend_models/weather_metar_archive"
-require "lib/storage/active_record/backend_models/weather_provider"
-require "lib/storage/active_record/backend_models/overseer"
-require "lib/storage/active_record/backend_models/overseer_parameter"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/city"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/meas_archive"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/meas_type"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/action_event"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/action_type"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/weather_archive"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/weather_metar_archive"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/weather_provider"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/overseer"
+require File.join Dir.pwd, "lib/storage/active_record/backend_models/overseer_parameter"
 
 require_files_from_directory("lib/storage/active_record/")
 

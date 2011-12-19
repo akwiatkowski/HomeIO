@@ -24,8 +24,8 @@ require 'rubygems'
 require 'em-websocket'
 require 'json'
 
-require 'lib/communication/task_server/workers/home_io_standard_worker'
-require 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/communication/task_server/workers/home_io_standard_worker'
+require File.join Dir.pwd, 'lib/utils/adv_log'
 
 # https://github.com/igrigorik/em-websocket - used now
 # http://imanel.org/2010/12/building-websocket-server-in-ruby/

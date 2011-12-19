@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/communication/im/bots/im_bot_abstract'
+require File.join Dir.pwd, 'lib/communication/im/bots/im_bot_abstract'
 require "xmpp4r"
 
 # for fixing problems

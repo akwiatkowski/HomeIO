@@ -20,11 +20,11 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 # store PID
-require 'lib/utils/pid'
+require File.join Dir.pwd, 'lib/utils/pid'
 
-require "lib/utils/start_threaded"
-require "lib/metar/metar_logger"
-require "lib/weather_ripper/weather_ripper"
+require File.join Dir.pwd, "lib/utils/start_threaded"
+require File.join Dir.pwd, "lib/metar/metar_logger"
+require File.join Dir.pwd, "lib/weather_ripper/weather_ripper"
 
 # Run this file if you wish to start fetching weather data. They are only used when stored in DB.
 

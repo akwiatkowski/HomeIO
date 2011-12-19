@@ -23,9 +23,9 @@ require 'rubygems'
 require 'json'
 require 'socket'
 
-require 'lib/utils/config_loader'
-require "lib/communication/db/extractor_basic_object"
-require "lib/measurements/measurement_fetcher"
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, "lib/communication/db/extractor_basic_object"
+require File.join Dir.pwd, "lib/measurements/measurement_fetcher"
 
 class SimpleHttp
 

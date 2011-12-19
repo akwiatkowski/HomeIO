@@ -1,5 +1,5 @@
-require 'lib/measurements/measurement_fetcher'
-require 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/measurements/measurement_fetcher'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
 
 # ruby-prof -p call_tree -f kcache.grind test/profile/profile_meas_fetcher.rb
 

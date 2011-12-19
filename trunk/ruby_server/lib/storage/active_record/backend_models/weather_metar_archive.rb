@@ -22,8 +22,8 @@
 
 # METAR archives
 
-require 'lib/storage/active_record/rails_models/weather_metar_archive'
-require "lib/metar/metar_code"
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/weather_metar_archive'
+require File.join Dir.pwd, "lib/metar/metar_code"
 
 class WeatherMetarArchive
 

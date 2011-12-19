@@ -23,8 +23,8 @@
 require 'rubygems'
 require 'ai4r'
 require 'ruby_fann/neural_network'
-require 'lib/utils/config_loader'
-require 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/utils/core_classes'
 
 # TODO
 # http://pallas.telperion.info/ruby-stats/

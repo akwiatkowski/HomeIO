@@ -24,8 +24,8 @@
 
 require 'rubygems'
 require 'robustthread'
-require 'lib/utils/adv_log'
-require 'lib/utils/dev_info'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/dev_info'
 
 class StartThreaded
 

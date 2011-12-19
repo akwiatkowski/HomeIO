@@ -22,7 +22,7 @@
 
 # Measurements
 
-require 'lib/storage/active_record/rails_models/meas_archive'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/meas_archive'
 
 class MeasArchive
 end

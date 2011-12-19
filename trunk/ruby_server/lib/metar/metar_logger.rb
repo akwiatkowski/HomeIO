@@ -21,12 +21,12 @@
 
 
 require 'singleton'
-require 'lib/utils/config_loader'
-require 'lib/metar/metar_constants'
-require 'lib/metar/metar_ripper/metar_ripper'
-require 'lib/metar/metar_code'
-require 'lib/metar/metar_mass_processor'
-require 'lib/weather_ripper/utils/city_proxy'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/metar/metar_constants'
+require File.join Dir.pwd, 'lib/metar/metar_ripper/metar_ripper'
+require File.join Dir.pwd, 'lib/metar/metar_code'
+require File.join Dir.pwd, 'lib/metar/metar_mass_processor'
+require File.join Dir.pwd, 'lib/weather_ripper/utils/city_proxy'
 
 # Main class for metars. Singleton for fetching and storing metar to other classes
 
@@ -50,7 +50,7 @@ class MetarLogger
   # :call-seq:
   #    get_logged_cities => array of cities definitions fetched on disk
   def get_logged_cities
-    require 'lib/metar/metar_mass_processor'
+    require File.join Dir.pwd, 'lib/metar/metar_mass_processor'
     mmp = MetarMassProcessor.instance
     # array of codes of logged on disk
     logged_cities = mmp.cities

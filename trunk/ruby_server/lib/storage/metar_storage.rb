@@ -21,9 +21,9 @@
 
 
 require 'singleton'
-require 'lib/utils/core_classes'
-require 'lib/metar/metar_code'
-require 'lib/utils/dev_info'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/metar/metar_code'
+require File.join Dir.pwd, 'lib/utils/dev_info'
 
 # Basic raw metar storage in text files
 

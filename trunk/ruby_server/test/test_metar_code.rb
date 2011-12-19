@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'lib/metar/metar_code'
+require File.join Dir.pwd, 'lib/metar/metar_code'
 
 class MetarCodeTest < Test::Unit::TestCase
 

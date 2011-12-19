@@ -21,5 +21,5 @@
 
 # Startup all backend modules
 
-require 'lib/backend_weather'
-require 'lib/backend_control'
+require File.join Dir.pwd, 'lib/backend_weather'
+require File.join Dir.pwd, 'lib/backend_control'

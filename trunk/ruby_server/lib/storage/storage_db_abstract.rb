@@ -21,9 +21,9 @@
 
 
 require 'singleton'
-require 'lib/utils/core_classes'
-require 'lib/utils/geolocation'
-require 'lib/utils/dev_info'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/utils/geolocation'
+require File.join Dir.pwd, 'lib/utils/dev_info'
 
 # Abstract class to all storage classes
 class StorageDbAbstract

@@ -21,7 +21,7 @@
 
 require 'singleton'
 require 'yaml'
-require 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/adv_log'
 
 # Singleton class which load and store config files in self
 

@@ -19,9 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/communication/tcp/tcp_comm_server'
-require 'lib/communication/task_server/workers/home_io_standard_worker'
-require 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/communication/tcp/tcp_comm_server'
+require File.join Dir.pwd, 'lib/communication/task_server/workers/home_io_standard_worker'
+require File.join Dir.pwd, 'lib/utils/config_loader'
 
 # Server used for processing TcpTask. Lite and working edition.
 

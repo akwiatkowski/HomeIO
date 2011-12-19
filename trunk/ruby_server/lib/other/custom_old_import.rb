@@ -20,9 +20,9 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'iconv'
-require 'lib/utils/config_loader'
-require 'lib/metar/metar_constants'
-require 'lib/storage/storage'
+require File.join Dir.pwd, 'lib/utils/config_loader'
+require File.join Dir.pwd, 'lib/metar/metar_constants'
+require File.join Dir.pwd, 'lib/storage/storage'
 
 # Import file created using metar data in other, non-standard, format
 

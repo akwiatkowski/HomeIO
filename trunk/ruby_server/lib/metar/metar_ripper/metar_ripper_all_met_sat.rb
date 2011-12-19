@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require 'lib/metar/metar_ripper/metar_ripper_abstract'
+require File.join Dir.pwd, 'lib/metar/metar_ripper/metar_ripper_abstract'
 
 class MetarRipperAllMetSat < MetarRipperAbstract
 

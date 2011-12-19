@@ -27,9 +27,9 @@
 # create worker
 # queue create workers at start
 
-require 'lib/communication/tcp/tcp_comm_protocol'
-require 'lib/utils/adv_log'
-require 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/communication/tcp/tcp_comm_protocol'
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
 
 # TCP Simple server
 

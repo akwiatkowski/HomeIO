@@ -61,7 +61,7 @@ end
 namespace :db do
   desc 'Force update logged mark for faster searching'
   task :update_logged_mark do
-    require 'lib/storage/storage'
+    require File.join Dir.pwd, 'lib/storage/storage'
     StorageActiveRecord.instance.update_logged_flag
   end
 
@@ -79,13 +79,13 @@ namespace :metar do
 
     desc 'Process all metars logged in raw format'
     task :all do
-      require 'lib/metar/metar_mass_processor'
+      require File.join Dir.pwd, 'lib/metar/metar_mass_processor'
       MetarMassProcessor.instance.process_all
     end
 
     desc 'Process all CITY metars logged in raw format'
     task :city do
-      require 'lib/metar/metar_logger'
+      require File.join Dir.pwd, 'lib/metar/metar_logger'
       metar_cities = MetarLogger.instance.get_logged_cities
       puts metar_cities.collect { |c| "#{c[:code]} - #{c[:city]} (#{c[:country]})" }.join("\n")
 
@@ -100,7 +100,7 @@ namespace :metar do
 
     desc "Create list of all logged cities in '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :redefine do
-      require 'lib/metar/metar_logger'
+      require File.join Dir.pwd, 'lib/metar/metar_logger'
       cities = MetarLogger.instance.get_logged_cities.collect { |c| c[:code] }
       File.open(DEFINED_CITIES_TO_PROCESS_FILE, 'w') do |out|
         YAML.dump(cities, out)
@@ -109,7 +109,7 @@ namespace :metar do
 
     desc "Process all cities from '#{DEFINED_CITIES_TO_PROCESS_FILE}'"
     task :predefined do
-      require 'lib/metar/metar_mass_processor'
+      require File.join Dir.pwd, 'lib/metar/metar_mass_processor'
       cities = YAML::load_file(DEFINED_CITIES_TO_PROCESS_FILE)
       cities = cities.reverse if REVERSE_CITIES == true
       cities.each do |c|

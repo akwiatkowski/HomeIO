@@ -22,7 +22,7 @@
 
 # Action types
 
-require 'lib/storage/active_record/rails_models/action_type'
+require File.join Dir.pwd, 'lib/storage/active_record/rails_models/action_type'
 
 class ActionType
 end

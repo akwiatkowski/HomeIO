@@ -20,14 +20,14 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require 'lib/utils/core_classes'
-require "lib/storage/storage_active_record"
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, "lib/storage/storage_active_record"
 
-require 'lib/overseer/classes/standard_overseer'
-require 'lib/overseer/classes/average_overseer'
-require 'lib/overseer/classes/average_proc_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/standard_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/average_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/average_proc_overseer'
 
-require 'lib/overseer/classes/custom/wind_turbine_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/custom/wind_turbine_overseer'
 
 # Manage overseers instances and threads
 

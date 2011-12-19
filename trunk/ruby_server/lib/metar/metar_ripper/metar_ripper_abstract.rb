@@ -21,7 +21,7 @@
 
 
 require 'open-uri'
-require 'lib/utils/adv_log'
+require File.join Dir.pwd, 'lib/utils/adv_log'
 
 class MetarRipperAbstract
 

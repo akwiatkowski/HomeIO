@@ -24,7 +24,7 @@
 
 # some issues with HABTM
 
-#require 'lib/storage/active_record/rails_models/meas_type'
+#require File.join Dir.pwd, 'lib/storage/active_record/rails_models/meas_type'
 
 #class MeasType
 #end

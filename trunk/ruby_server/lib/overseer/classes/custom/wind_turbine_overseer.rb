@@ -19,11 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/overseer/classes/standard_overseer'
-require 'lib/overseer/classes/average_overseer'
-require 'lib/overseer/classes/average_proc_overseer'
-require 'lib/measurements/measurement_fetcher'
-require 'lib/communication/db/extractor_weather_thread_proxy'
+require File.join Dir.pwd, 'lib/overseer/classes/standard_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/average_overseer'
+require File.join Dir.pwd, 'lib/overseer/classes/average_proc_overseer'
+require File.join Dir.pwd, 'lib/measurements/measurement_fetcher'
+require File.join Dir.pwd, 'lib/communication/db/extractor_weather_thread_proxy'
 
 # Custom wind turbine overseer. Written for easter deploy.
 

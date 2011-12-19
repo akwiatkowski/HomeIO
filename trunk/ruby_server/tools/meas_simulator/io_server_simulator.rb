@@ -27,9 +27,9 @@
 # create worker
 # queue create workers at start
 
-require 'lib/communication/io_comm/io_protocol'
-require 'lib/utils/start_threaded'
-require 'lib/measurements/measurement_array'
+require File.join Dir.pwd, 'lib/communication/io_comm/io_protocol'
+require File.join Dir.pwd, 'lib/utils/start_threaded'
+require File.join Dir.pwd, 'lib/measurements/measurement_array'
 
 # Simulate connected hardware to PC
 

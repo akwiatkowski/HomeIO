@@ -20,9 +20,9 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require "singleton"
-require "lib/utils/start_threaded"
-require 'lib/utils/adv_log'
-require "lib/communication/db/extractor_active_record"
+require File.join Dir.pwd, "lib/utils/start_threaded"
+require File.join Dir.pwd, 'lib/utils/adv_log'
+require File.join Dir.pwd, "lib/communication/db/extractor_active_record"
 
 # Run thread and refresh weather prediction near site.
 

@@ -20,9 +20,9 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'singleton'
-require "lib/communication/db/extractor_basic_object"
-require "lib/communication/task_server/tcp_task"
-require "lib/communication/task_server/workers/home_io_standard_commands"
+require File.join Dir.pwd, "lib/communication/db/extractor_basic_object"
+require File.join Dir.pwd, "lib/communication/task_server/tcp_task"
+require File.join Dir.pwd, "lib/communication/task_server/workers/home_io_standard_commands"
 
 # Standard, universal worker used for commands sent on main port
 # Store table of standard remote commands and can execute only TcpTask

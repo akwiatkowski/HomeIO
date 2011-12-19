@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'lib/metar/metar_mass_processor'
+require File.join Dir.pwd, 'lib/metar/metar_mass_processor'
 
 #MetarMassProcessor.instance.process_all_for_city('EPPO')
 MetarMassProcessor.instance.process_all

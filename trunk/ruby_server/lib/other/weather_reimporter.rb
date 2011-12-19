@@ -20,8 +20,8 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'iconv'
-require 'lib/weather_ripper'
-require 'lib/storage/storage'
+require File.join Dir.pwd, 'lib/weather_ripper'
+require File.join Dir.pwd, 'lib/storage/storage'
 
 # Import stored in CSV files to ActiveRecord
 

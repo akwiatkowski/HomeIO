@@ -21,10 +21,10 @@
 
 
 require 'singleton'
-require 'lib/utils/core_classes'
-require 'lib/metar/metar_code'
-require 'lib/utils/dev_info'
-require 'lib/weather_ripper/weather'
+require File.join Dir.pwd, 'lib/utils/core_classes'
+require File.join Dir.pwd, 'lib/metar/metar_code'
+require File.join Dir.pwd, 'lib/utils/dev_info'
+require File.join Dir.pwd, 'lib/weather_ripper/weather'
 
 # Basic raw weather (non-metar) storage in text files
 
