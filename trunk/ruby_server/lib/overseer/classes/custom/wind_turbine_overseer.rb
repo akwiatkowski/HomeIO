@@ -116,6 +116,36 @@ class WindTurbineOverseer
         :threshold_proc => Proc.new { self.batteries_weather_offset }
       }
     )
+
+    @turbine_to_slow_overseer_1 = SUB_OVERSEERS_CLASS.new(
+      {
+        :name => "turbine to slow 1",
+        :measurement_name => 'imp_per_min', #- type of measurement which is checked
+        :greater => false, #true/false, true - check if value is greater
+        :threshold_value => 200.0, #- value which is compared to
+        :action_name => "output_2_off", #- action type to execute if check is true
+        :average_count => 5.0,
+        :interval => interval * 2,
+        :re_execute => false,
+        :proc => Proc.new { first_inverter_on? and coil_low_voltage? },
+        :threshold_proc => Proc.new { 0.0 }
+      }
+    )
+
+    @turbine_to_slow_overseer_2 = SUB_OVERSEERS_CLASS.new(
+      {
+        :name => "turbine to slow 1",
+        :measurement_name => 'imp_per_min', #- type of measurement which is checked
+        :greater => false, #true/false, true - check if value is greater
+        :threshold_value => 200.0, #- value which is compared to
+        :action_name => "output_3_off", #- action type to execute if check is true
+        :average_count => 5.0,
+        :interval => interval * 2,
+        :re_execute => false,
+        :proc => Proc.new { second_inverter_on? and coil_low_voltage? },
+        :threshold_proc => Proc.new { 0.0 }
+      }
+    )
   end
 
   def wrong_params
@@ -138,7 +168,7 @@ class WindTurbineOverseer
     return 0.0 if wind_speed_prediction.nil?
 
     # 2.6V within delta 8m/s of wind speed
-    offset = 1.4 - wind_speed_prediction * ( 2.6 / 8.0)
+    offset = 1.4 - wind_speed_prediction * (2.6 / 8.0)
     offset = 1.5 if offset > 1.5 # safety, wind should be always > 0
     offset = -2.0 if offset < -2.6 # safety
     return offset
@@ -164,6 +194,23 @@ class WindTurbineOverseer
       return check_outputs
     rescue
       puts "#{VERBOSE_PREFIX}Second inverter status can not be read"
+      false
+    end
+  end
+
+  # Is there low voltage on coils?
+  def coil_low_voltage?
+    begin
+      coil_voltage = [
+        MeasurementFetcher.instance.get_value_by_name("coil_1_u").to_f,
+        MeasurementFetcher.instance.get_value_by_name("coil_2_u").to_f,
+        MeasurementFetcher.instance.get_value_by_name("coil_3_u").to_f
+      ].max
+      check = coil_voltage < 10.0
+      puts "#{VERBOSE_PREFIX}Coil voltage #{coil_voltage}, check #{check}"
+      return check
+    rescue
+      puts "#{VERBOSE_PREFIX}Coil voltage can not be read"
       false
     end
   end
