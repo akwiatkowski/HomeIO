@@ -29,7 +29,7 @@ class TcpCommProtocol
   attr_reader :port
 
   # Max command size which can server get
-  MAX_COMMAND_SIZE = 200
+  MAX_COMMAND_SIZE = 1024
 
   # Max write frame size
   MAX_WRITE_FRAME_SIZE = 16384
