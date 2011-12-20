@@ -11,7 +11,7 @@ gem 'rack'
 gem 'pry'
 
 # deployment
-gem 'passenger', '3.0.7'
+gem 'passenger', '3.0.11'
 
 # DBs
 gem 'mysql2'
