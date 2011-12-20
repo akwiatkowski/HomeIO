@@ -51,7 +51,7 @@
           = "---"
 
       - unless action_event.executed_by_user.nil?
-        %td= action_event.executed_by_user.login
+        %td= action_event.executed_by_user.email
       - else
         %td
           %span.small_info= "backend"
