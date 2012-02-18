@@ -134,7 +134,7 @@ class WindTurbineOverseer
 
     @turbine_to_slow_overseer_2 = SUB_OVERSEERS_CLASS.new(
       {
-        :name => "turbine to slow 1",
+        :name => "turbine to slow 2",
         :measurement_name => 'imp_per_min', #- type of measurement which is checked
         :greater => false, #true/false, true - check if value is greater
         :threshold_value => 200.0, #- value which is compared to
