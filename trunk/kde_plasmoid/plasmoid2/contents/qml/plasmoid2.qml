@@ -76,7 +76,7 @@ Item {
             }
         }
 
-        doc.open("GET", "http://pl.no-ip.org:24/meas_caches.txt?auth_token=UXcJt42xRGYpGDRpJLtv");
+        doc.open("GET", "http://lakie.waw.pl:24/meas_caches.txt?auth_token=UXcJt42xRGYpGDRpJLtv");
         doc.send();
     }
 
