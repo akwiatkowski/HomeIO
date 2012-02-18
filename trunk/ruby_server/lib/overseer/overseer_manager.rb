@@ -94,6 +94,30 @@ class OverseerManager
     @overseers_array.collect { |o| o.to_hash }
   end
 
+  def overseer(name)
+    @overseers_array.select{|o| o.name == name}.first
+  end
+
+  def disable_overseer(name)
+    o = overseer(name)
+    if o
+      o.disable!
+      return true
+    else
+      return false
+    end
+  end
+
+  def enable_overseer(name)
+    o = overseer(name)
+    if o
+      o.enable!
+      return true
+    else
+      return false
+    end
+  end
+
   # Load all overseer configuration from DB and yaml. Match all "yaml" to DB, if not present create it.
   # When there is overseer in DB, but no in yaml, mark it as disabled (o.active = false)
   # After DB is synchronized

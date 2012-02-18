@@ -54,7 +54,7 @@ class HomeIoStandardCommands
       {
         :command => ['meas_by_type', 'mt'],
         :desc => 'measurements of type',
-        :proc => Proc.new { |params| MeasurementFetcher.instance.get_hash_by_name( params ) },
+        :proc => Proc.new { |params| MeasurementFetcher.instance.get_hash_by_name(params) },
         :string_proc => Proc.new { |resp| string_commands(resp) },
         :restricted => false,
         :now => true # no wait command
@@ -62,7 +62,7 @@ class HomeIoStandardCommands
       {
         :command => ['action_execute'],
         :desc => 'measurements of type',
-        :proc => Proc.new { |params| ActionManager.instance.get_action_by_name( params[0] ).execute( params[1] ) },
+        :proc => Proc.new { |params| ActionManager.instance.get_action_by_name(params[0]).execute(params[1]) },
         :string_proc => Proc.new { |resp| string_commands(resp) },
         :restricted => true, # TODO
         :now => true # no wait command
@@ -75,8 +75,24 @@ class HomeIoStandardCommands
         :restricted => true, # TODO
         :now => true # no wait command
       },
+      {
+        :command => ['disable_overseer'],
+        :desc => 'disable backend overseer',
+        :proc => Proc.new { |params| OverseerManager.instance.disable_overseer(params[0]) },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
+        :restricted => true, # TODO
+        :now => true # no wait command
+      },
+      {
+        :command => ['enable_overseer'],
+        :desc => 'enable of backend overseer',
+        :proc => Proc.new { |params| OverseerManager.instance.enable_overseer(params[0]) },
+        :string_proc => Proc.new { |resp| string_commands(resp) },
+        :restricted => true, # TODO
+        :now => true # no wait command
+      },
 
-        
+
       # TODO old command, update to current HomeIO
       {
         :command => ['help', '?'],
@@ -205,7 +221,7 @@ class HomeIoStandardCommands
   end
 
   # Process command list to String
-  def self.string_commands( res )
+  def self.string_commands(res)
     str = ""
     res.each do |c|
       params = ""

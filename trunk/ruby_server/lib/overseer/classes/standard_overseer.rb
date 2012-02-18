@@ -134,9 +134,15 @@ class StandardOverseer
 
   # Is overseer active
   def active
-    # TODO add active flag
-    #@params[:active]
-    true
+    @params[:active]
+  end
+
+  def enable!
+    @params[:active] = true
+  end
+
+  def disable!
+    @params[:active] = false
   end
 
   # Name of measurement used for this Overseer (String)
@@ -228,6 +234,8 @@ class StandardOverseer
 
   # Execute action if conditions are met
   def loop_method
+    return unless active
+
     # condition check status
     check_status = check
 

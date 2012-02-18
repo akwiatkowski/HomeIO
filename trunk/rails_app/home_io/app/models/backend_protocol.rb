@@ -91,6 +91,15 @@ class BackendProtocol < TcpCommProtocol
     self.send_to_backend(:overseers, nil )
   end
 
+  # Disable/enable overseer
+  def self.disable_overseer(overseer)
+    self.send_to_backend(:disable_overseer, [overseer.name] )
+  end
+
+  def self.enable_overseer(overseer)
+    self.send_to_backend(:enable_overseer, [overseer.name] )
+  end
+
   private
 
   # Send command (with params) to backend and return response

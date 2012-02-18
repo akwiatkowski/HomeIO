@@ -30,6 +30,10 @@ HomeIo::Application.routes.draw do
     #resources :action_events
 
     get :status, :on => :collection
+    member do
+      put :enable, :action => :enable
+      put :disable, :action => :disable
+    end
   end
 
 # actions

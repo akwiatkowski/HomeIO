@@ -80,6 +80,36 @@ class OverseersController < ApplicationController
     end
   end
 
+  def disable
+    @overseer = Overseer.find(params[:id])
+    authorize! :manage, @overseer
+
+    respond_to do |format|
+      if @overseer.disable
+        format.html { redirect_to({:action => "status"}, :notice => 'Overseer was disabled.') }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to({:action => "status"}, :error => 'Overseer can not be disabled.') }
+        format.xml  { render :xml => @overseer.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  def enable
+    @overseer = Overseer.find(params[:id])
+    authorize! :manage, @overseer
+
+    respond_to do |format|
+      if @overseer.enable
+        format.html { redirect_to({:action => "status"}, :notice => 'Overseer was enabled.') }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to({:action => "status"}, :error => 'Overseer can not be enabled.') }
+        format.xml  { render :xml => @overseer.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /overseers/1
   # DELETE /overseers/1.xml
   def destroy
