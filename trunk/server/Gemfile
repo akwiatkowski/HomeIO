@@ -1,8 +1,11 @@
 source 'http://rubygems.org'
 
-gem 'redis'
+# redis with pure C driver
+gem "hiredis"
+gem 'redis', :require => ["redis/connection/hiredis", "redis"]
+
 # https://github.com/brianmario/yajl-ruby
-gem 'yajl'
+gem 'yajl-ruby'
 
 group :development do
   gem 'pry'

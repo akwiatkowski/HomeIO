@@ -1,7 +1,8 @@
 $:.unshift(File.dirname(__FILE__))
 
-require 'simple_metar_parser/metar'
-require 'simple_metar_parser/parser'
+require 'home_io_server/redis_proxy'
+require 'home_io_server/meas_server'
+require 'home_io_server/weather_server'
 
 module HomeIoServer
 end
