@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=HomeIOlite
+Comment=HomeIO
+Icon=view-calendar-tasks
+
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=qml/plasmoid.qml
+X-Plasma-DefaultSize=350,280
+
+X-KDE-PluginInfo-Author=Aleksander Kwiatkowski
+X-KDE-PluginInfo-Email=bobikx@poczta.fm
+X-KDE-PluginInfo-Website=https://github.com/akwiatkowski/HomeIO
+X-KDE-PluginInfo-Category=HomeIO
+X-KDE-PluginInfo-Name=org.homeio.lite
+X-KDE-PluginInfo-Version=0.1
+
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-ServiceTypes=Plasma/Applet
+Type=Service
