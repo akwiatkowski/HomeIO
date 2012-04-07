@@ -22,6 +22,7 @@
 
 %p
   = link_to "Group graph", meas_type_group_meas_type_group_graph_path(@meas_type_group)
+  = link_to "Measurements in group", latest_meas_type_group_path(@meas_type_group)
 
 - if can?(:manage, MeasTypeGroup)
   = link_to 'Edit', edit_meas_type_group_path(@meas_type_group)

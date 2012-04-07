@@ -23,6 +23,32 @@ class MeasTypeGroupsController < ApplicationController
     end
   end
 
+  def latest
+    authorize! :read, MeasTypeGroup
+    @meas_type_group = MeasTypeGroup.find(params[:id])
+
+    begin
+      # using direct connection to background
+      @meas_archives = BackendProtocol.current_meas
+    rescue Errno::ECONNREFUSED => e
+      # no active connection to backend
+      @meas_archives = MeasArchive.all_types_last_measurements
+      no_direct_connection_to_backend
+    end
+
+    # in next version it would be nice to move this outside of controller
+    @meas_archives = @meas_archives.select{|m| not m.nil?}
+    @meas_archives = @meas_archives.select{|ma| @meas_type_group.meas_types.include?(ma.meas_type)}
+    @meas_archives = @meas_archives.paginate(:page => params[:page], :per_page => 20)
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @meas_archives }
+      format.json  { render :json => @meas_archives }
+      format.txt { render :layout => nil }# index.html.haml
+    end
+  end
+
   # GET /meas_type_groups/new
   # GET /meas_type_groups/new.xml
   def new

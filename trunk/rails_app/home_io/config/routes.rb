@@ -4,6 +4,9 @@ HomeIo::Application.routes.draw do
 
   resources :meas_type_groups do
     resource :meas_type_group_graph, :only => [:show]
+    member do
+      get :latest
+    end
   end
 
   # statistics calculated by day

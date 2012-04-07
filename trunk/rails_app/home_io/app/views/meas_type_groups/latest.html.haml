@@ -1,0 +1,30 @@
+%h2= "Measurement type group - #{@meas_type_group.name} - latest measurements"
+
+%p
+  %b= "Name:"
+  = @meas_type_group.name
+
+%p
+  %b= "Measurement types:"
+  %ul
+    - @meas_type_group.meas_types.each do |meas_type|
+      %li
+        = link_to meas_type.name, meas_type
+        = ", "
+        = link_to "cache", meas_type_meas_cache_path(meas_type)
+        = link_to "(graph)", meas_type_meas_cache_path(meas_type, :png)
+        = ", "
+        = link_to "archived", meas_type_meas_archive_path(meas_type)
+
+%hr
+
+= render :partial => 'meas_archives/meas_archive_array', :locals => {:meas_archive_array => @meas_archives}
+
+= "Access links: "
+= link_to "TXT", latest_meas_type_group_path(@meas_type_group, {:format => :txt, :auth_token => current_user.authentication_token})
+= link_to "XML", latest_meas_type_group_path(@meas_type_group, {:format => :xml, :auth_token => current_user.authentication_token})
+= link_to "JSON", latest_meas_type_group_path(@meas_type_group, {:format => :json, :auth_token => current_user.authentication_token})
+
+= " | "
+
+= link_to 'Back', meas_type_group_path(@meas_type_group)

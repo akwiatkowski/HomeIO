@@ -1,0 +1,1 @@
+<% @meas_archives.each do |m| -%><%= "%.2f" % m.value %> <%= m.meas_type.name_human %><% unless m == @meas_archives.last %> | <% end %><% end -%>
