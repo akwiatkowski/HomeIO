@@ -1,3 +1,4 @@
+- @meas_archives = @meas_archives.select{|m| not m.nil?}
 - @meas_archives.each do |meas_archive|
   - unless meas_archive.nil?
     - t = ""

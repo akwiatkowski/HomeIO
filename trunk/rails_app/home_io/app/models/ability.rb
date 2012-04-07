@@ -47,7 +47,7 @@ class Ability
 
     else
       # ordinary user
-      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer, HomeArchive, WeatherArchive, WeatherMetarArchive]
+      can :read, [MeasType, MeasArchive, City, ActionType, ActionEvent, ActionTypesUser, Memo, Overseer, HomeArchive, WeatherArchive, WeatherMetarArchive, MeasTypeGroup]
 
       # only edit self memos
       can :manage, user.memos
