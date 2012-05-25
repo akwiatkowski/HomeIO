@@ -69,6 +69,9 @@ gem 'robustthread'
 # creating big graphs in background
 gem 'delayed_job'
 
+# calculation of energy
+gem 'ranges_merger'
+
 # web servers
 # gem 'unicorn'
 
