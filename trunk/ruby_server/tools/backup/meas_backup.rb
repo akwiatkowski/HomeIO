@@ -18,20 +18,23 @@ time_limit = Time.now.end_of_day
 puts "#{(time_limit - time) / 1.days} days to go"
 
 while time < time_limit
-  puts "starting day #{time}"
-  bt = Time.now
+  types.each do |type|
+    puts "starting day #{time.strftime("%Y_%m_%d")}, type #{type.name}"
+    bt = Time.now
 
-  file_name = File.join('data', 'backup', "meas_#{time.strftime("%Y_%m_%d")}.csv")
-  file = File.new(file_name, 'w')
-  file.puts "meas_type;unix_time_from;unix_time_to;raw_value;value"
+    file_name = File.join('data', 'backup', "meas_#{time.strftime("%Y_%m_%d")}_#{type.name}.csv")
+    file = File.new(file_name, 'w')
+    file.puts "meas_type;unix_time_from;unix_time_to;raw_value;value"
 
-  meases = MeasArchive.where(["time_from >= ?", time]).where(["time_from < ?", time + 1.day]).all
-  meases.each do |m|
-    file.puts "#{types.select{|t| t.id == m.meas_type.id}.first.name};#{m.time_from.to_f};#{m.time_to.to_f};#{m.raw};#{m.value}"
+    meases = MeasArchive.where(meas_type_id: type.id).where(["time_from >= ?", time]).where(["time_from < ?", time + 1.day]).all
+    meases.each do |m|
+      file.puts "#{type.name};#{m.time_from.to_f};#{m.time_to.to_f};#{m.raw};#{m.value}"
+    end
+
+    file.close
+
+    puts "finished day #{time}, type #{type.name}, took #{Time.now - bt}, meases #{meases.size}"
   end
-
-  file.close
-
-  puts "finished day #{time}, took #{Time.now - bt}, meases #{meases.size}"
+  
   time += 1.day
 end
