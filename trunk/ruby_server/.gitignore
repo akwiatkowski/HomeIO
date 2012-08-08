@@ -4,6 +4,7 @@ data/metar_log/**
 data/sqlite/*
 data/weather/*
 data/DevInfo.yml
+data/backup/**
 doc_other
 homeio/.idea
 nbproject
