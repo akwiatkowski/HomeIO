@@ -12,11 +12,15 @@ types = MeasType.all
 #first_meas = MeasArchive.order(:time_from).first
 #puts "... first meas time #{first_meas.time_from}"
 #time = first_meas.time_from.beginning_of_day
-time = Time.at(1309381405).beginning_of_day - 1.day
 
-time_limit = Time.now.end_of_day
+# initial backup
+#time = Time.at(1309381405).beginning_of_day - 1.day
+#time_limit = Time.now.end_of_day
+
+
 # later as daily backup
-#time = Time.now.end_of_day - 7.days
+time = (Time.now.end_of_day - 7.days).beginning_of_day
+time_limit = Time.now.end_of_day
 
 puts "#{(time_limit - time) / 1.days} days to go"
 
