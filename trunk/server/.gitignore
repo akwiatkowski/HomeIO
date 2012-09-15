@@ -48,4 +48,4 @@ pkg
 #*.rbc
 
 .idea
-config/*.yml
+config/*_secret.yml
