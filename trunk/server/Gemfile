@@ -4,6 +4,9 @@ source 'http://rubygems.org'
 gem "hiredis"
 gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 
+# cron-like stuff
+gem "rufus-scheduler"
+
 # https://github.com/brianmario/yajl-ruby
 gem 'yajl-ruby'
 
