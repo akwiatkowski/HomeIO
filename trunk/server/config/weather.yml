@@ -1,6 +1,6 @@
-:common:
-  WorldWeatherOnline:
-    :key: 'bd499d4d3f190545111206'
+#:common:
+#  WorldWeatherOnline:
+#    :key: 'key'
 
 :cities:
   - :name: 'Poznań'
