@@ -41,7 +41,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,inowroclaw,mid,1201072,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11721'
 
   - :name: 'Toruń'
     :country: 'Poland'
@@ -54,7 +54,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,torun,mid,1201279,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11965'
 
   - :name: 'Bydgoszcz'
     :country: 'Poland'
@@ -68,7 +68,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11666'
 
   - :name: 'Łódź'
     :country: 'Poland'
@@ -82,7 +82,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,lodz,mid,1201127,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11797'
 
   - :name: 'Wrocław'
     :country: 'Poland'
@@ -96,7 +96,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,wroclaw,mid,1201305,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11998'
 
   - :name: 'Zielona Góra'
     :country: 'Poland'
@@ -110,7 +110,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,zielona_gora,mid,1201320,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=12013'
 
   - :name: 'Gdańsk'
     :country: 'Poland'
@@ -124,7 +124,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,gdansk,mid,1201047,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11696'
 
   - :name: 'Warszawa'
     :country: 'Poland'
@@ -138,7 +138,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,warszawa,mid,1201290,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11982'
 
   - :name: 'Olsztyn'
     :country: 'Poland'
@@ -152,7 +152,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,olsztyn,mid,1201173,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11844'
 
   - :name: 'Koszalin'
     :country: 'Poland'
@@ -166,7 +166,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,koszalin,mid,1201103,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11759'
 
   - :name: 'Szczecin'
     :country: 'Poland'
@@ -180,7 +180,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,szczecin,mid,1201268,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11942'
 
   - :name: 'Kielce'
     :country: 'Poland'
@@ -194,7 +194,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,kielce,mid,1201091,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11746'
 
   - :name: 'Katowice'
     :country: 'Poland'
@@ -208,7 +208,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,katowice,mid,1201086,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11741'
 
   - :name: 'Jaworzno'
     :country: 'Poland'
@@ -221,7 +221,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,jaworzno,mid,1201079,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11732'
 
   - :name: 'Kraków'
     :country: 'Poland'
@@ -235,7 +235,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,krakow,mid,1201105,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11763'
 
   - :name: 'Lublin'
     :country: 'Poland'
@@ -248,7 +248,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,lublin,mid,1201135,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11788'
 
   - :name: 'Białystok'
     :country: 'Poland'
@@ -261,7 +261,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,bialystok,mid,1201009,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11938'
 
   - :name: 'Suwałki'
     :country: 'Poland'
@@ -274,7 +274,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,suwalki,mid,1201261,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11938'
 
   - :name: 'Nowy Targ'
     :country: 'Poland'
@@ -287,7 +287,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,nowy_targ,mid,1201165,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11836'
 
   - :name: 'Zakopane'
     :country: 'Poland'
@@ -300,7 +300,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,zakopane,mid,1201312,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=12005'
 
   - :name: 'Rzeszów'
     :country: 'Poland'
@@ -313,7 +313,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,rzeszow,mid,1201227,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11905'
 
   - :name: 'Golub-Dobrzyń'
     :country: 'Poland'
@@ -326,7 +326,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,golub-dobrzyn,mid,1201056,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11704'
 
   - :name: 'Włocławek'
     :country: 'Poland'
@@ -339,7 +339,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,wloclawek,mid,1201298,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11991'
 
   - :name: 'Karpacz'
     :country: 'Poland'
@@ -352,7 +352,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11739'
 
   - :name: 'Szklarska Poręba'
     :country: 'Poland'
@@ -365,7 +365,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11946'
 
   - :name: 'Kłodzko'
     :country: 'Poland'
@@ -378,7 +378,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,klodzko,mid,1201093,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11750'
 
   - :name: 'Wałbrzych'
     :country: 'Poland'
@@ -391,7 +391,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,walbrzych,mid,1201288,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11980'
 
   - :name: 'Jelenia Góra'
     :country: 'Poland'
@@ -404,7 +404,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,jelenia_gora,mid,1201081,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11735'
 
   - :name: 'Kamienna Góra'
     :country: 'Poland'
@@ -417,7 +417,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,kamienna_gora,mid,1201084,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11737'
 
   - :name: 'Tychy'
     :country: 'Poland'
@@ -430,7 +430,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,tychy,mid,1201283,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11970'
 
   - :name: 'Szczyrk'
     :country: 'Poland'
@@ -443,7 +443,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11944'
 
   - :name: 'Ustroń'
     :country: 'Poland'
@@ -456,7 +456,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11974'
 
   - :name: 'Wisła'
     :country: 'Poland'
@@ -469,7 +469,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11989'
 
   - :name: 'Żywiec'
     :country: 'Poland'
@@ -482,7 +482,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,zywiec,mid,1201328,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=12024'
 
   - :name: 'Limanowa'
     :country: 'Poland'
@@ -495,7 +495,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,limanowa,mid,1201124,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11780'
 
   - :name: 'Mszana Dolna'
     :country: 'Poland'
@@ -508,7 +508,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11821'
 
   - :name: 'Nowy Sącz'
     :country: 'Poland'
@@ -521,7 +521,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,nowy_sacz,mid,1201164,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11835'
 
   - :name: 'Rabka'
     :country: 'Poland'
@@ -534,7 +534,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11889'
 
   - :name: 'Szczawnica'
     :country: 'Poland'
@@ -547,7 +547,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11941'
 
   - :name: 'Ustrzyki Dolne'
     :country: 'Poland'
@@ -565,8 +565,8 @@
   - :name: 'Ustrzyki Górne'
     :country: 'Poland'
     :coords:
-      :lat: 49.433333
-      :lon: 22.6
+      :lat: 49.101288
+      :lon: 22.656813
     :classes:
       #OnetPl:
       #  :url: ''
