@@ -318,8 +318,8 @@
   - :name: 'Golub-Dobrzyń'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon: 
+      :lat: 53.116667
+      :lon: 19.05
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,golub-dobrzyn,9468.html'
@@ -331,8 +331,8 @@
   - :name: 'Włocławek'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 52.65
+      :lon: 19.05
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,wloclawek,9295.html'
@@ -344,8 +344,8 @@
   - :name: 'Karpacz'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.778333
+      :lon: 15.757222
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,karpacz,9280.html'
@@ -357,8 +357,8 @@
   - :name: 'Szklarska Poręba'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.833333
+      :lon: 15.533333
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,szklarska-poreba,9222.html'
@@ -370,8 +370,8 @@
   - :name: 'Kłodzko'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.433333
+      :lon: 16.65
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,klodzko,9309.html'
@@ -383,8 +383,8 @@
   - :name: 'Wałbrzych'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.766667
+      :lon: 16.283333
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,walbrzych,9282.html'
@@ -396,8 +396,8 @@
   - :name: 'Jelenia Góra'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.903333
+      :lon: 15.734444
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,jelenia-gora,9213.html'
@@ -409,8 +409,8 @@
   - :name: 'Kamienna Góra'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.816667
+      :lon: 16.05
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,kamienna-gora,9214.html'
@@ -422,8 +422,8 @@
   - :name: 'Tychy'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.166667
+      :lon: 19.0
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,tychy,9527.html'
@@ -435,8 +435,8 @@
   - :name: 'Szczyrk'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.716111
+      :lon: 19.026944
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,szczyrk,9248.html'
@@ -448,8 +448,8 @@
   - :name: 'Ustroń'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.716667
+      :lon: 18.816667
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,ustron,9284.html'
@@ -461,8 +461,8 @@
   - :name: 'Wisła'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.647222
+      :lon: 18.8675
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,wisla,9313.html'
@@ -474,8 +474,8 @@
   - :name: 'Żywiec'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.683333
+      :lon: 19.2
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,zywiec,9384.html'
@@ -487,8 +487,8 @@
   - :name: 'Limanowa'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.701667
+      :lon: 20.425556
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,limanowa,9338.html'
@@ -500,8 +500,8 @@
   - :name: 'Mszana Dolna'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.675378
+      :lon: 20.076672
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,mszana-dolna,9325.html'
@@ -513,8 +513,8 @@
   - :name: 'Nowy Sącz'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.625
+      :lon: 20.690833
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,nowy-sacz,9289.html'
@@ -526,8 +526,8 @@
   - :name: 'Rabka'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.616667
+      :lon: 19.966667
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,rabka,9319.html'
@@ -539,8 +539,8 @@
   - :name: 'Szczawnica'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.422778
+      :lon: 20.482778
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,szczawnica,9321.html'
@@ -552,8 +552,8 @@
   - :name: 'Ustrzyki Dolne'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.433333
+      :lon: 22.6
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,ustrzyki-dolne,9206.html'
@@ -565,8 +565,8 @@
   - :name: 'Brzozów'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.695278
+      :lon: 22.019444
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,brzozow,9500.html'
@@ -578,8 +578,8 @@
   - :name: 'Krosno'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.682222
+      :lon: 21.765833
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,krosno,9304.html'
@@ -591,8 +591,8 @@
   - :name: 'Jasło'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.747778
+      :lon: 21.471389
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,jaslo,9339.html'
@@ -604,8 +604,8 @@
   - :name: 'Sanok'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.55
+      :lon: 22.216667
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,sanok,9369.html'
@@ -614,53 +614,53 @@
       InteriaPl:
         :url: ''
 
-  - :name: ''
+  - :name: 'Bukowina Tatrzańska'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.35
+      :lon: 20.116667
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bukowina-tatrzanska,9483.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: ''
+  - :name: 'Lubaczów'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 50.166667
+      :lon: 23.116667
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,lubaczow,9239.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: ''
+  - :name: 'Gorlice'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.65
+      :lon: 21.166667
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,gorlice,9263.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: ''
+  - :name: 'Bochnia'
     :country: 'Poland'
     :coords:
-      :lat:
-      :lon:
+      :lat: 49.966667
+      :lon: 20.433333
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bochnia,9337.html'
       WpPl:
         :url: ''
       InteriaPl:
