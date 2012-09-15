@@ -39,7 +39,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,inowroclaw,9296.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,inowroclaw,mid,1201072,mi.html'
       InteriaPl:
         :url: ''
 
@@ -52,7 +52,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,torun,9286.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,torun,mid,1201279,mi.html'
       InteriaPl:
         :url: ''
 
@@ -66,7 +66,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bydgoszcz,9315.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
       InteriaPl:
         :url: ''
 
@@ -80,7 +80,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,lodz,9205.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,lodz,mid,1201127,mi.html'
       InteriaPl:
         :url: ''
 
@@ -94,7 +94,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,wroclaw,9203.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,wroclaw,mid,1201305,mi.html'
       InteriaPl:
         :url: ''
 
@@ -108,7 +108,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,zielona-gora,9333.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,zielona_gora,mid,1201320,mi.html'
       InteriaPl:
         :url: ''
 
@@ -122,7 +122,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,gdansk,9201.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,gdansk,mid,1201047,mi.html'
       InteriaPl:
         :url: ''
 
@@ -136,7 +136,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,warszawa,9105.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,warszawa,mid,1201290,mi.html'
       InteriaPl:
         :url: ''
 
@@ -150,7 +150,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,olsztyn,9247.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,olsztyn,mid,1201173,mi.html'
       InteriaPl:
         :url: ''
 
@@ -164,7 +164,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,koszalin,9259.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,koszalin,mid,1201103,mi.html'
       InteriaPl:
         :url: ''
 
@@ -178,7 +178,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,szczecin,9326.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,szczecin,mid,1201268,mi.html'
       InteriaPl:
         :url: ''
 
@@ -192,7 +192,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,kielce,9287.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,kielce,mid,1201091,mi.html'
       InteriaPl:
         :url: ''
 
@@ -206,7 +206,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,katowice,9342.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,katowice,mid,1201086,mi.html'
       InteriaPl:
         :url: ''
 
@@ -219,7 +219,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,jaworzno,9521.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,jaworzno,mid,1201079,mi.html'
       InteriaPl:
         :url: ''
 
@@ -233,7 +233,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,krakow,9202.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,krakow,mid,1201105,mi.html'
       InteriaPl:
         :url: ''
 
@@ -246,7 +246,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,lublin,9303.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,lublin,mid,1201135,mi.html'
       InteriaPl:
         :url: ''
 
@@ -259,7 +259,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bialystok,9372.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,bialystok,mid,1201009,mi.html'
       InteriaPl:
         :url: ''
 
@@ -272,7 +272,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,suwalki,9218.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,suwalki,mid,1201261,mi.html'
       InteriaPl:
         :url: ''
 
@@ -285,7 +285,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,nowy-targ,9266.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,nowy_targ,mid,1201165,mi.html'
       InteriaPl:
         :url: ''
 
@@ -298,7 +298,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,zakopane,9231.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,zakopane,mid,1201312,mi.html'
       InteriaPl:
         :url: ''
 
@@ -311,7 +311,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,rzeszow,9332.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,rzeszow,mid,1201227,mi.html'
       InteriaPl:
         :url: ''
 
@@ -324,7 +324,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,golub-dobrzyn,9468.html'
       WpPl:
-        :url: ''
+        :url: 'http://pogoda.wp.pl/miasto,golub-dobrzyn,mid,1201056,mi.html'
       InteriaPl:
         :url: ''
 
