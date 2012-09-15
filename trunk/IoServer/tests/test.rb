@@ -4,8 +4,8 @@
 
 require 'socket'
 
-hostname = '192.168.0.13'
-#hostname = 'localhost'
+#hostname = '192.168.0.13'
+hostname = 'localhost'
 #hostname = '5.62.110.45'
 port = 2002
 
