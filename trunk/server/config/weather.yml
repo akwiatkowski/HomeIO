@@ -560,7 +560,20 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,ustrzyki_dolne,mid,1201284,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11975'
+
+  - :name: 'Ustrzyki Górne'
+    :country: 'Poland'
+    :coords:
+      :lat: 49.433333
+      :lon: 22.6
+    :classes:
+      #OnetPl:
+      #  :url: ''
+      #WpPl:
+      #  :url: ''
+      InteriaPl:
+        :url: 'http://pogoda.interia.pl/miasta?id=11976'
 
   - :name: 'Brzozów'
     :country: 'Poland'
@@ -573,7 +586,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,brzozow,mid,1201021,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11663'
 
   - :name: 'Krosno'
     :country: 'Poland'
@@ -586,7 +599,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,krosno,mid,1201109,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11767'
 
   - :name: 'Jasło'
     :country: 'Poland'
@@ -599,7 +612,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,jaslo,mid,1201076,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11727'
 
   - :name: 'Sanok'
     :country: 'Poland'
@@ -612,7 +625,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,sanok,mid,1201229,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11907'
 
   - :name: 'Bukowina Tatrzańska'
     :country: 'Poland'
@@ -625,7 +638,7 @@
       #WpPl:
       #  :url: ''
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11664'
 
   - :name: 'Lubaczów'
     :country: 'Poland'
@@ -638,7 +651,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,lubaczow,mid,1201131,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11783'
 
   - :name: 'Gorlice'
     :country: 'Poland'
@@ -651,7 +664,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,gorlice,mid,1201058,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11706'
 
   - :name: 'Bochnia'
     :country: 'Poland'
@@ -664,7 +677,7 @@
       WpPl:
         :url: 'http://pogoda.wp.pl/miasto,bochnia,mid,1201014,mi.html'
       InteriaPl:
-        :url: ''
+        :url: 'http://pogoda.interia.pl/miasta?id=11656'
 
 #  - :name: ''
 #    :country: 'Poland'
