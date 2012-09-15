@@ -1,0 +1,30 @@
+= HomeIO server
+
+It is new experimental server for HomeIO
+
+== TODO
+
+* everything will be managable via AR
+  * cities with coords, urls, metar codes
+  * meas types, even uC commands (+ some kind of checksum?)
+  * overseers - TODO design
+* slow communication:
+  * throught redis - started
+* instant communication:
+  * TODO how can I do that?!
+* modularity
+  * how can it be?
+* meas.
+  * throught gem meas_receiver
+  * TODO better, tested, algorith when log measurements
+  * TODO fix unimportand measurements logging
+  * TODO better way to store measurements than AR, maybe some nosql
+  * TODO easy and fast way to export
+  * TODO implement this gem
+* weather
+  * throught weather_fetcher
+  * TODO create gem for weather oriented calculation, like pressure, wind speed?
+* overseer
+  * creating rules online
+
+

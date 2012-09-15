@@ -1,39 +1,47 @@
+GIT
+  remote: git://github.com/akwiatkowski/weather_fetcher.git
+  revision: b8b082aeb0ea94cfab79ee2321c598f5a9ef27b5
+  specs:
+    weather_fetcher (0.0.3)
+      simple_metar_parser (>= 0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
-    coderay (1.0.5)
+    coderay (1.0.7)
     diff-lcs (1.1.3)
     git (1.2.5)
-    hiredis (0.4.4)
-    jeweler (1.8.3)
+    hiredis (0.4.5)
+    jeweler (1.8.4)
       bundler (~> 1.0)
       git (>= 1.2.5)
       rake
       rdoc
-    json (1.6.5)
-    method_source (0.7.1)
-    multi_json (1.1.0)
-    pry (0.9.8.4)
+    json (1.7.5)
+    method_source (0.8)
+    multi_json (1.3.6)
+    pry (0.9.10)
       coderay (~> 1.0.5)
-      method_source (~> 0.7.1)
-      slop (>= 2.4.4, < 3)
+      method_source (~> 0.8)
+      slop (~> 3.3.1)
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
-    redis (2.2.2)
-    rspec (2.9.0)
-      rspec-core (~> 2.9.0)
-      rspec-expectations (~> 2.9.0)
-      rspec-mocks (~> 2.9.0)
-    rspec-core (2.9.0)
-    rspec-expectations (2.9.0)
+    redis (3.0.1)
+    rspec (2.11.0)
+      rspec-core (~> 2.11.0)
+      rspec-expectations (~> 2.11.0)
+      rspec-mocks (~> 2.11.0)
+    rspec-core (2.11.1)
+    rspec-expectations (2.11.3)
       diff-lcs (~> 1.1.3)
-    rspec-mocks (2.9.0)
-    simplecov (0.6.1)
+    rspec-mocks (2.11.2)
+    simple_metar_parser (0.0.1)
+    simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
     simplecov-html (0.5.3)
-    slop (2.4.4)
+    slop (3.3.3)
     yajl-ruby (1.1.0)
 
 PLATFORMS
@@ -48,4 +56,5 @@ DEPENDENCIES
   redis
   rspec
   simplecov
+  weather_fetcher!
   yajl-ruby

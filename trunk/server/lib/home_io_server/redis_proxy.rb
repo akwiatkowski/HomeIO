@@ -2,6 +2,8 @@ require 'singleton'
 require 'redis'
 require 'yajl'
 
+# IPC for HomeIO
+
 module HomeIoServer
   class RedisProxy
     include Singleton

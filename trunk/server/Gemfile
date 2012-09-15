@@ -7,6 +7,9 @@ gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 # https://github.com/brianmario/yajl-ruby
 gem 'yajl-ruby'
 
+# weather service
+gem 'weather_fetcher' #, :git => 'git://github.com/akwiatkowski/weather_fetcher.git'
+
 group :development do
   gem 'pry'
 
