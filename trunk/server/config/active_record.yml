@@ -1,0 +1,8 @@
+:connection:
+  adapter: postgresql
+  database: homeio
+  username: homeio
+  password: homeio
+  #host: /var/run/postgresql
+  host: localhost
+  pool: 40

@@ -1,10 +1,13 @@
 require "weather_fetcher"
+require "home_io_server/weather_fetcher_addons/weather_data"
 require "yaml"
 
 # Server fetching weather
 
 module HomeIoServer
   class WeatherServer
+
+    CRON_LIKE = true
 
     def initialize
       @weathers = Hash.new
@@ -13,55 +16,72 @@ module HomeIoServer
       secret = YAML.load(File.open("config/weather_secret.yml"))
       @config.merge!(secret)
 
-      @config[:cities] = @config[:cities][0..2]
+      # @config[:cities] = @config[:cities][0..2]
+      @cities = @config[:cities]
 
       WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
 
-      #loop do
-      #  fetch_loop
-      #  sleep 2
-      #end
+      Storage.instance
+      initialize_db
 
-      @scheduler = Rufus::Scheduler.start_new
-      @scheduler.every '15m' do
-        fetch_loop
+      if CRON_LIKE
+        @scheduler = Rufus::Scheduler.start_new
+        @scheduler.every '15m' do
+          fetch_loop
+        end
+      else
+        loop do
+          fetch_loop
+          sleep 15*60
+        end
+      end
+
+    end
+
+    def initialize_db
+      @cities.each do |city|
+        ar_city = City.where(name: city[:name]).where(country: city[:country]).first
+        unless ar_city
+          ar_city = City.new(city)
+          ar_city.save! # TODO some exception handling
+        end
+        city[:id] = ar_city.id
       end
     end
 
     def fetch_loop
-      @config[:cities].each do |city|
+      @cities.each do |city|
         fetch_for_city(city)
       end
     end
 
     def fetch_for_city(_city)
-      begin
-        @weathers[_city] ||= Array.new # init
-        providers = WeatherFetcher::SchedulerHelper.recommended_providers(@weathers[_city])
-        puts providers.inspect, @weathers[_city].collect { |w| w.provider }.inspect
+      @weathers[_city] ||= Array.new # init
+      providers = WeatherFetcher::SchedulerHelper.recommended_providers(@weathers[_city])
 
-        providers.each do |provider|
-          p_i = provider.new(_city)
-          p_i.fetch
-          new_weathers = p_i.weathers
+      providers.each do |provider|
+        p_i = provider.new(_city)
+        p_i.fetch
+        new_weathers = p_i.weathers
 
-          store_weather(new_weathers, _city)
+        store_weather(new_weathers, _city)
 
-          @weathers[_city] += new_weathers
-          @weathers[_city].uniq!
-        end
-
-        puts "#{_city[:name]} - #{@weathers[_city].size}"
+        @weathers[_city] += new_weathers
         @weathers[_city].uniq!
-        puts "#{_city[:name]} - #{@weathers[_city].size} UNIQ"
-      rescue
-        puts _city.inspect
-        puts "#{_city[:name]} - FAIL"
       end
+
+      puts "#{_city[:name]} - #{@weathers[_city].size}"
+      #@weathers[_city].uniq!
+      #puts "#{_city[:name]} - #{@weathers[_city].size} UNIQ"
     end
 
     def store_weather(data, city)
-      puts "Storing #{data.size} records for city #{city[:name]} :)"
+      data.each do |wd|
+        ar = wd.to_ar(city)
+        puts ar.inspect unless ar.valid? # TODO ingoring bad objects
+        ar.save
+      end
+      #puts "Storing #{data.size} records for city #{city[:name]} :)"
     end
 
   end
