@@ -10,4 +10,5 @@ class WeatherMetarArchive < ActiveRecord::Base
   validates_length_of :raw, :maximum => 200
   
   validates :pressure, numericality: { greater_than: 900, less_than: 1200 }, allow_nil: true
+  validates :wind, numericality: { greater_than: 0.0, less_than: 300.0 }, allow_nil: true
 end

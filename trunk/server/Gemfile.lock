@@ -53,7 +53,7 @@ GEM
     simplecov-html (0.5.3)
     slop (3.3.3)
     tzinfo (0.3.33)
-    weather_fetcher (0.0.9)
+    weather_fetcher (0.0.12)
       simple_metar_parser (>= 0.0.1)
     yajl-ruby (1.1.0)
 

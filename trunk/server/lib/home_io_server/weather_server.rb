@@ -16,7 +16,7 @@ module HomeIoServer
       secret = YAML.load(File.open("config/weather_secret.yml"))
       @config.merge!(secret)
 
-      # @config[:cities] = @config[:cities][0..2]
+      #@config[:cities] = @config[:cities][-15..-1]
       @cities = @config[:cities]
 
       WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
@@ -66,7 +66,15 @@ module HomeIoServer
 
       providers.each do |provider|
         p_i = provider.new(_city)
+        begin
         p_i.fetch
+        rescue => ex
+          puts "*"*1000
+          puts _city.inspect
+          puts provider
+          puts "#{ex.backtrace}: #{ex.message} (#{ex.class})"
+          exit!
+        end
         new_weathers = p_i.weathers
 
         store_weather(new_weathers, _city)

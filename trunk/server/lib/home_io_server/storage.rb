@@ -19,6 +19,7 @@ module HomeIoServer
       @connection = @config[:connection]
 
       ActiveRecord::Base.logger = Logger.new(STDERR)
+      ActiveRecord::Base.logger.level = Logger::INFO
       ActiveRecord::Base.establish_connection(@connection)
     end
 

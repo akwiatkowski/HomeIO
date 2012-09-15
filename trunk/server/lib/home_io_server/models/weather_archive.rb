@@ -7,4 +7,5 @@ class WeatherArchive < ActiveRecord::Base
   validates_uniqueness_of :time_from, :scope => [:weather_provider_id, :city_id, :time_to]
   validates_presence_of :time_from, :time_to, :city_id, :weather_provider_id
   validates :pressure, numericality: { greater_than: 900, less_than: 1200 }, allow_nil: true
+  validates :wind, numericality: { greater_than: 0.0, less_than: 300.0 }, allow_nil: true
 end

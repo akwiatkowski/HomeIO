@@ -16,7 +16,7 @@ gem 'pg'
 gem 'yajl-ruby'
 
 # weather service
-gem 'weather_fetcher_addons' #, :git => 'git://github.com/akwiatkowski/weather_fetcher_addons.git'
+gem 'weather_fetcher' #, :git => 'git://github.com/akwiatkowski/weather_fetcher_addons.git'
 
 group :development do
   gem 'pry'
