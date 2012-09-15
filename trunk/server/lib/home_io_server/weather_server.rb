@@ -25,6 +25,9 @@ module HomeIoServer
       initialize_db
 
       if CRON_LIKE
+        #first loop, nobody wants to wait
+        fetch_loop
+
         @scheduler = Rufus::Scheduler.start_new
         @scheduler.every '15m' do
           fetch_loop
@@ -42,7 +45,9 @@ module HomeIoServer
       @cities.each do |city|
         ar_city = City.where(name: city[:name]).where(country: city[:country]).first
         unless ar_city
-          ar_city = City.new(city)
+          city_hash = city
+          city_hash.delete(:classes)
+          ar_city = City.new(city_hash)
           ar_city.save! # TODO some exception handling
         end
         city[:id] = ar_city.id
