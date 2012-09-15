@@ -30,191 +30,188 @@
       InteriaPl:
         :url: 'http://pogoda.interia.pl/miasta?id=11817'
 
-  - :name: Inowrocław
-    :country: Poland
-    :metar: !!null
+  - :name: 'Inowrocław'
+    :country: 'Poland'
     :coords:
       :lat: 52.799264
       :lon: 18.259935
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,inowroclaw,9296.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Toruń
-    :country: Poland
-    :metar: !!null
+  - :name: 'Toruń'
+    :country: 'Poland'
     :coords:
       :lat: 53.019038
       :lon: 18.599052
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,torun,9286.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Bydgoszcz
-    :country: Poland
+  - :name: 'Bydgoszcz'
+    :country: 'Poland'
     :metar: EPBY
     :coords:
       :lat: 53.0968
       :lon: 17.9777
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bydgoszcz,9315.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Łódź
-    :country: Poland
-    :metar: !!null
+  - :name: 'Łódź'
+    :country: 'Poland'
+    :metar: EPLL
     :coords:
       :lat: 51.760743
       :lon: 19.455986
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,lodz,9205.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Wrocław
-    :country: Poland
-    :metar: !!null
+  - :name: 'Wrocław'
+    :country: 'Poland'
+    :metar: EPWR
     :coords:
       :lat: 51.113265
       :lon: 17.036819
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,wroclaw,9203.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Zielona Góra
-    :country: Poland
-    :metar: !!null
+  - :name: 'Zielona Góra'
+    :country: 'Poland'
+    :metar: EPZG
     :coords:
       :lat: 51.938042
       :lon: 15.506401
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,zielona-gora,9333.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Gdańsk
-    :country: Poland
-    :metar: !!null
+  - :name: 'Gdańsk'
+    :country: 'Poland'
+    :metar: EPGD
     :coords:
       :lat: 54.361598
       :lon: 18.646317
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,gdansk,9201.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Warszawa
-    :country: Poland
+  - :name: 'Warszawa'
+    :country: 'Poland'
     :metar: EPWA
     :coords:
       :lat: 52.164909
       :lon: 20.964117
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,warszawa,9105.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Olsztyn
-    :country: Poland
-    :metar: !!null
+  - :name: 'Olsztyn'
+    :country: 'Poland'
+    :metar: EPOD
     :coords:
       :lat: 53.781708
       :lon: 20.479088
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,olsztyn,9247.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Koszalin
-    :country: Poland
-    :metar: !!null
+  - :name: 'Koszalin'
+    :country: 'Poland'
+    :metar: EPKO
     :coords:
       :lat: 54.195507
       :lon: 16.171074
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,koszalin,9259.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Szczecin
-    :country: Poland
-    :metar: !!null
+  - :name: 'Szczecin'
+    :country: 'Poland'
+    :metar: EPSC
     :coords:
       :lat: 53.435147
       :lon: 14.558029
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,szczecin,9326.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Kielce
-    :country: Poland
-    :metar: !!null
+  - :name: 'Kielce'
+    :country: 'Poland'
+    :metar: EPKA
     :coords:
       :lat: 50.868941
       :lon: 20.629463
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,kielce,9287.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Katowice
-    :country: Poland
+  - :name: 'Katowice'
+    :country: 'Poland'
     :metar: EPKT
     :coords:
       :lat: 50.241968
       :lon: 19.032927
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,katowice,9342.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Jaworzno
-    :country: Poland
-    :metar: !!null
+  - :name: 'Jaworzno'
+    :country: 'Poland'
     :coords:
       :lat: 50.203847
       :lon: 19.274712
@@ -226,106 +223,100 @@
       InteriaPl:
         :url: ''
 
-  - :name: Kraków
-    :country: Poland
+  - :name: 'Kraków'
+    :country: 'Poland'
     :metar: EPKK
     :coords:
       :lat: 50.0777
       :lon: 19.7848
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,krakow,9202.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Lublin
-    :country: Poland
-    :metar: !!null
+  - :name: 'Lublin'
+    :country: 'Poland'
     :coords:
       :lat: 51.248292
       :lon: 22.569237
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,lublin,9303.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Białystok
-    :country: Poland
-    :metar: !!null
+  - :name: 'Białystok'
+    :country: 'Poland'
     :coords:
       :lat: 53.137009
       :lon: 23.168678
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,bialystok,9372.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Suwałki
-    :country: Poland
-    :metar: !!null
+  - :name: 'Suwałki'
+    :country: 'Poland'
     :coords:
       :lat: 54.114284
       :lon: 22.928352
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,suwalki,9218.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Nowy Targ
-    :country: Poland
-    :metar: !!null
+  - :name: 'Nowy Targ'
+    :country: 'Poland'
     :coords:
       :lat: 49.478453
       :lon: 20.031109
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,nowy-targ,9266.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Zakopane
-    :country: Poland
-    :metar: !!null
+  - :name: 'Zakopane'
+    :country: 'Poland'
     :coords:
       :lat: 49.301531
       :lon: 19.949684
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,zakopane,9231.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
-  - :name: Rzeszów
-    :country: Poland
-    :metar: !!null
+  - :name: 'Rzeszów'
+    :country: 'Poland'
     :coords:
       :lat: 50.044926
       :lon: 22.000694
     :classes:
       OnetPl:
-        :url: ''
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,rzeszow,9332.html'
       WpPl:
         :url: ''
       InteriaPl:
         :url: ''
 
   - :name: 'Golub-Dobrzyń'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon: 
@@ -337,22 +328,8 @@
       InteriaPl:
         :url: ''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   - :name: 'Włocławek'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -365,7 +342,7 @@
         :url: ''
 
   - :name: 'Karpacz'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -378,7 +355,7 @@
         :url: ''
 
   - :name: 'Szklarska Poręba'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -391,7 +368,7 @@
         :url: ''
 
   - :name: 'Kłodzko'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -404,7 +381,7 @@
         :url: ''
 
   - :name: 'Wałbrzych'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -417,7 +394,7 @@
         :url: ''
 
   - :name: 'Jelenia Góra'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -430,7 +407,7 @@
         :url: ''
 
   - :name: 'Kamienna Góra'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -443,7 +420,7 @@
         :url: ''
 
   - :name: 'Tychy'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -456,7 +433,7 @@
         :url: ''
 
   - :name: 'Szczyrk'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -469,7 +446,7 @@
         :url: ''
 
   - :name: 'Ustroń'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -482,7 +459,7 @@
         :url: ''
 
   - :name: 'Wisła'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -495,7 +472,7 @@
         :url: ''
 
   - :name: 'Żywiec'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -508,7 +485,7 @@
         :url: ''
 
   - :name: 'Limanowa'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -521,7 +498,7 @@
         :url: ''
 
   - :name: 'Mszana Dolna'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -534,7 +511,7 @@
         :url: ''
 
   - :name: 'Nowy Sącz'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -547,7 +524,7 @@
         :url: ''
 
   - :name: 'Rabka'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -560,7 +537,7 @@
         :url: ''
 
   - :name: 'Szczawnica'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -573,7 +550,7 @@
         :url: ''
 
   - :name: 'Ustrzyki Dolne'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -586,7 +563,7 @@
         :url: ''
 
   - :name: 'Brzozów'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -599,7 +576,7 @@
         :url: ''
 
   - :name: 'Krosno'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -612,7 +589,7 @@
         :url: ''
 
   - :name: 'Jasło'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -625,7 +602,7 @@
         :url: ''
 
   - :name: 'Sanok'
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -638,7 +615,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -651,7 +628,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -664,7 +641,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -677,7 +654,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -690,7 +667,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -703,7 +680,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -716,7 +693,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -729,7 +706,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -742,7 +719,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
@@ -755,7 +732,7 @@
         :url: ''
 
   - :name: ''
-    :country: Poland
+    :country: 'Poland'
     :coords:
       :lat:
       :lon:
