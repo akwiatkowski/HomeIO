@@ -679,6 +679,19 @@
       InteriaPl:
         :url: 'http://pogoda.interia.pl/miasta?id=11656'
 
+  - :name: 'Siedlce'
+    :country: 'Poland'
+    :coords:
+      :lat: 52.167814
+      :lon: 22.289935
+    :classes:
+      OnetPl:
+        :url: 'http://pogoda.onet.pl/prognoza-pogody/dzis/europa,polska,siedlce,9236.html'
+      WpPl:
+        :url: 'http://pogoda.wp.pl/miasto,siedlce,mid,1201232,mi.html'
+      InteriaPl:
+        :url: 'http://pogoda.interia.pl/miasta?id=11910'
+
 #  - :name: ''
 #    :country: 'Poland'
 #    :coords:
