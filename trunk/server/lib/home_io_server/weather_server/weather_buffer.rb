@@ -44,20 +44,28 @@ module HomeIoServer
 
     # Add only if there is nothing with similar metar string and time_from
     def check_and_add_metar(wd)
-      _a = @buffer_fetched[wd.city_hash]
-      if 0 == _a.select { |wd_archived| wd_archived.metar_string == wd.metar_string and wd_archived.time_from == wd.time_from and wd_archived.is_metar? }.size
-        _a << wd
+      if 0 == @buffer_fetched[wd.city_hash].select {
+        |wd_archived| wd_archived.metar_string == wd.metar_string and
+          wd_archived.time_from == wd.time_from and
+          wd_archived.time_to == wd.time_to and
+          wd_archived.is_metar?
+      }.size
+
+        @buffer_fetched[wd.city_hash] << wd
         add_to_storage_buffer(wd)
       end
     end
 
     # Add or overwrite if there is something with identical city, provider, time_from
     def check_and_add_weather(wd)
-      _a = @buffer_fetched[wd.city_hash]
-      _removed = _a.delete_if { |wd_archived| wd_archived.city_hash == wd.city_hash and wd_archived.provider == wd.provider and wd_archived.time_from == wd.time_from and wd_archived.weather? }.size
-      @logger.debug("Removed identical #{_removed} weather for city #{wd.city_hash.inspect}, provider #{wd.provider}, time_from #{wd.time_from}") if _removed > 0
+      @buffer_fetched[wd.city_hash] = @buffer_fetched[wd.city_hash].delete_if {
+        |wd_archived| wd_archived.city_hash == wd.city_hash and
+          wd_archived.provider == wd.provider and
+          wd_archived.time_from == wd.time_from and
+          wd_archived.time_to == wd.time_to
+      }
 
-      _a << wd
+      @buffer_fetched[wd.city_hash] << wd
       add_to_storage_buffer(wd)
     end
 
@@ -107,18 +115,20 @@ module HomeIoServer
       # AR
       @buffer_ar_storage.each do |wd|
         ar = wd.to_ar
-        @logger.warning("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}") unless ar.save
+        @logger.warn("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}") unless ar.save
       end
       @logger.debug "Stored #{@buffer_ar_storage.size} records"
 
       # clear buffer
       clear_storage_buffer
+      
+      # clean fetch buffer
+      clean_after_two_days
     end
 
     def clean_after_two_days
-      # remove old
+      @buffer_fetched = @buffer_fetched.delete_if{|wd| (Time.now - wd.time_created) > 2*24*3600}
     end
-
 
     # Which provider should be used now
     # Based on provider weather refresh interval

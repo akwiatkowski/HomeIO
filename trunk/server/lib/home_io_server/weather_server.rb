@@ -10,7 +10,6 @@ module HomeIoServer
   class WeatherServer
 
     CRON_LIKE = true
-    UNDER_DEVELOPMENT = true
 
     def initialize
       @weathers = Hash.new
@@ -26,7 +25,7 @@ module HomeIoServer
         # nothing
       end
 
-      @config[:cities] = @config[:cities][0..5] if UNDER_DEVELOPMENT # UNDER_DEVELOPMENT
+      # @config[:cities] = @config[:cities][0..5]
       @cities = @config[:cities]
       # for storing all weathers in one batch
       @current_weathers = Array.new
@@ -40,7 +39,7 @@ module HomeIoServer
         fetch_loop
 
         @scheduler = Rufus::Scheduler.start_new
-        @scheduler.every '2s' do # UNDER_DEVELOPMENT
+        @scheduler.every '5m' do
           fetch_loop
         end
       else
