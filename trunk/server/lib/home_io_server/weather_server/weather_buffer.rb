@@ -127,7 +127,9 @@ module HomeIoServer
     end
 
     def clean_after_two_days
-      @buffer_fetched = @buffer_fetched.delete_if{|wd| (Time.now - wd.time_created) > 2*24*3600}
+      @buffer_fetched.keys.each do |k|
+        @buffer_fetched[k] = @buffer_fetched[k].delete_if{|wd| (Time.now - wd.time_created) > 2*24*3600}
+      end
     end
 
     # Which provider should be used now
