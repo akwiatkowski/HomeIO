@@ -2,7 +2,7 @@ require "weather_fetcher"
 require "home_io_server/weather_fetcher_addons/weather_data"
 require "yaml"
 
-require 'home_io_server/weather_server/weather_backup_storage.rb'
+require 'home_io_server/weather_server/weather_buffer.rb'
 
 # Server fetching weather
 
@@ -10,21 +10,28 @@ module HomeIoServer
   class WeatherServer
 
     CRON_LIKE = true
+    UNDER_DEVELOPMENT = true
 
     def initialize
       @weathers = Hash.new
 
       @config = YAML.load(File.open("config/weather.yml"))
-      secret = YAML.load(File.open("config/weather_secret.yml"))
-      @config.merge!(secret)
 
-      # @config[:cities] = @config[:cities][1..5]
+      # setting API key
+      begin
+        secret = YAML.load(File.open("config/weather_secret.yml"))
+        @config.merge!(secret)
+        WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
+      rescue
+        # nothing
+      end
+
+      @config[:cities] = @config[:cities][0..5] if UNDER_DEVELOPMENT # UNDER_DEVELOPMENT
       @cities = @config[:cities]
       # for storing all weathers in one batch
       @current_weathers = Array.new
 
-      WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
-
+      # db init
       Storage.instance
       initialize_db
 
@@ -33,13 +40,13 @@ module HomeIoServer
         fetch_loop
 
         @scheduler = Rufus::Scheduler.start_new
-        @scheduler.every '15m' do
+        @scheduler.every '2s' do # UNDER_DEVELOPMENT
           fetch_loop
         end
       else
         loop do
           fetch_loop
-          sleep 15*60
+          sleep 5*60
         end
       end
 
@@ -60,47 +67,9 @@ module HomeIoServer
 
     def fetch_loop
       @cities.each do |city|
-        fetch_for_city(city)
+        WeatherBuffer.instance.fetch_city(city)
       end
-
-      store_weather(@current_weathers)
-      @current_weathers = Array.new
-    end
-
-    def fetch_for_city(_city)
-      @weathers[_city] ||= Array.new # init
-      providers = WeatherFetcher::SchedulerHelper.recommended_providers(@weathers[_city])
-
-      providers.each do |provider|
-        p_i = provider.new(_city)
-        begin
-          p_i.fetch
-        rescue => ex
-          puts "*"*1000
-          puts _city.inspect
-          puts provider
-          puts "#{ex.backtrace}: #{ex.message} (#{ex.class})"
-          exit!
-        end
-        new_weathers = p_i.weathers
-        @current_weathers += new_weathers
-        @weathers[_city] += new_weathers
-        @weathers[_city].uniq!
-      end
-
-      puts "  * #{_city[:name]} - #{@weathers[_city].size}"
-      #@weathers[_city].uniq!
-      #puts "#{_city[:name]} - #{@weathers[_city].size} UNIQ"
-    end
-
-    def store_weather(data)
-      WeatherBackupStorage.instance.store(data)
-      data.each do |wd|
-        ar = wd.to_ar
-        # puts ar.inspect unless ar.valid? # TODO ingoring bad objects
-        ar.save
-      end
-      puts "Storing #{data.size} records"
+      WeatherBuffer.instance.flush_storage_buffer
     end
 
   end

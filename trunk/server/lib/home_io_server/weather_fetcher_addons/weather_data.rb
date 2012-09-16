@@ -12,7 +12,7 @@ module WeatherFetcher
 
     def to_ar
       city = self.city_hash
-      
+
       if is_metar?
         ar = WeatherMetarArchive.where(city_id: city[:id], time_from: self.time_from).first
         ar = WeatherMetarArchive.new if ar.nil?
@@ -40,7 +40,7 @@ module WeatherFetcher
 
       return ar
     end
-    
+
     def to_text
       s = ""
       s += "#{self.time_created.to_i}; "
@@ -57,5 +57,18 @@ module WeatherFetcher
       s += "#{self.snow}"
       return s
     end
+
+    # String used for checking uniqueness and for overwriting old weather data
+    def uniq_hash
+      return "#{self.provider}_#{self.city_hash[:name]}_#{self.city_hash[:country]}_#{self.time_from.to_i}_#{self.metar_string}"
+    end
+
+    def self.uniq(_array)
+      h = Hash.new
+      # reverse order
+      _array.sort { |a, b| b.time_created <=> a.time_created }.each { |e| h[e.uniq_hash] = e }
+      return h.values
+    end
+
   end
 end

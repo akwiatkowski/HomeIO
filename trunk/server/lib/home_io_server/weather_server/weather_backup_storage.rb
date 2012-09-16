@@ -8,10 +8,6 @@ module HomeIoServer
     include Singleton
 
     def initialize
-      #['data', 'data/metar', 'data/weather'].each do |p|
-      #  Dir.mkdir(p) unless File.exists?(p)
-      #end
-
       @buffer = Hash.new
       @metars = Hash.new
     end
@@ -44,7 +40,8 @@ module HomeIoServer
 
     def add_to_metar_buffer(wd)
       @metars[wd.metar_code] ||= Array.new
-      if ([wd.metar_string] & @metars[wd.metar_code]).size == 0
+      already_added_count = ([wd.metar_string] & @metars[wd.metar_code]).size
+      if already_added_count == 0
         fn = "data/metar/#{wd.metar_code}/#{Time.now.year}/metar_#{wd.metar_code}_#{Time.now.year}_#{Time.now.month}.log"
         @buffer[fn] ||= Array.new
         @buffer[fn] << wd.metar_string
