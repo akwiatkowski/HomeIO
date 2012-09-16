@@ -18,8 +18,10 @@ module HomeIoServer
       secret = YAML.load(File.open("config/weather_secret.yml"))
       @config.merge!(secret)
 
-      #@config[:cities] = @config[:cities][-15..-1]
+      # @config[:cities] = @config[:cities][1..5]
       @cities = @config[:cities]
+      # for storing all weathers in one batch
+      @current_weathers = Array.new
 
       WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
 
@@ -60,6 +62,9 @@ module HomeIoServer
       @cities.each do |city|
         fetch_for_city(city)
       end
+
+      store_weather(@current_weathers)
+      @current_weathers = Array.new
     end
 
     def fetch_for_city(_city)
@@ -69,7 +74,7 @@ module HomeIoServer
       providers.each do |provider|
         p_i = provider.new(_city)
         begin
-        p_i.fetch
+          p_i.fetch
         rescue => ex
           puts "*"*1000
           puts _city.inspect
@@ -78,14 +83,12 @@ module HomeIoServer
           exit!
         end
         new_weathers = p_i.weathers
-
-        store_weather(new_weathers)
-
+        @current_weathers += new_weathers
         @weathers[_city] += new_weathers
         @weathers[_city].uniq!
       end
 
-      puts "#{_city[:name]} - #{@weathers[_city].size}"
+      puts "  * #{_city[:name]} - #{@weathers[_city].size}"
       #@weathers[_city].uniq!
       #puts "#{_city[:name]} - #{@weathers[_city].size} UNIQ"
     end
@@ -94,10 +97,10 @@ module HomeIoServer
       WeatherBackupStorage.instance.store(data)
       data.each do |wd|
         ar = wd.to_ar
-        puts ar.inspect unless ar.valid? # TODO ingoring bad objects
+        # puts ar.inspect unless ar.valid? # TODO ingoring bad objects
         ar.save
       end
-      #puts "Storing #{data.size} records for city #{city[:name]} :)"
+      puts "Storing #{data.size} records"
     end
 
   end
