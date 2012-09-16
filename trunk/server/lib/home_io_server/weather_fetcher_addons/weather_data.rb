@@ -6,11 +6,14 @@ require "yaml"
 module WeatherFetcher
   class WeatherData
 
-    # temp fix
-    #attr_reader :metar_string, :rain_metar, :snow_metar
+    def metar_code
+      self.city_hash[:metar]
+    end
 
-    def to_ar(city)
-      if self.provider == 'MetarProvider'
+    def to_ar
+      city = self.city_hash
+      
+      if is_metar?
         ar = WeatherMetarArchive.where(city_id: city[:id], time_from: self.time_from).first
         ar = WeatherMetarArchive.new if ar.nil?
 
@@ -36,6 +39,23 @@ module WeatherFetcher
       ar.city_id = city[:id]
 
       return ar
+    end
+    
+    def to_text
+      s = ""
+      s += "#{self.time_created.to_i}; "
+      s += "'#{self.city_hash[:name].to_s}'; "
+      s += "#{self.provider.to_s}; "
+      s += "#{self.city_hash[:coords][:lat]}; "
+      s += "#{self.city_hash[:coords][:lon]};   "
+      s += "#{self.time_from.to_i}; "
+      s += "#{self.time_to.to_i}; "
+      s += "#{self.temperature}; "
+      s += "#{self.wind}; "
+      s += "#{self.pressure}; "
+      s += "#{self.rain};"
+      s += "#{self.snow}"
+      return s
     end
   end
 end

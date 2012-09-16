@@ -2,6 +2,8 @@ require "weather_fetcher"
 require "home_io_server/weather_fetcher_addons/weather_data"
 require "yaml"
 
+require 'home_io_server/weather_server/weather_backup_storage.rb'
+
 # Server fetching weather
 
 module HomeIoServer
@@ -77,7 +79,7 @@ module HomeIoServer
         end
         new_weathers = p_i.weathers
 
-        store_weather(new_weathers, _city)
+        store_weather(new_weathers)
 
         @weathers[_city] += new_weathers
         @weathers[_city].uniq!
@@ -88,9 +90,10 @@ module HomeIoServer
       #puts "#{_city[:name]} - #{@weathers[_city].size} UNIQ"
     end
 
-    def store_weather(data, city)
+    def store_weather(data)
+      WeatherBackupStorage.instance.store(data)
       data.each do |wd|
-        ar = wd.to_ar(city)
+        ar = wd.to_ar
         puts ar.inspect unless ar.valid? # TODO ingoring bad objects
         ar.save
       end
