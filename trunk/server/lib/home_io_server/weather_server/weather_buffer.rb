@@ -108,6 +108,8 @@ module HomeIoServer
           f.puts s
         end
         f.close
+        # clearing buffer
+        @buffer_txt_storage[fn] = Array.new
 
         @logger.debug("Stored in file #{fn} #{@buffer_txt_storage[fn].size} records")
       end
