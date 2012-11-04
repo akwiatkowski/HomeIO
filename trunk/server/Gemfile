@@ -15,8 +15,9 @@ gem 'pg'
 # https://github.com/brianmario/yajl-ruby
 gem 'yajl-ruby'
 
-# weather service
-gem 'weather_fetcher' #, :git => 'git://github.com/akwiatkowski/weather_fetcher_addons.git'
+# parts of HomeIO
+gem 'weather_fetcher'
+gem 'home_io_meas_receiver'
 
 group :development do
   gem 'pry'

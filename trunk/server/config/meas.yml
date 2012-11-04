@@ -1,0 +1,476 @@
+# Definitions of measurements
+---
+# In normal situation all measurements has it's own thread and fetch measurements every
+# some interval. Using 'one thread' all measurements are fetched in one thread.
+:one_thread: false
+# Interval per type are ignored, there is only one for all measurements
+:one_thread_interval: 0.4
+# Save all measurements from special pool every this number of seconds
+:measurement_pool_flush_interval: 10
+
+:array:
+  # codename of measurement
+  - :name: batt_u
+    :locale:
+      :en: "Batteries voltage"
+      :pl: "Napięcie na akumulatorach"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: V
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 0.8
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 1.4
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 36.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 4
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '3'
+      #  - 51
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.0777126099706744868
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: i_gen_batt
+    :locale:
+      :en: "Generator-batteries current"
+      :pl: "Prąd ładowania akumulatorów"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: A
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 0.5
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 1.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '4'
+      #  - 52
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.191
+      :coefficient_offset: -512
+
+  # codename of measurement
+  - :name: i_gen_resist
+    :locale:
+      :en: "Generator-compensator current"
+      :pl: "Prąd grzałki"
+    # store in memory X last measurements
+    :cache: 50
+    :unit: A
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 0.6
+      # log at least every X seconds
+      :max: 36000
+      # significant change of value which enforce logging
+      :sig_change: 2.4
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '5'
+      #  - 53
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.191
+      :coefficient_offset: -512
+
+  # codename of measurement
+  - :name: i_inverters
+    :locale:
+      :en: "Inverters current"
+      :pl: "Prąd przetwornic"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: A
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 2.0
+      # log at least every X seconds
+      :max: 36000
+      # significant change of value which enforce logging
+      :sig_change: 2.5
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '6'
+      #  - 54
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.191
+      :coefficient_offset: -512
+
+  # codename of measurement
+  - :name: imp_per_min
+    :locale:
+      :en: "Impulses per minute"
+      :pl: "Impulsy na minutę"
+    # store in memory X last measurements
+    :cache: 100
+    :unit: "ipm/min"
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 2.0
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 500
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 800.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - 'l'
+      #  - 108
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 60.0
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: coil_1_u
+    :locale:
+      :en: "Coil 1 voltage"
+      :pl: "Napięcie cewki 1"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: V
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 1.0
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 4.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 24.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '0'
+      #  - 48
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.0777126099706744868
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: coil_2_u
+    :locale:
+      :en: "Coil 2 voltage"
+      :pl: "Napięcie cewki 2"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: V
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 1.0
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 4.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 24.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '1'
+      #  - 49
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.0777126099706744868
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: coil_3_u
+    :locale:
+      :en: "Coil 3 voltage"
+      :pl: "Napięcie cewki 3"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: V
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 1.0
+      # log at least every X seconds
+      :max: 3600
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 4.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 24.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - '2'
+      #  - 50
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 0.0777126099706744868
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: res_pwm
+    :locale:
+      :en: "Compensator wpm level"
+      :pl: "Poziom pwm grzałki"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: lvl
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 1.0
+      # log at least every X seconds
+      :max: 7200
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 5.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 1
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - 'p'
+      #  - 112
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 1.0
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: res_pwm_avg
+    :locale:
+      :en: "Avg. compensator wpm level"
+      :pl: "Średni poziom pwm grzałki"
+    # store in memory X last measurements
+    :cache: 50
+    :unit: lvl
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 3.0
+      # log at least every X seconds
+      :max: 7200
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 2.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 5
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - 'q'
+      #  - 113
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 1.0
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: big_inv_status
+    :locale:
+      :en: "Big inverter status"
+      :pl: "Stan dużej przetwornicy"
+    # store in memory X last measurements
+    :cache: 30
+    :unit: bool
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 5.0
+      # log at least every X seconds
+      :max: 7200
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 1.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 10
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - 'u'
+      #  - 117
+      # number of bytes of response
+      :response_size: 2
+      # coefficients for processing from raw to real
+      :coefficient_linear: 1.0
+      :coefficient_offset: 0
+
+  # codename of measurement
+  - :name: outputs
+    :locale:
+      :en: "Outputs status"
+      :pl: "Status wyjść"
+    # store in memory X last measurements
+    :cache: 200
+    :unit: bit vector
+    :log_conditions:
+      # log no frequent than every X seconds
+      :min: 1.0
+      # log at least every X seconds
+      :max: 7200
+      # significant change of value which enforce logging
+      #:sig_change: 2
+      :sig_change: 1.0
+      # if offline is true measurements are added to pool and stored every (5-20) seconds
+      # this parameters is set in :measurement_pool_flush_interval
+      :offline: true
+      #:offline: false
+  # parameters used only for simulator
+    :simulator:
+      :default_value: 0.0
+  # command sent to uC
+    :command:
+      # interval how often fetch from uC
+      # 1 is about 100ms
+      # 50 is about 5s
+      :frequency: 5
+      # command array, array of String chars or Fixnum bytes
+      :array:
+        - 'o'
+      #  - 111
+      # number of bytes of response
+      :response_size: 1
+      # coefficients for processing from raw to real
+      :coefficient_linear: 1.0
+      :coefficient_offset: 0

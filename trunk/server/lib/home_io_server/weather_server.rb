@@ -1,7 +1,7 @@
 require "weather_fetcher"
-require "home_io_server/weather_fetcher_addons/weather_data"
 require "yaml"
 
+require "home_io_server/weather_fetcher_addons/weather_data"
 require 'home_io_server/weather_server/weather_buffer.rb'
 
 # Server fetching weather
@@ -10,6 +10,7 @@ module HomeIoServer
   class WeatherServer
 
     CRON_LIKE = true
+    INTERVAL = 5 # minutes
 
     def initialize
       @weathers = Hash.new
@@ -25,7 +26,7 @@ module HomeIoServer
         # nothing
       end
 
-      # @config[:cities] = @config[:cities][0..5]
+      # @config[:cities] = @config[:cities][0..2]
       @cities = @config[:cities]
       # for storing all weathers in one batch
       @current_weathers = Array.new
@@ -39,13 +40,13 @@ module HomeIoServer
         fetch_loop
 
         @scheduler = Rufus::Scheduler.start_new
-        @scheduler.every '5m' do
+        @scheduler.every "#{INTERVAL}m" do
           fetch_loop
         end
       else
         loop do
           fetch_loop
-          sleep 5*60
+          sleep INTERVAL * 60
         end
       end
 
