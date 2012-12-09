@@ -18,8 +18,7 @@ module HomeIoServer
       @config = YAML.load(File.open("config/active_record.yml"))
       @connection = @config[:connection]
 
-      ActiveRecord::Base.logger = Logger.new(STDERR)
-      ActiveRecord::Base.logger.level = Logger::INFO
+      ActiveRecord::Base.logger = HomeIoLogger.l('active_record')
       ActiveRecord::Base.establish_connection(@connection)
     end
 
