@@ -13,8 +13,8 @@ module HomeIoServer
     INTERVAL = 5 # minutes
 
     def initialize
+      @logger = HomeIoLogger.l('weather_server')
       @weathers = Hash.new
-
       @config = YAML.load(File.open("config/weather.yml"))
 
       # setting API key
@@ -26,16 +26,23 @@ module HomeIoServer
         # nothing
       end
 
+      if WeatherFetcher::Provider::WorldWeatherOnline.api
+        @logger.debug("Using api key for WorldWeatherOnline")
+      end
+
       # @config[:cities] = @config[:cities][0..2]
       @cities = @config[:cities]
+      @logger.debug("Number of cities #{@cities.size}")
       # for storing all weathers in one batch
       @current_weathers = Array.new
 
       # db init
       Storage.instance
       initialize_db
+      @logger.debug("DB connection ready")
 
       if CRON_LIKE
+        @logger.debug("Using scheduler")
         #first loop, nobody wants to wait
         fetch_loop
 
@@ -44,6 +51,7 @@ module HomeIoServer
           fetch_loop
         end
       else
+        @logger.debug("Using loop-sleep")
         loop do
           fetch_loop
           sleep INTERVAL * 60
@@ -66,10 +74,21 @@ module HomeIoServer
     end
 
     def fetch_loop
+      @logger.debug("Starting loop")
+      ta = Time.now
+
       @cities.each do |city|
         WeatherBuffer.instance.fetch_city(city)
       end
+
+      @logger.debug("Weather fetched")
+      tb = Time.now
+
       WeatherBuffer.instance.flush_storage_buffer
+
+      @logger.debug("Weather stored")
+      tc = Time.now
+      @logger.info("Fetch time cost #{tb-ta}, store time cost #{tc-tb}, total cost #{tc-ta}")
     end
 
   end

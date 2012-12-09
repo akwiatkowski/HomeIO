@@ -16,30 +16,47 @@ module HomeIoServer
     def clear_storage_buffer
       @buffer_ar_storage = Array.new
       @buffer_txt_storage = Hash.new
+      @logger.debug("Weather storage buffers were cleared")
     end
 
     def fetch_city(_city)
       providers = providers_for_city_for_current_fetch(_city)
       providers.each do |provider|
+        @logger.debug("Fetching, city #{_city[:name]} using provider #{provider}")
         p = provider.new(_city)
+        t = Time.now
         begin
           p.fetch
         rescue => ex
-          @logger.error("Fetch fail, provider #{provider}, city #{_city.inspect}")
+          @logger.error("Fetch fail, city #{_city[:name]} using provider #{provider}")
           @logger.error("#{ex.backtrace}: #{ex.message} (#{ex.class})")
         end
+
+        tc = Time.now - t
+        @logger.debug("...fetched #{p.weathers.size} weathers, time cost #{tc}")
+        if tc > 0.5 and p.weathers.size == 0
+          @logger.warn("Fetched ZERO, city #{_city[:name]} using provider #{provider}")
+        end
+
         after_fetch(p.weathers)
       end
     end
 
     def after_fetch(wd_array)
+      c = 0
       wd_array.each do |wd|
         if wd.is_metar?
-          check_and_add_metar(wd)
+          res = check_and_add_metar(wd)
         else
-          check_and_add_weather(wd)
+          res = check_and_add_weather(wd)
+        end
+
+        if res
+          c += 1
         end
       end
+
+      @logger.debug("...moved to 'to store' buffer #{c} weather information")
     end
 
     # Add only if there is nothing with similar metar string and time_from
@@ -53,7 +70,10 @@ module HomeIoServer
 
         @buffer_fetched[wd.city_hash] << wd
         add_to_storage_buffer(wd)
+
+        return true
       end
+      return false
     end
 
     # Add or overwrite if there is something with identical city, provider, time_from
@@ -67,6 +87,8 @@ module HomeIoServer
 
       @buffer_fetched[wd.city_hash] << wd
       add_to_storage_buffer(wd)
+
+      return true
     end
 
     # Add to both AR and txt storage
@@ -100,6 +122,8 @@ module HomeIoServer
     def flush_storage_buffer
       # TXT
       @buffer_txt_storage.keys.each do |fn|
+        @logger.debug("Storing to file #{fn}")
+
         path = File.dirname(fn)
         FileUtils.mkdir_p path unless File.exists?(path)
 
@@ -119,18 +143,18 @@ module HomeIoServer
         ar = wd.to_ar
         @logger.warn("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}") unless ar.save
       end
-      @logger.debug "Stored #{@buffer_ar_storage.size} records"
+      @logger.debug "Stored in DB #{@buffer_ar_storage.size} records"
 
       # clear buffer
       clear_storage_buffer
-      
+
       # clean fetch buffer
       clean_after_two_days
     end
 
     def clean_after_two_days
       @buffer_fetched.keys.each do |k|
-        @buffer_fetched[k] = @buffer_fetched[k].delete_if{|wd| (Time.now - wd.time_created) > 2*24*3600}
+        @buffer_fetched[k] = @buffer_fetched[k].delete_if { |wd| (Time.now - wd.time_created) > 2*24*3600 }
       end
     end
 
