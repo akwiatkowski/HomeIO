@@ -22,20 +22,20 @@ module HomeIoServer
     def fetch_city(_city)
       providers = providers_for_city_for_current_fetch(_city)
       providers.each do |provider|
-        @logger.debug("Fetching, city #{_city[:name]} using provider #{provider}")
+        @logger.debug("Fetching, city #{_city[:name].cyan} using provider #{provider.to_s.green}")
         p = provider.new(_city)
         t = Time.now
         begin
           p.fetch
         rescue => ex
-          @logger.error("Fetch fail, city #{_city[:name]} using provider #{provider}")
+          @logger.error("Fetch fail, city #{_city[:name].cyan} using provider #{provider.to_s.green}")
           @logger.error("#{ex.backtrace}: #{ex.message} (#{ex.class})")
         end
 
         tc = Time.now - t
-        @logger.debug("...fetched #{p.weathers.size} weathers, time cost #{tc}")
+        @logger.info("Fetched #{_city[:name].cyan} using #{provider.to_s.green} count #{p.weathers.size.to_s.red} time cost #{tc.to_s.light_blue}")
         if tc > 0.5 and p.weathers.size == 0
-          @logger.warn("Fetched ZERO, city #{_city[:name]} using provider #{provider}")
+          @logger.warn("Fetched ZERO, city #{_city[:name].cyan} using provider #{provider.to_s.green}".on_red)
         end
 
         after_fetch(p.weathers)
@@ -56,7 +56,7 @@ module HomeIoServer
         end
       end
 
-      @logger.debug("...moved to 'to store' buffer #{c} weather information")
+      @logger.info("Moved to 'to store' buffer #{c.to_s.red} weather information")
     end
 
     # Add only if there is nothing with similar metar string and time_from
@@ -122,7 +122,7 @@ module HomeIoServer
     def flush_storage_buffer
       # TXT
       @buffer_txt_storage.keys.each do |fn|
-        @logger.debug("Storing to file #{fn}")
+        @logger.debug("Storing to file #{"#{fn}".light_magenta}")
 
         path = File.dirname(fn)
         FileUtils.mkdir_p path unless File.exists?(path)
@@ -132,18 +132,32 @@ module HomeIoServer
           f.puts s
         end
         f.close
+
+        @logger.info("Stored in file #{"#{fn}".light_magenta} #{@buffer_txt_storage[fn].size.to_s.red} records")
+
         # clearing buffer
         @buffer_txt_storage[fn] = Array.new
-
-        @logger.debug("Stored in file #{fn} #{@buffer_txt_storage[fn].size} records")
       end
 
       # AR
+      ar_error_count = 0
       @buffer_ar_storage.each do |wd|
         ar = wd.to_ar
-        @logger.warn("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}") unless ar.save
+        begin
+          res = ar.save
+
+          unless res
+            @logger.debug("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}")
+            ar_error_count += 1
+          end
+        rescue => e
+          puts e.backtrace
+          raise e
+        end
+
+
       end
-      @logger.debug "Stored in DB #{@buffer_ar_storage.size} records"
+      @logger.info "Stored in DB #{@buffer_ar_storage.size.to_s.red} records, errors #{ar_error_count.to_s.red}"
 
       # clear buffer
       clear_storage_buffer

@@ -41,6 +41,15 @@ module HomeIoServer
       initialize_db
       @logger.debug("DB connection ready")
 
+      @iteration = 0
+    end
+
+    def dev_mode!
+      #@cities = @cities[0..3]
+      @cities = [@cities.first]
+    end
+
+    def start
       if CRON_LIKE
         @logger.debug("Using scheduler")
         #first loop, nobody wants to wait
@@ -57,7 +66,6 @@ module HomeIoServer
           sleep INTERVAL * 60
         end
       end
-
     end
 
     def initialize_db
@@ -74,7 +82,7 @@ module HomeIoServer
     end
 
     def fetch_loop
-      @logger.debug("Starting loop")
+      @logger.debug("Starting loop".yellow.on_red)
       ta = Time.now
 
       @cities.each do |city|
@@ -88,7 +96,9 @@ module HomeIoServer
 
       @logger.debug("Weather stored")
       tc = Time.now
-      @logger.info("Fetch time cost #{tb-ta}, store time cost #{tc-tb}, total cost #{tc-ta}")
+
+      @iteration += 1
+      @logger.info("Fetch time cost #{(tb-ta).to_s.light_blue}, store time cost #{(tc-tb).to_s.light_blue}, total cost #{(tc-ta).to_s.light_blue}, iteration #{@iteration}")
     end
 
   end

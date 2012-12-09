@@ -19,6 +19,9 @@ gem 'yajl-ruby'
 gem 'weather_fetcher'
 gem 'home_io_meas_receiver'
 
+# ;)
+gem 'colorize'
+
 group :development do
   gem 'pry'
 
