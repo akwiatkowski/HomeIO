@@ -1,0 +1,35 @@
+- default_full = false
+- title = "#{t('area.title')} - #{}"
+- title = title_string([resource.name, t('area.title')])
+- content_for :title, title
+%h1= title
+
+.row
+  .span8
+    = raw simple_show_helper(resource, timestamps: true)
+  .span4
+    = render partial: '/waypoints/panoramio'
+
+.btn-group
+  - if can?(:edit, resource)
+    = link_to edit_resource_path(resource), class: 'btn' do
+      %i.icon-edit
+      = t(:edit)
+  - if can?(:read, Waypoint)
+    = link_to area_waypoints_path(resource), class: 'btn' do
+      %i.icon-list
+      = t('waypoint.plural')
+  - if false and can?(:manage, resource)
+    = link_to resource, confirm: t('are_you_sure'), method: :delete, class: 'btn btn-danger' do
+      %i.icon-remove
+      = t(:delete)
+  - if can? :create, Waypoint
+    - if @area
+      = link_to new_area_waypoint_path(@area), class: 'btn' do
+        %i.icon-pencil
+        = t(:new_waypoint_in)
+        = @area.name
+  - if can?(:read, resource.class)
+    = link_to areas_path, class: 'btn' do
+      %i.icon-search
+      = t(:back)

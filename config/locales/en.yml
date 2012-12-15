@@ -28,18 +28,6 @@ en:
   :yes: "Yes"
   :no: "No"
 
-  back_to_area: "Back to Area"
-  back_to_area_waypoints: "Back to Area Waypoints"
-  new_waypoint_in: "New Waypoint in"
-  open_url_in_new_window: "Open URL in new window"
-
-  sunrise: "Sunrise"
-  sunset: "Sunset"
-  civil: "Civil"
-  official: "Official"
-  nautical: "Nautical"
-  astronomical: "Astronomical"
-
   user_session:
     destroy: "Sign out"
     new: "Sign in"
@@ -47,45 +35,9 @@ en:
   user:
     register: "Sign up"
 
-  route_element:
-    real_distance: "Real distance [m]"
-
-  area:
-    title: "Area"
-    plural: "Areas"
-    area_type: "Area type"
-    avg_lat: "Average latitude"
-    avg_lon: "Average longitude"
-    name: "Name"
-    types:
-      Mountains: "Mountains"
-      Cities: "Cities"
-      Countryside: "Countryside"
-
-  waypoint:
-    title: "Waypoint"
-    plural: "Waypoints"
-    all: "All waypoints"
-    to_gpx: "Export to GPX"
-    sunrise_sunset: "Sunrise and sunset"
-
-  route:
-    title: "Route"
-    plural: "Routes"
-    add_new_element: "Add new element"
-
-  route_element:
-    title: "Element"
-    plural: "Elements"
-    distance: "Distance [m]"
-    real_distance: "Distance [m] (real)"
-    d_elevation: "Δ Elevation [m]"
-    real_d_elevation: "Δ Elevation [m] (real)"
-    time_distance: "Distance [min]"
-    real_time_distance: "Distance [min] (real)"
-
-  importer:
-    title: "Importer"
+  meas_type:
+    title: "Measurement type"
+    plural: "Measurement types"
 
   simple_form:
     labels:

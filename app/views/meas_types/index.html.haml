@@ -1,0 +1,69 @@
+- default_full = false
+- title = title_string([t('meas_type.plural')])
+- content_for :title, title
+%h1= title
+
+= paginate collection
+%br
+
+%table.table.table-striped.table-bordered
+  %tr
+    %th
+    %th= link_to_sorted "Area Type", :area_type_id
+    %th= link_to_sorted "Name", :name
+    %th Waypoints
+    %th= link_to_sorted "Avg. Lat", :avg_lat
+    %th= link_to_sorted "Avg. Lon", :avg_lon
+
+    %th Show
+    %th Edit
+    %th Destroy
+
+  - collection.each do |area|
+    %tr
+      %td= image_tag "garmin/#{area.img_symbol}"
+      %td= area.area_type_name
+      %td= area.name
+      %td
+        - if can? :read, Waypoint
+          = link_to area_waypoints_path(area), class: 'btn btn-mini' do
+            %i.icon-list
+            = "#{t('waypoint.plural')} (#{area.waypoints.count})"
+      %td= number_to_human area.avg_lat, precision: 4
+      %td= number_to_human area.avg_lon, precision: 4
+      %td
+        = link_to area, class: 'btn btn-mini btn-info' do
+          %i.icon-search
+          = t('details')
+      %td
+        - if can? :edit, area
+          = link_to edit_area_path(area), class: 'btn btn-mini' do
+            %i.icon-edit
+      %td
+        - if can? :destroy, area
+          = link_to area, confirm: t('are_you_sure'), method: :delete, class: 'btn btn-mini btn-danger' do
+            %i.icon-remove
+
+  - unless params[:area_type_id]
+    %tr
+      %td
+      %td= "N/A"
+      %td
+      %td
+        - if can? :read, Waypoint
+          = link_to waypoints_path(wo_area: 't'), class: 'btn btn-mini' do
+            %i.icon-list
+            = "#{t('waypoint.plural')} (#{Waypoint.wo_area.count})"
+      %td
+      %td
+      %td
+
+
+= paginate collection
+%br
+
+.btn-group
+  - if can?(:create, MeasType)
+    = link_to new_area_path, class: 'btn' do
+      %i.icon-pencil
+      = t(:new)

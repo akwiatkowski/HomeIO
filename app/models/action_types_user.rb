@@ -3,5 +3,5 @@ class ActionTypesUser < ActiveRecord::Base
   belongs_to :action_type
   belongs_to :users
 
-  # TODO some composite primary keys?
+  set_primary_keys :user_id, :action_type_id
 end

@@ -1,4 +1,4 @@
-WaypointManager::Application.configure do
+HomeIO::Application.configure do
   # Use Pry instead of IRB
   silence_warnings do
     begin

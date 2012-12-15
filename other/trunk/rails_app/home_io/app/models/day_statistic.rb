@@ -1,2 +1,0 @@
-class DayStatistic
-end

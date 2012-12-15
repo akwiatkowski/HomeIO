@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :token_authenticatable, :timeoutable
 
-  # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
   before_save :ensure_authentication_token
@@ -27,7 +26,4 @@ class User < ActiveRecord::Base
   has_many :home_archives
 
   has_many :user_tasks
-  has_many :delayed_jobs, :through => :user_tasks
-
-  default_scope :order => 'created_at ASC'
 end

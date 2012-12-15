@@ -1,0 +1,12 @@
+- default_full = false
+- title = title_string([t('area.title') + " " + t('new')])
+- content_for :title, title
+%h1= title
+
+= render 'form'
+
+.btn-group
+  - if can?(:read, resource.class)
+    = link_to collection_path, class: 'btn' do
+      %i.icon-search
+      = t(:back)

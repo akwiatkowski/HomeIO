@@ -11,6 +11,8 @@ gem "rufus-scheduler"
 # DB
 gem 'pg'
 gem 'sqlite3'
+gem 'foreigner'
+gem 'immigrant'
 
 # https://github.com/brianmario/yajl-ruby
 gem 'yajl-ruby'
@@ -42,6 +44,7 @@ gem 'navigasmic'
 gem 'simple_show_helper'
 gem 'jquery-rails'
 gem 'configatron'
+gem 'composite_primary_keys'
 
 # bootstrap stuff
 gem 'libv8', '~> 3.11.8'

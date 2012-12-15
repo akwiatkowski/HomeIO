@@ -1,0 +1,4 @@
+= simple_form_for resource, html: {class: "form-horizontal"} do |f|
+  = f.input :name
+  = f.input :area_type_id, collection: AreaType.all, include_blank: false
+  = f.submit 'Save', class: 'btn btn-success'
