@@ -1,0 +1,115 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  back: "Back"
+  new: "New"
+  edit: "Edit"
+  delete: "Delete"
+  details: "Details"
+  are_you_sure: "Are you sure?"
+  _calculated_: "(calculated)"
+
+  private: "Private"
+  public: "Public"
+
+  small: "Small"
+  medium: "Medium"
+  big: "Big"
+  huge: "Huge"
+
+  from: "from"
+  to: "to"
+  day: "Day"
+
+  created_at: "Created at"
+  updated_at: "Updated at"
+
+  :yes: "Yes"
+  :no: "No"
+
+  back_to_area: "Back to Area"
+  back_to_area_waypoints: "Back to Area Waypoints"
+  new_waypoint_in: "New Waypoint in"
+  open_url_in_new_window: "Open URL in new window"
+
+  sunrise: "Sunrise"
+  sunset: "Sunset"
+  civil: "Civil"
+  official: "Official"
+  nautical: "Nautical"
+  astronomical: "Astronomical"
+
+  user_session:
+    destroy: "Sign out"
+    new: "Sign in"
+
+  user:
+    register: "Sign up"
+
+  route_element:
+    real_distance: "Real distance [m]"
+
+  area:
+    title: "Area"
+    plural: "Areas"
+    area_type: "Area type"
+    avg_lat: "Average latitude"
+    avg_lon: "Average longitude"
+    name: "Name"
+    types:
+      Mountains: "Mountains"
+      Cities: "Cities"
+      Countryside: "Countryside"
+
+  waypoint:
+    title: "Waypoint"
+    plural: "Waypoints"
+    all: "All waypoints"
+    to_gpx: "Export to GPX"
+    sunrise_sunset: "Sunrise and sunset"
+
+  route:
+    title: "Route"
+    plural: "Routes"
+    add_new_element: "Add new element"
+
+  route_element:
+    title: "Element"
+    plural: "Elements"
+    distance: "Distance [m]"
+    real_distance: "Distance [m] (real)"
+    d_elevation: "Δ Elevation [m]"
+    real_d_elevation: "Δ Elevation [m] (real)"
+    time_distance: "Distance [min]"
+    real_time_distance: "Distance [min] (real)"
+
+  importer:
+    title: "Importer"
+
+  simple_form:
+    labels:
+      route_element:
+        real_distance: "Real distance"
+        real_d_elevation: "Real elevation difference"
+        track_altitudes: "Most important elevation on track"
+        real_time_distance: "Real time distance"
+      waypoint:
+        sym: 'Symbol'
+    hints:
+      waypoint:
+        dms_coords: 'DMS coords instead of lat/lon, ex. 50°46′35″N 15°54′25″E, format used in wikpedia'
+        lat: 'Latitude, geographic coordinate'
+        lon: 'Longitude, geographic coordinate'
+        elevation: 'in meters above sea level'
+        sym: 'symbol used in GPS device'
+        area: 'group of waypoints'
+      route_element:
+        real_distance: "meters"
+        real_d_elevation: "meters"
+        real_time_distance: "minutes"
+        track_altitudes: "meters, ex. 100 - 150 - 300 - 180"
+
+  time:
+    formats:
+      short_time: "%H:%M"
