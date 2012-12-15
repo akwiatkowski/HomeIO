@@ -49,5 +49,6 @@ pkg
 
 .idea
 config/*_secret.yml
+data
 data/metar/**
 data/weather/**

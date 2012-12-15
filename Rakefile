@@ -11,24 +11,6 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "simple_metar_parser"
-  gem.homepage = "http://github.com/akwiatkowski/simple_metar_parser"
-  gem.license = "LGPLv3"
-  gem.summary = %Q{Simple METAR parser}
-  gem.description = %Q{Gem for parsing METARs fast and simple.}
-  gem.email = "bobikx@poczta.fm"
-  gem.authors = ["Aleksander Kwiatkowski"]
-  # dependencies defined in Gemfile
-
-  gem.files = FileList[
-    "[A-Z]*", "{bin,generators,lib,test}/**/*"
-  ]
-end
-Jeweler::RubygemsDotOrgTasks.new
-
 require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
@@ -41,16 +23,6 @@ RSpec::Core::RakeTask.new(:rcov) do |spec|
 end
 
 task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "simple_metar_parser #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
 
 desc "Run RSpec with code coverage"
 task :coverage do

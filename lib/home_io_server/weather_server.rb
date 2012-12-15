@@ -22,8 +22,8 @@ module HomeIoServer
         secret = YAML.load(File.open("config/weather_secret.yml"))
         @config.merge!(secret)
         WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
-      rescue
-        # nothing
+      rescue => e
+        @logger.info("WorldWeatherOnline is not available")
       end
 
       if WeatherFetcher::Provider::WorldWeatherOnline.api

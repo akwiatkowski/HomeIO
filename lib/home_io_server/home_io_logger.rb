@@ -5,7 +5,7 @@ require 'colorize'
 # Logger helper
 
 LOGS_PATH = File.join('data', 'logs')
-FileUtils.mkdir_p path unless File.exists?(LOGS_PATH)
+FileUtils.mkdir_p LOGS_PATH unless File.exists?(LOGS_PATH)
 
 module HomeIoServer
   class HomeIoLogger
