@@ -4,6 +4,8 @@ source 'http://rubygems.org'
 # redis with pure C driver
 gem "hiredis"
 gem 'redis', :require => ["redis/connection/hiredis", "redis"]
+#gem 'sinatra'
+#gem 'redmon', require: false
 
 # cron-like stuff
 gem "rufus-scheduler"
