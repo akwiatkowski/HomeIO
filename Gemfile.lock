@@ -223,7 +223,7 @@ GEM
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     simple_metar_parser (0.0.1)
-    simple_show_helper (0.0.2)
+    simple_show_helper (0.0.5)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
