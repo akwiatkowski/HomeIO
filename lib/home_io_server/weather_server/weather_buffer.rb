@@ -141,21 +141,21 @@ module HomeIoServer
 
       # AR
       ar_error_count = 0
-      @buffer_ar_storage.each do |wd|
-        ar = wd.to_ar
-        begin
-          res = ar.save
+      ActiveRecord::Base.transaction do
+        @buffer_ar_storage.each do |wd|
+          ar = wd.to_ar
+          begin
+            res = ar.save
 
-          unless res
-            @logger.debug("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}")
-            ar_error_count += 1
+            unless res
+              @logger.debug("Error while storing weather: #{ar.errors.inspect}, #{ar.inspect}")
+              ar_error_count += 1
+            end
+          rescue => e
+            puts e.backtrace
+            raise e
           end
-        rescue => e
-          puts e.backtrace
-          raise e
         end
-
-
       end
       @logger.info "Stored in DB #{@buffer_ar_storage.size.to_s.red} records, errors #{ar_error_count.to_s.red}"
 

@@ -5,16 +5,20 @@ require 'yaml'
 
 module HomeIoServer
   class MeasServer
-    def initialize
-      @config = YAML.load(File.open("config/meas.yml"))
+    CONFIG = File.join("config", "backend", "meas.yml")
 
-      MeasReceiver::CommProtocol.host = '192.168.0.13'
+    def initialize
+      @config = YAML.load(File.open(CONFIG))
+
+      MeasReceiver::CommProtocol.host = '192.168.0.7'
       MeasReceiver::CommProtocol.port = '2002'
 
       @receivers = Array.new
 
-      @config.each do |c|
+      @config[:array].each do |c|
         m = MeasReceiver::MeasTypeReceiver.new(c)
+        m.fetch
+        puts m.last.inspect
         @receivers << m
       end
     end

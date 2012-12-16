@@ -11,15 +11,17 @@ module HomeIoServer
 
     CRON_LIKE = true
     INTERVAL = 5 # minutes
+    CONFIG_PATH = File.join("config", "backend", "weather.yml")
+    CONFIG_SECRET_PATH = File.join("config", "backend", "weather_secret.yml")
 
     def initialize
       @logger = HomeIoLogger.l('weather_server')
       @weathers = Hash.new
-      @config = YAML.load(File.open("config/weather.yml"))
+      @config = YAML.load(File.open(CONFIG_PATH))
 
       # setting API key
       begin
-        secret = YAML.load(File.open("config/weather_secret.yml"))
+        secret = YAML.load(File.open(CONFIG_SECRET_PATH))
         @config.merge!(secret)
         WeatherFetcher::Provider::WorldWeatherOnline.api = @config[:common]["WorldWeatherOnline"][:key]
       rescue => e
