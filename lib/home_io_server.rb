@@ -1,6 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
-require 'rufus/scheduler'
+require './config/environment.rb'
 
 require 'home_io_server/ugly_stuff'
 require 'home_io_server/home_io_logger'

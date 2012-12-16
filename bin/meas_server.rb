@@ -5,3 +5,5 @@ if ENV["HOMEIO_ENV"] == 'dev'
 end
 
 ws = HomeIoServer::MeasServer.new
+
+sleep 50

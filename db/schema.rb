@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111210132450) do
+ActiveRecord::Schema.define(:version => 20121216140532) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(:version => 20111210132450) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.string   "unit",       :limit => 32, :default => "?", :null => false
+    t.string   "params"
   end
 
   add_index "meas_types", ["name"], :name => "index_meas_types_on_name", :unique => true
