@@ -57,6 +57,9 @@ pkg
 /log/*.log
 /tmp
 
+# backend
+/log/backend/*
+
 # my stuff
 .idea
 config/*_secret.yml

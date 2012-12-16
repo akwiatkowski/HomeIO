@@ -149,158 +149,78 @@
       :linear: 0.0777126099706744868
       :offset: 0
 
-#  # codename of measurement
-#  - :name: res_pwm
-#    :locale:
-#      :en: "Compensator wpm level"
-#      :pl: "Poziom pwm grzałki"
-#    # store in memory X last measurements
-#    :cache: 200
-#    :unit: lvl
-#    :log_conditions:
-#      # log no frequent than every X seconds
-#      :min: 1.0
-#      # log at least every X seconds
-#      :max: 7200
-#      # significant change of value which enforce logging
-#      #:sig_change: 2
-#      :sig_change: 5.0
-#      # if offline is true measurements are added to pool and stored every (5-20) seconds
-#      # this parameters is set in :measurement_pool_flush_interval
-#      :offline: true
-#      #:offline: false
-#  # parameters used only for simulator
-#    :simulator:
-#      :default_value: 0.0
-#  # command sent to uC
-#    :command:
-#      # interval how often fetch from uC
-#      # 1 is about 100ms
-#      # 50 is about 5s
-#      :frequency: 1
-#      # command array, array of String chars or Fixnum bytes
-#      :array:
-#        - 'p'
-#      #  - 112
-#      # number of bytes of response
-#      :response_size: 2
-#      # coefficients for processing from raw to real
-#      :coefficient_linear: 1.0
-#      :coefficient_offset: 0
 #
-#  # codename of measurement
-#  - :name: res_pwm_avg
-#    :locale:
-#      :en: "Avg. compensator wpm level"
-#      :pl: "Średni poziom pwm grzałki"
-#    # store in memory X last measurements
-#    :cache: 50
-#    :unit: lvl
-#    :log_conditions:
-#      # log no frequent than every X seconds
-#      :min: 3.0
-#      # log at least every X seconds
-#      :max: 7200
-#      # significant change of value which enforce logging
-#      #:sig_change: 2
-#      :sig_change: 2.0
-#      # if offline is true measurements are added to pool and stored every (5-20) seconds
-#      # this parameters is set in :measurement_pool_flush_interval
-#      :offline: true
-#      #:offline: false
-#  # parameters used only for simulator
-#    :simulator:
-#      :default_value: 0.0
-#  # command sent to uC
-#    :command:
-#      # interval how often fetch from uC
-#      # 1 is about 100ms
-#      # 50 is about 5s
-#      :frequency: 5
-#      # command array, array of String chars or Fixnum bytes
-#      :array:
-#        - 'q'
-#      #  - 113
-#      # number of bytes of response
-#      :response_size: 2
-#      # coefficients for processing from raw to real
-#      :coefficient_linear: 1.0
-#      :coefficient_offset: 0
-#
-#  # codename of measurement
-#  - :name: big_inv_status
-#    :locale:
-#      :en: "Big inverter status"
-#      :pl: "Stan dużej przetwornicy"
-#    # store in memory X last measurements
-#    :cache: 30
-#    :unit: bool
-#    :log_conditions:
-#      # log no frequent than every X seconds
-#      :min: 5.0
-#      # log at least every X seconds
-#      :max: 7200
-#      # significant change of value which enforce logging
-#      #:sig_change: 2
-#      :sig_change: 1.0
-#      # if offline is true measurements are added to pool and stored every (5-20) seconds
-#      # this parameters is set in :measurement_pool_flush_interval
-#      :offline: true
-#      #:offline: false
-#  # parameters used only for simulator
-#    :simulator:
-#      :default_value: 0.0
-#  # command sent to uC
-#    :command:
-#      # interval how often fetch from uC
-#      # 1 is about 100ms
-#      # 50 is about 5s
-#      :frequency: 10
-#      # command array, array of String chars or Fixnum bytes
-#      :array:
-#        - 'u'
-#      #  - 117
-#      # number of bytes of response
-#      :response_size: 2
-#      # coefficients for processing from raw to real
-#      :coefficient_linear: 1.0
-#      :coefficient_offset: 0
-#
-#  # codename of measurement
-#  - :name: outputs
-#    :locale:
-#      :en: "Outputs status"
-#      :pl: "Status wyjść"
-#    # store in memory X last measurements
-#    :cache: 200
-#    :unit: bit vector
-#    :log_conditions:
-#      # log no frequent than every X seconds
-#      :min: 1.0
-#      # log at least every X seconds
-#      :max: 7200
-#      # significant change of value which enforce logging
-#      #:sig_change: 2
-#      :sig_change: 1.0
-#      # if offline is true measurements are added to pool and stored every (5-20) seconds
-#      # this parameters is set in :measurement_pool_flush_interval
-#      :offline: true
-#      #:offline: false
-#  # parameters used only for simulator
-#    :simulator:
-#      :default_value: 0.0
-#  # command sent to uC
-#    :command:
-#      # interval how often fetch from uC
-#      # 1 is about 100ms
-#      # 50 is about 5s
-#      :frequency: 5
-#      # command array, array of String chars or Fixnum bytes
-#      :array:
-#        - 'o'
-#      #  - 111
-#      # number of bytes of response
-#      :response_size: 1
-#      # coefficients for processing from raw to real
-#      :coefficient_linear: 1.0
-#      :coefficient_offset: 0
+
+  - :name: res_pwm
+    :unit: lvl
+    :storage:
+      min_time_interval: 1.0
+      max_time_interval: 7200
+
+      avg_side_count: 0 # X before, this, and X after
+      value_deviation: 5.0
+
+      store_interval: 1200
+
+    :command:
+      - 'p'
+    :response_size: 2
+    :coefficients:
+      :linear: 1.0
+      :offset: 0
+
+  - :name: res_pwm_avg
+    :unit: lvl
+    :storage:
+      min_time_interval: 1.0
+      max_time_interval: 7200
+
+      avg_side_count: 0 # X before, this, and X after
+      value_deviation: 4.0
+
+      store_interval: 1200
+
+    :command:
+      - 'q'
+    :response_size: 2
+    :coefficients:
+      :linear: 1.0
+      :offset: 0
+
+
+  - :name: big_inv_status
+    :unit: lvl
+    :storage:
+      min_time_interval: 1.0
+      max_time_interval: 7200
+
+      avg_side_count: 0 # X before, this, and X after
+      value_deviation: 1.0
+
+      store_interval: 3600
+
+    :command:
+      - 'u'
+    :response_size: 2
+    :coefficients:
+      :linear: 1.0
+      :offset: 0
+
+
+  - :name: outputs
+    :unit: bit vector
+    :storage:
+      min_time_interval: 1.0
+      max_time_interval: 7200
+
+      avg_side_count: 0 # X before, this, and X after
+      value_deviation: 1.0
+
+      store_interval: 3600
+
+    :command:
+      - 'o'
+    :response_size: 1
+    :coefficients:
+      :linear: 1.0
+      :offset: 0
