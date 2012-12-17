@@ -1,5 +1,7 @@
 HomeIO::Application.routes.draw do
-  resources :meas_types
+  resources :meas_types do
+    resources :meas_archives
+  end
 
   devise_for :users
 

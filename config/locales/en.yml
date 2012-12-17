@@ -39,6 +39,10 @@ en:
     title: "Measurement type"
     plural: "Measurement types"
 
+  meas_archive:
+    title: "Archived measurement"
+    plural: "Archived measurements"
+
   simple_form:
     labels:
       route_element:

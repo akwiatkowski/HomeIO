@@ -1,0 +1,31 @@
+- default_full = false
+- title = title_string([t('meas_archive.plural'), @meas_type.name])
+- content_for :title, title
+%h1= title
+
+= paginate collection
+%br
+
+%table.table.table-striped.table-bordered
+  %tr
+    %th From
+    %th To
+    %th Raw
+    %th Value
+
+    %th Edit
+    %th Destroy
+
+  - collection.each do |resource|
+    %tr
+      %td= l resource.time_from, format: :short
+      %td= l resource.time_to, format: :short
+      %td= resource.raw
+      %td= resource.value
+      %td
+        = link_to meas_type_meas_archive_path(@meas_type, resource), class: 'btn btn-mini btn-info' do
+          %i.icon-search
+          = t('details')
+
+= paginate collection
+%br

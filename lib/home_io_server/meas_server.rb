@@ -15,8 +15,11 @@ module HomeIoServer
       MeasReceiver::CommProtocol.host = '192.168.0.7'
       MeasReceiver::CommProtocol.port = '2002'
 
-      @ar_objects = Array.new
+      @meas_types = Hash.new
       @receivers = Array.new
+
+      @mutex = Mutex.new
+      @ar_buffer = Array.new
 
       @config[:array].each do |c|
         ar = MeasType.find_or_create_by_name(c[:name])
@@ -30,8 +33,12 @@ module HomeIoServer
         c[:logger][:level] = Logger::DEBUG
         c[:ar] = ar
 
+        # DEV
+        c[:storage][:store_interval] = 5.0
+
         m = MeasReceiver::MeasTypeReceiver.new(c)
         @receivers << m
+        @meas_types[c[:name]] = ar
 
         @logger.debug("Meas server: added #{c[:name].red}")
       end
@@ -45,7 +52,29 @@ module HomeIoServer
     end
 
     def store(name, data)
-      puts name, data.inspect
+      @mutex.synchronize do
+        data.each do |d|
+          ar = MeasArchive.new(d)
+          ar.meas_type = @meas_types[name]
+          @ar_buffer << ar
+        end
+      end
+
+      store!
+    end
+
+    def store!
+      @mutex.synchronize do
+        ActiveRecord::Base.transaction do
+
+          @ar_buffer.each do |ar|
+            ar.save!
+          end
+
+          @ar_buffer = Array.new
+
+        end
+      end
     end
 
   end

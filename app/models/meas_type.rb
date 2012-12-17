@@ -9,4 +9,6 @@ class MeasType < ActiveRecord::Base
 
   set_inheritance_column :sti_type
   serialize :params, Hash
+
+  attr_accessible :name, :params
 end

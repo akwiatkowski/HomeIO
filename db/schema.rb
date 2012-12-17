@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121216140532) do
+ActiveRecord::Schema.define(:version => 20121217211700) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -89,11 +89,9 @@ ActiveRecord::Schema.define(:version => 20121216140532) do
   end
 
   create_table "meas_archives", :force => true do |t|
-    t.datetime "time_from",                                                  :null => false
-    t.datetime "time_to",                                                    :null => false
-    t.decimal  "_time_from_ms", :precision => 3, :scale => 0, :default => 0, :null => false
-    t.decimal  "_time_to_ms",   :precision => 3, :scale => 0, :default => 0, :null => false
-    t.float    "value",                                                      :null => false
+    t.datetime "time_from",    :null => false
+    t.datetime "time_to",      :null => false
+    t.float    "value",        :null => false
     t.integer  "raw"
     t.integer  "meas_type_id"
   end
