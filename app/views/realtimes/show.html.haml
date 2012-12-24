@@ -7,7 +7,7 @@
 
     - MeasType.all.each do |mt|
       .span3.meas_box{id: mt.name}
-        = mt.name
+        %span.small= mt.name
         .meas_value= '...'
 
 
@@ -23,6 +23,6 @@
 - if true
   :javascript
     $(document).ready(function(){
-      //realtime_init();
-      realtime_put_value("batt_u", 1.0);
+      realtime_init();
+      //realtime_put_value("batt_u", 1.0);
     });

@@ -8,7 +8,8 @@
 @realtime_put_value = (name, value) ->
   place_selector = "#data #" + name
   place_value = place_selector + " .meas_value"
-  $(place_value).html(value)
+  v = Math.round(value * 100) / 100;
+  $(place_value).html(v)
 
   realtime_flash_after(place_selector)
 
