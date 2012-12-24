@@ -12,6 +12,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 0.2
     :command:
       - '3'
     :response_size: 2
@@ -30,6 +31,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 0.1
     :command:
       - '4'
     :response_size: 2
@@ -48,6 +50,7 @@
 
       :store_interval: 1200
 
+    :fetch_interval: 0.2
     :command:
       - '5'
     :response_size: 2
@@ -66,13 +69,13 @@
 
       :store_interval: 1800
 
+    :fetch_interval: 1.0
     :command:
       - '6'
     :response_size: 2
     :coefficients:
       :linear: 0.191
       :offset: -512
-
 
   - :name: imp_per_min
     :unit: "ipm/min"
@@ -85,6 +88,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 1.0
     :command:
       - 'l'
     :response_size: 2
@@ -105,6 +109,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 0.2
     :command:
       - '0'
     :response_size: 2
@@ -124,6 +129,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 0.2
     :command:
       - '1'
     :response_size: 2
@@ -142,6 +148,7 @@
 
       :store_interval: 600
 
+    :fetch_interval: 0.2
     :command:
       - '2'
     :response_size: 2
@@ -162,6 +169,7 @@
 
       :store_interval: 1200
 
+    :fetch_interval: 0.5
     :command:
       - 'p'
     :response_size: 2
@@ -180,6 +188,7 @@
 
       :store_interval: 1200
 
+    :fetch_interval: 1.0
     :command:
       - 'q'
     :response_size: 2
@@ -199,6 +208,7 @@
 
       :store_interval: 3600
 
+    :fetch_interval: 3.0
     :command:
       - 'u'
     :response_size: 2
@@ -218,6 +228,7 @@
 
       :store_interval: 3600
 
+    :fetch_interval: 1.0
     :command:
       - 'o'
     :response_size: 1
