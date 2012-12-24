@@ -1,11 +1,3 @@
-GIT
-  remote: git@github.com:adeven/nvd3-rails.git
-  revision: 05b04b84d52dbc7196035c847f0141917c85d788
-  submodules: true
-  specs:
-    nvd3-rails (0.0.1)
-      railties (>= 3.2.0, < 5.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -300,7 +292,6 @@ DEPENDENCIES
   mocha
   navigasmic
   nifty-generators
-  nvd3-rails!
   pg
   pry
   pry-rails

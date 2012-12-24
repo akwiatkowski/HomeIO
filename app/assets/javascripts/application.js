@@ -13,4 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+
+//= require nvd3-rails
+
+//= require nvd3/lib/d3.v2
+//= require nvd3/src/core
+//= require nvd3/src/tooltip
+//= require nvd3/src/utils.js
+//= require nvd3/src/models/lineChart
+//= require nvd3/src/models/legend.js
+//= require nvd3/src/models/axis.js
+//= require nvd3/src/models/scatter.js
+//= require nvd3/src/models/line.js
+
 //= require_tree .

@@ -55,9 +55,6 @@ gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 
-# js graphs
-gem "nvd3-rails", git: "git@github.com:adeven/nvd3-rails.git", submodules: true
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
