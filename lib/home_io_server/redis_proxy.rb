@@ -1,6 +1,7 @@
 require 'singleton'
 require 'redis'
-require 'yajl'
+#require 'yajl' # segfault # TODO update RVM+ruby
+require 'json'
 
 # IPC for HomeIO
 
@@ -44,16 +45,21 @@ module HomeIoServer
     end
 
     def init_serializer
-      @parser = Yajl::Parser.new
-      @encoder = Yajl::Encoder.new
+      # segfault
+      #@parser = Yajl::Parser.new
+      #@encoder = Yajl::Encoder.new
+      @parser = JSON
+      @encoder = JSON
     end
 
     def encode(data)
-      @encoder.encode(data)
+      #@encoder.encode(data)
+      return JSON.generate(data)
     end
 
     def parse(string)
-      @parser.parse(string)
+      #@parser.parse(string)
+      return JSON.parse(string)
     end
 
   end
