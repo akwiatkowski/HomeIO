@@ -12,17 +12,8 @@
 
 
 %script{:src => "http://localhost:8080/socket.io/socket.io.js"}
-- if false
-  :javascript
-    var socket = io.connect('http://localhost:8080');
-    socket.on('message', function (data) {
-      console.log(data);
-      $('#data').append(data);
-      $('#data').append("<br>");
-    });
-- if true
-  :javascript
-    $(document).ready(function(){
-      realtime_init();
-      //realtime_put_value("batt_u", 1.0);
-    });
+:javascript
+  $(document).ready(function(){
+    realtime_init();
+    //realtime_put_value("batt_u", 1.0);
+  });
