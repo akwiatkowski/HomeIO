@@ -5,7 +5,7 @@ describe HomeIoServer::RedisProxy do
   it "should simple set/get" do
     loop do
       puts Time.now
-      HomeIoServer::RedisProxy.publish('pubsub', "a")
+      HomeIoServer::RedisProxy.publish('pubsub', Time.now.to_s)
       
       sleep 1
     end
