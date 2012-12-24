@@ -9,7 +9,8 @@ module HomeIoServer
     include Singleton
 
     def initialize
-      @redis = Redis.new
+      @redis_global = Redis.new
+      @redis = Redis::Namespace.new(:homeio, redis: @redis_global)
       init_serializer
     end
 
@@ -30,9 +31,16 @@ module HomeIoServer
       parse(str)
     end
 
-    # Prefix
+    def self.publish(_where, _content)
+      instance.publish(_where, _content)
+    end
+
+    def publish(_where, _content)
+      @redis.publish(key(_where), encode(_content))
+    end
+
     def key(_where)
-      "HomeIO_#{_where}"
+      _where.to_s
     end
 
     def init_serializer

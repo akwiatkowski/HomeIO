@@ -4,6 +4,7 @@ source 'http://rubygems.org'
 # redis with pure C driver
 gem "hiredis"
 gem 'redis', :require => ["redis/connection/hiredis", "redis"]
+gem 'redis-namespace'
 #gem 'sinatra'
 #gem 'redmon', require: false
 
@@ -84,6 +85,9 @@ group :development do
   gem 'pry-rails'
   # webconsole
   gem 'rack-webconsole-pry', :require => 'rack-webconsole'
+  # better errors
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :development, :test do
