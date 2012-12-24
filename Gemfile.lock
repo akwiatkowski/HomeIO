@@ -99,7 +99,7 @@ GEM
     high_voltage (1.2.1)
     hike (1.2.1)
     hiredis (0.4.5)
-    home_io_meas_receiver (0.0.3)
+    home_io_meas_receiver (0.0.5)
       colorize
       mean
       rufus-scheduler
