@@ -12,8 +12,7 @@ module HomeIoServer
       @config = YAML.load(File.open(CONFIG))
       @logger = HomeIoLogger.l('meas_server')
 
-      MeasReceiver::CommProtocol.host = '192.168.0.7'
-      MeasReceiver::CommProtocol.port = '2002'
+      default_comm_config
 
       @meas_types = Hash.new
       @receivers = Array.new
@@ -31,10 +30,11 @@ module HomeIoServer
         c[:storage][:proc] = Proc.new { |d| store(c[:name], d) }
         c[:logger] ||= Hash.new
         c[:logger][:level] = Logger::DEBUG
+        c[:after_proc] = Proc.new { |m| publish_measurement(c[:name], m) }
         c[:ar] = ar
 
         # DEV
-        c[:storage][:store_interval] = 5.0
+        c[:storage][:store_interval] = 30.0
 
         m = MeasReceiver::MeasTypeReceiver.new(c)
         @receivers << m
@@ -76,6 +76,21 @@ module HomeIoServer
         end
       end
     end
+
+    def publish_measurement(name, m)
+      m[:name] = name
+      HomeIoServer::RedisProxy.publish('pubsub', {meas: m})
+    end
+
+    def default_comm_config
+      if MeasReceiver::CommProtocol.host.nil?
+        MeasReceiver::CommProtocol.host = '192.168.0.7'
+      end
+      if MeasReceiver::CommProtocol.port.nil?
+        MeasReceiver::CommProtocol.port = '2002'
+      end
+    end
+
 
   end
 end

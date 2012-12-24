@@ -99,7 +99,7 @@ GEM
     high_voltage (1.2.1)
     hike (1.2.1)
     hiredis (0.4.5)
-    home_io_meas_receiver (0.0.1)
+    home_io_meas_receiver (0.0.3)
       colorize
       mean
       rufus-scheduler
@@ -159,11 +159,6 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rack-webconsole-pry (0.1.8)
-      json
-      multi_json (>= 1.0.3)
-      pry
-      rack
     rails (3.2.9)
       actionmailer (= 3.2.9)
       actionpack (= 3.2.9)
@@ -309,7 +304,6 @@ DEPENDENCIES
   pg
   pry
   pry-rails
-  rack-webconsole-pry
   rails
   rails_best_practices
   rdoc

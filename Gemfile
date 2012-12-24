@@ -84,7 +84,7 @@ group :development do
   gem 'nifty-generators'
   gem 'pry-rails'
   # webconsole
-  gem 'rack-webconsole-pry', :require => 'rack-webconsole'
+  #gem 'rack-webconsole-pry', :require => 'rack-webconsole'
   # better errors
   gem "better_errors"
   gem "binding_of_caller"

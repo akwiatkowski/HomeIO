@@ -1,18 +1,27 @@
 %h1 Realtime
 
-#data
+.container-fluid
+  .row-fluid#data
+    .span12
+      %h2 Measurements
+
+    - MeasType.all.each do |mt|
+      .span3{id: mt.name, style: 'border: 1px dotted green'}
+        = mt.name
+        .meas_value= '...'
+
 
 %script{:src => "http://localhost:8080/socket.io/socket.io.js"}
-:javascript
-  var socket = io.connect('http://localhost:8080');
-  /*
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-  */
-
-  socket.on('message', function (data) {
-    console.log(data);
-    $('#data').append(data);
-  });
+- if false
+  :javascript
+    var socket = io.connect('http://localhost:8080');
+    socket.on('message', function (data) {
+      console.log(data);
+      $('#data').append(data);
+      $('#data').append("<br>");
+    });
+- if true
+  :javascript
+    $(document).ready(function(){
+      realtime_init();
+    });
