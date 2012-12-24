@@ -6,7 +6,7 @@
       %h2 Measurements
 
     - MeasType.all.each do |mt|
-      .span3{id: mt.name, style: 'border: 1px dotted green'}
+      .span3.meas_box{id: mt.name}
         = mt.name
         .meas_value= '...'
 
@@ -23,5 +23,6 @@
 - if true
   :javascript
     $(document).ready(function(){
-      realtime_init();
+      //realtime_init();
+      realtime_put_value("batt_u", 1.0);
     });
