@@ -12,7 +12,7 @@
 
       :store_interval: 600
 
-    :fetch_interval: 0.2
+    :fetch_interval: 0.4
     :command:
       - '3'
     :response_size: 2
@@ -31,7 +31,7 @@
 
       :store_interval: 600
 
-    :fetch_interval: 0.1
+    :fetch_interval: 0.2
     :command:
       - '4'
     :response_size: 2
@@ -50,7 +50,7 @@
 
       :store_interval: 1200
 
-    :fetch_interval: 0.2
+    :fetch_interval: 0.4
     :command:
       - '5'
     :response_size: 2
@@ -69,7 +69,7 @@
 
       :store_interval: 1800
 
-    :fetch_interval: 1.0
+    :fetch_interval: 2.0
     :command:
       - '6'
     :response_size: 2
@@ -109,7 +109,7 @@
 
       :store_interval: 600
 
-    :fetch_interval: 0.2
+    :fetch_interval: 0.5
     :command:
       - '0'
     :response_size: 2
@@ -129,7 +129,7 @@
 
       :store_interval: 600
 
-    :fetch_interval: 0.2
+    :fetch_interval: 0.5
     :command:
       - '1'
     :response_size: 2
@@ -148,7 +148,7 @@
 
       :store_interval: 600
 
-    :fetch_interval: 0.2
+    :fetch_interval: 0.5
     :command:
       - '2'
     :response_size: 2
@@ -169,7 +169,7 @@
 
       :store_interval: 1200
 
-    :fetch_interval: 0.5
+    :fetch_interval: 1.0
     :command:
       - 'p'
     :response_size: 2
@@ -228,7 +228,7 @@
 
       :store_interval: 3600
 
-    :fetch_interval: 1.0
+    :fetch_interval: 1.5
     :command:
       - 'o'
     :response_size: 1

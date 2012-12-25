@@ -10,4 +10,6 @@ MeasReceiver::CommProtocol.port = '2002'
 ws = HomeIoServer::MeasServer.new
 ws.start
 
-sleep 600
+loop do
+  sleep 60
+end

@@ -1,0 +1,20 @@
+- default_full = false
+- title = title_string([resource.name, t('edit') + " " + t('area.title')])
+- content_for :title, title
+%h1= title
+
+= render 'form'
+
+.btn-group
+  - if can?(:read, resource)
+    = link_to resource, class: 'btn' do
+      %i.icon-search
+      = t(:details)
+  - if false and can?(:manage, resource)
+    = link_to resource, confirm: t('are_you_sure'), method: :delete, class: 'btn btn-danger' do
+      %i.icon-remove
+      = t(:delete)
+  - if can?(:read, resource.class)
+    = link_to collection_path, class: 'btn' do
+      %i.icon-search
+      = t(:back)

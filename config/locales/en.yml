@@ -35,6 +35,10 @@ en:
   user:
     register: "Sign up"
 
+  meas_type_group:
+    title: "Measurement group"
+    plural: "Measurement groups"
+
   meas_type:
     title: "Measurement type"
     plural: "Measurement types"

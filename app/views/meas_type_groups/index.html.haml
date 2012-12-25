@@ -1,0 +1,39 @@
+- default_full = false
+- title = title_string([t('meas_type_group.plural')])
+- content_for :title, title
+%h1= title
+
+= paginate collection
+%br
+
+%table.table.table-striped.table-bordered
+  %tr
+    %th= link_to_sorted "Name", :name
+    %th Show
+    %th Edit
+    %th Destroy
+
+  - collection.each do |resource|
+    %tr
+      %td= resource.name
+      %td
+        = link_to resource, class: 'btn btn-mini btn-info' do
+          %i.icon-search
+          = t('details')
+      %td
+        - if can? :edit, resource
+          = link_to edit_resource_path(resource), class: 'btn btn-mini' do
+            %i.icon-edit
+      %td
+        - if can? :destroy, resource
+          = link_to resource, confirm: t('are_you_sure'), method: :delete, class: 'btn btn-mini btn-danger' do
+            %i.icon-remove
+
+= paginate collection
+%br
+
+.btn-group
+  - if can?(:create, MeasType)
+    = link_to new_resource_path, class: 'btn' do
+      %i.icon-pencil
+      = t(:new)

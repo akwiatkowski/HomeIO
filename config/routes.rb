@@ -2,6 +2,8 @@ HomeIO::Application.routes.draw do
   resource :realtime
   resource :graph
 
+  resources :meas_type_groups
+
   resources :meas_types do
     resources :meas_archives
   end
