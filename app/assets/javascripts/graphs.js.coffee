@@ -2,7 +2,7 @@
   # some options
   graph_data = []
   i = 0
-  while i <= types.length
+  while i < types.length
     graph_data[i] = []
     i++
 
@@ -21,7 +21,7 @@
   x = 0
   while x < totalPoints
     i = 0
-    while i <= types.length
+    while i < types.length
       graph_data[i].push([x, 0.0])
       i++
     x++
@@ -35,7 +35,7 @@
     d = JSON.parse(data)
     if d["meas"]
       i = 0
-      while i <= types.length
+      while i < types.length
         type = types[i]
         if d["meas"]["name"] == type
           # adding measurement to graph
