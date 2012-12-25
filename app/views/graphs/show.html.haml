@@ -1,10 +1,15 @@
 %h1 Realtime graphs
 
-#route_height_chart
+#gen_u_chart.realtime_graph
+#gen_i_chart.realtime_graph
+#batt_u_chart.realtime_graph
+#res_chart.realtime_graph
 
 %script{:src => "http://localhost:8080/socket.io/socket.io.js"}
 :javascript
   $(document).ready(function(){
-    //realtime_graph_init('#route_height_chart', ['i_gen_batt']);
-    realtime_graph_init('#route_height_chart', ['coil_1_u', 'coil_2_u', 'coil_3_u']);
+    realtime_graph_init('#gen_i_chart', ['i_gen_batt']);
+    realtime_graph_init('#gen_u_chart', ['coil_1_u', 'coil_2_u', 'coil_3_u']);
+    realtime_graph_init('#batt_u_chart', ['batt_u']);
+    realtime_graph_init('#res_chart', ['res_pwm_avg']);
   });
