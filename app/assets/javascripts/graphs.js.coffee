@@ -6,7 +6,8 @@
     graph_data[i] = []
     i++
 
-  totalPoints = 400
+  #totalPoints = 400
+  maxTimeWidth = 60
 
   options =
     series:
@@ -16,15 +17,6 @@
 
     xaxis:
       show: true
-
-  # initial data
-#  x = 0
-#  while x < totalPoints
-#    i = 0
-#    while i < types.length
-#      graph_data[i].push([x, 0.0])
-#      i++
-#    x++
 
   # plot initial graph
   plot = $.plot($(container), graph_data, options)
@@ -45,8 +37,8 @@
           if first_time == null
             first_time = t
 
-          if graph_data[i].length >= totalPoints
-            graph_data[i] = graph_data[i].slice(1)
+          #if graph_data[i].length >= totalPoints
+          #  graph_data[i] = graph_data[i].slice(1)
 
           # add new value
           new_point = [t - first_time, v]
@@ -55,5 +47,8 @@
           plot.setData graph_data
           plot.setupGrid()
           plot.draw()
+
+          while graph_data[i][graph_data[i].length - 1][0] - graph_data[i][0][0] > maxTimeWidth
+            graph_data[i] = graph_data[i].slice(1)
 
         i++
