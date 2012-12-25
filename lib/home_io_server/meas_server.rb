@@ -77,8 +77,10 @@ module HomeIoServer
       end
     end
 
-    def publish_measurement(name, m)
+    def publish_measurement(name, meas)
+      m = meas.clone
       m[:name] = name
+      m[:time] = m[:time].to_f
       HomeIoServer::RedisProxy.publish('pubsub', {meas: m})
     end
 

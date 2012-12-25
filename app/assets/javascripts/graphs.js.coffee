@@ -18,13 +18,13 @@
       show: true
 
   # initial data
-  x = 0
-  while x < totalPoints
-    i = 0
-    while i < types.length
-      graph_data[i].push([x, 0.0])
-      i++
-    x++
+#  x = 0
+#  while x < totalPoints
+#    i = 0
+#    while i < types.length
+#      graph_data[i].push([x, 0.0])
+#      i++
+#    x++
 
   # plot initial graph
   plot = $.plot($(container), graph_data, options)
@@ -40,20 +40,14 @@
         if d["meas"]["name"] == type
           # adding measurement to graph
           v = Math.round(d["meas"]["value"] * 100) / 100;
+          t = d["meas"]["time"]
 
-          graph_data[i] = graph_data[i].slice(1)
-
-          tmp_graph_data = []
-          x = 0
-          while x < (totalPoints - 1)
-            tmp_graph_data.push([x, graph_data[i][x][1]])
-            x++
+          if graph_data[i].length >= totalPoints
+            graph_data[i] = graph_data[i].slice(1)
 
           # add new value
-          new_point = [totalPoints - 1, v]
-          tmp_graph_data.push(new_point)
-
-          graph_data[i] = tmp_graph_data
+          new_point = [t, v]
+          graph_data[i].push(new_point)
 
           plot.setData graph_data
           plot.setupGrid()
