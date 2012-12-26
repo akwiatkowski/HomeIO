@@ -1,3 +1,5 @@
+# https://github.com/flot/flot/blob/master/API.md
+
 @realtime_graph_init = (container, types) ->
   first_time = null
   graph_data = []
