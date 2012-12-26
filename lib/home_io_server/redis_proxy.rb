@@ -1,5 +1,6 @@
 require 'singleton'
 require 'redis'
+require 'redis-namespace'
 #require 'yajl' # segfault # TODO update RVM+ruby
 require 'json'
 
@@ -38,6 +39,19 @@ module HomeIoServer
 
     def publish(_where, _content)
       @redis.publish(key(_where), encode(_content))
+    end
+
+    def self.subscribe(_where)
+      instance.subscribe(_where)
+    end
+
+    def subscribe(_where)
+      @redis.subscribe(key(_where)) do |on|
+        on.message do |channel, msg|
+          data = parse(msg)
+          yield(data, channel)
+        end
+      end
     end
 
     def key(_where)

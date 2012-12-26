@@ -1,4 +1,8 @@
 class Overseer < ActiveRecord::Base
-  has_many :overseer_parameters
   belongs_to :user
+
+  set_inheritance_column :sti_type
+  serialize :params, Hash
+
+  attr_accessible :name, :params
 end
