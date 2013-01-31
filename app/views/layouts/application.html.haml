@@ -28,17 +28,14 @@
             %span.icon-bar
           %a.brand(href="#") HomeIO
           .container.nav-collapse
-            %ul.nav
-              = render partial: '/layouts/menu'
+            = render partial: '/layouts/menu', locals: {klass: 'nav'}
 
     .container-fluid
 
       .row-fluid
         .span3
           .well.sidebar-nav
-            %ul.nav.nav-list
-              %li.nav-header Sidebar
-              = render partial: '/layouts/menu'
+            = render partial: '/layouts/menu', locals: {klass: 'nav nav-list'}
         .span9
           = yield
     

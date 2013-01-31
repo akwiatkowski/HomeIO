@@ -1,2 +1,8 @@
-%li= link_to t('meas_type.plural'), meas_types_path
-%li= link_to t('meas_type_group.plural'), meas_type_groups_path
+= semantic_navigation :primary, config: :bootstrap, class: defined?(klass) ? klass : 'primary-navigation' do |n|
+  - n.item t('meas_type_group.plural'), meas_type_groups_path
+  - n.item t('meas_type.plural'), meas_types_path
+
+  - if current_user.nil?
+    - n.item t('user_session.new'), new_user_session_path
+  - else
+    - n.item t('user_session.destroy'), destroy_user_session_path, method: :delete
