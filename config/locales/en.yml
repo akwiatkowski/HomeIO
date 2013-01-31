@@ -47,6 +47,11 @@ en:
     title: "Archived measurement"
     plural: "Archived measurements"
 
+  overseer:
+    title: "Overseer"
+    plural: "Overseers"
+
+
   simple_form:
     labels:
       route_element:

@@ -5,4 +5,11 @@ class Overseer < ActiveRecord::Base
   serialize :params, Hash
 
   attr_accessible :name, :params
+
+  after_save :send_to_backend
+
+  def send_to_backend
+    HomeIoServer::RedisProxy.publish('admin', { overseer: self.attributes, update: true })
+  end
+
 end

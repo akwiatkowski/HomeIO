@@ -1,0 +1,12 @@
+- default_full = false
+- title = title_string([resource.name, t('meas_type.title')])
+- content_for :title, title
+%h1= title
+
+= raw simple_show_helper(resource, timestamps: true)
+
+.btn-group
+  - if can?(:edit, resource)
+    = link_to edit_resource_path(resource), class: 'btn' do
+      %i.icon-edit
+      = t(:edit)

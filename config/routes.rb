@@ -2,6 +2,7 @@ HomeIO::Application.routes.draw do
   resource :realtime
   resource :graph
 
+  resources :overseers
   resources :meas_type_groups
 
   resources :meas_types do
