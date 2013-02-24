@@ -27,7 +27,7 @@ class GraphTask
   # for future version
   FETCH_INTERVAL = 1.day
 
-  # where store graphs and semi-outputs
+  # where store_to_buffer graphs and semi-outputs
   DIR_PATH = File.join(Rails.root, "tmp", "graphs")
 
   GRAPH_OPTIONS = {
@@ -168,7 +168,7 @@ class GraphTask
       group = MeasTypeGroup.find(params[:meas_type_group_id])
       types = group.types
 
-      # groups store some extra options
+      # groups store_to_buffer some extra options
       graph_options[:y_min] = group.y_min
       graph_options[:y_max] = group.y_max
       graph_options[:y_axis_interval] = group.y_interval
@@ -311,7 +311,7 @@ class GraphTask
   #  antialias = params[:antialias] == 'true'
   #  format = params[:format]
   #
-  #  # output, and place to store all useful variables
+  #  # output, and place to store_to_buffer all useful variables
   #  hash_output = Hash.new
   #  meas = Array.new
   #

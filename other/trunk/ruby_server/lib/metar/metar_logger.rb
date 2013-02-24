@@ -82,7 +82,7 @@ class MetarLogger
     return { :status => :ok, :data => o_raws }
   end
 
-  # Fetch and store metar for all cities
+  # Fetch and store_to_buffer metar for all cities
   #
   # :call-seq:
   #   fetch_and_store => hash of arrays of MetarCodes
@@ -92,7 +92,7 @@ class MetarLogger
     return o
   end
 
-  # Fetch and store metar for city. Use all sites
+  # Fetch and store_to_buffer metar for city. Use all sites
   #
   # :call-seq:
   #   fetch_and_store_city => array of MetarCodes
@@ -105,7 +105,7 @@ class MetarLogger
 
   private
 
-  # Fetch and store metar for all cities
+  # Fetch and store_to_buffer metar for all cities
   #
   # :call-seq:
   #    _fetch_and_store => hash of arrays of MetarCodes
@@ -118,7 +118,7 @@ class MetarLogger
     return h
   end
 
-  # Fetch and store metar for city
+  # Fetch and store_to_buffer metar for city
   # Use all sites
   #
   # Return array of MetarCode
@@ -134,10 +134,10 @@ class MetarLogger
     # *metar_array* - array of processed metars
     metar_array = MetarCode.process_array(o, year, month, MetarConstants::METAR_CODE_JUST_DOWNLOADED)
 
-    # store them
+    # store_to_buffer them
     metar_array.each do |ma|
-      # store as they were just downloaded
-      ma.store
+      # store_to_buffer as they were just downloaded
+      ma.store_to_buffer
     end
 
     return metar_array

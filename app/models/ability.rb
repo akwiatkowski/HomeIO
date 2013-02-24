@@ -5,6 +5,7 @@ class Ability
     can :read, MeasTypeGroup
     can :read, MeasType
     can :read, MeasArchive
+    can :read, ActionType
     can :manage, Overseer
 
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities

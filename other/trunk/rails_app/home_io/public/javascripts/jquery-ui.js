@@ -7247,7 +7247,7 @@ function Datepicker() {
 		showCurrentAtPos: 0, // The position in multipe months at which to show the current month (starting at 0)
 		stepMonths: 1, // Number of months to step back/forward
 		stepBigMonths: 12, // Number of months to step back/forward for the big links
-		altField: '', // Selector for an alternate field to store selected dates into
+		altField: '', // Selector for an alternate field to store_to_buffer selected dates into
 		altFormat: '', // The date format to use for the alternate field
 		constrainInput: true, // The input is constrained by the current date format
 		showButtonPanel: false, // True to show button panel, false to not show it

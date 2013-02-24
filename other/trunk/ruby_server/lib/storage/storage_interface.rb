@@ -23,7 +23,7 @@
 # Interface for objectw which could be stored
 
 module StorageInterface
-  # Convert to hash object prepared to store in DB
+  # Convert to hash object prepared to store_to_buffer in DB
   def to_db_data
     raise "Not implemented"
 

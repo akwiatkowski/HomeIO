@@ -1,0 +1,124 @@
+# Possible hardware actions
+---
+:array:
+  # codename of measurement
+  - :name: start_total_brake
+  # command sent to uC
+    :command:
+      :array:
+        - 'w'
+      #  - 119
+      # number of bytes of response
+      :response_correct:
+        - 21
+
+  - :name: turn_off_brake
+    :command:
+      :array:
+        - 'W'
+      :response_correct:
+        - 20
+
+
+  - :name: test_zero
+    :command:
+      :array:
+        - 's'
+      :response_correct:
+        - 0
+
+  - :name: test_numbers
+    :command:
+      :array:
+        - 't'
+      :response_correct:
+        - 48
+        - 57
+
+  - :name: decr_std_batt_u
+    :command:
+      :array:
+        - 'k'
+      :response_correct:
+        - -1 # -1 means 'whatever'
+        - -1
+
+  - :name: inc_std_batt_u
+    :command:
+      :array:
+        - 'K'
+      :response_correct:
+        - -1
+        - -1
+
+  - :name: output_1_off
+    :command:
+      :array:
+        - 'a'
+      :response_correct:
+        - 0
+
+  - :name: output_2_off
+    :command:
+      :array:
+        - 'b'
+      :response_correct:
+        - 1
+
+  - :name: output_3_off
+    :command:
+      :array:
+        - 'c'
+      :response_correct:
+        - 2
+
+  - :name: output_4_off
+    :command:
+      :array:
+        - 'd'
+      :response_correct:
+        - 3
+
+  - :name: output_5_off
+    :command:
+      :array:
+        - 'e'
+      :response_correct:
+        - 4
+
+
+  - :name: output_1_on
+    :command:
+      :array:
+        - 'A'
+      :response_correct:
+        - 10
+
+
+  - :name: output_2_on
+    :command:
+      :array:
+        - 'B'
+      :response_correct:
+        - 11
+
+  - :name: output_3_on
+    :command:
+      :array:
+        - 'C'
+      :response_correct:
+        - 12
+
+  - :name: output_4_on
+    :command:
+      :array:
+        - 'D'
+      :response_correct:
+        - 13
+
+  - :name: output_5_on
+    :command:
+      :array:
+        - 'E'
+      :response_correct:
+        - 14

@@ -20,7 +20,7 @@
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# store PID
+# store_to_buffer PID
 require File.join Dir.pwd, 'lib/utils/pid'
 
 require File.join Dir.pwd, "lib/utils/start_threaded"

@@ -9,6 +9,8 @@ HomeIO::Application.routes.draw do
     resources :meas_archives
   end
 
+  resources :action_types
+
   devise_for :users
 
   # The priority is based upon order of creation:

@@ -14,7 +14,7 @@
     :locale:
       :en: "Batteries voltage"
       :pl: "Napięcie na akumulatorach"
-    # store in memory X last measurements
+    # store_to_buffer in memory X last measurements
     :cache: 100
     :unit: V
     :log_conditions:

@@ -37,7 +37,7 @@ require File.join Dir.pwd, "lib/communication/im/bots/gadu_bot"
 # How bots works:
 #
 # Bot communication is multilayer:
-# 1. Bot object (ex. Xmpp4rBot, GaduBot) has accesor +processor+ which store
+# 1. Bot object (ex. Xmpp4rBot, GaduBot) has accesor +processor+ which store_to_buffer
 #    used first step processor:
 #    
 # 2. Processor is an object which has method +process_command( msg, from )+

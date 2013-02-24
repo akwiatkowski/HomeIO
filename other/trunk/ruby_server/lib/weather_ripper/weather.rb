@@ -23,7 +23,7 @@
 require File.join Dir.pwd, 'lib/storage/storage'
 require File.join Dir.pwd, 'lib/storage/storage_interface'
 
-# HomeIO weather model. Used for storing in various store engines. When using ActiveRecord it could be little
+# HomeIO weather model. Used for storing in various store_to_buffer engines. When using ActiveRecord it could be little
 # deprecated but it is a nice idea to not remove simple Sqlite support for future use in very low performance
 # computers.
 
@@ -92,7 +92,7 @@ class Weather
 
   # Store this object
   def store
-    Storage.instance.store(self)
+    Storage.instance.store_to_buffer(self)
   end
 
   # Convert to hash object for storing in DB. Created (but used also by) for first, non ActiveRecord storage engines.

@@ -621,7 +621,7 @@
     :desc: "Widoczność"
     :plot_color: "#990099"
 
-# process and store after logging new metar?
+# process and store_to_buffer after logging new metar?
 :instant_process: true
 
 # parametry rysowania wykresów

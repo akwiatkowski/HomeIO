@@ -23,7 +23,7 @@ require 'singleton'
 require 'yaml'
 require File.join Dir.pwd, 'lib/utils/adv_log'
 
-# Singleton class which load and store config files in self
+# Singleton class which load and store_to_buffer config files in self
 
 class ConfigLoader
   include Singleton

@@ -2,39 +2,41 @@ require 'meas_receiver'
 require 'yaml'
 require 'logger'
 
-# Everything
+# Fetch and store_to_buffer measurements
 
 module HomeIoServer
   class MeasServer
-    CONFIG = File.join("config", "backend", "meas.yml")
+    CONFIG_FILE_PATH = File.join("config", "backend", "meas.yml")
 
     def initialize
-      @config = YAML.load(File.open(CONFIG))
+      @config = YAML.load(File.open(CONFIG_FILE_PATH))
       @logger = HomeIoLogger.l('meas_server')
+      @logger_level = Logger::DEBUG
 
       default_comm_config
 
+      # AR objects for all types
       @meas_types = Hash.new
+      # MeasTypeReceiver objects for all types
       @receivers = Array.new
 
       @mutex = Mutex.new
+      # AR objects to store
       @ar_buffer = Array.new
 
       @config[:array].each do |c|
+        # initialize AR objects
         ar = MeasType.find_or_create_by_name(c[:name])
         if ar.params.blank?
           ar.params = c
           ar.save!
         end
 
-        c[:storage][:proc] = Proc.new { |d| store(c[:name], d) }
+        c[:storage][:proc] = Proc.new { |d| store_to_buffer(c[:name], d) }
         c[:logger] ||= Hash.new
-        c[:logger][:level] = Logger::DEBUG
+        c[:logger][:level] = @logger_level
         c[:after_proc] = Proc.new { |m| publish_measurement(c[:name], m) }
         c[:ar] = ar
-
-        # DEV
-        c[:storage][:store_interval] = 30.0
 
         m = MeasReceiver::MeasTypeReceiver.new(c)
         @receivers << m
@@ -51,7 +53,14 @@ module HomeIoServer
       end
     end
 
-    def store(name, data)
+    def stop
+      @receivers.each do |r|
+        r.start
+      end
+    end
+
+    # Move meas to store buffer
+    def store_to_buffer(name, data)
       @mutex.synchronize do
         data.each do |d|
           ar = MeasArchive.new(d)
@@ -60,10 +69,11 @@ module HomeIoServer
         end
       end
 
-      store!
+      flush_store_bugger!
     end
 
-    def store!
+    # Save all measurements to AR/txt file
+    def flush_store_bugger!
       @mutex.synchronize do
         ActiveRecord::Base.transaction do
 
@@ -77,22 +87,13 @@ module HomeIoServer
       end
     end
 
+    # Publish for node.js magic
     def publish_measurement(name, meas)
       m = meas.clone
       m[:name] = name
       m[:time] = m[:time].to_f
-      HomeIoServer::RedisProxy.publish('pubsub', {meas: m})
+      HomeIoServer::RedisProxy.publish('pubsub', { meas: m })
     end
-
-    def default_comm_config
-      if MeasReceiver::CommProtocol.host.nil?
-        MeasReceiver::CommProtocol.host = '192.168.0.7'
-      end
-      if MeasReceiver::CommProtocol.port.nil?
-        MeasReceiver::CommProtocol.port = '2002'
-      end
-    end
-
 
   end
 end

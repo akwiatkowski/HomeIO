@@ -105,7 +105,7 @@ class WeatherAbstract
     return id
   end
 
-  # Fetch and store weather data for 1 city and 1 weather provider, and store this data
+  # Fetch and store_to_buffer weather data for 1 city and 1 weather provider, and store_to_buffer this data
   #
   # :call-seq:
   #   check_online( definition hash )
@@ -116,7 +116,7 @@ class WeatherAbstract
 
     #puts weathers.inspect
     weathers.each do |w|
-      w.store
+      w.store_to_buffer
     end
 
     return weathers

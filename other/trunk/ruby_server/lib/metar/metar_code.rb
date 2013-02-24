@@ -248,13 +248,13 @@ class MetarCode
     return false
   end
 
-  # Enforce store
+  # Enforce store_to_buffer
   def store
     # send self to Storage
-    Storage.instance.store(self) if valid?
+    Storage.instance.store_to_buffer(self) if valid?
   end
 
-  # Convert decoded METAR to hash object prepared to store in DB. Not used by ActiveRecord storage engine.
+  # Convert decoded METAR to hash object prepared to store_to_buffer in DB. Not used by ActiveRecord storage engine.
   def to_db_data
     return {
       :data => {
@@ -306,7 +306,7 @@ class MetarCode
     calculate_cloud
     calculate_rain_and_snow
 
-    # if metar is invalid store it in log to check if decoder has error
+    # if metar is invalid store_to_buffer it in log to check if decoder has error
     if true == ConfigLoader.instance.config(self.class.to_s)[:store_decoder_errors]
       unless valid?
         AdvLog.instance.logger(self).error("Cant decode metar: '#{self.raw}', city '#{self.city}'")

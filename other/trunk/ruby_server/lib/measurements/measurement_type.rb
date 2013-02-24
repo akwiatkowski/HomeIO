@@ -229,12 +229,12 @@ class MeasurementType
     end
   end
 
-  # Fetch one measurement and store if needed
+  # Fetch one measurement and store_to_buffer if needed
   def fetch_one_measurement_and_check_store_conditions
     fetch_measurement
     # because something should be as "stored"
     mark_current_measurement_as_stored if @measurement_after_last_store.nil?
-    # store when conditions are met
+    # store_to_buffer when conditions are met
     if check_storage_conditions
       store_measurement_in_db
     end
@@ -303,17 +303,17 @@ class MeasurementType
 
   # Check storage conditions. When true current measurement should be stored
   def check_storage_conditions
-    # do not store if measurement is fresh
+    # do not store_to_buffer if measurement is fresh
     return false if true == check_minimal_time_interval
 
-    # force store if measurement is a little old now
+    # force store_to_buffer if measurement is a little old now
     return true if true == check_maximum_time_interval
 
     # not it depends only on value
     check_significant_change
   end
 
-  # Can't store measurements when interval of last stored is less than
+  # Can't store_to_buffer measurements when interval of last stored is less than
   def minimal_time_interval
     @config[:log_conditions][:min].to_f
   end
@@ -323,7 +323,7 @@ class MeasurementType
     time_interval < minimal_time_interval
   end
 
-  # Force store measurements when interval of last stored is higher than
+  # Force store_to_buffer measurements when interval of last stored is higher than
   def maximum_time_interval
     @config[:log_conditions][:max].to_f
   end
@@ -366,7 +366,7 @@ class MeasurementType
       # slow, used for weather and metars
       #StorageActiveRecord.instance.store_ar_object(ma)
       # faster
-      StorageActiveRecord.instance.store(ma)
+      StorageActiveRecord.instance.store_to_buffer(ma)
     else
       ma.save!
     end

@@ -26,7 +26,7 @@ class ByteArray
 
   def initialize(obj)
     # TODO array of string, array of fixnum, string, -1 as wildcard
-    # store as array of fixnum
+    # store_to_buffer as array of fixnum
   end
 
   def to_array_of_string

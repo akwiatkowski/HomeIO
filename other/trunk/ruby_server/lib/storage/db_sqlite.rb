@@ -145,7 +145,7 @@ class DbSqlite < StorageDbAbstract
   # Converts storable object to sqlite query
   #
   # *conf* - hash from config of obj class
-  # *obj* - object to store
+  # *obj* - object to store_to_buffer
   def convert_obj_to_query( conf, obj )
     db_data = obj.to_db_data
 
@@ -326,5 +326,5 @@ class DbSqlite < StorageDbAbstract
     @sqlite_db_metar_weather.close unless @sqlite_db_metar_weather.closed?
   end
 
-  # Create queries to store all needed objects
+  # Create queries to store_to_buffer all needed objects
 end

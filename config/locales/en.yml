@@ -47,6 +47,11 @@ en:
     title: "Archived measurement"
     plural: "Archived measurements"
 
+  action_type:
+    title: "Action type"
+    plural: "Action types"
+    name: "Name"
+
   overseer:
     title: "Overseer"
     plural: "Overseers"

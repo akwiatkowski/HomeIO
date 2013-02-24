@@ -100,7 +100,7 @@ module HomeIoServer
       tc = Time.now
 
       @iteration += 1
-      @logger.info("Fetch time cost #{(tb-ta).to_s.light_blue}, store time cost #{(tc-tb).to_s.light_blue}, total cost #{(tc-ta).to_s.light_blue}, iteration #{@iteration}")
+      @logger.info("Fetch time cost #{(tb-ta).to_s.light_blue}, store_to_buffer time cost #{(tc-tb).to_s.light_blue}, total cost #{(tc-ta).to_s.light_blue}, iteration #{@iteration}")
     end
 
   end

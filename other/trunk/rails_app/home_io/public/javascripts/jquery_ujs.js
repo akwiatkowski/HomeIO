@@ -156,7 +156,7 @@
     },
 
     /* Disables form elements:
-      - Caches element value in 'ujs:enable-with' data store
+      - Caches element value in 'ujs:enable-with' data store_to_buffer
       - Replaces element text with value of 'data-disable-with' attribute
       - Adds disabled=disabled attribute
     */
@@ -170,7 +170,7 @@
     },
 
     /* Re-enables disabled form elements:
-      - Replaces element text with cached value from 'ujs:enable-with' data store (created in `disableFormElements`)
+      - Replaces element text with cached value from 'ujs:enable-with' data store_to_buffer (created in `disableFormElements`)
       - Removes disabled attribute
     */
     enableFormElements: function(form) {

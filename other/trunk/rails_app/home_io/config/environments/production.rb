@@ -24,7 +24,7 @@ HomeIo::Application.configure do
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
 
-  # Use a different cache store in production
+  # Use a different cache store_to_buffer in production
   # config.cache_store = :mem_cache_store
 
   # Disable Rails's static asset server

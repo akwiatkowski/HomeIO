@@ -25,7 +25,7 @@ describe 'MeasArchive', :type => :model do
       end
     end
 
-    it 'shouldnt allow to store meas without value' do
+    it 'shouldnt allow to store_to_buffer meas without value' do
       m = MeasArchive.new
       m.meas_type_id = @mt.id
       m.save.should == false

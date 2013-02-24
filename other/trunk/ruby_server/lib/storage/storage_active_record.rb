@@ -117,7 +117,7 @@ class StorageActiveRecord < StorageDbAbstract
       when 'Weather' then
         store_weather(obj)
       when 'MeasArchive'
-        # MeasArchive is AR object, store in special pool which is saved every small amount of time (5-20 seconds)
+        # MeasArchive is AR object, store_to_buffer in special pool which is saved every small amount of time (5-20 seconds)
         store_measurement(obj)
       else
         other_store(obj)
@@ -284,9 +284,9 @@ class StorageActiveRecord < StorageDbAbstract
     puts "Measurement pool flushed, count #{pool_size}"
   end
 
-  # Emergency store in json
+  # Emergency store_to_buffer in json
   def measurement_save_object_when_db_failed(ma)
-    MeasurementStorage.instance.store(ma)
+    MeasurementStorage.instance.store_to_buffer(ma)
   end
 
 end

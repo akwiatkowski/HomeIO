@@ -68,7 +68,7 @@ class Storage
   def store(obj)
     store_outputs = Array.new
     @storage.each do |s|
-      store_outputs << s.store(obj)
+      store_outputs << s.store_to_buffer(obj)
     end
     return store_outputs
   end

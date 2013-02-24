@@ -7,4 +7,7 @@ class ActionType < ActiveRecord::Base
   validates_uniqueness_of :name
 
   set_inheritance_column :sti_type
+  serialize :params, Hash
+
+  attr_accessible :name, :params
 end

@@ -57,7 +57,7 @@ class StorageDbAbstract
       # not standard storage
       other_store(obj)
     else
-      # standardized store
+      # standardized store_to_buffer
       standardized_store(obj, d)
     end
 

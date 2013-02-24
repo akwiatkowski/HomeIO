@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with HomeIO.  If not, see <http://www.gnu.org/licenses/>.
 
-# Require this file if you wish to store process id
+# Require this file if you wish to store_to_buffer process id
 
 if not defined? PID
   pid = Process.pid

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130131161601) do
+ActiveRecord::Schema.define(:version => 20130224192758) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130131161601) do
     t.string   "name",       :limit => 64, :null => false
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.string   "params"
   end
 
   add_index "action_types", ["name"], :name => "index_action_types_on_name", :unique => true
