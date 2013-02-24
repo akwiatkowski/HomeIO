@@ -1,6 +1,11 @@
 class RemoveOverseerParams < ActiveRecord::Migration
-  def change
-    drop_table :overseer_params
+  def up
+    drop_table :overseer_parameters
     add_column :overseers, :params, :string
+  end
+
+  def down
+    create_table :overseer_parameters
+    remove_column :overseers, :params, :string
   end
 end

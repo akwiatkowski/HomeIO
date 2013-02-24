@@ -1,4 +1,4 @@
-= semantic_navigation :primary, config: :bootstrap, class: defined?(klass) ? klass : 'primary-navigation' do |n|
+= semantic_navigation defined?(id) ? id : 'primary-navigation', config: :bootstrap, class: defined?(klass) ? klass : 'primary-navigation' do |n|
   - n.item t('meas_type_group.plural'), meas_type_groups_path
   - n.item t('meas_type.plural'), meas_types_path
 

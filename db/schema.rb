@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121217211700) do
+ActiveRecord::Schema.define(:version => 20130131161601) do
 
   create_table "action_events", :force => true do |t|
     t.datetime "time",                              :null => false
@@ -131,14 +131,6 @@ ActiveRecord::Schema.define(:version => 20121217211700) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "overseer_parameters", :force => true do |t|
-    t.integer  "overseer_id"
-    t.string   "key",         :null => false
-    t.string   "value"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "overseers", :force => true do |t|
     t.string   "name",                          :null => false
     t.string   "klass",                         :null => false
@@ -148,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20121217211700) do
     t.datetime "updated_at",                    :null => false
     t.integer  "hit_count",  :default => 0,     :null => false
     t.datetime "last_hit"
+    t.string   "params"
   end
 
   add_index "overseers", ["name"], :name => "index_overseers_on_name", :unique => true
@@ -160,8 +153,8 @@ ActiveRecord::Schema.define(:version => 20121217211700) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",    :null => false
-    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "email",                  :default => "",     :null => false
+    t.string   "encrypted_password",     :default => "",     :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -170,9 +163,10 @@ ActiveRecord::Schema.define(:version => 20121217211700) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.boolean  "admin",                  :default => false, :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.string   "authentication_token"
+    t.string   "role",                   :default => "user"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
