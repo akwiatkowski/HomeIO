@@ -1,11 +1,14 @@
 require 'meas_receiver'
 require 'yaml'
 require 'logger'
+require 'home_io_server/io_comm/default_comm_config'
 
 # Fetch and store_to_buffer measurements
 
 module HomeIoServer
   class MeasServer
+    include DefaultCommConfig
+
     CONFIG_FILE_PATH = File.join("config", "backend", "meas.yml")
 
     def initialize
