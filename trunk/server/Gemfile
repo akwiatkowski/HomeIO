@@ -8,7 +8,7 @@ gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 gem "rufus-scheduler"
 
 # stuff from rails
-gem 'activerecord'
+gem 'activerecord', ">3.0.0"
 gem 'pg'
 #gem 'sqlite3'
 

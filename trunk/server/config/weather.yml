@@ -787,8 +787,8 @@
   - :name: 'Korbielów'
     :country: 'Poland'
     :coords:
-      :lat: 49.568312
-      :lon: 19.350845
+      :lat: 49.567421
+      :lon: 19.350179
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,korbielow,9290.html'
@@ -830,8 +830,8 @@
   - :name: 'Wysowa'
     :country: 'Poland'
     :coords:
-      :lat: 49.568312
-      :lon: 19.350845
+      :lat: 49.434534
+      :lon: 21.179554
     :classes:
       #OnetPl:
       #  :url: ''
