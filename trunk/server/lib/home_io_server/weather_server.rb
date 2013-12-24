@@ -55,7 +55,7 @@ module HomeIoServer
         #first loop, nobody wants to wait
         fetch_loop
 
-        @scheduler = Rufus::Scheduler.start_new
+        @scheduler = Rufus::Scheduler.new
         @scheduler.every "#{INTERVAL}m" do
           fetch_loop
         end
