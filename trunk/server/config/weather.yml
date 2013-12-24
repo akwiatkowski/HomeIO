@@ -13,7 +13,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,poznan,9204.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,poznan,mid,1201201,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43384,miasto,Pozna%C5%84,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-poznan,cId,27457'
         
@@ -26,7 +26,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,mogilno,9224.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,mogilno,mid,1201149,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43712,miasto,Mogilno,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-mogilno,cId,21821'
 
@@ -39,7 +39,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,inowroclaw,9296.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,inowroclaw,mid,1201072,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43704,miasto,Inowroc%C5%82aw,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-inowroclaw,cId,10726'
 
@@ -52,7 +52,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,torun,9286.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,torun,mid,1201279,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43943,miasto,Toru%C5%84,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-torun,cId,35707'
 
@@ -66,7 +66,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,bydgoszcz,9315.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,bydgoszcz,mid,1201023,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43123,miasto,Bydgoszcz,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-bydgoszcz,cId,3696'
 
@@ -80,7 +80,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,lodz,9205.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,lodz,mid,1201127,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43495,miasto,%C5%81%C3%B3d%C5%BA,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-lodz,cId,19059'
 
@@ -94,7 +94,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,wroclaw,9203.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,wroclaw,mid,1201305,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43763,miasto,Wroc%C5%82aw,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-wroclaw,cId,39240'
 
@@ -108,7 +108,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,zielona-gora,9333.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,zielona_gora,mid,1201320,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43848,miasto,Zielona%20G%C3%B3ra,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-zielona-gora,cId,41517'
 
@@ -122,7 +122,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,gdansk,9201.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,gdansk,mid,1201047,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43935,miasto,Gda%C5%84sk,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-gdansk,cId,8048'
 
@@ -136,7 +136,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,warszawa,9105.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,warszawa,mid,1201290,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43116,miasto,Warszawa,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-warszawa,cId,36917'
 
@@ -150,7 +150,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,olsztyn,9247.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,olsztyn,mid,1201173,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43701,miasto,Olsztyn,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-olsztyn,cId,24210'
 
@@ -164,7 +164,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,koszalin,9259.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,koszalin,mid,1201103,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43669,miasto,Koszalin,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-koszalin,cId,15719'
 
@@ -178,7 +178,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,szczecin,9326.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,szczecin,mid,1201268,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43723,miasto,Szczecin,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-szczecin,cId,34668'
 
@@ -192,7 +192,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,kielce,9287.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,kielce,mid,1201091,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43875,miasto,Kielce,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-kielce,cId,13378'
 
@@ -206,7 +206,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,katowice,9342.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,katowice,mid,1201086,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43866,miasto,Katowice,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-katowice,cId,13095'
 
@@ -219,7 +219,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,jaworzno,9521.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,jaworzno,mid,1201079,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43646,miasto,Jaworzno,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-jaworzno,cId,11698'
 
@@ -233,7 +233,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,krakow,9202.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,krakow,mid,1201105,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43289,miasto,Krak%C3%B3w,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-krakow,cId,4970'
 
@@ -246,7 +246,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,lublin,9303.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,lublin,mid,1201135,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43145,miasto,Lublin,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-lublin,cId,19393'
 
@@ -259,7 +259,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,bialystok,9372.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,bialystok,mid,1201009,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43390,miasto,Bia%C5%82ystok,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-bialystok,cId,1197'
 
@@ -272,7 +272,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,suwalki,9218.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,suwalki,mid,1201261,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43079,miasto,Suwa%C5%82ki,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-suwalki,cId,34166'
 
@@ -285,7 +285,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,nowy-targ,9266.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,nowy_targ,mid,1201165,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43053,miasto,Nowy%20Targ,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-nowy-targ,cId,23614'
 
@@ -298,7 +298,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,zakopane,9231.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,zakopane,mid,1201312,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43341,miasto,Zakopane,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-zakopane,cId,40219'
 
@@ -311,7 +311,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,rzeszow,9332.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,rzeszow,mid,1201227,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43442,miasto,Rzesz%C3%B3w,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-rzeszow,cId,30389'
 
@@ -324,7 +324,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,golub-dobrzyn,9468.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,golub-dobrzyn,mid,1201056,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43445,miasto,Golub-Dobrzy%C5%84,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-golub-dobrzyn,cId,8822'
 
@@ -337,7 +337,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,wloclawek,9295.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,wloclawek,mid,1201298,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43774,miasto,W%C5%82oc%C5%82awek,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-wloclawek,cId,38207'
 
@@ -349,8 +349,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,karpacz,9280.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43793,miasto,Karpacz,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-karpacz,cId,12958'
 
@@ -362,8 +362,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,szklarska-poreba,9222.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43940,miasto,Szklarska%20Por%C4%99ba,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-szklarska-poreba,cId,34920'
 
@@ -376,7 +376,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,klodzko,9309.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,klodzko,mid,1201093,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43412,miasto,K%C5%82odzko,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-klodzko,cId,13781'
 
@@ -389,7 +389,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,walbrzych,9282.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,walbrzych,mid,1201288,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43314,miasto,Wa%C5%82brzych,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-walbrzych,cId,36757'
 
@@ -402,7 +402,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,jelenia-gora,9213.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,jelenia_gora,mid,1201081,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43055,miasto,Jelenia%20G%C3%B3ra,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-jelenia-gora,cId,11818'
 
@@ -415,7 +415,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,kamienna-gora,9214.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,kamienna_gora,mid,1201084,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43908,miasto,Kamienna%20G%C3%B3ra,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-kamienna-gora,cId,12636'
 
@@ -428,7 +428,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,tychy,9527.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,tychy,mid,1201283,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43476,miasto,Tychy,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-tychy,cId,36326'
 
@@ -440,8 +440,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,szczyrk,9248.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43572,miasto,Szczyrk,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-szczyrk,cId,34803'
 
@@ -453,8 +453,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,ustron,9284.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43678,miasto,Ustro%C5%84,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-ustron,cId,36654'
 
@@ -466,8 +466,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,wisla,9313.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43606,miasto,Wis%C5%82a,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-wisla,cId,37996'
 
@@ -480,7 +480,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,zywiec,9384.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,zywiec,mid,1201328,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43427,miasto,%C5%BBywiec,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-zywiec,cId,42086'
 
@@ -493,7 +493,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,limanowa,9338.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,limanowa,mid,1201124,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43666,miasto,Limanowa,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-limanowa,cId,18647'
 
@@ -519,7 +519,7 @@
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,nowy-sacz,9289.html'
       WpPl:
-        :url: 'http://pogoda.wp.pl/miasto,nowy_sacz,mid,1201164,mi.html'
+        :url: 'http://pogoda.wp.pl/cid,43337,miasto,Nowy%20S%C4%85cz,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-nowy-sacz,cId,23590'
 
@@ -531,8 +531,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,rabka,9319.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43619,miasto,Rabka-Zdr%C3%B3j,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-rabka,cId,28377'
 
@@ -544,8 +544,8 @@
     :classes:
       OnetPl:
         :url: 'http://pogoda.onet.pl/prognoza-pogody/dlugoterminowa/europa,polska,szczawnica,9321.html'
-      #WpPl:
-      #  :url: ''
+      WpPl:
+        :url: 'http://pogoda.wp.pl/cid,43170,miasto,Szczawnica,dlugoterminowa.html'
       InteriaPl:
         :url: 'http://pogoda.interia.pl/prognoza-szczegolowa-szczawnica,cId,34651'
 
