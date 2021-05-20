@@ -110,8 +110,6 @@ GEM
       responders (~> 0.6)
     jar_wrapper (0.1.2)
       jeweler
-      jeweler
-      zip
       zip
     jeweler (1.8.4)
       bundler (~> 1.0)
@@ -133,11 +131,14 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.19)
+    mini_portile2 (2.5.1)
     multi_json (1.3.7)
     mysql (2.8.1)
     mysql2 (0.3.11)
     nifty-generators (0.4.6)
-    nokogiri (1.5.5)
+    nokogiri (1.11.5)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     orm_adapter (0.4.0)
     passenger (3.0.11)
       daemon_controller (>= 0.2.5)
@@ -150,6 +151,7 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    racc (1.5.2)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
