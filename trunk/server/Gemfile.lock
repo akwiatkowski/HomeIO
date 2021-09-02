@@ -53,7 +53,6 @@ GEM
       nokogiri (= 1.5.10)
       rake
       rdoc
-    json (1.8.1)
     jwt (0.1.8)
       multi_json (>= 1.5)
     mean (0.1.0)
@@ -77,8 +76,7 @@ GEM
       slop (~> 3.4)
     rack (1.5.2)
     rake (10.1.1)
-    rdoc (4.0.1)
-      json (~> 1.4)
+    rdoc (6.3.1)
     redis (3.0.6)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
