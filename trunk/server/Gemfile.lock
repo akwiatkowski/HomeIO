@@ -103,7 +103,7 @@ GEM
     weather_fetcher (0.1.0)
       curb
       simple_metar_parser (>= 0.0.1)
-    yajl-ruby (1.2.0)
+    yajl-ruby (1.4.2)
 
 PLATFORMS
   ruby
