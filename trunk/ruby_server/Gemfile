@@ -1,1 +1,115 @@
-./../rails_app/home_io/Gemfile
+source 'http://rubygems.org'
+
+gem 'rails', '3.2.0'
+gem 'rake'
+gem 'rack'
+# ruby 1.8.7 compatibility error
+# https://github.com/elisehuard/builder/commit/53582a84556102b4d81f144f8c6a28cf9157516d
+# gem 'builder', :git => 'git://github.com/elisehuard/builder.git'
+
+# console
+gem 'pry'
+
+# deployment
+gem 'passenger', '5.3.2'
+
+# DBs
+gem 'mysql2'
+gem 'mysql'
+gem 'pg'
+
+# models addons
+gem 'foreigner'
+gem 'composite_primary_keys' #, '=3.1.0'
+gem 'default_value_for'
+gem 'will_paginate' #, " >= 3.0.pre4" #, " >= 3.0.pre2"
+gem 'acts_as_commentable'
+gem 'has_scope'
+gem 'inherited_resources'
+
+# rails addons
+# https://github.com/andi/simple-navigation/wiki/Dynamic-Navigation-Items
+gem 'nifty-generators'
+gem 'simple-navigation'
+gem 'formtastic'
+gem 'haml'
+gem 'sass'
+gem 'hpricot'
+gem 'ruby_parser'
+
+# auth
+gem 'devise'
+
+# rights managament
+# https://github.com/ryanb/cancan/blob/master/README.rdoc
+gem 'cancan'
+
+group :assets do
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
+end
+
+# JS
+gem 'jquery-rails'
+
+
+# web sockets
+gem 'em-websocket'
+
+# graphs
+gem 'technical_graph' #, '0.5.1'
+#gem 'technical_graph', :git => 'git://github.com/akwiatkowski/technical_graph.git'
+
+# backend addons
+gem 'geokit'
+gem 'json'
+gem 'robustthread'
+
+# creating big graphs in background
+gem 'delayed_job'
+
+# calculation of energy
+gem 'ranges_merger'
+
+# web servers
+# gem 'unicorn'
+
+# mobiles
+# https://github.com/benlangfeld/mobile-fu
+
+# Deploy with Capistrano
+#gem 'capistrano'
+#require "bundler/capistrano"
+
+# debug
+# gem 'ruby-debug'
+# gem 'ruby-debug19'
+
+group :development, :test do
+  # http://blog.notahat.com/posts/43
+  # http://qatechnotes.blogspot.com/2011/06/could-not-find-generator.html
+  # http://railscasts.com/episodes/155-beginning-with-cucumber
+  
+  gem 'rspec-rails'
+  gem 'rspec'
+
+  gem 'factory_girl_rails'
+
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'selenium'
+
+  gem 'database_cleaner'
+
+  gem 'cucumber-rails'
+  gem 'cucumber' #, '0.7.3'
+
+  gem 'spork'
+  # http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
+  gem 'watchr'
+  gem 'launchy'  # So you can do Then show me the page
+
+  # DB
+  gem 'sqlite3'
+end
