@@ -66,7 +66,6 @@ GEM
       capybara (>= 1.1.2)
       cucumber (>= 1.1.8)
       nokogiri (>= 1.5.0)
-    daemon_controller (1.1.0)
     database_cleaner (0.9.1)
     default_value_for (2.0.1)
     delayed_job (3.0.3)
@@ -89,7 +88,6 @@ GEM
     factory_girl_rails (4.1.0)
       factory_girl (~> 4.1.0)
       railties (>= 3.0.0)
-    fastthread (1.0.7)
     ffi (1.1.5)
     foreigner (1.2.1)
       activerecord (>= 3.0.0)
@@ -110,8 +108,6 @@ GEM
       responders (~> 0.6)
     jar_wrapper (0.1.2)
       jeweler
-      jeweler
-      zip
       zip
     jeweler (1.8.4)
       bundler (~> 1.0)
@@ -139,9 +135,7 @@ GEM
     nifty-generators (0.4.6)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
-    passenger (3.0.11)
-      daemon_controller (>= 0.2.5)
-      fastthread (>= 1.0.1)
+    passenger (5.3.2)
       rack
       rake (>= 0.8.1)
     pg (0.14.1)
@@ -270,7 +264,7 @@ DEPENDENCIES
   mysql
   mysql2
   nifty-generators
-  passenger (= 3.0.11)
+  passenger (= 5.3.2)
   pg
   pry
   rack
