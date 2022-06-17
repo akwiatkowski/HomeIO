@@ -22,6 +22,7 @@ GEM
     builder (3.1.4)
     coderay (1.1.0)
     colorize (0.6.0)
+    concurrent-ruby (1.1.10)
     curb (0.8.5)
     diff-lcs (1.2.5)
     docile (1.1.1)
@@ -43,7 +44,8 @@ GEM
       mean
       rufus-scheduler
     httpauth (0.2.0)
-    i18n (0.6.9)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
     jeweler (1.8.8)
       builder
       bundler (~> 1.0)
