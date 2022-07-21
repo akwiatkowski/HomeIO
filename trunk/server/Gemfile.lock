@@ -99,7 +99,7 @@ GEM
     slop (3.4.7)
     thread_safe (0.1.3)
       atomic
-    tzinfo (0.3.38)
+    tzinfo (0.3.61)
     weather_fetcher (0.1.0)
       curb
       simple_metar_parser (>= 0.0.1)
